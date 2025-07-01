@@ -1,0 +1,61 @@
+
+{
+  "2023-2024": {
+    "tax_brackets": {
+      "rates": [0.105, 0.175, 0.30, 0.33, 0.39],
+      "thresholds": [14000, 48000, 70000, 180000]
+    },
+    "ietc": {
+      "thrin": 24000,
+      "ent": 520,
+      "thrab": 48000,
+      "abrate": 0.13
+    },
+    "wff": {
+      "ftc1": 6642,
+      "ftc2": 5412,
+      "iwtc1": 3770,
+      "iwtc2": 780,
+      "bstc": 3388,
+      "mftc": 38627,
+      "abatethresh1": 42700,
+      "abatethresh2": 80000,
+      "abaterate1": 0.27,
+      "abaterate2": 0.27,
+      "bstcthresh": 79000,
+      "bstcabate": 0.21
+    }
+  },
+  "2024-2025": {
+    "tax_brackets": {
+      "rates": [0.105, 0.1282, 0.175, 0.2164, 0.30, 0.3099, 0.33, 0.39],
+      "thresholds": [14000, 15600, 48000, 53500, 70000, 78100, 180000]
+    },
+    "ietc": {
+      "thrin": 24000,
+      "ent": 520,
+      "thrab": 66000,
+      "abrate": 0.13
+    },
+    "wff": {
+      "ftc1": 6642,
+      "ftc2": 5412,
+      "iwtc1": 5070,
+      "iwtc2": 780,
+      "bstc": 3388,
+      "mftc": 38627,
+      "abatethresh1": 42700,
+      "abatethresh2": 80000,
+      "abaterate1": 0.27,
+      "abaterate2": 0.27,
+      "bstcthresh": 79000,
+      "bstcabate": 0.21
+    },
+    "family_boost": {
+      "max_credit": 3900,
+      "income_threshold": 140000,
+      "abatement_rate": 0.25,
+      "max_income": 180000
+    }
+  }
+}

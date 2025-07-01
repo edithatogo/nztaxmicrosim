@@ -51,6 +51,31 @@ The primary goal of this project is to create a transparent, accessible, and ext
 
 See the [CHANGELOG.md](CHANGELOG.md) for a history of changes.
 
+## Parameterization
+
+The microsimulation model is designed to be flexible and easily adaptable to changes in tax policy. All key policy parameters, such as tax brackets, credit amounts, and abatement thresholds, are stored in a central JSON file: `src/parameters.json`.
+
+This file is organized by tax year (e.g., "2023-2024", "2024-2025"), allowing you to run the model with different sets of policy rules.
+
+### Loading Parameters
+
+To load the parameters for a specific year, use the `load_parameters` function from `src/microsim.py`:
+
+```python
+from src.microsim import load_parameters
+
+# Load parameters for the 2024-2025 tax year
+params = load_parameters("2024-2025")
+
+# Access specific parameters
+tax_brackets = params["tax_brackets"]
+ietc_params = params["ietc"]
+```
+
+### Example Usage
+
+The `examples/basic_usage.py` script demonstrates how to use the parameterized system to calculate tax for different years.
+
 ## Usage
 
 ### Installation

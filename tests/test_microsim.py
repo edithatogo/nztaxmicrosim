@@ -4,7 +4,22 @@ Unit tests for the microsimulation tax functions.
 This module contains tests for the functions defined in `src/microsim.py`,
 ensuring their correctness and adherence to the original SAS model logic.
 """
-from src.microsim import calcietc, calctax, eitc, netavg, simrwt, supstd, taxit
+
+from src.microsim import (
+    calcietc,
+    calctax,
+    eitc,
+    family_boost_credit,
+    load_parameters,
+    netavg,
+    simrwt,
+    supstd,
+    taxit,
+)
+
+# Load parameters for testing
+params_2023_24 = load_parameters("2023-2024")
+params_2024_25 = load_parameters("2024-2025")
 
 
 def test_taxit():
@@ -12,8 +27,8 @@ def test_taxit():
     Tests the taxit function with various income scenarios and tax brackets.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds = [14000, 48000, 70000, 180000]
+    rates = params_2023_24["tax_brackets"]["rates"]
+    thresholds = params_2023_24["tax_brackets"]["thresholds"]
 
     # Test case 1: Income within the first bracket
     assert taxit(10000, rates, thresholds) == 1050
@@ -46,23 +61,21 @@ def test_calctax():
     Tests the calctax function for split-year tax calculations.
     """
     # Rates and thresholds for the 2023 tax year
-    rates1 = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds1 = [14000, 48000, 70000, 180000]
+    rates1 = params_2023_24["tax_brackets"]["rates"]
+    thresholds1 = params_2023_24["tax_brackets"]["thresholds"]
 
     # Rates and thresholds for the 2024 tax year
-    rates2 = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds2 = [14000, 48000, 70000, 180000]
+    rates2 = params_2024_25["tax_brackets"]["rates"]
+    thresholds2 = params_2024_25["tax_brackets"]["thresholds"]
 
     # Test case 1: Split year with same rates and thresholds
-    assert calctax(60000, 6, rates1, thresholds1, rates2, thresholds2) == taxit(60000, rates1, thresholds1)
+    assert calctax(60000, 6, rates1, thresholds1, rates1, thresholds1) == taxit(60000, rates1, thresholds1)
 
     # Test case 2: Split year with different rates and thresholds
-    rates3 = [0.10, 0.20, 0.30, 0.40, 0.50]
-    thresholds3 = [15000, 50000, 75000, 200000]
     tax1 = taxit(60000, rates1, thresholds1)
-    tax2 = taxit(60000, rates3, thresholds3)
+    tax2 = taxit(60000, rates2, thresholds2)
     expected_tax = tax1 * 0.5 + tax2 * 0.5
-    assert calctax(60000, 6, rates1, thresholds1, rates3, thresholds3) == expected_tax
+    assert calctax(60000, 6, rates1, thresholds1, rates2, thresholds2) == expected_tax
 
 
 def test_netavg():
@@ -70,8 +83,8 @@ def test_netavg():
     Tests the netavg function for calculating net average income.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds = [14000, 48000, 70000, 180000]
+    rates = params_2023_24["tax_brackets"]["rates"]
+    thresholds = params_2023_24["tax_brackets"]["thresholds"]
     eprt = 0.0146
 
     # Test case 1
@@ -86,6 +99,7 @@ def test_calcietc():
     """
     Tests the calcietc function, including various scenarios for IETC calculation and take-up logic.
     """
+    ietc_params = params_2023_24["ietc"]
     # Test case 1: Eligible based on income, but did NOT claim before (ietc0=0).
     # Model assumes they "self-selected out". Should return 0.
     assert (
@@ -95,10 +109,7 @@ def test_calcietc():
             wffamt=0,
             supamt=0,
             benamt=0,
-            thrin=24000,
-            ent=520,
-            thrab=48000,
-            abrate=0.13,
+            ietc_params=ietc_params,
             ietc0=0,
             taxinc0=30000,
         )
@@ -114,10 +125,7 @@ def test_calcietc():
             wffamt=0,
             supamt=0,
             benamt=0,
-            thrin=24000,
-            ent=520,
-            thrab=48000,
-            abrate=0.13,
+            ietc_params=ietc_params,
             ietc0=1,
             taxinc0=30000,
         )
@@ -132,10 +140,7 @@ def test_calcietc():
         wffamt=0,
         supamt=0,
         benamt=0,
-        thrin=24000,
-        ent=520,
-        thrab=48000,
-        abrate=0.13,
+        ietc_params=params_2023_24["ietc"],
         ietc0=1,
         taxinc0=50000,
     ) == max(0, 520 - 0.13 * (50000 - 48000))
@@ -148,10 +153,7 @@ def test_calcietc():
             wffamt=0,
             supamt=0,
             benamt=0,
-            thrin=24000,
-            ent=520,
-            thrab=48000,
-            abrate=0.13,
+            ietc_params=ietc_params,
             ietc0=1,
             taxinc0=20000,
         )
@@ -168,10 +170,7 @@ def test_calcietc():
             wffamt=100,
             supamt=0,
             benamt=0,
-            thrin=24000,
-            ent=520,
-            thrab=48000,
-            abrate=0.13,
+            ietc_params=ietc_params,
             ietc0=1,
             taxinc0=30000,
         )
@@ -186,10 +185,7 @@ def test_calcietc():
             wffamt=100,
             supamt=0,
             benamt=0,
-            thrin=24000,
-            ent=520,
-            thrab=48000,
-            abrate=0.13,
+            ietc_params=ietc_params,
             ietc0=0,
             taxinc0=30000,
         )
@@ -240,7 +236,7 @@ def test_supstd():
     # Base year parameters
     awe22 = 1462.81
     ep_base = 0.0153
-    tax_params_base = {"r": [0.105, 0.175, 0.30, 0.33, 0.39], "t": [14000, 48000, 70000, 180000]}
+    tax_params_base = params_2023_24["tax_brackets"]
 
     # Simulation year parameters
     cpi_factors = [1.05, 1.04, 1.03, 1.02]
@@ -248,22 +244,22 @@ def test_supstd():
     ep = [0.016, 0.016, 0.016, 0.016]
     fl = [0.66, 0.66, 0.66, 0.66]
     tax_params = [
-        {"r": [0.105, 0.175, 0.30, 0.33, 0.39], "t": [14000, 48000, 70000, 180000]},
-        {"r": [0.105, 0.175, 0.30, 0.33, 0.39], "t": [14000, 48000, 70000, 180000]},
-        {"r": [0.105, 0.175, 0.30, 0.33, 0.39], "t": [14000, 48000, 70000, 180000]},
-        {"r": [0.105, 0.175, 0.30, 0.33, 0.39], "t": [14000, 48000, 70000, 180000]},
+        params_2023_24["tax_brackets"],
+        params_2023_24["tax_brackets"],
+        params_2023_24["tax_brackets"],
+        params_2023_24["tax_brackets"],
     ]
 
     # Expected results
     expected_std22 = awe22 * 0.66 * 2
-    expected_stdnet22 = netavg(expected_std22 / 2, ep_base, tax_params_base["r"], tax_params_base["t"])
+    expected_stdnet22 = netavg(expected_std22 / 2, ep_base, tax_params_base["rates"], tax_params_base["thresholds"])
 
     expected_std = []
     expected_stdnet = []
     std_prev = expected_std22
     for i in range(4):
         std = max(awe[i] * fl[i] * 2, std_prev * cpi_factors[i])
-        stdnet = netavg(std / 2, ep[i], tax_params[i]["r"], tax_params[i]["t"])
+        stdnet = netavg(std / 2, ep[i], tax_params[i]["rates"], tax_params[i]["thresholds"])
         expected_std.append(std)
         expected_stdnet.append(stdnet)
         std_prev = std
@@ -282,3 +278,25 @@ def test_supstd():
     assert results["stdnet2"] == expected_stdnet[2]
     assert results["std3"] == expected_std[3]
     assert results["stdnet3"] == expected_stdnet[3]
+
+
+def test_family_boost_credit():
+    """
+    Tests the family_boost_credit function with various scenarios.
+    """
+    family_boost_params = params_2024_25["family_boost"]
+
+    # Test case 1: Income below threshold, credit is 25% of costs
+    assert family_boost_credit(100000, 1000, family_boost_params) == 250
+
+    # Test case 2: Income below threshold, credit is capped at max_credit
+    assert family_boost_credit(100000, 20000, family_boost_params) == family_boost_params["max_credit"]
+
+    # Test case 3: Income above threshold, credit is abated
+    credit = min(10000 * 0.25, family_boost_params["max_credit"])
+    abatement = (150000 - family_boost_params["income_threshold"]) * family_boost_params["abatement_rate"]
+    expected_credit = max(0, credit - abatement)
+    assert family_boost_credit(150000, 10000, family_boost_params) == expected_credit
+
+    # Test case 4: Income above max_income, credit is 0
+    assert family_boost_credit(190000, 10000, family_boost_params) == 0

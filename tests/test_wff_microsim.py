@@ -4,10 +4,15 @@ Unit tests for the Working for Families (WFF) microsimulation model.
 This module contains tests for the `famsim` function defined in `src/wff_microsim.py`,
 ensuring its correctness and adherence to the original SAS model logic.
 """
+
 import numpy as np
 import pandas as pd
 
+from src.microsim import load_parameters
 from src.wff_microsim import famsim
+
+# Load parameters for testing
+params_2023_24 = load_parameters("2023-2024")
 
 
 def test_famsim():
@@ -42,36 +47,14 @@ def test_famsim():
     )
 
     # Set the parameters
-    ftc1 = 6642
-    ftc2 = 5412
-    iwtc1 = 3770
-    iwtc2 = 780
-    bstc = 3388
-    mftc = 38627
-    abatethresh1 = 42700
-    abatethresh2 = 80000
-    abaterate1 = 0.27
-    abaterate2 = 0.27
-    bstcthresh = 79000
-    bstcabate = 0.21
+    wff_params = params_2023_24["wff"]
     wagegwt = 0
     daysinperiod = 365
 
     # Call the function
     result = famsim(
         df,
-        ftc1,
-        ftc2,
-        iwtc1,
-        iwtc2,
-        bstc,
-        mftc,
-        abatethresh1,
-        abatethresh2,
-        abaterate1,
-        abaterate2,
-        bstcthresh,
-        bstcabate,
+        wff_params,
         wagegwt,
         daysinperiod,
     )
@@ -86,3 +69,58 @@ def test_famsim():
     assert np.allclose(result["IWTCcalc"], expected_IWTCcalc)
     assert np.allclose(result["BSTCcalc"], expected_BSTCcalc)
     assert np.allclose(result["MFTCcalc"], expected_MFTCcalc)
+
+
+def test_famsim_abatement():
+    """
+    Tests the famsim function with a focus on the abatement calculation.
+    """
+    # Create a sample dataframe
+    df = pd.DataFrame(
+        {
+            "familyinc": [50000],
+            "FTCwgt": [1],
+            "IWTCwgt": [1],
+            "BSTC0wgt": [0],
+            "BSTC01wgt": [0],
+            "BSTC1wgt": [0],
+            "MFTCwgt": [0],
+            "iwtc_elig": [12],
+            "pplcnt": [0],
+            "MFTC_total": [0],
+            "MFTC_elig": [0],
+            "sharedcare": [0],
+            "sharecareFTCwgt": [0],
+            "sharecareBSTC0wgt": [0],
+            "sharecareBSTC01wgt": [0],
+            "sharecareBSTC1wgt": [0],
+            "iwtc": [1],
+            "selfempind": [0],
+            "maxkiddays": [365],
+            "maxkiddaysbstc": [365],
+        }
+    )
+
+    # Set the parameters
+    wff_params = params_2023_24["wff"]
+    wagegwt = 0
+    daysinperiod = 365
+
+    # Call the function
+    result = famsim(
+        df,
+        wff_params,
+        wagegwt,
+        daysinperiod,
+    )
+
+    # Assert the results
+    expected_abate_amt = (50000 - wff_params["abatethresh1"]) * wff_params["abaterate1"]
+    expected_FTCcalc = max(0, wff_params["ftc1"] - expected_abate_amt)
+    expected_carryforward_abate = expected_abate_amt - (wff_params["ftc1"] - expected_FTCcalc)
+    expected_IWTCcalc = max(0, wff_params["iwtc1"] - expected_carryforward_abate)
+
+    assert np.allclose(result["abate_amt"], expected_abate_amt)
+    assert np.allclose(result["FTCcalc"], expected_FTCcalc)
+    assert np.allclose(result["carryforward_abate"], expected_carryforward_abate)
+    assert np.allclose(result["IWTCcalc"], expected_IWTCcalc)

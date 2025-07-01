@@ -4,18 +4,7 @@ import pandas as pd
 
 def famsim(
     df: pd.DataFrame,
-    ftc1: float,
-    ftc2: float,
-    iwtc1: float,
-    iwtc2: float,
-    bstc: float,
-    mftc: float,
-    abatethresh1: float,
-    abatethresh2: float,
-    abaterate1: float,
-    abaterate2: float,
-    bstcthresh: float,
-    bstcabate: float,
+    wff_params: dict[str, float],
     wagegwt: float,
     daysinperiod: int,
 ) -> pd.DataFrame:
@@ -53,18 +42,7 @@ def famsim(
             - 'MFTCwgt': Weight for MFTC.
             - 'iwtc': IWTC amount.
             - 'selfempind': Flag indicating self-employment.
-        ftc1 (float): FTC entitlement for the eldest child.
-        ftc2 (float): FTC entitlement for subsequent children.
-        iwtc1 (float): IWTC entitlement for 1-3 children.
-        iwtc2 (float): IWTC entitlement for 4+ children.
-        bstc (float): BSTC entitlement.
-        mftc (float): MFTC guaranteed income amount before tax (i.e., gross income).
-        abatethresh1 (float): First abatement threshold.
-        abatethresh2 (float): Second abatement threshold (if any).
-        abaterate1 (float): Abatement rate for the first abatement threshold.
-        abaterate2 (float): Abatement rate for the second abatement threshold.
-        bstcthresh (float): Abatement threshold for BSTC.
-        bstcabate (float): Abatement rate for BSTC.
+        wff_params (dict): A dictionary of WFF parameters.
         wagegwt (float): Wage growth - growth in average ordinary weekly earnings on a March year basis.
         daysinperiod (int): Number of days in the period.
 
@@ -90,50 +68,63 @@ def famsim(
 
     # Abatement calculation
     df["abate_amt"] = np.where(
-        df["familyinc_grossed_up"] <= abatethresh1,
+        df["familyinc_grossed_up"] <= wff_params["abatethresh1"],
         0,
         np.where(
-            df["familyinc_grossed_up"] <= abatethresh2,
-            (df["familyinc_grossed_up"] - abatethresh1) * abaterate1 * df["maxkiddays"] / daysinperiod,
-            ((abatethresh2 - abatethresh1) * abaterate1 + (df["familyinc_grossed_up"] - abatethresh2) * abaterate2)
+            df["familyinc_grossed_up"] <= wff_params["abatethresh2"],
+            (df["familyinc_grossed_up"] - wff_params["abatethresh1"])
+            * wff_params["abaterate1"]
+            * df["maxkiddays"]
+            / daysinperiod,
+            (
+                (wff_params["abatethresh2"] - wff_params["abatethresh1"]) * wff_params["abaterate1"]
+                + (df["familyinc_grossed_up"] - wff_params["abatethresh2"]) * wff_params["abaterate2"]
+            )
             * df["maxkiddays"]
             / daysinperiod,
         ),
     )
     df["BSTCabate_amt"] = np.where(
-        df["familyinc_grossed_up"] <= bstcthresh,
+        df["familyinc_grossed_up"] <= wff_params["bstcthresh"],
         0,
-        (df["familyinc_grossed_up"] - bstcthresh) * bstcabate * df["maxkiddaysbstc"] / daysinperiod,
+        (df["familyinc_grossed_up"] - wff_params["bstcthresh"])
+        * wff_params["bstcabate"]
+        * df["maxkiddaysbstc"]
+        / daysinperiod,
     )
 
     # Maximum entitlement calculation
-    df["maxFTCent"] = np.where(df["FTCwgt"] <= 1, ftc1 * df["FTCwgt"], ftc1 + (df["FTCwgt"] - 1) * ftc2)
+    df["maxFTCent"] = np.where(
+        df["FTCwgt"] <= 1,
+        wff_params["ftc1"] * df["FTCwgt"],
+        wff_params["ftc1"] + (df["FTCwgt"] - 1) * wff_params["ftc2"],
+    )
 
     df["maxIWTCent"] = np.where(
         df["IWTCwgt"] == 0,
         0,
         np.where(
             df["IWTCwgt"] <= 1,
-            iwtc1 * df["IWTCwgt"] * df["iwtc_elig"] / (12 * df["IWTCwgt"]),
+            wff_params["iwtc1"] * df["IWTCwgt"] * df["iwtc_elig"] / (12 * df["IWTCwgt"]),
             np.where(
                 df["IWTCwgt"] <= 3,
-                iwtc1 * df["iwtc_elig"] / 12,
-                (iwtc1 + (df["IWTCwgt"] - 3) * iwtc2) * df["iwtc_elig"] / 12,
+                wff_params["iwtc1"] * df["iwtc_elig"] / 12,
+                (wff_params["iwtc1"] + (df["IWTCwgt"] - 3) * wff_params["iwtc2"]) * df["iwtc_elig"] / 12,
             ),
         ),
     )
 
-    df["maxBSTC0ent"] = np.minimum(np.maximum(df["BSTC0wgt"] - df["pplcnt"] / 26, 0), 1) * bstc
+    df["maxBSTC0ent"] = np.minimum(np.maximum(df["BSTC0wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params["bstc"]
     df["maxBSTC01ent"] = np.where(
         df["BSTC0wgt"] > 0,
-        df["BSTC01wgt"] * bstc,
-        np.minimum(np.maximum(df["BSTC01wgt"] - df["pplcnt"] / 26, 0), 1) * bstc,
+        df["BSTC01wgt"] * wff_params["bstc"],
+        np.minimum(np.maximum(df["BSTC01wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params["bstc"],
     )
-    df["maxBSTC1ent"] = bstc * df["BSTC1wgt"]
+    df["maxBSTC1ent"] = wff_params["bstc"] * df["BSTC1wgt"]
 
     df["maxMFTCent"] = np.where(
-        (df["familyinc_grossed_up"] < mftc) & (df["MFTC_total"] > 0) & (df["MFTC_elig"] > 0),
-        np.minimum((mftc - df["familyinc_grossed_up"]) * (1 - 0.175), df["MFTC_total"]),
+        (df["familyinc_grossed_up"] < wff_params["mftc"]) & (df["MFTC_total"] > 0) & (df["MFTC_elig"] > 0),
+        np.minimum((wff_params["mftc"] - df["familyinc_grossed_up"]) * (1 - 0.175), df["MFTC_total"]),
         0,
     )
 
@@ -195,7 +186,7 @@ def famsim(
 
     bstc1_mask = (df["BSTC1wgt"] > 0) & shared_care_mask
     bstccalc_shared[bstc1_mask] += (
-        np.maximum(0, bstc - df.loc[bstc1_mask, "BSTCabate_amt"])
+        np.maximum(0, wff_params["bstc"] - df.loc[bstc1_mask, "BSTCabate_amt"])
         * df.loc[bstc1_mask, "BSTC1wgt"]
         * df.loc[bstc1_mask, "sharecareBSTC1wgt"]
         / df.loc[bstc1_mask, "BSTC1wgt"]
@@ -209,4 +200,3 @@ def famsim(
     df.loc[(df["iwtc"] == 0) & (df["selfempind"] == 1), "IWTCcalc"] = 0
 
     return df
-

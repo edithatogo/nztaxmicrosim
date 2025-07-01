@@ -1,7 +1,9 @@
-import pandas as pd
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import sys
+
+import pandas as pd
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.wff_microsim import famsim
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
@@ -68,12 +70,7 @@ df_households = pd.read_parquet(os.path.join(population_dir, "households.parquet
 df = pd.merge(df_people, df_households, on="household_id")
 
 # Rename columns
-df = df.rename(columns={
-    "income": "familyinc",
-    "children": "num_children",
-    "id_x": "person_id",
-    "id_y": "household_id"
-})
+df = df.rename(columns={"income": "familyinc", "children": "num_children", "id_x": "person_id", "id_y": "household_id"})
 
 # Create required columns with default values
 df["maxkiddays"] = 365

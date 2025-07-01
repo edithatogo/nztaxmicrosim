@@ -1,9 +1,11 @@
-import pandas as pd
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import sys
+
+import pandas as pd
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from src.microsim import calcietc, taxit
 from src.wff_microsim import famsim
-from src.microsim import taxit, calcietc, netavg
 
 # --- 1. Create an Artificial Population ---
 # This is a small, artificial dataset that has the same structure as the
@@ -99,15 +101,15 @@ df_results["ietc_amount"] = df_results.apply(
     lambda row: calcietc(
         row["income"],
         "ys",  # Placeholder, assuming 'ys' for now
-        row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"], # Total WFF as wffamt
-        0, # supamt placeholder
-        0, # benamt placeholder
+        row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"],  # Total WFF as wffamt
+        0,  # supamt placeholder
+        0,  # benamt placeholder
         ietc_thrin,
         ietc_ent,
         ietc_thrab,
         ietc_abrate,
-        0, # ietc0 placeholder
-        row["income"], # taxinc0 placeholder
+        0,  # ietc0 placeholder
+        row["income"],  # taxinc0 placeholder
     ),
     axis=1,
 )

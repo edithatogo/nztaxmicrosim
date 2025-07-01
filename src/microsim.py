@@ -1,3 +1,22 @@
+import json
+from typing import Any
+
+
+def load_parameters(year: str) -> dict[str, Any]:
+    """
+    Loads tax parameters from a JSON file for a specific year.
+
+    Args:
+        year (str): The year for which to load the parameters (e.g., "2023-2024").
+
+    Returns:
+        dict: A dictionary containing the tax parameters.
+    """
+    with open("src/parameters.json", "r") as f:
+        all_params = json.load(f)
+    return all_params[year]
+
+
 def taxit(taxy: float, r: list[float], t: list[float]) -> float:
     """
     Calculates income tax based on a progressive tax system with multiple brackets.
@@ -87,10 +106,7 @@ def calcietc(
     wffamt: float,
     supamt: float,
     benamt: float,
-    thrin: float,
-    ent: float,
-    thrab: float,
-    abrate: float,
+    ietc_params: dict[str, float],
     ietc0: float,
     taxinc0: float,
 ) -> float:
@@ -105,10 +121,7 @@ def calcietc(
         wffamt (float): The Working for Families amount.
         supamt (float): The superannuation amount.
         benamt (float): The benefit amount.
-        thrin (float): The IETC threshold.
-        ent (float): The IETC entitlement.
-        thrab (float): The IETC abatement threshold.
-        abrate (float): The IETC abatement rate.
+        ietc_params (dict): A dictionary of IETC parameters.
         ietc0 (float): The previous IETC amount.
         taxinc0 (float): The previous taxable income.
 
@@ -140,12 +153,12 @@ def calcietc(
                 iposs = 1
 
         if iposs == 1:
-            if taxy <= thrin:
+            if taxy <= ietc_params["thrin"]:
                 cietc = 0.0
-            elif taxy <= thrab:
-                cietc = ent
+            elif taxy <= ietc_params["thrab"]:
+                cietc = ietc_params["ent"]
             else:
-                cietc = max(0.0, ent - abrate * (taxy - thrab))
+                cietc = max(0.0, ietc_params["ent"] - ietc_params["abrate"] * (taxy - ietc_params["thrab"]))
     return cietc
 
 
@@ -253,7 +266,7 @@ def supstd(
 
     # Base year
     std22: float = awe22 * 0.66 * 2
-    stdnet22: float = netavg(std22 / 2, ep_base, tax_params_base["r"], tax_params_base["t"])
+    stdnet22: float = netavg(std22 / 2, ep_base, tax_params_base["rates"], tax_params_base["thresholds"])
     results["std22"] = std22
     results["stdnet22"] = stdnet22
 
@@ -264,7 +277,7 @@ def supstd(
     std_prev: float = std22
     for i in range(4):
         std: float = max(awe[i] * fl[i] * 2, std_prev * cpi_factors[i])
-        stdnet: float = netavg(std / 2, ep[i], tax_params[i]["r"], tax_params[i]["t"])
+        stdnet: float = netavg(std / 2, ep[i], tax_params[i]["rates"], tax_params[i]["thresholds"])
         std_values.append(std)
         stdnet_values.append(stdnet)
         std_prev = std
@@ -279,3 +292,36 @@ def supstd(
     results["stdnet3"] = stdnet_values[3]
 
     return results
+
+
+def family_boost_credit(
+    family_income: float,
+    childcare_costs: float,
+    family_boost_params: dict[str, float],
+) -> float:
+    """
+    Calculates the FamilyBoost childcare tax credit.
+
+    Args:
+        family_income (float): The total family income.
+        childcare_costs (float): The total childcare costs.
+        family_boost_params (dict): A dictionary of FamilyBoost parameters.
+
+    Returns:
+        float: The calculated FamilyBoost credit.
+    """
+    max_credit = family_boost_params["max_credit"]
+    income_threshold = family_boost_params["income_threshold"]
+    abatement_rate = family_boost_params["abatement_rate"]
+    max_income = family_boost_params["max_income"]
+
+    if family_income > max_income:
+        return 0.0
+
+    credit = min(childcare_costs * 0.25, max_credit)
+
+    if family_income > income_threshold:
+        abatement = (family_income - income_threshold) * abatement_rate
+        credit = max(0.0, credit - abatement)
+
+    return credit
