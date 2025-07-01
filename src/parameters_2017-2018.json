@@ -1,0 +1,29 @@
+
+{
+  "2017-2018": {
+    "tax_brackets": {
+      "rates": [0.105, 0.175, 0.30, 0.33],
+      "thresholds": [14000, 48000, 70000]
+    },
+    "ietc": {
+      "thrin": 24000,
+      "ent": 520,
+      "thrab": 44000,
+      "abrate": 0.13
+    },
+    "wff": {
+      "ftc1": 5878,
+      "ftc2": 4745,
+      "iwtc1": 3770,
+      "iwtc2": 780,
+      "bstc": 3120,
+      "mftc": 23816,
+      "abatethresh1": 36350,
+      "abatethresh2": 80000,
+      "abaterate1": 0.225,
+      "abaterate2": 0.225,
+      "bstcthresh": 79000,
+      "bstcabate": 0.21
+    }
+  }
+}
