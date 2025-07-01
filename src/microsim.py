@@ -2,19 +2,19 @@ import json
 from typing import Any
 
 
-def load_parameters(year: str) -> dict[str, Any]:
+def load_parameters(file_path: str) -> dict[str, Any]:
     """
-    Loads tax parameters from a JSON file for a specific year.
+    Loads tax parameters from a JSON file.
 
     Args:
-        year (str): The year for which to load the parameters (e.g., "2023-2024").
+        file_path (str): The path to the JSON file.
 
     Returns:
         dict: A dictionary containing the tax parameters.
     """
-    with open("src/parameters.json", "r") as f:
-        all_params = json.load(f)
-    return all_params[year]
+    with open(file_path, "r") as f:
+        params = json.load(f)
+    return params
 
 
 def taxit(taxy: float, r: list[float], t: list[float]) -> float:
