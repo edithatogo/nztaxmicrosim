@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nz-microsimulation-model"
+version = "0.1.0"
+description = "A Python-based microsimulation model for the New Zealand tax and transfer system."
+dependencies = [
+    "pandas",
+    "numpy",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    ".",
+    "src",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"] # Error, Flake8, Warnings, Isort
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"

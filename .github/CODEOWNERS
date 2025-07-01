@@ -1,0 +1,14 @@
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners.
+
+# All files in the src directory are owned by @nz-microsim-model-maintainers
+/src/ @nz-microsim-model-maintainers
+
+# All files in the tests directory are owned by @nz-microsim-model-maintainers
+/tests/ @nz-microsim-model-maintainers
+
+# All documentation files are owned by @nz-microsim-model-maintainers
+/docs/ @nz-microsim-model-maintainers
+
+# Default owner for all files
+* @nz-microsim-model-maintainers

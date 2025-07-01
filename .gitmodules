@@ -1,0 +1,3 @@
+[submodule "syspop"]
+	path = syspop
+	url = https://github.com/jzanetti/Syspop-
