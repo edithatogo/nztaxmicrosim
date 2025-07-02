@@ -153,14 +153,14 @@ def calcietc(
 
 
 def eitc(
-    credflag: int,
-    eligflag: int,
-    incvar: float,
-    thrin: float,
-    par1: float,
-    par2: float,
-    earnrt: float,
-    abrt: float,
+    is_credit_enabled: bool,
+    is_eligible: bool,
+    income: float,
+    min_income_threshold: float,
+    max_entitlement_income: float,
+    abatement_income_threshold: float,
+    earning_rate: float,
+    abatement_rate: float,
 ) -> float:
     """
     Calculates the Earned Income Tax Credit (EITC).
@@ -168,29 +168,33 @@ def eitc(
     This function replicates the logic of the SAS macro `%eitc`.
 
     Args:
-        credflag (int): A flag to indicate if the credit is on or off.
-        eligflag (int): A flag to indicate if the person is eligible.
-        incvar (float): The income variable.
-        thrin (float): The income threshold to be eligible.
-        par1 (float): The income point at which the maximum entitlement is first attained.
-        par2 (float): The income point at which the entitlement starts to abate.
-        earnrt (float): The rate at which the credit is earned.
-        abrt (float): The rate at which the credit is abated.
+        is_credit_enabled (bool): A flag to indicate if the credit is on or off.
+        is_eligible (bool): A flag to indicate if the person is eligible.
+        income (float): The income variable.
+        min_income_threshold (float): The income threshold to be eligible.
+        max_entitlement_income (float): The income point at which the maximum entitlement is first attained.
+        abatement_income_threshold (float): The income point at which the entitlement starts to abate.
+        earning_rate (float): The rate at which the credit is earned.
+        abatement_rate (float): The rate at which the credit is abated.
 
     Returns:
         float: The calculated EITC.
     """
-    outcred: float = 0.0
-    if credflag == 1 and eligflag == 1:
-        if incvar <= thrin:
-            outcred = 0.0
-        elif incvar <= par1:
-            outcred = earnrt * (incvar - thrin)
-        elif incvar <= par2:
-            outcred = (par1 - thrin) * earnrt
-        else:
-            outcred = max(0.0, (par1 - thrin) * earnrt - (incvar - par2) * abrt)
-    return outcred
+    if not is_credit_enabled or not is_eligible:
+        return 0.0
+
+    if income <= min_income_threshold:
+        return 0.0
+    elif income <= max_entitlement_income:
+        return earning_rate * (income - min_income_threshold)
+    elif income <= abatement_income_threshold:
+        return (max_entitlement_income - min_income_threshold) * earning_rate
+    else:
+        return max(
+            0.0,
+            (max_entitlement_income - min_income_threshold) * earning_rate
+            - (income - abatement_income_threshold) * abatement_rate,
+        )
 
 
 def simrwt(

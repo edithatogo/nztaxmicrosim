@@ -189,19 +189,76 @@ def test_eitc():
     Tests the eitc function for Earned Income Tax Credit calculation.
     """
     # Test case 1: Earning zone
-    assert eitc(1, 1, 10000, 5000, 15000, 20000, 0.1, 0.2) == 500
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=True,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 500
+    )
 
     # Test case 2: Stable zone
-    assert eitc(1, 1, 18000, 5000, 15000, 20000, 0.1, 0.2) == 1000
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=True,
+            income=18000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 1000
+    )
 
     # Test case 3: Abatement zone
-    assert eitc(1, 1, 22000, 5000, 15000, 20000, 0.1, 0.2) == max(0, 1000 - (22000 - 20000) * 0.2)
+    assert eitc(
+        is_credit_enabled=True,
+        is_eligible=True,
+        income=22000,
+        min_income_threshold=5000,
+        max_entitlement_income=15000,
+        abatement_income_threshold=20000,
+        earning_rate=0.1,
+        abatement_rate=0.2,
+    ) == max(0, 1000 - (22000 - 20000) * 0.2)
 
     # Test case 4: Not eligible
-    assert eitc(1, 0, 10000, 5000, 15000, 20000, 0.1, 0.2) == 0
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=False,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 0
+    )
 
     # Test case 5: Credit not on
-    assert eitc(0, 1, 10000, 5000, 15000, 20000, 0.1, 0.2) == 0
+    assert (
+        eitc(
+            is_credit_enabled=False,
+            is_eligible=True,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 0
+    )
 
 
 def test_simrwt():
