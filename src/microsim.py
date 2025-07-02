@@ -251,11 +251,12 @@ def supstd(
     This function replicates the logic of the SAS macro `%supstd`.
 
     Args:
-        cpi_factors (list): A list of 4 CPI factors for the simulation years.
-        average_weekly_earnings (list): A list of 4 average weekly earnings for the simulation years.
-        earner_premium_rates (list): A list of 4 earner premium rates for the simulation years.
-        super_floor_relativities (list): A list of 4 superannuation accord floor relativities for the simulation years.
-        tax_parameters (list): A list of 4 dictionaries, each containing
+        cpi_factors (list[float]): A list of 4 CPI factors for the simulation years.
+        average_weekly_earnings (list[float]): A list of 4 average weekly earnings for the simulation years.
+        earner_premium_rates (list[float]): A list of 4 earner premium rates for the simulation years.
+        super_floor_relativities (list[float]): A list of 4 superannuation accord
+            floor relativities for the simulation years.
+        tax_parameters (list[dict[str, list[float]]]): A list of 4 dictionaries, each containing
             the tax rates and thresholds for a simulation year.
         base_year_average_weekly_earnings (float): The average weekly earnings for the base year.
         base_year_earner_premium_rate (float): The earner premium rate for the base year.

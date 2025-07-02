@@ -7,8 +7,17 @@ from joblib import Parallel, delayed
 from src.microsim import load_parameters
 
 
-def _get_nested(d, path):
-    """Gets a value from a nested dictionary using a dot-separated path."""
+def _get_nested(d: Dict[str, Any], path: str) -> Any:
+    """
+    Gets a value from a nested dictionary or list using a dot-separated path.
+
+    Args:
+        d (Dict[str, Any]): The dictionary or list to traverse.
+        path (str): The dot-separated path to the desired value (e.g., "key1.nested_key.0.final_key").
+
+    Returns:
+        Any: The value found at the specified path.
+    """
     keys = path.split(".")
     for key in keys:
         if isinstance(d, list):
@@ -18,8 +27,15 @@ def _get_nested(d, path):
     return d
 
 
-def _set_nested(d, path, value):
-    """Sets a value in a nested dictionary using a dot-separated path."""
+def _set_nested(d: Dict[str, Any], path: str, value: Any) -> None:
+    """
+    Sets a value in a nested dictionary or list using a dot-separated path.
+
+    Args:
+        d (Dict[str, Any]): The dictionary or list to modify.
+        path (str): The dot-separated path to the location where the value should be set.
+        value (Any): The value to set at the specified path.
+    """
     keys = path.split(".")
     d_ref = d
     for key in keys[:-1]:
@@ -38,55 +54,64 @@ def run_deterministic_analysis(
     params_to_vary: List[str],
     pct_change: float,
     population_df: pd.DataFrame,
-    output_metric_func: Callable[[pd.DataFrame], float],
+    output_metric_funcs: Dict[str, Callable[[pd.DataFrame, pd.DataFrame], float]],
     wff_runner: Callable,
     tax_runner: Callable,
-) -> pd.DataFrame:
+) -> Dict[str, pd.DataFrame]:
     """
-    Performs a deterministic sensitivity analysis on the microsimulation model.
+    Performs a deterministic sensitivity analysis on the microsimulation model for multiple output metrics.
 
     Args:
         baseline_params (Dict[str, Any]): The baseline set of parameters.
         params_to_vary (List[str]): A list of parameter names to vary.
         pct_change (float): The percentage change to apply to each parameter.
         population_df (pd.DataFrame): The population data to run the simulation on.
-        output_metric_func (Callable[[pd.DataFrame], float]): A function that takes a
-            simulation result DataFrame and returns a single output metric.
+        output_metric_funcs (Dict[str, Callable]): A dictionary of functions that each take a
+            tax result and a wff result DataFrame and return a single output metric.
         wff_runner (Callable): The function that runs the WFF simulation.
         tax_runner (Callable): The function that runs the tax simulation.
 
     Returns:
-        pd.DataFrame: A DataFrame with the results of the sensitivity analysis.
+        Dict[str, pd.DataFrame]: A dictionary where keys are metric names and values are
+            DataFrames with the sensitivity analysis results for that metric.
     """
 
     def _run_simulation(params):
-        """Helper function to run a single simulation."""
-        # Run tax simulation
-        tax_runner(population_df["familyinc"], params["tax_brackets"]["rates"], params["tax_brackets"]["thresholds"])
-
-        # Run WFF simulation
-        wff_results = wff_runner(
+        """Helper function to run a single simulation and calculate all metrics."""
+        tax_df = pd.DataFrame(
+            {
+                "tax": population_df["familyinc"].apply(
+                    tax_runner,
+                    args=(params["tax_brackets"]["rates"], params["tax_brackets"]["thresholds"]),
+                )
+            }
+        )
+        wff_df = wff_runner(
             population_df.copy(),
             params["wff"],
-            0.0,  # wagegwt
-            365,  # daysinperiod
+            0.0,
+            365,  # wagegwt  # daysinperiod
         )
-        return output_metric_func(wff_results)
+
+        results = {}
+        for name, func in output_metric_funcs.items():
+            if name == "Total WFF Entitlement":
+                results[name] = func(wff_df)
+            elif name == "Total Tax Revenue":
+                results[name] = func(tax_df)
+            elif name == "Net Cost to Government":
+                results[name] = func(tax_df, wff_df)
+        return results
 
     tasks = []
     for param_path in params_to_vary:
-        # Create deep copies of the baseline parameters
         params_low = pd.DataFrame([baseline_params]).to_dict(orient="records")[0]
         params_high = pd.DataFrame([baseline_params]).to_dict(orient="records")[0]
 
-        # Get the current value
         current_value = _get_nested(params_low, param_path)
-
-        # Calculate the new values
         low_value = current_value * (1 - pct_change)
         high_value = current_value * (1 + pct_change)
 
-        # Update the parameters
         _set_nested(params_low, param_path, low_value)
         _set_nested(params_high, param_path, high_value)
 
@@ -94,35 +119,37 @@ def run_deterministic_analysis(
         tasks.append(delayed(_run_simulation)(params_high))
 
     # Run simulations in parallel
-    results = Parallel(n_jobs=-1)(tasks)
+    parallel_results = Parallel(n_jobs=-1)(tasks)
 
     # Process results
-    output_data = []
-    baseline_result = _run_simulation(baseline_params)
-    for i, param_path in enumerate(params_to_vary):
-        low_result = results[i * 2]
-        high_result = results[i * 2 + 1]
-        output_data.append(
-            {
-                "parameter": param_path,
-                "low_value": low_result,
-                "high_value": high_result,
-                "baseline": baseline_result,
-                "impact": high_result - low_result,
-            }
-        )
+    baseline_results = _run_simulation(baseline_params)
+    output_data = {name: [] for name in output_metric_funcs}
 
-    return pd.DataFrame(output_data)
+    for i, param_path in enumerate(params_to_vary):
+        low_results = parallel_results[i * 2]
+        high_results = parallel_results[i * 2 + 1]
+        for name in output_metric_funcs:
+            output_data[name].append(
+                {
+                    "parameter": param_path,
+                    "low_value": low_results[name],
+                    "high_value": high_results[name],
+                    "baseline": baseline_results[name],
+                    "impact": high_results[name] - low_results[name],
+                }
+            )
+
+    return {name: pd.DataFrame(data) for name, data in output_data.items()}
 
 
 def run_probabilistic_analysis(
     param_distributions: Dict[str, Dict[str, Any]],
     num_samples: int,
     population_df: pd.DataFrame,
-    output_metric_func: Callable[[pd.DataFrame], float],
+    output_metric_funcs: Dict[str, Callable[[pd.DataFrame, pd.DataFrame], float]],
     wff_runner: Callable,
     tax_runner: Callable,
-) -> np.ndarray:
+) -> Dict[str, np.ndarray]:
     """
     Performs a probabilistic sensitivity analysis on the microsimulation model.
 
@@ -131,66 +158,59 @@ def run_probabilistic_analysis(
             probability distribution for each parameter to be varied.
         num_samples (int): The number of samples to generate.
         population_df (pd.DataFrame): The population data to run the simulation on.
-        output_metric_func (Callable[[pd.DataFrame], float]): A function that takes a
-            simulation result DataFrame and returns a single output metric.
+        output_metric_funcs (Dict[str, Callable]): A dictionary of functions that each take a
+            tax result and a wff result DataFrame and return a single output metric.
         wff_runner (Callable): The function that runs the WFF simulation.
         tax_runner (Callable): The function that runs the tax simulation.
 
     Returns:
-        np.ndarray: An array containing the results from all the simulations.
+        Dict[str, np.ndarray]: A dictionary where keys are metric names and values are
+            arrays with the results from all the simulations for that metric.
     """
     from scipy.stats import norm, qmc, uniform
 
-    # Create the sampler
     sampler = qmc.LatinHypercube(d=len(param_distributions))
     sample = sampler.random(n=num_samples)
 
-    # Create the parameter sets
-    param_sets = []
-    for i in range(num_samples):
-        params = {}
+    def _run_simulation(sample_row):
+        """Helper function to run a single simulation."""
+        params = load_parameters("2023-2024")
+
         for j, (param_path, dist_info) in enumerate(param_distributions.items()):
             if dist_info["dist"] == "norm":
-                value = norm.ppf(sample[i][j], loc=dist_info["loc"], scale=dist_info["scale"])
+                value = norm.ppf(sample_row[j], loc=dist_info["loc"], scale=dist_info["scale"])
             elif dist_info["dist"] == "uniform":
-                value = uniform.ppf(sample[i][j], loc=dist_info["loc"], scale=dist_info["scale"])
+                value = uniform.ppf(sample_row[j], loc=dist_info["loc"], scale=dist_info["scale"])
             else:
                 raise ValueError(f"Unsupported distribution: {dist_info['dist']}")
+            _set_nested(params, param_path, value)
 
-            # This is a simplified way to create the nested structure.
-            # It might need to be made more robust for more complex cases.
-            keys = param_path.split(".")
-            d = params
-            for key in keys[:-1]:
-                d = d.setdefault(key, {})
-            d[keys[-1]] = value
-        param_sets.append(params)
-
-    def _run_simulation(params):
-        """Helper function to run a single simulation."""
-        # Load baseline parameters and update with the sampled values
-        baseline_params = load_parameters("2023-2024")  # A bit of a hack
-        for key, value in params.items():
-            if key in baseline_params:
-                baseline_params[key].update(value)
-
-        # Run tax simulation
-        tax_runner(
-            population_df["familyinc"],
-            baseline_params["tax_brackets"]["rates"],
-            baseline_params["tax_brackets"]["thresholds"],
+        tax_df = pd.DataFrame(
+            {
+                "tax": population_df["familyinc"].apply(
+                    tax_runner,
+                    args=(params["tax_brackets"]["rates"], params["tax_brackets"]["thresholds"]),
+                )
+            }
         )
+        wff_df = wff_runner(population_df.copy(), params["wff"], 0.0, 365)
 
-        # Run WFF simulation
-        wff_results = wff_runner(
-            population_df.copy(),
-            baseline_params["wff"],
-            0.0,  # wagegwt
-            365,  # daysinperiod
-        )
-        return output_metric_func(wff_results)
+        results = {}
+        for name, func in output_metric_funcs.items():
+            if name == "Total WFF Entitlement":
+                results[name] = func(wff_df)
+            elif name == "Total Tax Revenue":
+                results[name] = func(tax_df)
+            elif name == "Net Cost to Government":
+                results[name] = func(tax_df, wff_df)
+        return results
 
-    # Run simulations in parallel
-    results = Parallel(n_jobs=-1)(delayed(_run_simulation)(params) for params in param_sets)
+    parallel_results = Parallel(n_jobs=-1)(delayed(_run_simulation)(sample_row) for sample_row in sample)
 
-    return np.array(results)
+    # Process results
+    output_arrays = {name: [] for name in output_metric_funcs}
+    for res in parallel_results:
+        for name, value in res.items():
+            output_arrays[name].append(value)
+
+    return {name: np.array(data) for name, data in output_arrays.items()}

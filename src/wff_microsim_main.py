@@ -6,7 +6,9 @@ from src.wff_microsim import famsim
 
 def main() -> None:
     """
-    This is the main entry point for the WFF microsimulation model.
+    This is the main entry point for the Working for Families (WFF) microsimulation model.
+    It demonstrates how to load parameters, create a sample DataFrame, and run the `famsim`
+    function to calculate WFF entitlements. The results are then printed to the console.
     """
     # Load the data
     # df = pd.read_csv('data.csv')

@@ -16,25 +16,20 @@ The primary goal of this project is to create a transparent, accessible, and ext
 The following is a high-level roadmap for the project:
 
 1.  **Verify Translation & Functionality:** Check that the Python code correctly implements the logic from the original SAS macros and that all existing tests pass.
-2.  **Document Code:** Add clear, comprehensive docstrings to the translated Python functions to explain their purpose, parameters, and return values.
+2.  **Document Code:** Added clear, comprehensive docstrings to the translated Python functions to explain their purpose, parameters, and return values. (Completed 2025-07-02)
 3.  **Ongoing Maintenance and Improvement:** The project will be an ongoing effort, with continuous improvement of the model, documentation, and analysis.
 
 ## Future Roadmap
 
 Once the current code is verified and documented, the project will explore adding additional functionality, such as:
 
-*   **Update to Current Tax Policies:**
-    *   Incorporate the 2024-2025 composite tax rates and thresholds.
-    *   Update the In-Work Tax Credit (IWTC) entitlements.
-    *   Adjust the Working for Families abatement thresholds.
-    *   Incorporate the "FamilyBoost" childcare tax credit.
-    *   Update the Independent Earner Tax Credit (IETC) eligibility and abatement rules.
 *   **Implement a Longitudinal Framework:**
     *   Refactor the model to support analysis across different time periods.
     *   Adopt a flexible parameterization approach, such as using parameter files per year (e.g., `params_2022.json`, `params_2025.json`), to manage changes in tax laws over time.
 *   **Behavioral Responses:** Incorporating behavioral responses to policy changes, such as changes in labor supply or savings behavior.
 *   **Dynamic Simulation:** Extending the model to allow for dynamic simulation over time, including demographic and economic changes.
 *   **Integration with Other Models:** Exploring the potential for integrating the model with other social policy models in New Zealand.
+*   **Economic Analysis:** The project will include an economic analysis of the model and its outputs, presented in the style of an economics paper.
 
 ## Progress Log
 

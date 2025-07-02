@@ -27,6 +27,7 @@ target-version = "py39"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"] # Error, Flake8, Warnings, Isort
 ignore = []
+exclude = ["syspop/"]
 
 [tool.ruff.format]
 quote-style = "double"
