@@ -1,8 +1,33 @@
-from typing import Any, Callable, Dict, List
-
 import pandas as pd
+import numpy as np
 from joblib import Parallel, delayed
+from typing import Any, Callable, Dict, List
+import functools
+import operator
 
+def _get_nested(d, path):
+    """Gets a value from a nested dictionary using a dot-separated path."""
+    keys = path.split('.')
+    for key in keys:
+        if isinstance(d, list):
+            d = d[int(key)]
+        else:
+            d = d[key]
+    return d
+
+def _set_nested(d, path, value):
+    """Sets a value in a nested dictionary using a dot-separated path."""
+    keys = path.split('.')
+    d_ref = d
+    for key in keys[:-1]:
+        if isinstance(d_ref, list):
+            d_ref = d_ref[int(key)]
+        else:
+            d_ref = d_ref[key]
+    if isinstance(d_ref, list):
+        d_ref[int(keys[-1])] = value
+    else:
+        d_ref[keys[-1]] = value
 
 def run_deterministic_analysis(
     baseline_params: Dict[str, Any],
@@ -10,7 +35,7 @@ def run_deterministic_analysis(
     pct_change: float,
     population_df: pd.DataFrame,
     output_metric_func: Callable[[pd.DataFrame], float],
-    wff_runner: Callable,
+    wff_runner: Callable
 ) -> pd.DataFrame:
     """
     Performs a deterministic sensitivity analysis on the microsimulation model.
@@ -27,39 +52,33 @@ def run_deterministic_analysis(
     Returns:
         pd.DataFrame: A DataFrame with the results of the sensitivity analysis.
     """
-
+    
     def _run_simulation(params):
         """Helper function to run a single simulation."""
-        # Note: This assumes wff_runner expects params['wff'], wagegwt, and daysinperiod
-        # This might need to be made more flexible in the future.
         result_df = wff_runner(
             population_df.copy(),
             params["wff"],
             0.0,  # wagegwt
-            365,  # daysinperiod
+            365   # daysinperiod
         )
         return output_metric_func(result_df)
 
     tasks = []
     for param_path in params_to_vary:
-        # Create copies of the baseline parameters
-        params_low = pd.json_normalize(baseline_params).to_dict(orient="records")[0]
-        params_high = pd.json_normalize(baseline_params).to_dict(orient="records")[0]
+        # Create deep copies of the baseline parameters
+        params_low = pd.DataFrame([baseline_params]).to_dict(orient='records')[0]
+        params_high = pd.DataFrame([baseline_params]).to_dict(orient='records')[0]
 
         # Get the current value
-        current_value = params_low[param_path]
+        current_value = _get_nested(params_low, param_path)
 
         # Calculate the new values
         low_value = current_value * (1 - pct_change)
         high_value = current_value * (1 + pct_change)
 
         # Update the parameters
-        params_low[param_path] = low_value
-        params_high[param_path] = high_value
-
-        # Un-flatten the parameters
-        params_low = pd.json_normalize(params_low).iloc[0].to_dict()
-        params_high = pd.json_normalize(params_high).iloc[0].to_dict()
+        _set_nested(params_low, param_path, low_value)
+        _set_nested(params_high, param_path, high_value)
 
         tasks.append(delayed(_run_simulation)(params_low))
         tasks.append(delayed(_run_simulation)(params_high))
@@ -69,18 +88,17 @@ def run_deterministic_analysis(
 
     # Process results
     output_data = []
+    baseline_result = _run_simulation(baseline_params)
     for i, param_path in enumerate(params_to_vary):
-        baseline_result = output_metric_func(wff_runner(population_df.copy(), baseline_params["wff"], 0.0, 365))
         low_result = results[i * 2]
         high_result = results[i * 2 + 1]
-        output_data.append(
-            {
-                "parameter": param_path,
-                "low_value": low_result,
-                "high_value": high_result,
-                "baseline": baseline_result,
-                "impact": high_result - low_result,
-            }
-        )
+        output_data.append({
+            "parameter": param_path,
+            "low_value": low_result,
+            "high_value": high_result,
+            "baseline": baseline_result,
+            "impact": high_result - low_result
+        })
 
     return pd.DataFrame(output_data)
+
