@@ -199,11 +199,11 @@ def eitc(
 
 def simrwt(
     interest: float,
-    lowr1: float,
-    lowr2: float,
-    hir1: float,
-    hir2: float,
-    hir3: float,
+    rwt_rate_10_5: float,
+    rwt_rate_17_5: float,
+    rwt_rate_30: float,
+    rwt_rate_33: float,
+    rwt_rate_39: float,
 ) -> float:
     """
     Simulates the Resident Withholding Tax (RWT).
@@ -212,11 +212,11 @@ def simrwt(
 
     Args:
         interest (float): The interest income.
-        lowr1 (float): The lower rate 1.
-        lowr2 (float): The lower rate 2.
-        hir1 (float): The higher rate 1.
-        hir2 (float): The higher rate 2.
-        hir3 (float): The higher rate 3.
+        rwt_rate_10_5 (float): The RWT rate for the 10.5% tax bracket.
+        rwt_rate_17_5 (float): The RWT rate for the 17.5% tax bracket.
+        rwt_rate_30 (float): The RWT rate for the 30% tax bracket.
+        rwt_rate_33 (float): The RWT rate for the 33% tax bracket.
+        rwt_rate_39 (float): The RWT rate for the 39% tax bracket.
 
     Returns:
         float: The calculated RWT.
@@ -224,7 +224,14 @@ def simrwt(
     if interest <= 0:
         return 0.0
     else:
-        outtax: float = interest * (0.0 + 1.05 * lowr1 + 1.75 * lowr2 + 0.30 * hir1 + 0.33 * hir2 + 0.39 * hir3)
+        outtax: float = interest * (
+            0.0
+            + 1.05 * rwt_rate_10_5
+            + 1.75 * rwt_rate_17_5
+            + 0.30 * rwt_rate_30
+            + 0.33 * rwt_rate_33
+            + 0.39 * rwt_rate_39
+        )
         return min(interest, outtax)
 
 
