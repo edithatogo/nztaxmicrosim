@@ -26,4 +26,10 @@ clean:
 	find . -type f -name "*.pyc" -delete
 
 run-example:
-	python examples/basic_usage.py
+	./syspop/venv/bin/python examples/basic_usage.py
+
+run-simulation:
+	./syspop/venv/bin/python examples/run_microsim_with_synthetic_population.py --param_file $(PARAM_FILE) $(if $(POPULATION_SCALE),--population_scale $(POPULATION_SCALE))
+
+generate-reports:
+	./syspop/venv/bin/python examples/generate_reports.py --param_file $(PARAM_FILE)

@@ -1,9 +1,14 @@
+import argparse
 import os
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from src.microsim import load_parameters
 
 
 def generate_reports():
@@ -13,6 +18,26 @@ def generate_reports():
     and natural language labels.
     """
     print("--- Generating Comprehensive Reports ---")
+
+    # --- Argument Parsing ---
+    parser = argparse.ArgumentParser(description="Generate reports from microsimulation results.")
+    parser.add_argument(
+        "--param_file",
+        type=str,
+        default="src/parameters.json",
+        help="Path to the JSON file containing the tax parameters.",
+    )
+    args = parser.parse_args()
+
+    # Load parameters
+    params = load_parameters(args.param_file)
+    year = list(params.keys())[0]
+    wff_params = params[year]["wff"]
+
+    # Define abatement thresholds from parameters
+    abatethresh1 = wff_params["abatethresh1"]
+    abatethresh2 = wff_params["abatethresh2"]
+    bstcthresh = wff_params["bstcthresh"]
 
     # --- Load Data ---
     results_path = "examples/artificial_population_results.csv"
@@ -240,11 +265,7 @@ def generate_reports():
         df["familyinc_grossed_up"], q=5, labels=[f"Q{i + 1}" for i in range(5)], duplicates="drop"
     )
     wff_income_quintile_report_table = (
-        df.groupby("family_income_quintile")[
-            ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]
-        ]
-        .mean()
-        .transpose()
+        df.groupby("family_income_quintile")[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].mean().transpose()
     )
     wff_income_quintile_report_table.index = [
         column_labels.get(col, col) for col in wff_income_quintile_report_table.index
@@ -253,9 +274,6 @@ def generate_reports():
 
     # Plots
     print("\n#### Scatter Plots with Abatement Visualization (WFF)")
-    abatethresh1 = 42700
-    abatethresh2 = 100000
-    bstcthresh = 42700
     entitlement_cols = ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]
     for col in entitlement_cols:
         plt.figure(figsize=(10, 6))

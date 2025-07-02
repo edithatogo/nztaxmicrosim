@@ -134,3 +134,6 @@ sas_models/
 # IDE-specific directories
 .idea/
 .vscode/
+
+# Synthetic Population Output
+examples/synthetic_population/

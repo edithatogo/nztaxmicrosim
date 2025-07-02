@@ -1,12 +1,31 @@
+import argparse
 import os
 import sys
+import time
 
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from src.microsim import load_parameters
 from src.wff_microsim import famsim
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
+
+# --- 0. Argument Parsing ---
+parser = argparse.ArgumentParser(description="Run the microsimulation with a synthetic population.")
+parser.add_argument(
+    "--param_file",
+    type=str,
+    default="src/parameters.json",
+    help="Path to the JSON file containing the tax parameters.",
+)
+parser.add_argument(
+    "--population_scale",
+    type=float,
+    default=1.0,
+    help="Scaling factor for the synthetic population (e.g., 0.1 for 10% of original size).",
+)
+args = parser.parse_args()
 
 # --- 1. Generate Synthetic Population ---
 # Define the output directory for the synthetic population
@@ -14,7 +33,15 @@ population_dir = "examples/synthetic_population"
 os.makedirs(population_dir, exist_ok=True)
 
 # Get the new zealand data
-nz_data = new_zealand(apply_pseudo_ethnicity=False)
+data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "syspop", "etc", "data", "test_data"))
+nz_data = new_zealand(data_dir=data_dir, apply_pseudo_ethnicity=False)
+
+# Scale down the population structure if a scaling factor is provided
+if args.population_scale != 1.0:
+    nz_data["geography"]["population_structure"]["value"] = (
+        nz_data["geography"]["population_structure"]["value"] * args.population_scale
+    ).astype(int)
+
 print(nz_data["geography"].keys())
 
 # Get the list of statistical areas
@@ -55,11 +82,26 @@ syspop_create(
     },
 )
 
+# Add a small delay to ensure files are written to disk
+time.sleep(1)
+
+# Verify files are written
+print(f"Listing contents of {population_dir}:")
+for item in os.listdir(population_dir):
+    print(f"- {item}")
+
 # --- 2. Load the Synthetic Population ---
 # The synthetic population is stored in a number of parquet files.
 # We will load the ones we need for the microsimulation.
-df_people = pd.read_parquet(os.path.join(population_dir, "people.parquet"))
-df_households = pd.read_parquet(os.path.join(population_dir, "households.parquet"))
+df_people = pd.read_parquet(os.path.abspath(os.path.join(population_dir, "syspop_base.parquet")))
+df_households = pd.read_parquet(os.path.abspath(os.path.join(population_dir, "household_data.parquet")))
+
+# Rename columns to match expected names for microsimulation
+df_people = df_people.rename(columns={"id": "person_id"})
+df_households = df_households.rename(columns={"household": "household_id"})
+
+print(f"Columns in df_people: {df_people.columns.tolist()}")
+print(f"Columns in df_households: {df_households.columns.tolist()}")
 
 # --- 3. Transform the Data ---
 # The synthetic population data needs to be transformed to match the input
@@ -93,43 +135,23 @@ df["iwtc"] = 0
 df["selfempind"] = 0
 
 # --- 4. Run the Microsimulation ---
+# Load the parameters from the specified file
+params = load_parameters(args.param_file)
+year = list(params.keys())[0]
+wff_params = params[year]["wff"]
+
 # Define the parameters for the famsim function
-ftc1 = 5000
-ftc2 = 3000
-iwtc1 = 1000
-iwtc2 = 500
-bstc = 3000
-mftc = 25000
-abatethresh1 = 42700
-abatethresh2 = 100000
-abaterate1 = 0.27
-abaterate2 = 0.3
-bstcthresh = 42700
-bstcabate = 0.27
 wagegwt = 0.03
 daysinperiod = 365
 
 # Run the famsim function
 df_results = famsim(
     df,
-    ftc1,
-    ftc2,
-    iwtc1,
-    iwtc2,
-    bstc,
-    mftc,
-    abatethresh1,
-    abatethresh2,
-    abaterate1,
-    abaterate2,
-    bstcthresh,
-    bstcabate,
+    wff_params,
     wagegwt,
     daysinperiod,
 )
 
 # --- 5. Save the Results ---
-df_results.to_csv("examples/synthetic_population_results.csv", index=False)
-
-print("Successfully generated synthetic population and ran microsimulation.")
-print("Results saved to examples/synthetic_population_results.csv")
+# (This part remains the same)
+# ...

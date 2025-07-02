@@ -76,6 +76,17 @@ ietc_params = params["ietc"]
 
 The `examples/basic_usage.py` script demonstrates how to use this system to calculate tax for different years by loading different parameter files.
 
+The project currently includes parameter files for the following tax years:
+* 2016-2017
+* 2017-2018
+* 2018-2019
+* 2019-2020
+* 2020-2021
+* 2021-2022
+* 2022-2023
+* 2023-2024
+* 2024-2025
+
 ## Usage
 
 ### Installation

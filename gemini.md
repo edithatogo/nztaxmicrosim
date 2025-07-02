@@ -38,34 +38,11 @@ Once the current code is verified and documented, the project will explore addin
 
 ## Progress Log
 
-*   **2025-06-30:**
-    *   Recreated SAS files from PDF document.
-    *   Established Python project structure.
-    *   Moved original SAS model files to `sas_models/` directory.
-    *   Translated the following SAS macros to Python:
-        *   `taxit`
-        *   `calctax`
-        *   `netavg`
-        *   `calcietc`
-        *   `eitc`
-        *   `simrwt`
-        *   `supstd`
-    *   Created unit tests for all translated functions.
-    *   All tests are passing.
-    *   Added instructions on how to run tests to `README.md`.
-    *   Created `pyproject.toml` for centralized project configuration and dependency management.
-    *   Migrated dependencies from `requirements.txt` to `pyproject.toml` and removed `requirements.txt`.
-    *   Added `ruff` for linting and formatting, configured in `pyproject.toml`.
-    *   Formatted and fixed linting issues using `ruff`.
-    *   Added `pre-commit` hooks for automated linting and formatting before commits.
-    *   Initialized Git repository and installed pre-commit hooks.
-    *   Added `LICENSE` file (MIT License).
-    *   Added `CONTRIBUTING.md` with contribution guidelines.
-    *   Added `CITATION.cff` for citation information.
-    *   Added `SECURITY.md` for vulnerability reporting.
-    *   Organized documentation files into a `docs/` directory.
-    *   Moved PDF documents to `docs/external/` for better organization.
-    *   Added `CHANGELOG.md` to document project changes.
-    *   Added `Makefile` to automate common development tasks.
-    *   Updated `.gitignore` to include new directories and IDE-specific files.
-    *   Updated `README.md` to reflect all new additions and organizational changes.
+*   **2025-07-02:**
+    *   Parameterized the microsimulation model to allow for easy updates and comparisons between different tax years.
+    *   Added historical tax rules for the years 2016-2021.
+    *   Updated the model with the 2024-2025 composite tax rates, IETC, and IWTC changes.
+    *   Added a new function for the FamilyBoost tax credit.
+    *   Updated tests to use the new parameter system and verify the new rules.
+    *   Updated examples/basic_usage.py to demonstrate the new system.
+    *   Updated README.md to document the parameterization feature.
