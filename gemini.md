@@ -19,20 +19,103 @@ The following is a high-level roadmap for the project:
 2.  **Document Code:** Added clear, comprehensive docstrings to the translated Python functions to explain their purpose, parameters, and return values. (Completed 2025-07-02)
 3.  **Ongoing Maintenance and Improvement:** The project will be an ongoing effort, with continuous improvement of the model, documentation, and analysis.
 
-## Future Roadmap
+## Modernization Roadmap
 
-Once the current code is verified and documented, the project will explore adding additional functionality, such as:
+The following roadmap outlines the key steps to modernize the repository, improve development practices, and automate workflows.
 
-*   **Implement a Longitudinal Framework:**
-    *   Refactor the model to support analysis across different time periods.
-    *   Adopt a flexible parameterization approach, such as using parameter files per year (e.g., `params_2022.json`, `params_2025.json`), to manage changes in tax laws over time.
-*   **Behavioral Responses:** Incorporating behavioral responses to policy changes, such as changes in labor supply or savings behavior.
-*   **Dynamic Simulation:** Extending the model to allow for dynamic simulation over time, including demographic and economic changes.
-*   **Integration with Other Models:** Exploring the potential for integrating the model with other social policy models in New Zealand.
-*   **Economic Analysis:** The project will include an economic analysis of the model and its outputs, presented in the style of an economics paper.
+1.  **Establish Robust Development Practices:**
+    *   **Branching Strategy:** Implement a clear branching strategy (`main` for stable releases, feature branches for development) to ensure a clean and maintainable codebase. (Completed 2025-07-03)
+    *   **Development Log:** Create a `development_log.md` to provide a transparent and consistent record of all development activities. (Completed 2025-07-03)
+    *   **Contribution Guidelines:** Update `CONTRIBUTING.md` to reflect the new branching strategy and development workflow. (Completed 2025-07-03)
+
+2.  **Automate Workflows with GitHub Actions:**
+    *   **Continuous Integration (CI):** Create a CI pipeline (`.github/workflows/ci.yml`) that automatically runs on every push and pull request to:
+        *   Install dependencies.
+        *   Run the linter (`ruff`).
+        *   Run the test suite (`pytest`).
+    *   **Automated Release Notes:** Implement a process to automatically generate release notes from the `development_log.md` or commit messages.
+    *   **Scheduled Tasks:** Explore opportunities for scheduled tasks, such as nightly builds or data updates.
+
+3.  **Enhance Project Structure and Tooling:**
+    *   **Dependency Management:** Review and update the dependency management process to ensure consistency and reliability.
+    *   **Code Coverage:** Integrate a code coverage tool (e.g., `coverage.py`) into the CI pipeline to monitor test coverage.
+    *   **Containerization:** Investigate the use of Docker to create a consistent and reproducible development environment.
+
+4.  **Improve Documentation and Reporting:**
+    *   **Automated Documentation:** Explore tools like Sphinx to automatically generate documentation from docstrings.
+    *   **Interactive Reports:** Enhance the reporting framework to generate interactive data visualizations (e.g., using `plotly`).
+    *   **API Documentation:** Create clear and comprehensive documentation for the model's API.
+
+## Future Roadmap: AI Integration and Foundational Improvements
+
+This roadmap prioritizes foundational robustness and usability before integrating advanced AI-driven features. The goal is to ensure the core system is accurate, reliable, and maintainable.
+
+### Phase 1: Foundational Robustness (Core Model Integrity)
+
+This phase is critical to ensure the quality and accuracy of the model's outputs, which is a prerequisite for any meaningful analysis or AI integration.
+
+*   **Robust Data Validation & Cleaning:**
+    *   **Why:** Ensures the integrity of input data. The principle of "garbage in, garbage out" means the model's outputs are only as reliable as its inputs. This is the bedrock for trustworthy results.
+    *   **Effort:** Medium
+    *   **Priority:** High
+*   **Comprehensive Model Validation & Calibration:**
+    *   **Why:** Guarantees the core tax rule logic is correct by testing against known outcomes and official statistics. This builds confidence in the model's predictive power.
+    *   **Effort:** High
+    *   **Priority:** High
+*   **Enhanced Logging and Documentation:**
+    *   **Why:** Improves transparency and makes debugging significantly easier for developers. Clear documentation lowers the barrier to entry for new contributors.
+    *   **Effort:** Low
+    *   **Priority:** High
+
+### Phase 2: Usability and Performance
+
+This phase focuses on making the model faster and easier to use for both developers and analysts.
+
+*   **Performance Optimization:**
+    *   **Why:** Faster execution allows for more complex simulations and quicker iteration during development and analysis.
+    *   **Effort:** Medium
+    *   **Priority:** Medium
+*   **Scenario Management & Comparison Tools:**
+    *   **Why:** This is a core function of a microsimulation model. It enables structured analysis of different policy scenarios and provides clear, comparable results.
+    *   **Effort:** Medium
+    *   **Priority:** Medium
+*   **Basic User Interface (CLI):**
+    *   **Why:** A simple Command-Line Interface (CLI) would make the model more accessible for running standard scenarios without needing to write Python code.
+    *   **Effort:** Low
+    *   **Priority:** Medium
+
+### Phase 3: AI Integration (Proof of Concept)
+
+With a robust foundation in place, this phase explores the feasibility of the AI reporting goal on a small scale.
+
+*   **Develop AI Reporting Proof of Concept (PoC):**
+    *   **Why:** To test the proposed AI architecture (local embedding and generative models) on a limited set of outputs. This will validate the approach and identify potential challenges early.
+    *   **Effort:** Medium
+    *   **Priority:** Low
+*   **Structured Output for AI Consumption:**
+    *   **Why:** Ensures that model outputs (tables, figures) are in a consistent, machine-readable format (e.g., JSON, CSV) that the AI pipeline can easily ingest.
+    *   **Effort:** Low
+    *   **Priority:** Low
+
+### Phase 4: Full AI Integration and Advanced Features
+
+This phase builds on the successful PoC to deliver the full AI-driven reporting vision.
+
+*   **Full-Scale AI Report Generation:**
+    *   **Why:** Implements the end-to-end AI pipeline, allowing the LLM to interpret a wide range of model outputs and generate detailed, context-aware text reports. This is the primary AI integration goal.
+    *   **Effort:** High
+    *   **Priority:** Low
+*   **Advanced UI/Dashboard:**
+    *   **Why:** A simple web-based UI could be developed to allow users to select scenarios, view results, and trigger AI-generated reports, making the tool accessible to non-technical users.
+    *   **Effort:** High
+    *   **Priority:** Low
 
 ## Progress Log
 
+*   **2025-07-03:**
+    *   Established a new branching strategy and updated `CONTRIBUTING.md`.
+    *   Created `docs/development_log.md` to track changes.
+    *   Updated the project roadmap to focus on modernization and automation.
 *   **2025-07-02:**
     *   Parameterized the microsimulation model to allow for easy updates and comparisons between different tax years.
     *   Added historical tax rules for the years 2016-2021.

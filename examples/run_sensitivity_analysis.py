@@ -13,10 +13,17 @@ from src.sensitivity_analysis import run_deterministic_analysis, run_probabilist
 from src.wff_microsim import famsim
 
 
-def total_wff_entitlement(df: pd.DataFrame) -> float:
+def total_wff_entitlement(wff_df: pd.DataFrame) -> float:
     """Calculates the total WFF entitlement from a simulation result."""
-    return df[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].sum().sum()
+    return wff_df[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].sum().sum()
 
+def total_tax_revenue(tax_df: pd.DataFrame) -> float:
+    """Calculates the total tax revenue from a simulation result."""
+    return tax_df["tax"].sum()
+
+def net_cost_to_government(tax_df: pd.DataFrame, wff_df: pd.DataFrame) -> float:
+    """Calculates the net cost to government."""
+    return total_wff_entitlement(wff_df) - total_tax_revenue(tax_df)
 
 def plot_tornado(df: pd.DataFrame, title: str, save_path: str):
     """Generates and saves a tornado plot."""
@@ -30,26 +37,24 @@ def plot_tornado(df: pd.DataFrame, title: str, save_path: str):
     ax.set_yticks(y_pos)
     ax.set_yticklabels(df["parameter"])
     ax.invert_yaxis()  # labels read top-to-bottom
-    ax.set_xlabel("Impact on Total WFF Entitlement ($)")
-    ax.set_title(title)
+    ax.set_xlabel(f"Impact on {title} ($")
+    ax.set_title(f"Deterministic Sensitivity Analysis: {title}")
 
     plt.tight_layout()
     plt.savefig(save_path)
     print(f"Tornado plot saved to {save_path}")
 
-
 def plot_histogram(data: np.ndarray, title: str, save_path: str):
     """Generates and saves a histogram."""
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.hist(data, bins=50, density=True, alpha=0.7)
-    ax.set_xlabel("Total WFF Entitlement ($)")
+    ax.set_xlabel(f"{title} ($")
     ax.set_ylabel("Density")
-    ax.set_title(title)
+    ax.set_title(f"Probabilistic Sensitivity Analysis: {title}")
 
     plt.tight_layout()
     plt.savefig(save_path)
     print(f"Histogram saved to {save_path}")
-
 
 def main():
     """Main function to run the sensitivity analysis."""
@@ -95,24 +100,33 @@ def main():
         "tax_brackets.thresholds.0",
     ]
 
+    # Define output metrics
+    output_metrics = {
+        "Total WFF Entitlement": total_wff_entitlement,
+        "Total Tax Revenue": total_tax_revenue,
+        "Net Cost to Government": net_cost_to_government,
+    }
+
     # Run Deterministic Sensitivity Analysis
-    dsa_results = run_deterministic_analysis(
+    dsa_results_dict = run_deterministic_analysis(
         baseline_params=baseline_params,
         params_to_vary=dsa_params_to_vary,
         pct_change=0.10,
         population_df=population_df,
-        output_metric_func=total_wff_entitlement,
+        output_metric_funcs=output_metrics,
         wff_runner=famsim,
         tax_runner=taxit,
     )
 
     print("--- Deterministic Sensitivity Analysis Results ---")
-    print(dsa_results)
-
-    # Generate and save the Tornado plot
-    plot_tornado(
-        dsa_results, "Deterministic Sensitivity Analysis of WFF Entitlements", "examples/reports/dsa_tornado_plot.png"
-    )
+    for name, df in dsa_results_dict.items():
+        print(f"\n--- {name} ---")
+        print(df)
+        plot_tornado(
+            df,
+            name,
+            f"examples/reports/dsa_tornado_{name.lower().replace(' ', '_')}.png",
+        )
 
     # Define parameter distributions for PSA
     psa_param_distributions = {
@@ -122,26 +136,27 @@ def main():
     }
 
     # Run Probabilistic Sensitivity Analysis
-    psa_results = run_probabilistic_analysis(
+    psa_results_dict = run_probabilistic_analysis(
         param_distributions=psa_param_distributions,
         num_samples=1000,
         population_df=population_df,
-        output_metric_func=total_wff_entitlement,
+        output_metric_funcs=output_metrics,
         wff_runner=famsim,
         tax_runner=taxit,
     )
 
-    print("--- Probabilistic Sensitivity Analysis Results ---")
-    print(f"Mean entitlement: ${psa_results.mean():.2f}")
-    print(f"Standard deviation: ${psa_results.std():.2f}")
-
-    # Generate and save the Histogram
-    plot_histogram(
-        psa_results,
-        "Probabilistic Sensitivity Analysis of WFF Entitlements",
-        "examples/reports/psa_histogram.png",
-    )
+    print("\n--- Probabilistic Sensitivity Analysis Results ---")
+    for name, data in psa_results_dict.items():
+        print(f"\n--- {name} ---")
+        print(f"Mean: ${data.mean():.2f}")
+        print(f"Standard deviation: ${data.std():.2f}")
+        plot_histogram(
+            data,
+            name,
+            f"examples/reports/psa_histogram_{name.lower().replace(' ', '_')}.png",
+        )
 
 
 if __name__ == "__main__":
     main()
+

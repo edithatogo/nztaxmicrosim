@@ -9,6 +9,7 @@ description = "A Python-based microsimulation model for the New Zealand tax and 
 dependencies = [
     "pandas",
     "numpy",
+    "pydantic",
 ]
 
 [tool.pytest.ini_options]

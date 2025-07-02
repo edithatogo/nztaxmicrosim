@@ -6,6 +6,7 @@ import time
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "syspop")))
 from src.microsim import load_parameters
 from src.wff_microsim import famsim
 from syspop.python.input import new_zealand
@@ -135,7 +136,16 @@ df["MFTCwgt"] = 0
 df["iwtc"] = 0
 df["selfempind"] = 0
 
-# --- 4. Run the Microsimulation for each parameter file ---
+# --- 4. Validate the Transformed Data ---
+from src.validation import validate_input_data
+try:
+    df = validate_input_data(df)
+    print("Input data validated successfully.")
+except ValueError as e:
+    print(f"Error: {e}")
+    sys.exit(1)
+
+# --- 5. Run the Microsimulation for each parameter file ---
 for param_file in args.param_files:
     year = os.path.basename(param_file).split("_")[1].split(".")[0]
     print(f"\n--- Running microsimulation with parameters from: {param_file} ({year}) ---")
