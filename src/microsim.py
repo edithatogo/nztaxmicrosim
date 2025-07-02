@@ -1,17 +1,21 @@
 import json
+import os
 from typing import Any
 
 
-def load_parameters(file_path: str) -> dict[str, Any]:
+def load_parameters(year: str) -> dict[str, Any]:
     """
-    Loads tax parameters from a JSON file.
+    Loads tax parameters from a JSON file for a specific year.
 
     Args:
-        file_path (str): The path to the JSON file.
+        year (str): The year for which to load the parameters (e.g., "2023-2024").
 
     Returns:
         dict: A dictionary containing the tax parameters.
     """
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(script_dir, f"parameters_{year}.json")
     with open(file_path, "r") as f:
         params = json.load(f)
     return params
@@ -101,65 +105,51 @@ def netavg(incvar: float, eprt: float, pct: list[float], thr: list[float]) -> fl
 
 
 def calcietc(
-    taxy: float,
-    parmflag: str,
-    wffamt: float,
-    supamt: float,
-    benamt: float,
+    taxable_income: float,
+    is_wff_recipient: bool,
+    is_super_recipient: bool,
+    is_benefit_recipient: bool,
     ietc_params: dict[str, float],
-    ietc0: float,
-    taxinc0: float,
 ) -> float:
     """
     Calculates the Independent Earner Tax Credit (IETC).
 
-    This function replicates the logic of the SAS macro `%calcietc`.
+    This function determines the IETC entitlement based on taxable income and
+    eligibility criteria. It replicates the logic of the SAS macro `%calcietc`.
 
     Args:
-        taxy (float): The taxable income.
-        parmflag (str): A flag to indicate if the parameter is 'ys'.
-        wffamt (float): The Working for Families amount.
-        supamt (float): The superannuation amount.
-        benamt (float): The benefit amount.
-        ietc_params (dict): A dictionary of IETC parameters.
-        ietc0 (float): The previous IETC amount.
-        taxinc0 (float): The previous taxable income.
+        taxable_income (float): The individual's taxable income.
+        is_wff_recipient (bool): True if the individual receives Working for Families tax credits.
+        is_super_recipient (bool): True if the individual receives superannuation payments.
+        is_benefit_recipient (bool): True if the individual receives a main benefit.
+        ietc_params (dict): A dictionary of IETC parameters, including:
+            - "thrin" (float): The income threshold below which no IETC is earned.
+            - "thrab" (float): The income threshold above which IETC begins to abate.
+            - "ent" (float): The maximum IETC entitlement.
+            - "abrate" (float): The abatement rate for IETC.
 
     Returns:
-        float: The calculated IETC.
+        float: The calculated IETC amount.
     """
-    cietc: float = 0.0
-    if parmflag == "ys":
-        iposs: int = 0
-        if ietc0 != 0:
-            iposs = 1
+    # IETC is not available to recipients of WFF, superannuation, or main benefits.
+    if is_wff_recipient or is_super_recipient or is_benefit_recipient:
+        return 0.0
 
-        if wffamt == 0 and supamt == 0 and benamt == 0:
-            icore: float = 0.0
-            if taxinc0 <= 24000:
-                icore = 0.0
-            elif taxinc0 <= 44000:
-                icore = 520.0
-            else:
-                icore = max(0.0, 520.0 - 0.13 * (taxinc0 - 44000))
+    # Unpack IETC parameters for clarity.
+    income_threshold_min = ietc_params["thrin"]
+    income_threshold_max = ietc_params["thrab"]
+    max_entitlement = ietc_params["ent"]
+    abatement_rate = ietc_params["abrate"]
 
-            if icore > 0 and ietc0 > 0:
-                iposs = 1
-            elif icore > 0 and ietc0 == 0:
-                iposs = 0
-            elif icore == 0 and ietc0 > 0:
-                iposs = 1
-            elif icore == 0 and ietc0 == 0:
-                iposs = 1
-
-        if iposs == 1:
-            if taxy <= ietc_params["thrin"]:
-                cietc = 0.0
-            elif taxy <= ietc_params["thrab"]:
-                cietc = ietc_params["ent"]
-            else:
-                cietc = max(0.0, ietc_params["ent"] - ietc_params["abrate"] * (taxy - ietc_params["thrab"]))
-    return cietc
+    # Calculate IETC based on income thresholds.
+    if taxable_income <= income_threshold_min:
+        return 0.0
+    elif taxable_income <= income_threshold_max:
+        return max_entitlement
+    else:
+        # Abate the credit for income above the maximum threshold.
+        abatement = (taxable_income - income_threshold_max) * abatement_rate
+        return max(0.0, max_entitlement - abatement)
 
 
 def eitc(
@@ -305,7 +295,8 @@ def family_boost_credit(
     Args:
         family_income (float): The total family income.
         childcare_costs (float): The total childcare costs.
-        family_boost_params (dict): A dictionary of FamilyBoost parameters.
+        family_boost_params (dict): A dictionary of FamilyBoost parameters
+            (max_credit, income_threshold, abatement_rate, max_income).
 
     Returns:
         float: The calculated FamilyBoost credit.

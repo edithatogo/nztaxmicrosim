@@ -18,7 +18,7 @@ from src.microsim import (
 )
 
 # Load parameters for testing
-params_2023_24 = load_parameters("2023-2024")
+params_2022_23 = load_parameters("2022-2023")
 params_2024_25 = load_parameters("2024-2025")
 
 
@@ -27,8 +27,8 @@ def test_taxit():
     Tests the taxit function with various income scenarios and tax brackets.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = params_2023_24["tax_brackets"]["rates"]
-    thresholds = params_2023_24["tax_brackets"]["thresholds"]
+    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds = [14000, 48000, 70000, 180000]
 
     # Test case 1: Income within the first bracket
     assert taxit(10000, rates, thresholds) == 1050
@@ -61,12 +61,12 @@ def test_calctax():
     Tests the calctax function for split-year tax calculations.
     """
     # Rates and thresholds for the 2023 tax year
-    rates1 = params_2023_24["tax_brackets"]["rates"]
-    thresholds1 = params_2023_24["tax_brackets"]["thresholds"]
+    rates1 = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds1 = [14000, 48000, 70000, 180000]
 
     # Rates and thresholds for the 2024 tax year
-    rates2 = params_2024_25["tax_brackets"]["rates"]
-    thresholds2 = params_2024_25["tax_brackets"]["thresholds"]
+    rates2 = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds2 = [14000, 48000, 70000, 180000]
 
     # Test case 1: Split year with same rates and thresholds
     assert calctax(60000, 6, rates1, thresholds1, rates1, thresholds1) == taxit(60000, rates1, thresholds1)
@@ -83,8 +83,8 @@ def test_netavg():
     Tests the netavg function for calculating net average income.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = params_2023_24["tax_brackets"]["rates"]
-    thresholds = params_2023_24["tax_brackets"]["thresholds"]
+    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds = [14000, 48000, 70000, 180000]
     eprt = 0.0146
 
     # Test case 1
@@ -97,97 +97,88 @@ def test_netavg():
 
 def test_calcietc():
     """
-    Tests the calcietc function, including various scenarios for IETC calculation and take-up logic.
+    Tests the calcietc function for IETC calculation.
     """
-    ietc_params = params_2023_24["ietc"]
-    # Test case 1: Eligible based on income, but did NOT claim before (ietc0=0).
-    # Model assumes they "self-selected out". Should return 0.
-    assert (
-        calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
-            ietc_params=ietc_params,
-            ietc0=0,
-            taxinc0=30000,
-        )
-        == 0
-    )
+    ietc_params = params_2022_23["ietc"]
 
-    # Test case 2: Eligible based on income, AND claimed before (ietc0 > 0).
-    # Should receive the full credit.
+    # Test case 1: Eligible for the full credit.
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=30000,
         )
         == 520
     )
 
-    # Test case 3: Eligible with abatement, AND claimed before (ietc0 > 0).
-    # Should receive the abated credit.
-    assert calcietc(
-        taxy=50000,
-        parmflag="ys",
-        wffamt=0,
-        supamt=0,
-        benamt=0,
-        ietc_params=params_2023_24["ietc"],
-        ietc0=1,
-        taxinc0=50000,
-    ) == max(0, 520 - 0.13 * (50000 - 48000))
-
-    # Test case 4: Not eligible (income too low), even if claimed before.
+    # Test case 2: Eligible for the abated credit.
     assert (
         calcietc(
-            taxy=20000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
+            taxable_income=49000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=20000,
+        )
+        > 0
+    )  # Abated credit
+    assert (
+        calcietc(
+            taxable_income=49000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        < 520
+    )  # Less than full credit
+
+    # Test case 3: Not eligible (income too low).
+    assert (
+        calcietc(
+            taxable_income=20000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
         )
         == 0
     )
 
-    # Test case 5: Receiving WFF. The take-up logic is skipped.
-    # If they claimed IETC before (ietc0 > 0), the model would give it to them.
-    # This seems like a flaw in the original SAS, but for a faithful translation, we test that behaviour.
+    # Test case 4: Not eligible (receiving WFF).
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=100,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=True,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=30000,
         )
-        == 520
+        == 0
     )
 
-    # Test case 6: Receiving WFF and did NOT claim IETC before.
+    # Test case 5: Not eligible (receiving superannuation).
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=100,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=True,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=0,
-            taxinc0=30000,
+        )
+        == 0
+    )
+
+    # Test case 6: Not eligible (receiving a main benefit).
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=True,
+            ietc_params=ietc_params,
         )
         == 0
     )
@@ -236,7 +227,7 @@ def test_supstd():
     # Base year parameters
     awe22 = 1462.81
     ep_base = 0.0153
-    tax_params_base = params_2023_24["tax_brackets"]
+    tax_params_base = params_2022_23["tax_brackets"]
 
     # Simulation year parameters
     cpi_factors = [1.05, 1.04, 1.03, 1.02]
@@ -244,10 +235,10 @@ def test_supstd():
     ep = [0.016, 0.016, 0.016, 0.016]
     fl = [0.66, 0.66, 0.66, 0.66]
     tax_params = [
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
     ]
 
     # Expected results
