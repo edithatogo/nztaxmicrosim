@@ -59,13 +59,13 @@ This allows you to run the model with different sets of policy rules, for exampl
 
 ### Loading Parameters
 
-To load parameters from a JSON file, use the `load_parameters` function from `src/microsim.py`, providing the path to your parameters file:
+To load parameters for a specific tax year, use the `load_parameters` function from `src/microsim.py`, providing the year in "YYYY-YYYY" format:
 
 ```python
 from src.microsim import load_parameters
 
-# Load parameters from a specific file
-params = load_parameters("path/to/your/parameters.json")
+# Load parameters for a specific year
+params = load_parameters("2024-2025")
 
 # Access specific parameters
 tax_brackets = params["tax_brackets"]
@@ -76,16 +76,26 @@ ietc_params = params["ietc"]
 
 The `examples/basic_usage.py` script demonstrates how to use this system to calculate tax for different years by loading different parameter files.
 
-The project currently includes parameter files for the following tax years:
-* 2016-2017
-* 2017-2018
-* 2018-2019
-* 2019-2020
-* 2020-2021
-* 2021-2022
-* 2022-2023
-* 2023-2024
-* 2024-2025
+The project currently includes parameter files for the following tax years, located in the `src/` directory:
+* `parameters_2016-2017.json`
+* `parameters_2017-2018.json`
+* `parameters_2018-2019.json`
+* `parameters_2019-2020.json`
+* `parameters_2020-2021.json`
+* `parameters_2021-2022.json`
+* `parameters_2022-2023.json`
+* `parameters_2024-2025.json`
+
+### Policy Comparison
+
+To compare tax policies across different years, you can provide multiple parameter files to the `run-simulation` and `generate-reports` commands. This will run the simulation and generate comparative reports for each specified year.
+
+For example, to compare the 2016-2017 and 2024-2025 tax policies:
+
+```bash
+make run-simulation PARAM_FILES="src/parameters_2016-2017.json src/parameters.json"
+make generate-reports PARAM_FILES="src/parameters_2016-2017.json src/parameters.json"
+```
 
 ## Usage
 

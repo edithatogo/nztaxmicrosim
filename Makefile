@@ -28,8 +28,8 @@ clean:
 run-example:
 	./syspop/venv/bin/python examples/basic_usage.py
 
-run-simulation:
-	./syspop/venv/bin/python examples/run_microsim_with_synthetic_population.py --param_file $(PARAM_FILE) $(if $(POPULATION_SCALE),--population_scale $(POPULATION_SCALE))
+run-microsim-comparison:
+	./syspop/venv/bin/python examples/run_microsim_comparison.py --param_files $(PARAM_FILES) $(if $(POPULATION_SCALE),--population_scale $(POPULATION_SCALE))
 
 generate-reports:
-	./syspop/venv/bin/python examples/generate_reports.py --param_file $(PARAM_FILE)
+	./syspop/venv/bin/python examples/generate_reports.py --param_files $(PARAM_FILES)

@@ -1,0 +1,26 @@
+{
+  "tax_brackets": {
+    "rates": [0.125, 0.22, 0.33, 0.38],
+    "thresholds": [14000, 48000, 70000]
+  },
+  "ietc": {
+    "thrin": 24000,
+    "ent": 1040,
+    "thrab": 44000,
+    "abrate": 0.15
+  },
+  "wff": {
+    "ftc1": 4822,
+    "ftc2": 3351,
+    "iwtc1": 3120,
+    "iwtc2": 0,
+    "bstc": 0,
+    "mftc": 22100,
+    "abatethresh1": 36827,
+    "abatethresh2": 36827,
+    "abaterate1": 0.2,
+    "abaterate2": 0.2,
+    "bstcthresh": 0,
+    "bstcabate": 0
+  }
+}

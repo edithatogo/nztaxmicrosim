@@ -237,13 +237,13 @@ def simrwt(
 
 def supstd(
     cpi_factors: list[float],
-    awe: list[float],
-    ep: list[float],
-    fl: list[float],
-    tax_params: list[dict[str, list[float]]],
-    awe22: float,
-    ep_base: float,
-    tax_params_base: dict[str, list[float]],
+    average_weekly_earnings: list[float],
+    earner_premium_rates: list[float],
+    super_floor_relativities: list[float],
+    tax_parameters: list[dict[str, list[float]]],
+    base_year_average_weekly_earnings: float,
+    base_year_earner_premium_rate: float,
+    base_year_tax_parameters: dict[str, list[float]],
 ) -> dict[str, float]:
     """
     Calculates standard superannuation.
@@ -252,13 +252,14 @@ def supstd(
 
     Args:
         cpi_factors (list): A list of 4 CPI factors for the simulation years.
-        awe (list): A list of 4 average weekly earnings for the simulation years.
-        ep (list): A list of 4 earner premium rates for the simulation years.
-        fl (list): A list of 4 superannuation accord floor relativities for the simulation years.
-        tax_params (list): A list of 4 dictionaries, each containing the tax rates and thresholds for a simulation year.
-        awe22 (float): The average weekly earnings for the base year.
-        ep_base (float): The earner premium rate for the base year.
-        tax_params_base (dict): A dictionary containing the tax rates and thresholds for the base year.
+        average_weekly_earnings (list): A list of 4 average weekly earnings for the simulation years.
+        earner_premium_rates (list): A list of 4 earner premium rates for the simulation years.
+        super_floor_relativities (list): A list of 4 superannuation accord floor relativities for the simulation years.
+        tax_parameters (list): A list of 4 dictionaries, each containing
+            the tax rates and thresholds for a simulation year.
+        base_year_average_weekly_earnings (float): The average weekly earnings for the base year.
+        base_year_earner_premium_rate (float): The earner premium rate for the base year.
+        base_year_tax_parameters (dict): A dictionary containing the tax rates and thresholds for the base year.
 
     Returns:
         dict: A dictionary containing the calculated standard superannuation amounts.
@@ -266,31 +267,44 @@ def supstd(
     results: dict[str, float] = {}
 
     # Base year
-    std22: float = awe22 * 0.66 * 2
-    stdnet22: float = netavg(std22 / 2, ep_base, tax_params_base["rates"], tax_params_base["thresholds"])
-    results["std22"] = std22
-    results["stdnet22"] = stdnet22
+    base_year_super: float = base_year_average_weekly_earnings * 0.66 * 2
+    base_year_net_super: float = netavg(
+        base_year_super / 2,
+        base_year_earner_premium_rate,
+        base_year_tax_parameters["rates"],
+        base_year_tax_parameters["thresholds"],
+    )
+    results["std22"] = base_year_super
+    results["stdnet22"] = base_year_net_super
 
     # Simulation years
-    std_values: list[float] = []
-    stdnet_values: list[float] = []
+    super_values: list[float] = []
+    net_super_values: list[float] = []
 
-    std_prev: float = std22
+    previous_super: float = base_year_super
     for i in range(4):
-        std: float = max(awe[i] * fl[i] * 2, std_prev * cpi_factors[i])
-        stdnet: float = netavg(std / 2, ep[i], tax_params[i]["rates"], tax_params[i]["thresholds"])
-        std_values.append(std)
-        stdnet_values.append(stdnet)
-        std_prev = std
+        current_super: float = max(
+            average_weekly_earnings[i] * super_floor_relativities[i] * 2,
+            previous_super * cpi_factors[i],
+        )
+        net_super: float = netavg(
+            current_super / 2,
+            earner_premium_rates[i],
+            tax_parameters[i]["rates"],
+            tax_parameters[i]["thresholds"],
+        )
+        super_values.append(current_super)
+        net_super_values.append(net_super)
+        previous_super = current_super
 
-    results["std"] = std_values[0]
-    results["stdnet"] = stdnet_values[0]
-    results["std1"] = std_values[1]
-    results["stdnet1"] = stdnet_values[1]
-    results["std2"] = std_values[2]
-    results["stdnet2"] = stdnet_values[2]
-    results["std3"] = std_values[3]
-    results["stdnet3"] = stdnet_values[3]
+    results["std"] = super_values[0]
+    results["stdnet"] = net_super_values[0]
+    results["std1"] = super_values[1]
+    results["stdnet1"] = net_super_values[1]
+    results["std2"] = super_values[2]
+    results["stdnet2"] = net_super_values[2]
+    results["std3"] = super_values[3]
+    results["stdnet3"] = net_super_values[3]
 
     return results
 

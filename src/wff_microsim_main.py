@@ -1,5 +1,6 @@
 import pandas as pd
 
+from src.microsim import load_parameters
 from src.wff_microsim import famsim
 
 
@@ -36,37 +37,18 @@ def main() -> None:
         }
     )
 
-    # Set the parameters
-    ftc1: float = 6642.0
-    ftc2: float = 5412.0
-    iwtc1: float = 3770.0
-    iwtc2: float = 780.0
-    bstc: float = 3388.0
-    mftc: float = 38627.0
-    abatethresh1: float = 42700.0
-    abatethresh2: float = 80000.0
-    abaterate1: float = 0.27
-    abaterate2: float = 0.27
-    bstcthresh: float = 79000.0
-    bstcabate: float = 0.21
+    # Set the parameters for a specific year
+    year = "2023-2024"
+    params = load_parameters(year)
+    wff_params = params["wff"]
+
     wagegwt: float = 0.0
     daysinperiod: int = 365
 
     # Call the famsim function
     result: pd.DataFrame = famsim(
         df,
-        ftc1,
-        ftc2,
-        iwtc1,
-        iwtc2,
-        bstc,
-        mftc,
-        abatethresh1,
-        abatethresh2,
-        abaterate1,
-        abaterate2,
-        bstcthresh,
-        bstcabate,
+        wff_params,
         wagegwt,
         daysinperiod,
     )

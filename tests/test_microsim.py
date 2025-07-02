@@ -283,8 +283,8 @@ def test_supstd():
     Tests the supstd function for standard superannuation calculation.
     """
     # Base year parameters
-    awe22 = 1462.81
-    ep_base = 0.0153
+    base_year_awe = 1462.81
+    base_year_ep_rate = 0.0153
     tax_params_base = params_2022_23["tax_brackets"]
 
     # Simulation year parameters
@@ -300,8 +300,13 @@ def test_supstd():
     ]
 
     # Expected results
-    expected_std22 = awe22 * 0.66 * 2
-    expected_stdnet22 = netavg(expected_std22 / 2, ep_base, tax_params_base["rates"], tax_params_base["thresholds"])
+    expected_std22 = base_year_awe * 0.66 * 2
+    expected_stdnet22 = netavg(
+        expected_std22 / 2,
+        base_year_ep_rate,
+        tax_params_base["rates"],
+        tax_params_base["thresholds"],
+    )
 
     expected_std = []
     expected_stdnet = []
@@ -314,7 +319,16 @@ def test_supstd():
         std_prev = std
 
     # Run the function
-    results = supstd(cpi_factors, awe, ep, fl, tax_params, awe22, ep_base, tax_params_base)
+    results = supstd(
+        cpi_factors,
+        awe,
+        ep,
+        fl,
+        tax_params,
+        base_year_awe,
+        base_year_ep_rate,
+        tax_params_base,
+    )
 
     # Assertions
     assert results["std22"] == expected_std22
