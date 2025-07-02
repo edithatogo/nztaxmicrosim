@@ -8,6 +8,7 @@ import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "syspop")))
 from src.microsim import load_parameters
+from src.validation import validate_input_data
 from src.wff_microsim import famsim
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
@@ -137,7 +138,6 @@ df["iwtc"] = 0
 df["selfempind"] = 0
 
 # --- 4. Validate the Transformed Data ---
-from src.validation import validate_input_data
 try:
     df = validate_input_data(df)
     print("Input data validated successfully.")

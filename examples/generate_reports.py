@@ -82,21 +82,21 @@ def generate_reports():
             + df["investment_income"]
             + df["rental_property_income"]
             + df["private_pensions_annuities"]
-            + df["jss_entitlement"] * 52 # Annualize weekly benefits
+            + df["jss_entitlement"] * 52  # Annualize weekly benefits
             + df["sps_entitlement"] * 52
             + df["slp_entitlement"] * 52
             + df["accommodation_supplement_entitlement"] * 52
-            + df["FTCcalc"] # WFF components are already annual
+            + df["FTCcalc"]  # WFF components are already annual
             + df["IWTCcalc"]
             + df["BSTCcalc"]
             + df["MFTCcalc"]
-            - df["income_tax_payable"] # Assuming income_tax_payable is annual
+            - df["income_tax_payable"]  # Assuming income_tax_payable is annual
         )
 
     if "housing_costs" in df.columns and "disposable_income_ahc" not in df.columns:
         df["disposable_income_ahc"] = df["disposable_income"] - (df["housing_costs"] * 52)
     elif "disposable_income_ahc" not in df.columns:
-        df["disposable_income_ahc"] = df["disposable_income"] # If no housing costs, AHC is same as disposable
+        df["disposable_income_ahc"] = df["disposable_income"]  # If no housing costs, AHC is same as disposable
 
     # Define report parameters
     report_params = {

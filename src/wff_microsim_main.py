@@ -179,12 +179,12 @@ def main() -> None:
     result["disposable_income_ahc"] = result["disposable_income"] - (result["housing_costs"] * 52)
 
     # Ensure 'age' column is in the result DataFrame
-    if 'age' not in result.columns:
-        result['age'] = df['age'] # Assuming age is in the original df and aligns
+    if "age" not in result.columns:
+        result["age"] = df["age"]  # Assuming age is in the original df and aligns
 
     # Generate comprehensive report
     report_params = {
-        'poverty_line_relative': 0.5 # Example: 50% of median income for poverty line
+        "poverty_line_relative": 0.5  # Example: 50% of median income for poverty line
     }
     generate_microsim_report(result, report_params)
 

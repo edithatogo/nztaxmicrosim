@@ -17,13 +17,16 @@ def total_wff_entitlement(wff_df: pd.DataFrame) -> float:
     """Calculates the total WFF entitlement from a simulation result."""
     return wff_df[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].sum().sum()
 
+
 def total_tax_revenue(tax_df: pd.DataFrame) -> float:
     """Calculates the total tax revenue from a simulation result."""
     return tax_df["tax"].sum()
 
+
 def net_cost_to_government(tax_df: pd.DataFrame, wff_df: pd.DataFrame) -> float:
     """Calculates the net cost to government."""
     return total_wff_entitlement(wff_df) - total_tax_revenue(tax_df)
+
 
 def plot_tornado(df: pd.DataFrame, title: str, save_path: str):
     """Generates and saves a tornado plot."""
@@ -44,6 +47,7 @@ def plot_tornado(df: pd.DataFrame, title: str, save_path: str):
     plt.savefig(save_path)
     print(f"Tornado plot saved to {save_path}")
 
+
 def plot_histogram(data: np.ndarray, title: str, save_path: str):
     """Generates and saves a histogram."""
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -55,6 +59,7 @@ def plot_histogram(data: np.ndarray, title: str, save_path: str):
     plt.tight_layout()
     plt.savefig(save_path)
     print(f"Histogram saved to {save_path}")
+
 
 def main():
     """Main function to run the sensitivity analysis."""
@@ -159,4 +164,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

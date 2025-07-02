@@ -1,6 +1,6 @@
 import pandas as pd
 from pydantic import BaseModel, Field
-from typing import List
+
 
 class SimulationInputSchema(BaseModel):
     person_id: int = Field(..., description="Unique identifier for each person.")
@@ -8,8 +8,8 @@ class SimulationInputSchema(BaseModel):
     familyinc: float = Field(..., ge=0, description="Family income, must be non-negative.")
     num_children: int = Field(..., ge=0, description="Number of children in the family, must be non-negative.")
     adults: int = Field(..., ge=0, description="Number of adults in the family, must be non-negative.")
-    maxkiddays: int = Field(..., ge=0, le=366, description="Maximum number of days for which a child is eligible for a benefit.")
-    maxkiddaysbstc: int = Field(..., ge=0, le=366, description="Maximum number of days for which a child is eligible for BSTC.")
+    maxkiddays: int = Field(..., ge=0, le=366, description="Max days for child benefit eligibility.")
+    maxkiddaysbstc: int = Field(..., ge=0, le=366, description="Max days for BSTC eligibility.")
     FTCwgt: int = Field(..., ge=0, le=1, description="Weight for Family Tax Credit.")
     IWTCwgt: int = Field(..., ge=0, le=1, description="Weight for In-Work Tax Credit.")
     iwtc_elig: int = Field(..., ge=0, le=1, description="Eligibility for In-Work Tax Credit.")
@@ -28,6 +28,7 @@ class SimulationInputSchema(BaseModel):
     iwtc: float = Field(..., ge=0, description="In-Work Tax Credit amount.")
     selfempind: int = Field(..., ge=0, le=1, description="Self-employment indicator.")
 
+
 def validate_input_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     Validates the input DataFrame against the SimulationInputSchema.
@@ -43,7 +44,7 @@ def validate_input_data(df: pd.DataFrame) -> pd.DataFrame:
     """
     try:
         # Pydantic can validate a list of records
-        records = df.to_dict('records')
+        records = df.to_dict("records")
         validated_records = [SimulationInputSchema(**r) for r in records]
         return pd.DataFrame([r.dict() for r in validated_records])
     except Exception as e:
