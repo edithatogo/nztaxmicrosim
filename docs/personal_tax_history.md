@@ -214,20 +214,20 @@ To visualize the structural shifts, the Mermaid diagram below presents a timelin
 ```mermaid
 timeline
     title New Zealand Personal Tax System – Key Milestones
-    1891 : Income Tax introduced (Liberal govt). £300 exemption; 5% top rate:contentReference[oaicite:217]{index=217} 
-    1917 : WWI “special war tax” pushes top rate > 30%:contentReference[oaicite:218]{index=218} 
-    1931 : Depression-era taxes – 1.25% unemployment levy starts:contentReference[oaicite:219]{index=219} 
-    1939 : Social Security tax 5% + £1 poll tax fund welfare 
-    1942 : WWII peak: 60% income tax + 12.5% social/war levies (top EMTR ~100%):contentReference[oaicite:221]{index=221} 
-    1958 : PAYE system introduced – wage tax withheld at source:contentReference[oaicite:222]{index=222} 
-    1970 : Social Security levy (7.5%) abolished; folded into income tax:contentReference[oaicite:223]{index=223} 
-    1982 : Top rate 66% (historic high in peacetime):contentReference[oaicite:224]{index=224} 
-    1988 : GST introduced (1986); top rate cut to 48%:contentReference[oaicite:225]{index=225} 
-    1989 : Top rate 33%; two-step tax scale achieved:contentReference[oaicite:226]{index=226} 
-    2000 : New 39% top rate over $60k (four brackets):contentReference[oaicite:227]{index=227} 
-    2005 : Working for Families boosts family tax credits:contentReference[oaicite:228]{index=228} 
-    2010 : Comprehensive reform – GST 15%, bottom rate 10.5%, top rate down to 33%:contentReference[oaicite:229]{index=229} 
-    2021 : 39% top rate re-introduced over $180k:contentReference[oaicite:230]{index=230} 
+    1891 : Income Tax introduced (Liberal govt). £300 exemption; 5% top rate:contentReference[oaicite:217]{index=217}
+    1917 : WWI “special war tax” pushes top rate > 30%:contentReference[oaicite:218]{index=218}
+    1931 : Depression-era taxes – 1.25% unemployment levy starts:contentReference[oaicite:219]{index=219}
+    1939 : Social Security tax 5% + £1 poll tax fund welfare
+    1942 : WWII peak: 60% income tax + 12.5% social/war levies (top EMTR ~100%):contentReference[oaicite:221]{index=221}
+    1958 : PAYE system introduced – wage tax withheld at source:contentReference[oaicite:222]{index=222}
+    1970 : Social Security levy (7.5%) abolished; folded into income tax:contentReference[oaicite:223]{index=223}
+    1982 : Top rate 66% (historic high in peacetime):contentReference[oaicite:224]{index=224}
+    1988 : GST introduced (1986); top rate cut to 48%:contentReference[oaicite:225]{index=225}
+    1989 : Top rate 33%; two-step tax scale achieved:contentReference[oaicite:226]{index=226}
+    2000 : New 39% top rate over $60k (four brackets):contentReference[oaicite:227]{index=227}
+    2005 : Working for Families boosts family tax credits:contentReference[oaicite:228]{index=228}
+    2010 : Comprehensive reform – GST 15%, bottom rate 10.5%, top rate down to 33%:contentReference[oaicite:229]{index=229}
+    2021 : 39% top rate re-introduced over $180k:contentReference[oaicite:230]{index=230}
     2024 : Tax bracket thresholds indexed ~11% upward (first adjustment since 2010):contentReference[oaicite:231]{index=231}
 ```
 
