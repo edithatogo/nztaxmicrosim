@@ -1,5 +1,6 @@
-import numpy as np
 from typing import Dict
+
+import numpy as np
 
 
 def calculate_evpi(psa_results: Dict[str, np.ndarray]) -> Dict[str, float]:

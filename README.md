@@ -46,6 +46,7 @@ The primary goal of this project is to create a transparent, accessible, and ext
 *   **Dependency Management:** Project dependencies are managed using `pyproject.toml`.
 *   **Testing and Documentation:** The project will include a comprehensive test suite to ensure the accuracy of the model and will be well-documented to facilitate understanding and use. Documentation files are located in the `docs/` directory.
 *   **Economic Analysis:** The project includes an economic analysis of the model and its outputs, presented in the style of an economics paper. The draft paper is available in [docs/nz_microsim_paper.md](docs/nz_microsim_paper.md) and is a work in progress.
+*   **Value of Information:** Sensitivity analysis utilities include a function to compute the Expected Value of Perfect Information (EVPI) from probabilistic results.
 
 ### Feature Status
 
@@ -55,7 +56,7 @@ The primary goal of this project is to create a transparent, accessible, and ext
 | Working for Families | Implemented |
 | FamilyBoost credit | Implemented |
 | Reporting utilities | Implemented |
-| Sensitivity analysis tools | In progress |
+| Sensitivity analysis tools | Implemented |
 
 ## Changelog
 
