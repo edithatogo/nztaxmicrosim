@@ -57,6 +57,9 @@ The primary goal of this project is to create a transparent, accessible, and ext
 | FamilyBoost credit | Implemented |
 | Reporting utilities | Implemented |
 | Sensitivity analysis tools | Implemented |
+| Paid Parental Leave module | Optional |
+| Child Support module | Optional |
+| Sensitivity analysis tools | In progress |
 
 ## Changelog
 
@@ -96,6 +99,43 @@ The project currently includes parameter files for the following tax years, loca
 * `parameters_2021-2022.json`
 * `parameters_2022-2023.json`
 * `parameters_2024-2025.json`
+
+### Budget Impact Analysis
+
+To compare the fiscal outcomes of two scenarios, use
+`calculate_budget_impact` from `src.budget_analysis`:
+
+```python
+import pandas as pd
+from src.budget_analysis import calculate_budget_impact
+
+baseline = pd.DataFrame(
+    {
+        "tax_liability": [100, 200],
+        "jss_entitlement": [10, 20],
+    }
+)
+reform = pd.DataFrame(
+    {
+        "tax_liability": [120, 230],
+        "jss_entitlement": [15, 25],
+    }
+)
+
+impact = calculate_budget_impact(baseline, reform)
+print(impact)
+```
+
+This returns a table summarizing revenue, spending and the net fiscal impact for
+each scenario and their difference.
+
+### Optional Modules
+
+The model includes simple components for Paid Parental Leave (PPL) and child
+support. These modules are off by default. To activate them, set
+`ppl.enabled` or `child_support.enabled` to `true` in the parameter JSON file.
+PPL requires `weekly_rate` and `max_weeks` values, while child support uses a
+`support_rate` applied to the liable parent's income.
 
 ### Policy Comparison
 
