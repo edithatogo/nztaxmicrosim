@@ -13,6 +13,7 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "joblib",
+    "scipy",
 ]
 
 [tool.pytest.ini_options]

@@ -102,10 +102,25 @@ make generate-reports PARAM_FILES="src/parameters_2016-2017.json src/parameters.
 ### Installation
 
 To install the core project dependencies, run:
-
 ```bash
 make install
 ```
+
+If you're developing the project itself, you can install it in editable mode:
+
+```bash
+pip install -e .
+```
+
+The main Python packages used by the model are:
+
+* `pandas`
+* `numpy`
+* `pydantic`
+* `matplotlib`
+* `seaborn`
+* `joblib`
+* `scipy`
 
 ### Running Examples
 
