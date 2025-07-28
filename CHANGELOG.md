@@ -40,8 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `run-example` target to `Makefile` and updated `README.md` with instructions on how to run the example.
 - Added `.github/CODEOWNERS` file and a corresponding `README.md` to the `.github/` directory.
 - Moved `LICENSE` file to `docs/` directory.
+- Added `calculate_evpi` function for computing the Expected Value of Perfect Information from probabilistic sensitivity outputs and corresponding unit tests.
 - Added budget impact analysis utilities for comparing baseline and reform scenarios.
 - Added `src/acc_levy.py` with ACC levy and payroll deduction functions.
 - New unit tests for ACC levy calculations.
 - Added inequality metrics helpers (`lorenz_curve`, `atkinson_index`, `theil_index`).
-
