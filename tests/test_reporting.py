@@ -191,3 +191,18 @@ def test_lorenz_and_inequality_indices():
     # Atkinson and Theil indices for this distribution
     assert reporting.atkinson_index(incomes, epsilon=0.5) == pytest.approx(0.0556, abs=1e-3)
     assert reporting.theil_index(incomes) == pytest.approx(0.1064, abs=1e-3)
+
+
+def test_inequality_edge_cases():
+    incomes_equal = pd.Series([10, 10, 10])
+    assert reporting.atkinson_index(incomes_equal) == pytest.approx(0.0, abs=1e-12)
+    assert reporting.theil_index(incomes_equal) == pytest.approx(0.0, abs=1e-12)
+
+    incomes_empty = pd.Series([], dtype=float)
+    lorenz = reporting.lorenz_curve(incomes_empty)
+    assert lorenz.equals(pd.DataFrame({"population_share": [0.0], "income_share": [0.0]}))
+
+
+def test_atkinson_epsilon_one():
+    incomes = pd.Series([1, 2, 3, 4])
+    assert reporting.atkinson_index(incomes, epsilon=1) == pytest.approx(0.1147, abs=1e-3)
