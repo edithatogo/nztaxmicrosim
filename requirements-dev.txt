@@ -1,3 +1,6 @@
 pytest
 ruff
 pre-commit
+matplotlib
+seaborn
+joblib
