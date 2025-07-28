@@ -133,8 +133,10 @@ This document outlines a comprehensive reporting strategy for the New Zealand Mi
 ## VI. Reporting Tools
 
 *   **Python Libraries:**
-    *   `pandas`: For data loading, manipulation, and generating summary tables.
-    *   `matplotlib.pyplot`: For creating a wide range of static plots.
-    *   `seaborn`: For enhanced statistical graphics and aesthetically pleasing plots.
+*   `pandas`: For data loading, manipulation, and generating summary tables.
+*   `matplotlib.pyplot`: For creating a wide range of static plots.
+*   `seaborn`: For enhanced statistical graphics and aesthetically pleasing plots.
+*   `joblib`: For running parallel computations during sensitivity analyses.
+*   `scipy`: Provides statistical distributions used in advanced simulations.
 
 All plots will be saved as PNG image files in a dedicated `examples/reports` directory. Summary tables will be printed to the console or saved as text files if requested.
