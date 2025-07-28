@@ -140,7 +140,14 @@ make install-dev-deps
 
 ### Running Tests
 
-To run the unit tests for the project, execute:
+Before running the tests, ensure that all development dependencies are installed.
+You can install them easily with the following command:
+
+```bash
+make install-dev-deps
+```
+
+Once the dependencies are installed, execute the test suite:
 
 ```bash
 make test
