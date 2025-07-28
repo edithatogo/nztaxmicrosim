@@ -147,12 +147,14 @@ This project uses a `Makefile` to automate common development tasks. You can fin
 
 ### Installing Development Dependencies
 
-To install all development dependencies (including `pytest`, `ruff`, and `pre-commit`) along with the project itself,
+To install all development dependencies (including `pytest`, `ruff`, `pre-commit`, and `tabulate`) along with the project itself,
 run:
 
 ```bash
 make install-dev-deps
 ```
+
+`tabulate` is required so that `DataFrame.to_markdown()` works correctly during tests.
 
 ### Running Tests
 
