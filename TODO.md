@@ -1,8 +1,8 @@
 # TODO
 
-Short-term tasks to complete:
+Outstanding work:
 
-*   Implement VOI analysis tools
-*   Add budget impact module
-*   Integrate equity metrics
-*   Expand unit tests
+* Build VOI analysis module
+* Implement budget impact calculations
+* Integrate equity metrics
+* Add more tests
