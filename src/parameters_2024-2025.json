@@ -38,12 +38,7 @@
     "housing_cost_contribution_rate": 0.70,
     "housing_cost_threshold": 25.0
   },
-  "family_boost": {
-    "max_credit": 3900,
-    "income_threshold": 140000,
-    "abatement_rate": 0.25,
-    "max_income": 180000
-  },
+  "family_boost": {"max_credit": 3900, "income_threshold": 140000, "abatement_rate": 0.25, "max_income": 180000},
   "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
   "child_support": {"enabled": false, "support_rate": 0.18},
   "kiwisaver": {"contribution_rate": 0.03},

@@ -120,7 +120,6 @@ def test_calculate_accommodation_supplement():
 
 def test_calculate_ppl():
     """PPL should pay the weekly rate up to the maximum weeks when enabled."""
-
     assert calculate_ppl(-10, ppl_params) == 0.0
     assert calculate_ppl(0, ppl_params) == 0.0
     assert calculate_ppl(10, ppl_params) == 600.0 * 10
