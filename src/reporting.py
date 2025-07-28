@@ -13,7 +13,6 @@ from src.reporting_framework import (
     ReportGenerator,
 )
 
-
 def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
     """Return the sum of ``tax_liability`` for ``df``."""
     table = FiscalImpactTable()
@@ -65,6 +64,11 @@ def calculate_gini_coefficient(income_series: pd.Series) -> float:
     table = DistributionalStatisticsTable()
     return table._calculate_gini_coefficient(income_series)
 
+# Instantiate helpers from the new reporting framework for backward compatible
+# function wrappers used in the tests.
+_fiscal_helper = FiscalImpactTable()
+_stats_helper = DistributionalStatisticsTable()
+
 
 def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -113,7 +117,6 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
 
     return generated_content
 
-
 __all__ = [
     "calculate_total_tax_revenue",
     "calculate_total_welfare_transfers",
@@ -125,3 +128,54 @@ __all__ = [
     "calculate_gini_coefficient",
     "generate_microsim_report",
 ]
+
+# ---------------------------------------------------------------------------
+# Backwards compatible helper functions
+# ---------------------------------------------------------------------------
+
+
+def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
+    """Return the total tax revenue from a dataframe."""
+    return _fiscal_helper._calculate_total_tax_revenue(df)
+
+
+def calculate_total_welfare_transfers(df: pd.DataFrame) -> float:
+    """Return the sum of welfare transfers from a dataframe."""
+    return _fiscal_helper._calculate_total_welfare_transfers(df)
+
+
+def calculate_net_fiscal_impact(tax_revenue: float, welfare_transfers: float) -> float:
+    """Return the net fiscal impact (revenue minus transfers)."""
+    return _fiscal_helper._calculate_net_fiscal_impact(tax_revenue, welfare_transfers)
+
+
+def calculate_disposable_income(df: pd.DataFrame) -> pd.Series:
+    """Calculate disposable income before housing costs."""
+    return _stats_helper._calculate_disposable_income(df)
+
+
+def calculate_disposable_income_ahc(df: pd.DataFrame) -> pd.Series:
+    """Calculate disposable income after housing costs."""
+    return _stats_helper._calculate_disposable_income_ahc(df)
+
+
+def calculate_poverty_rate(income_series: pd.Series, poverty_line: float) -> float:
+    """Calculate the share of people below the given poverty line."""
+    return _stats_helper._calculate_poverty_rate(income_series, poverty_line)
+
+
+def calculate_gini_coefficient(income_series: pd.Series) -> float:
+    """Calculate the Gini coefficient for a series of incomes."""
+    return _stats_helper._calculate_gini_coefficient(income_series)
+
+
+def calculate_child_poverty_rate(df: pd.DataFrame, income_column: str, poverty_line: float) -> float:
+    """Return the poverty rate among children using the specified income column."""
+    if "age" not in df.columns:
+        raise KeyError("DataFrame must contain an 'age' column for child poverty calculation")
+    if income_column not in df.columns:
+        raise KeyError(f"DataFrame must contain '{income_column}' column")
+    children = df[df["age"] < 18]
+    if children.empty:
+        return 0.0
+    return (children[income_column] < poverty_line).sum() / len(children) * 100

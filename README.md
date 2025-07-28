@@ -132,7 +132,8 @@ This project uses a `Makefile` to automate common development tasks. You can fin
 
 ### Installing Development Dependencies
 
-To install all development dependencies (including `pytest`, `ruff`, and `pre-commit`), run:
+To install all development dependencies (including `pytest`, `ruff`, and `pre-commit`) along with the project itself,
+run:
 
 ```bash
 make install-dev-deps
@@ -140,7 +141,9 @@ make install-dev-deps
 
 ### Running Tests
 
-To run the unit tests for the project, execute:
+Before running the tests, ensure that all development dependencies are installed by running `make install-dev-deps` as described in the section above.
+
+Once the dependencies are installed, execute the test suite:
 
 ```bash
 make test
