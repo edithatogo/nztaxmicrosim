@@ -137,3 +137,9 @@ sas_models/
 
 # Synthetic Population Output
 examples/synthetic_population/
+
+# Generated data and system files
+.DS_Store
+examples/reports/
+syspop
+syspop.*
