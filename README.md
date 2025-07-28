@@ -129,6 +129,22 @@ print(impact)
 This returns a table summarizing revenue, spending and the net fiscal impact for
 each scenario and their difference.
 
+### Inequality Metrics
+
+The reporting utilities include helper functions for common inequality measures.
+You can generate Lorenz curve data or compute the Atkinson and Theil indices:
+
+```python
+import pandas as pd
+from src.reporting import lorenz_curve, atkinson_index, theil_index
+
+incomes = pd.Series([0, 10, 20, 30, 40])
+
+lorenz = lorenz_curve(incomes)
+a_index = atkinson_index(incomes)
+t_index = theil_index(incomes)
+```
+
 ### Optional Modules
 
 The model includes simple components for Paid Parental Leave (PPL) and child
