@@ -4,7 +4,8 @@ install:
 	pip install .
 
 install-dev-deps:
-	pip install -r requirements-dev.txt
+        pip install -e .
+        pip install -r requirements-dev.txt
 
 test:
 	pytest

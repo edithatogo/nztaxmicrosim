@@ -132,7 +132,8 @@ This project uses a `Makefile` to automate common development tasks. You can fin
 
 ### Installing Development Dependencies
 
-To install all development dependencies (including `pytest`, `ruff`, and `pre-commit`), run:
+To install all development dependencies (including `pytest`, `ruff`, and `pre-commit`) along with the project itself,
+run:
 
 ```bash
 make install-dev-deps
