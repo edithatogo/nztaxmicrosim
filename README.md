@@ -135,7 +135,9 @@ The model includes simple components for Paid Parental Leave (PPL) and child
 support. These modules are off by default. To activate them, set
 `ppl.enabled` or `child_support.enabled` to `true` in the parameter JSON file.
 PPL requires `weekly_rate` and `max_weeks` values, while child support uses a
-`support_rate` applied to the liable parent's income.
+`support_rate` applied to the liable parent's income. The parameters are
+available in every yearly JSON file so the modules can be toggled for any
+simulation year.
 
 ### Policy Comparison
 

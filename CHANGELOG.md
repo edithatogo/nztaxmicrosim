@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CONTRIBUTING.md` with contribution guidelines.
 - `CITATION.cff` for citation information.
 - Optional modules for Paid Parental Leave and child support modelling.
+- All yearly parameter files now include `ppl` and `child_support` sections so
+  these modules can be enabled for any simulation year.
 - `SECURITY.md` for vulnerability reporting.
 - `sas_models/` directory for original SAS model files.
 - `docs/` directory for documentation files.
