@@ -60,7 +60,14 @@ Implement your changes. Remember to follow the existing code style and conventio
 
 ### 6. Run Tests
 
-Ensure your changes haven't introduced any regressions by running the test suite:
+Before executing the tests, make sure all development dependencies are installed.
+You can install them with the provided Make target:
+
+```bash
+make install-dev-deps
+```
+
+After the dependencies are installed, run the test suite:
 
 ```bash
 pytest
