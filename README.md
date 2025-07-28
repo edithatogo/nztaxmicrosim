@@ -140,6 +140,8 @@ make install-dev-deps
 
 ### Running Tests
 
+Before running the tests, make sure the project dependencies are installed. You can do this with `pip install -e .` or by running `make install-dev-deps`.
+
 To run the unit tests for the project, execute:
 
 ```bash

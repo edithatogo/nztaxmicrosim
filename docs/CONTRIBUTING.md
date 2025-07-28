@@ -60,7 +60,7 @@ Implement your changes. Remember to follow the existing code style and conventio
 
 ### 6. Run Tests
 
-Ensure your changes haven't introduced any regressions by running the test suite:
+Ensure your changes haven't introduced any regressions by running the test suite. Before running tests, install the project dependencies using `pip install -e .` or `make install-dev-deps` if you haven't already:
 
 ```bash
 pytest
