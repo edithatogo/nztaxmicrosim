@@ -1,4 +1,4 @@
-- Before committing, run `ruff check .` and `ruff format --check .` to ensure code style.
-- Run `pytest` and confirm all tests pass.
-- Update documentation (`README`, `ROADMAP`, and `TODO`) when features change.
+- To automatically ensure code style, install pre-commit hooks by running `pre-commit install`.
+- Before committing, run `make test` and confirm all tests pass.
+- Update relevant documentation (e.g., `README.md`, `CHANGELOG.md`) when features change.
 - Use clear, descriptive commit messages.
