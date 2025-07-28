@@ -13,6 +13,62 @@ from src.reporting_framework import (
     ReportGenerator,
 )
 
+def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
+    """Return the sum of ``tax_liability`` for ``df``."""
+    table = FiscalImpactTable()
+    return table._calculate_total_tax_revenue(df)
+
+
+def calculate_total_welfare_transfers(df: pd.DataFrame) -> float:
+    """Return the total welfare transfers for ``df``."""
+    table = FiscalImpactTable()
+    return table._calculate_total_welfare_transfers(df)
+
+
+def calculate_net_fiscal_impact(tax_revenue: float, welfare_transfers: float) -> float:
+    """Return ``tax_revenue`` minus ``welfare_transfers``."""
+    table = FiscalImpactTable()
+    return table._calculate_net_fiscal_impact(tax_revenue, welfare_transfers)
+
+
+def calculate_disposable_income(df: pd.DataFrame) -> pd.Series:
+    """Calculate disposable income before housing costs."""
+    table = DistributionalStatisticsTable()
+    return table._calculate_disposable_income(df)
+
+
+def calculate_disposable_income_ahc(df: pd.DataFrame) -> pd.Series:
+    """Calculate disposable income after housing costs."""
+    table = DistributionalStatisticsTable()
+    return table._calculate_disposable_income_ahc(df)
+
+
+def calculate_poverty_rate(income_series: pd.Series, poverty_line: float) -> float:
+    """Return the share of ``income_series`` below ``poverty_line`` as a percentage."""
+    table = DistributionalStatisticsTable()
+    return table._calculate_poverty_rate(income_series, poverty_line)
+
+
+def calculate_child_poverty_rate(df: pd.DataFrame, income_column: str, poverty_line: float) -> float:
+    """Return the poverty rate for people under 18."""
+    if "age" not in df.columns or income_column not in df.columns:
+        return 0.0
+    children = df[df["age"] < 18]
+    if children.empty:
+        return 0.0
+    return calculate_poverty_rate(children[income_column], poverty_line)
+
+
+def calculate_gini_coefficient(income_series: pd.Series) -> float:
+    """Return the Gini coefficient for ``income_series``."""
+    table = DistributionalStatisticsTable()
+    return table._calculate_gini_coefficient(income_series)
+
+# Instantiate helpers from the new reporting framework for backward compatible
+# function wrappers used in the tests.
+_fiscal_helper = FiscalImpactTable()
+_stats_helper = DistributionalStatisticsTable()
+
 
 def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -61,12 +117,23 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
 
     return generated_content
 
-
 # ---------------------------------------------------------------------------
 # Helper functions for unit tests
+=======
+__all__ = [
+    "calculate_total_tax_revenue",
+    "calculate_total_welfare_transfers",
+    "calculate_net_fiscal_impact",
+    "calculate_disposable_income",
+    "calculate_disposable_income_ahc",
+    "calculate_poverty_rate",
+    "calculate_child_poverty_rate",
+    "calculate_gini_coefficient",
+    "generate_microsim_report",
+]
+
 # ---------------------------------------------------------------------------
-
-
+# Backwards compatible helper functions
 def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
     """Return the total tax liability from the dataframe."""
     if "tax_liability" not in df.columns:
@@ -96,7 +163,6 @@ def calculate_net_fiscal_impact(tax_revenue: float, welfare_transfers: float) ->
     """Return the net fiscal impact (tax revenue minus welfare transfers)."""
     return float(tax_revenue - welfare_transfers)
 
-
 def calculate_disposable_income(df: pd.DataFrame) -> pd.Series:
     """Calculate disposable income before housing costs."""
     disposable_income = (
@@ -120,7 +186,7 @@ def calculate_disposable_income(df: pd.DataFrame) -> pd.Series:
     if "tax_liability" in df.columns:
         disposable_income -= df["tax_liability"]
     return disposable_income
-
+    return _stats_helper._calculate_disposable_income(df)
 
 def calculate_disposable_income_ahc(df: pd.DataFrame) -> pd.Series:
     """Calculate disposable income after housing costs."""

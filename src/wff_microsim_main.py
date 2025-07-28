@@ -4,6 +4,7 @@ from src.benefits import calculate_accommodation_supplement, calculate_jss, calc
 from src.microsim import load_parameters, taxit
 from src.reporting import generate_microsim_report
 from src.wff_microsim import famsim
+from src.validation import SimulationInputSchema, validate_input_data
 
 
 def main() -> None:
@@ -19,12 +20,15 @@ def main() -> None:
     df: pd.DataFrame = pd.DataFrame(
         {
             # Core Demographics & Household Characteristics
+            "person_id": [1, 2, 3],
+            "household_id": [1, 2, 3],
             "age": [35, 40, 28],
             "gender": ["Female", "Male", "Female"],
             "marital_status": ["Married", "Married", "Single"],
             "family_household_type": ["Couple with children", "Couple with children", "Single adult"],
             "household_size": [4, 4, 1],
-            "num_dependent_children": [2, 2, 0],
+            "num_children": [2, 2, 0],
+            "adults": [2, 2, 1],
             "ages_of_children": [[5, 8], [2, 6], []],  # Example: list of ages
             "region": ["Auckland", "Wellington", "Christchurch"],
             "disability_status": [False, False, True],
@@ -52,7 +56,6 @@ def main() -> None:
             "BSTC1wgt": [0, 0, 1],
             "MFTCwgt": [1, 0, 0],
             "iwtc_elig": [12, 12, 12],
-            "pplcnt": [0, 0, 0],
             "MFTC_total": [1000, 1000, 1000],
             "MFTC_elig": [1, 1, 1],
             "sharedcare": [0, 1, 0],
@@ -66,6 +69,18 @@ def main() -> None:
             "maxkiddaysbstc": [365, 365, 365],
         }
     )
+
+    # Compute household size fields required for validation
+    df["pplcnt"] = df["num_children"] + df["adults"]
+
+    # Validate inputs against the schema
+    schema_cols = list(SimulationInputSchema.model_fields.keys())
+    try:
+        validated_subset = validate_input_data(df[schema_cols])
+        df.update(validated_subset)
+    except ValueError as e:
+        print(f"Input data validation failed: {e}")
+        return
 
     # Set the parameters for a specific year
     year = "2023-2024"
@@ -90,7 +105,7 @@ def main() -> None:
             individual_income=row["total_individual_income_weekly"],
             is_single=row["marital_status"] == "Single",
             is_partnered=row["marital_status"] == "Married",
-            num_dependent_children=row["num_dependent_children"],
+            num_dependent_children=row["num_children"],
             jss_params=jss_params,
         ),
         axis=1,
@@ -100,7 +115,7 @@ def main() -> None:
     df["sps_entitlement"] = df.apply(
         lambda row: calculate_sps(
             individual_income=row["total_individual_income_weekly"],
-            num_dependent_children=row["num_dependent_children"],
+            num_dependent_children=row["num_children"],
             sps_params=sps_params,
         ),
         axis=1,
@@ -126,7 +141,7 @@ def main() -> None:
             ),  # Simplified household income
             housing_costs=row["housing_costs"],
             region=row["region"],
-            num_dependent_children=row["num_dependent_children"],
+            num_dependent_children=row["num_children"],
             as_params=as_params,
         ),
         axis=1,

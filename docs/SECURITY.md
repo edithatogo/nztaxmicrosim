@@ -6,7 +6,7 @@ We take the security of our project seriously. If you discover a security vulner
 
 **Please do NOT open a public issue.**
 
-Instead, please send an email to [INSERT SECURITY CONTACT EMAIL HERE] with the following information:
+Instead, please send an email to security@nztaxmicrosim.org with the following information:
 
 *   A clear and concise description of the vulnerability.
 *   Steps to reproduce the vulnerability.
