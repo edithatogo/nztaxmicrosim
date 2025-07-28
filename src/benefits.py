@@ -189,14 +189,14 @@ def calculate_child_support(liable_income: float, cs_params: dict[str, Any]) -> 
     Parameters
     ----------
     liable_income : float
-        Income of the liable parent.
+        Annual income of the liable parent.
     cs_params : dict[str, Any]
         Parameter dictionary containing ``enabled`` and ``support_rate``.
 
     Returns
     -------
     float
-        Calculated child support payment. ``0`` if the module is disabled.
+        Calculated annual child support payment. ``0`` if the module is disabled.
     """
 
     if not cs_params.get("enabled", False):
