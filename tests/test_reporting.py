@@ -10,6 +10,7 @@ from src.reporting import (
     calculate_poverty_rate,
     calculate_total_tax_revenue,
     calculate_total_welfare_transfers,
+    generate_microsim_report,
 )
 
 
@@ -159,3 +160,15 @@ def test_calculate_gini_coefficient(sample_dataframe):
 
     # Test with single value series
     assert calculate_gini_coefficient(pd.Series([100])) == 0.0
+
+
+def test_generate_microsim_report_expected_keys(sample_dataframe, tmp_path, monkeypatch):
+    df = sample_dataframe.copy()
+    df["disposable_income"] = calculate_disposable_income(df)
+
+    # Change working directory so report files are written to a temporary location
+    monkeypatch.chdir(tmp_path)
+    result = generate_microsim_report(df, {"poverty_line_relative": 0.5})
+
+    assert "Executive Summary" in result
+    assert "Fiscal Impact Summary" in result
