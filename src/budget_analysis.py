@@ -2,7 +2,6 @@ import pandas as pd
 
 from .reporting_framework import FiscalImpactTable
 
-
 _fiscal_helper = FiscalImpactTable()
 
 

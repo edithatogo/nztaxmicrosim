@@ -161,18 +161,18 @@ def calculate_accommodation_supplement(
 def calculate_ppl(weeks_taken: int, ppl_params: dict[str, Any]) -> float:
     """Calculate Paid Parental Leave (PPL) payments.
 
-    Parameters
-    ----------
-    weeks_taken : int
-        Number of weeks the parent receives PPL.
-    ppl_params : dict[str, Any]
-        Parameter dictionary containing ``enabled``, ``weekly_rate`` and
-        ``max_weeks``.
+        Parameters
+        ----------
+        weeks_taken : int
+            Number of weeks the parent receives PPL.
+        ppl_params : dict[str, Any]
+            Parameter dictionary containing ``enabled``, ``weekly_rate`` and
+            ``max_weeks``.
 
-    Returns
-    -------
-    float
-Total PPL payment over the number of weeks taken. Returns ``0`` when the module is disabled.
+        Returns
+        -------
+        float
+    Total PPL payment over the number of weeks taken. Returns ``0`` when the module is disabled.
     """
 
     if not ppl_params.get("enabled", False):
