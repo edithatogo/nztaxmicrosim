@@ -15,6 +15,26 @@
     "bstcthresh": 79000,
     "bstcabate": 0.21
   },
+  "jss": {
+    "single_rate": 336.89,
+    "couple_rate": 280.74,
+    "child_rate": 0.0,
+    "income_abatement_threshold": 115.0,
+    "abatement_rate": 0.70
+  },
+  "sps": {"base_rate": 476.69, "income_abatement_threshold": 115.0, "abatement_rate": 0.70},
+  "slp": {"single_rate": 399.09, "couple_rate": 280.74, "income_abatement_threshold": 115.0, "abatement_rate": 0.70},
+  "accommodation_supplement": {
+    "income_thresholds": {"single_no_children": 250.0, "with_children": 400.0},
+    "abatement_rate": 0.25,
+    "max_entitlement_rates": {
+      "Auckland": {"single_no_children": 140.0, "with_children": 200.0},
+      "Wellington": {"single_no_children": 120.0, "with_children": 180.0},
+      "Christchurch": {"single_no_children": 100.0, "with_children": 150.0}
+    },
+    "housing_cost_contribution_rate": 0.70,
+    "housing_cost_threshold": 25.0
+  },
   "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
   "child_support": {"enabled": false, "support_rate": 0.18},
   "kiwisaver": {"contribution_rate": 0.03},

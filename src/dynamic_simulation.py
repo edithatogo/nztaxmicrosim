@@ -6,7 +6,7 @@ labor supply responses but intentionally keeps the logic lightweight.
 
 The project roadmap highlights the future goal of extending the model to
 "dynamic simulation" with demographic and economic changes over time.
-See ``README.md`` lines 147-152 for the broader context.
+See ``README.md`` lines 188-194 for the broader context.
 """
 
 from __future__ import annotations

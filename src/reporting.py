@@ -67,12 +67,20 @@ def calculate_gini_coefficient(income_series: pd.Series) -> float:
 
 
 def lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
-    """Return the Lorenz curve for ``income_series``."""
+    """Return the Lorenz curve for ``income_series``.
+
+    The returned DataFrame contains the cumulative population and income shares
+    starting from the lowest income.
+    """
     return calculate_lorenz_curve(income_series)
 
 
 def atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
-    """Return the Atkinson inequality index for ``income_series``."""
+    """Return the Atkinson inequality index for ``income_series``.
+
+    ``epsilon`` controls inequality aversion: larger values give more weight to
+    lower incomes.
+    """
     return calculate_atkinson_index(income_series, epsilon)
 
 
