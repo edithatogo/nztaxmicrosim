@@ -8,6 +8,7 @@ import pandas as pd
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.microsim import load_parameters
 from src.wff_microsim import famsim
+from src.validation import SimulationInputSchema, validate_input_data
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
 
@@ -98,7 +99,9 @@ print(f"First 5 rows of loaded population DataFrame:\n{df.head().to_markdown()}"
 
 # --- 3. Transform the Data for Microsimulation ---
 # Rename columns to match expected names for microsimulation
-df = df.rename(columns={"income": "familyinc", "household": "household_id", "id": "person_id"})
+df = df.rename(
+    columns={"income": "familyinc", "household": "household_id", "id": "person_id", "children": "num_children"}
+)
 
 # Convert 'familyinc' to numeric, coercing errors and filling NaN with 0
 df["familyinc"] = pd.to_numeric(df["familyinc"], errors="coerce").fillna(0)
@@ -124,9 +127,18 @@ df["iwtc"] = 0
 df["selfempind"] = 0
 
 # Ensure children and adults are numeric if they aren't already
-df["children"] = df["children"].fillna(0).astype(int)
+df["num_children"] = df["num_children"].fillna(0).astype(int)
 df["adults"] = df["adults"].fillna(0).astype(int)
-df["pplcnt"] = df["children"] + df["adults"]
+df["pplcnt"] = df["num_children"] + df["adults"]
+
+# Validate the transformed data
+schema_cols = list(SimulationInputSchema.model_fields.keys())
+try:
+    validated_subset = validate_input_data(df[schema_cols])
+    df.update(validated_subset)
+except ValueError as e:
+    print(f"Error: {e}")
+    sys.exit(1)
 
 
 # --- 4. Run the Microsimulation for each parameter file ---

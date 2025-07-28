@@ -10,6 +10,9 @@ dependencies = [
     "pandas",
     "numpy",
     "pydantic",
+    "matplotlib",
+    "seaborn",
+    "joblib",
 ]
 
 [tool.pytest.ini_options]

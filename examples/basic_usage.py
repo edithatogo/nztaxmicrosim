@@ -57,14 +57,11 @@ print(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
 
 # Calculate IETC
 ietc_16_17 = calcietc(
-    taxy=income,
-    parmflag="ys",
-    wffamt=0,
-    supamt=0,
-    benamt=0,
+    taxable_income=income,
+    is_wff_recipient=False,
+    is_super_recipient=False,
+    is_benefit_recipient=False,
     ietc_params=params_2016_17["ietc"],
-    ietc0=1,
-    taxinc0=income,
 )
 print(f"IETC: ${ietc_16_17:.2f}")
 
@@ -92,14 +89,11 @@ print(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
 
 # Calculate IETC
 ietc_24_25 = calcietc(
-    taxy=income,
-    parmflag="ys",
-    wffamt=0,
-    supamt=0,
-    benamt=0,
+    taxable_income=income,
+    is_wff_recipient=False,
+    is_super_recipient=False,
+    is_benefit_recipient=False,
     ietc_params=params_2024_25["ietc"],
-    ietc0=1,
-    taxinc0=income,
 )
 print(f"IETC: ${ietc_24_25:.2f}")
 
