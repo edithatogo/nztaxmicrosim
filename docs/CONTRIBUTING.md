@@ -59,7 +59,7 @@ git checkout -b feature/your-feature-name
 Implement your changes. Remember to follow the existing code style and conventions. Once you have made significant progress, add an entry to the `docs/development_log.md` file.
 
 ### 6. Run Tests
-
+Ensure your changes haven't introduced any regressions by running the test suite. Before running tests, install the project dependencies using `pip install -e .` or `make install-dev-deps` if you haven't already:
 Before executing the tests, make sure all development dependencies are installed.
 You can install them with the provided Make target:
 
