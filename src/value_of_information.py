@@ -1,3 +1,5 @@
+"""Value of Information utilities."""
+
 from typing import Dict
 
 import numpy as np
@@ -48,3 +50,6 @@ def calculate_evpi(psa_results: Dict[str, np.ndarray]) -> Dict[str, float]:
         evpi_values[metric] = mean_perfect - mean_current
 
     return evpi_values
+
+
+__all__ = ["calculate_evpi"]
