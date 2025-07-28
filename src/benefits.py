@@ -172,7 +172,7 @@ def calculate_ppl(weeks_taken: int, ppl_params: dict[str, Any]) -> float:
     Returns
     -------
     float
-        Total PPL payment. Returns ``0`` when the module is disabled.
+Total PPL payment over the number of weeks taken. Returns ``0`` when the module is disabled.
     """
 
     if not ppl_params.get("enabled", False):
