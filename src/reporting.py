@@ -89,6 +89,30 @@ def theil_index(income_series: pd.Series) -> float:
     return calculate_theil_index(income_series)
 
 
+def calculate_budget_impact(baseline_df: pd.DataFrame, reform_df: pd.DataFrame) -> pd.DataFrame:
+    """Return fiscal metrics for baseline and reform scenarios and their difference."""
+    baseline_tax = calculate_total_tax_revenue(baseline_df)
+    baseline_welfare = calculate_total_welfare_transfers(baseline_df)
+    baseline_net = calculate_net_fiscal_impact(baseline_tax, baseline_welfare)
+
+    reform_tax = calculate_total_tax_revenue(reform_df)
+    reform_welfare = calculate_total_welfare_transfers(reform_df)
+    reform_net = calculate_net_fiscal_impact(reform_tax, reform_welfare)
+
+    data = {
+        "Metric": [
+            "Total Tax Revenue",
+            "Total Welfare Transfers",
+            "Net Fiscal Impact",
+        ],
+        "Baseline": [baseline_tax, baseline_welfare, baseline_net],
+        "Reform": [reform_tax, reform_welfare, reform_net],
+    }
+    df = pd.DataFrame(data)
+    df["Difference"] = df["Reform"] - df["Baseline"]
+    return df
+
+
 def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[str, Any]) -> Dict[str, Any]:
     """
     Generates a comprehensive microsimulation report using the defined report components.
@@ -151,5 +175,6 @@ __all__ = [
     "lorenz_curve",
     "atkinson_index",
     "theil_index",
+    "calculate_budget_impact",
     "generate_microsim_report",
 ]
