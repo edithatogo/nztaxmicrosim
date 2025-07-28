@@ -98,6 +98,35 @@ The project currently includes parameter files for the following tax years, loca
 * `parameters_2022-2023.json`
 * `parameters_2024-2025.json`
 
+### Budget Impact Analysis
+
+To compare the fiscal outcomes of two scenarios, use
+`calculate_budget_impact` from `src.budget_analysis`:
+
+```python
+import pandas as pd
+from src.budget_analysis import calculate_budget_impact
+
+baseline = pd.DataFrame(
+    {
+        "tax_liability": [100, 200],
+        "jss_entitlement": [10, 20],
+    }
+)
+reform = pd.DataFrame(
+    {
+        "tax_liability": [120, 230],
+        "jss_entitlement": [15, 25],
+    }
+)
+
+impact = calculate_budget_impact(baseline, reform)
+print(impact)
+```
+
+This returns a table summarizing revenue, spending and the net fiscal impact for
+each scenario and their difference.
+
 ### Optional Modules
 
 The model includes simple components for Paid Parental Leave (PPL) and child
