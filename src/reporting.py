@@ -17,6 +17,7 @@ from src.reporting_framework import (
 _fiscal_helper = FiscalImpactTable()
 _stats_helper = DistributionalStatisticsTable()
 
+
 def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
     """Return the sum of ``tax_liability`` for ``df``."""
     return _fiscal_helper._calculate_total_tax_revenue(df)
@@ -109,6 +110,7 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
 
     return generated_content
 
+
 # ---------------------------------------------------------------------------
 # Helper functions for unit tests
 __all__ = [
@@ -122,4 +124,3 @@ __all__ = [
     "calculate_gini_coefficient",
     "generate_microsim_report",
 ]
-
