@@ -4,3 +4,4 @@ pre-commit
 matplotlib
 seaborn
 joblib
+tabulate
