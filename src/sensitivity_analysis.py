@@ -213,7 +213,6 @@ def run_probabilistic_analysis(
         for name, value in res.items():
             output_arrays[name].append(value)
 
-
     return {name: np.array(data) for name, data in output_arrays.items()}
 
 
