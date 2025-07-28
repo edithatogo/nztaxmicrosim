@@ -105,6 +105,25 @@ This phase builds on the successful PoC to deliver the full AI-driven reporting 
     *   **Why:** Implements the end-to-end AI pipeline, allowing the LLM to interpret a wide range of model outputs and generate detailed, context-aware text reports. This is the primary AI integration goal.
     *   **Effort:** High
     *   **Priority:** Low
+
+## Upcoming Tasks
+
+1. **Complete Sensitivity Analysis Tools**
+   - *Milestone:* Finalize parameter sweep utilities and integrate with scenario management.
+   - *Priority:* **High**
+
+2. **Implement Value-of-Information Analysis**
+   - *Milestone:* Add module for assessing the benefit of additional data sources or improved data quality.
+   - *Priority:* **Medium**
+
+3. **Budget Impact Modules**
+   - *Milestone:* Build routines to aggregate fiscal costs and savings across scenarios.
+   - *Priority:* **High**
+
+4. **Expanded Equity Metrics**
+   - *Milestone:* Introduce additional indicators of distributional effects (e.g., progressivity indexes).
+   - *Priority:* **Medium**
+
 *   **Advanced UI/Dashboard:**
     *   **Why:** A simple web-based UI could be developed to allow users to select scenarios, view results, and trigger AI-generated reports, making the tool accessible to non-technical users.
     *   **Effort:** High
