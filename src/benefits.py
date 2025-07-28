@@ -156,3 +156,51 @@ def calculate_accommodation_supplement(
         abatement = (household_income - income_threshold) * as_params["abatement_rate"]
         return max(0.0, initial_entitlement - abatement)
     return initial_entitlement
+
+
+def calculate_ppl(weeks_taken: int, ppl_params: dict[str, Any]) -> float:
+    """Calculate Paid Parental Leave (PPL) payments.
+
+    Parameters
+    ----------
+    weeks_taken : int
+        Number of weeks the parent receives PPL.
+    ppl_params : dict[str, Any]
+        Parameter dictionary containing ``enabled``, ``weekly_rate`` and
+        ``max_weeks``.
+
+    Returns
+    -------
+    float
+Total PPL payment over the number of weeks taken. Returns ``0`` when the module is disabled.
+    """
+
+    if not ppl_params.get("enabled", False):
+        return 0.0
+
+    weeks = max(0, min(weeks_taken, ppl_params.get("max_weeks", 0)))
+    weekly_rate = ppl_params.get("weekly_rate", 0.0)
+    return weeks * weekly_rate
+
+
+def calculate_child_support(liable_income: float, cs_params: dict[str, Any]) -> float:
+    """Calculate child support payments based on liable income.
+
+    Parameters
+    ----------
+    liable_income : float
+        Annual income of the liable parent.
+    cs_params : dict[str, Any]
+        Parameter dictionary containing ``enabled`` and ``support_rate``.
+
+    Returns
+    -------
+    float
+        Calculated annual child support payment. ``0`` if the module is disabled.
+    """
+
+    if not cs_params.get("enabled", False):
+        return 0.0
+
+    rate = cs_params.get("support_rate", 0.0)
+    return max(0.0, liable_income * rate)

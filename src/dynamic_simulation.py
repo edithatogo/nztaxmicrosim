@@ -1,0 +1,69 @@
+"""Simple dynamic simulation framework for the NZ microsimulation model.
+
+This module provides a minimal structure for running the microsimulation
+consecutively across multiple policy years. It introduces a hook for
+labor supply responses but intentionally keeps the logic lightweight.
+
+The project roadmap highlights the future goal of extending the model to
+"dynamic simulation" with demographic and economic changes over time.
+See ``README.md`` lines 147-152 for the broader context.
+"""
+
+from __future__ import annotations
+
+from typing import Any, Callable, Dict, Sequence
+
+import pandas as pd
+
+from .microsim import load_parameters, taxit
+
+LabourFunc = Callable[[pd.DataFrame, dict[str, Any]], pd.DataFrame]
+
+
+def run_dynamic_simulation(
+    df: pd.DataFrame,
+    years: Sequence[str],
+    labour_response: LabourFunc | None = None,
+) -> Dict[str, pd.DataFrame]:
+    """Iterate the static model over ``years``.
+
+    Parameters
+    ----------
+    df:
+        Input micro-data containing at least a ``taxable_income`` column.
+    years:
+        Policy years like ``"2023-2024"`` to simulate sequentially.
+    labour_response:
+        Optional callable applied each year to adjust ``df`` for labour
+        supply effects. It receives the DataFrame from the previous year
+        and that year's parameters and must return an updated DataFrame.
+
+    Returns
+    -------
+    dict
+        Mapping from year to the simulated DataFrame for that year.
+    """
+    results: Dict[str, pd.DataFrame] = {}
+    current = df.copy()
+
+    for year in years:
+        params = load_parameters(year)
+
+        if labour_response is not None:
+            current = labour_response(current, params)
+
+        current = current.copy()
+        current["tax_liability"] = current["taxable_income"].apply(
+            lambda inc: taxit(
+                inc,
+                params["tax_brackets"]["rates"],
+                params["tax_brackets"]["thresholds"],
+            )
+        )
+
+        results[year] = current.copy()
+
+    return results
+
+
+__all__ = ["run_dynamic_simulation"]
