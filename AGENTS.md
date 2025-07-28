@@ -1,0 +1,4 @@
+- Before committing, run `ruff check .` and `ruff format --check .` to ensure code style.
+- Run `pytest` and confirm all tests pass.
+- Update documentation (`README`, `ROADMAP`, and `TODO`) when features change.
+- Use clear, descriptive commit messages.
