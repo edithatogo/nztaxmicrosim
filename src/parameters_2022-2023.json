@@ -23,6 +23,9 @@
     "bstcthresh": 79000,
     "bstcabate": 0.21
   },
+  "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
+  "child_support": {"enabled": false, "support_rate": 0.18}
+}
   "kiwisaver": {"contribution_rate": 0.03},
   "student_loan": {"repayment_threshold": 20000, "repayment_rate": 0.12}
 }

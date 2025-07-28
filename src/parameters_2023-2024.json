@@ -34,5 +34,7 @@
         },
         "housing_cost_contribution_rate": 0.70,
         "housing_cost_threshold": 25.0
-    }
+    },
+    "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
+    "child_support": {"enabled": false, "support_rate": 0.18}
 }
