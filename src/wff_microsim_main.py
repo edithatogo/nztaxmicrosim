@@ -3,8 +3,8 @@ import pandas as pd
 from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
 from src.microsim import load_parameters, taxit
 from src.reporting import generate_microsim_report
-from src.wff_microsim import famsim
 from src.validation import SimulationInputSchema, validate_input_data
+from src.wff_microsim import famsim
 
 
 def main() -> None:

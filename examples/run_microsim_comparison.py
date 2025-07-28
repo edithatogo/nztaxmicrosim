@@ -6,11 +6,12 @@ import time
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.microsim import load_parameters
-from src.wff_microsim import famsim
-from src.validation import SimulationInputSchema, validate_input_data
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
+
+from src.microsim import load_parameters
+from src.validation import SimulationInputSchema, validate_input_data
+from src.wff_microsim import famsim
 
 # --- 0. Argument Parsing ---
 parser = argparse.ArgumentParser(description="Run the microsimulation for multiple years with a synthetic population.")
