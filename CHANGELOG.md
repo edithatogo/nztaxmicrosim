@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LICENSE` file (MIT License).
 - `CONTRIBUTING.md` with contribution guidelines.
 - `CITATION.cff` for citation information.
+- Optional modules for Paid Parental Leave and child support modelling.
 - `SECURITY.md` for vulnerability reporting.
 - `sas_models/` directory for original SAS model files.
 - `docs/` directory for documentation files.
@@ -26,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added type hints to `src/microsim.py`, `src/wff_microsim.py`, and `src/wff_microsim_main.py`.
 - Added docstrings to `test_microsim.py` and `test_wff_microsim.py`.
 - Added `src/py.typed` to indicate type information availability.
+- Added `payroll_deductions.py` with KiwiSaver and student loan helper functions.
+- Extended parameter files with KiwiSaver contribution and student loan repayment settings.
 - Added `README.md` files to `src/`, `sas_models/`, `docs/`, `examples/`, `tests/`, and `docs/external/` directories.
 - Moved test files to `tests/` directory and updated `pyproject.toml` accordingly.
 - Added `requirements-dev.txt` for development dependencies and updated `Makefile` to use it.
@@ -38,4 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `.github/CODEOWNERS` file and a corresponding `README.md` to the `.github/` directory.
 - Moved `LICENSE` file to `docs/` directory.
 - Added budget impact analysis utilities for comparing baseline and reform scenarios.
+- Added `src/acc_levy.py` with ACC levy and payroll deduction functions.
+- New unit tests for ACC levy calculations.
+- Added inequality metrics helpers (`lorenz_curve`, `atkinson_index`, `theil_index`).
 
