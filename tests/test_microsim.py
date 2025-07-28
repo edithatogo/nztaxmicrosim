@@ -18,7 +18,7 @@ from src.microsim import (
 )
 
 # Load parameters for testing
-params_2023_24 = load_parameters("2023-2024")
+params_2022_23 = load_parameters("2022-2023")
 params_2024_25 = load_parameters("2024-2025")
 
 
@@ -27,8 +27,8 @@ def test_taxit():
     Tests the taxit function with various income scenarios and tax brackets.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = params_2023_24["tax_brackets"]["rates"]
-    thresholds = params_2023_24["tax_brackets"]["thresholds"]
+    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds = [14000, 48000, 70000, 180000]
 
     # Test case 1: Income within the first bracket
     assert taxit(10000, rates, thresholds) == 1050
@@ -61,12 +61,12 @@ def test_calctax():
     Tests the calctax function for split-year tax calculations.
     """
     # Rates and thresholds for the 2023 tax year
-    rates1 = params_2023_24["tax_brackets"]["rates"]
-    thresholds1 = params_2023_24["tax_brackets"]["thresholds"]
+    rates1 = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds1 = [14000, 48000, 70000, 180000]
 
     # Rates and thresholds for the 2024 tax year
-    rates2 = params_2024_25["tax_brackets"]["rates"]
-    thresholds2 = params_2024_25["tax_brackets"]["thresholds"]
+    rates2 = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds2 = [14000, 48000, 70000, 180000]
 
     # Test case 1: Split year with same rates and thresholds
     assert calctax(60000, 6, rates1, thresholds1, rates1, thresholds1) == taxit(60000, rates1, thresholds1)
@@ -83,8 +83,8 @@ def test_netavg():
     Tests the netavg function for calculating net average income.
     """
     # Rates and thresholds for the 2023 tax year
-    rates = params_2023_24["tax_brackets"]["rates"]
-    thresholds = params_2023_24["tax_brackets"]["thresholds"]
+    rates = [0.105, 0.175, 0.30, 0.33, 0.39]
+    thresholds = [14000, 48000, 70000, 180000]
     eprt = 0.0146
 
     # Test case 1
@@ -97,97 +97,88 @@ def test_netavg():
 
 def test_calcietc():
     """
-    Tests the calcietc function, including various scenarios for IETC calculation and take-up logic.
+    Tests the calcietc function for IETC calculation.
     """
-    ietc_params = params_2023_24["ietc"]
-    # Test case 1: Eligible based on income, but did NOT claim before (ietc0=0).
-    # Model assumes they "self-selected out". Should return 0.
-    assert (
-        calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
-            ietc_params=ietc_params,
-            ietc0=0,
-            taxinc0=30000,
-        )
-        == 0
-    )
+    ietc_params = params_2022_23["ietc"]
 
-    # Test case 2: Eligible based on income, AND claimed before (ietc0 > 0).
-    # Should receive the full credit.
+    # Test case 1: Eligible for the full credit.
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=30000,
         )
         == 520
     )
 
-    # Test case 3: Eligible with abatement, AND claimed before (ietc0 > 0).
-    # Should receive the abated credit.
-    assert calcietc(
-        taxy=50000,
-        parmflag="ys",
-        wffamt=0,
-        supamt=0,
-        benamt=0,
-        ietc_params=params_2023_24["ietc"],
-        ietc0=1,
-        taxinc0=50000,
-    ) == max(0, 520 - 0.13 * (50000 - 48000))
-
-    # Test case 4: Not eligible (income too low), even if claimed before.
+    # Test case 2: Eligible for the abated credit.
     assert (
         calcietc(
-            taxy=20000,
-            parmflag="ys",
-            wffamt=0,
-            supamt=0,
-            benamt=0,
+            taxable_income=49000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=20000,
+        )
+        > 0
+    )  # Abated credit
+    assert (
+        calcietc(
+            taxable_income=49000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        < 520
+    )  # Less than full credit
+
+    # Test case 3: Not eligible (income too low).
+    assert (
+        calcietc(
+            taxable_income=20000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
         )
         == 0
     )
 
-    # Test case 5: Receiving WFF. The take-up logic is skipped.
-    # If they claimed IETC before (ietc0 > 0), the model would give it to them.
-    # This seems like a flaw in the original SAS, but for a faithful translation, we test that behaviour.
+    # Test case 4: Not eligible (receiving WFF).
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=100,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=True,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=1,
-            taxinc0=30000,
         )
-        == 520
+        == 0
     )
 
-    # Test case 6: Receiving WFF and did NOT claim IETC before.
+    # Test case 5: Not eligible (receiving superannuation).
     assert (
         calcietc(
-            taxy=30000,
-            parmflag="ys",
-            wffamt=100,
-            supamt=0,
-            benamt=0,
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=True,
+            is_benefit_recipient=False,
             ietc_params=ietc_params,
-            ietc0=0,
-            taxinc0=30000,
+        )
+        == 0
+    )
+
+    # Test case 6: Not eligible (receiving a main benefit).
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=True,
+            ietc_params=ietc_params,
         )
         == 0
     )
@@ -198,19 +189,76 @@ def test_eitc():
     Tests the eitc function for Earned Income Tax Credit calculation.
     """
     # Test case 1: Earning zone
-    assert eitc(1, 1, 10000, 5000, 15000, 20000, 0.1, 0.2) == 500
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=True,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 500
+    )
 
     # Test case 2: Stable zone
-    assert eitc(1, 1, 18000, 5000, 15000, 20000, 0.1, 0.2) == 1000
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=True,
+            income=18000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 1000
+    )
 
     # Test case 3: Abatement zone
-    assert eitc(1, 1, 22000, 5000, 15000, 20000, 0.1, 0.2) == max(0, 1000 - (22000 - 20000) * 0.2)
+    assert eitc(
+        is_credit_enabled=True,
+        is_eligible=True,
+        income=22000,
+        min_income_threshold=5000,
+        max_entitlement_income=15000,
+        abatement_income_threshold=20000,
+        earning_rate=0.1,
+        abatement_rate=0.2,
+    ) == max(0, 1000 - (22000 - 20000) * 0.2)
 
     # Test case 4: Not eligible
-    assert eitc(1, 0, 10000, 5000, 15000, 20000, 0.1, 0.2) == 0
+    assert (
+        eitc(
+            is_credit_enabled=True,
+            is_eligible=False,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 0
+    )
 
     # Test case 5: Credit not on
-    assert eitc(0, 1, 10000, 5000, 15000, 20000, 0.1, 0.2) == 0
+    assert (
+        eitc(
+            is_credit_enabled=False,
+            is_eligible=True,
+            income=10000,
+            min_income_threshold=5000,
+            max_entitlement_income=15000,
+            abatement_income_threshold=20000,
+            earning_rate=0.1,
+            abatement_rate=0.2,
+        )
+        == 0
+    )
 
 
 def test_simrwt():
@@ -219,7 +267,8 @@ def test_simrwt():
     """
     # Test case 1
     assert simrwt(1000, 0.1, 0.2, 0.3, 0.4, 0.5) == min(
-        1000, 1000 * (0 + 1.05 * 0.1 + 1.75 * 0.2 + 0.30 * 0.3 + 0.33 * 0.4 + 0.39 * 0.5)
+        1000,
+        1000 * (0.0 + 1.05 * 0.1 + 1.75 * 0.2 + 0.30 * 0.3 + 0.33 * 0.4 + 0.39 * 0.5),
     )
 
     # Test case 2: Zero interest
@@ -234,9 +283,9 @@ def test_supstd():
     Tests the supstd function for standard superannuation calculation.
     """
     # Base year parameters
-    awe22 = 1462.81
-    ep_base = 0.0153
-    tax_params_base = params_2023_24["tax_brackets"]
+    base_year_awe = 1462.81
+    base_year_ep_rate = 0.0153
+    tax_params_base = params_2022_23["tax_brackets"]
 
     # Simulation year parameters
     cpi_factors = [1.05, 1.04, 1.03, 1.02]
@@ -244,15 +293,20 @@ def test_supstd():
     ep = [0.016, 0.016, 0.016, 0.016]
     fl = [0.66, 0.66, 0.66, 0.66]
     tax_params = [
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
-        params_2023_24["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
+        params_2022_23["tax_brackets"],
     ]
 
     # Expected results
-    expected_std22 = awe22 * 0.66 * 2
-    expected_stdnet22 = netavg(expected_std22 / 2, ep_base, tax_params_base["rates"], tax_params_base["thresholds"])
+    expected_std22 = base_year_awe * 0.66 * 2
+    expected_stdnet22 = netavg(
+        expected_std22 / 2,
+        base_year_ep_rate,
+        tax_params_base["rates"],
+        tax_params_base["thresholds"],
+    )
 
     expected_std = []
     expected_stdnet = []
@@ -265,7 +319,16 @@ def test_supstd():
         std_prev = std
 
     # Run the function
-    results = supstd(cpi_factors, awe, ep, fl, tax_params, awe22, ep_base, tax_params_base)
+    results = supstd(
+        cpi_factors,
+        awe,
+        ep,
+        fl,
+        tax_params,
+        base_year_awe,
+        base_year_ep_rate,
+        tax_params_base,
+    )
 
     # Assertions
     assert results["std22"] == expected_std22

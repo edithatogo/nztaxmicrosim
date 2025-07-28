@@ -6,7 +6,9 @@ import time
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "syspop")))
 from src.microsim import load_parameters
+from src.validation import validate_input_data
 from src.wff_microsim import famsim
 from syspop.python.input import new_zealand
 from syspop.start import create as syspop_create
@@ -14,10 +16,11 @@ from syspop.start import create as syspop_create
 # --- 0. Argument Parsing ---
 parser = argparse.ArgumentParser(description="Run the microsimulation with a synthetic population.")
 parser.add_argument(
-    "--param_file",
+    "--param_files",
+    nargs="+",
     type=str,
-    default="src/parameters.json",
-    help="Path to the JSON file containing the tax parameters.",
+    default=["src/parameters.json"],
+    help="Paths to the JSON files containing the tax parameters for different years.",
 )
 parser.add_argument(
     "--population_scale",
@@ -134,24 +137,38 @@ df["MFTCwgt"] = 0
 df["iwtc"] = 0
 df["selfempind"] = 0
 
-# --- 4. Run the Microsimulation ---
-# Load the parameters from the specified file
-params = load_parameters(args.param_file)
-year = list(params.keys())[0]
-wff_params = params[year]["wff"]
+# --- 4. Validate the Transformed Data ---
+try:
+    df = validate_input_data(df)
+    print("Input data validated successfully.")
+except ValueError as e:
+    print(f"Error: {e}")
+    sys.exit(1)
 
-# Define the parameters for the famsim function
-wagegwt = 0.03
-daysinperiod = 365
+# --- 5. Run the Microsimulation for each parameter file ---
+for param_file in args.param_files:
+    year = os.path.basename(param_file).split("_")[1].split(".")[0]
+    print(f"\n--- Running microsimulation with parameters from: {param_file} ({year}) ---")
+    params = load_parameters(year)
+    wff_params = params["wff"]
 
-# Run the famsim function
-df_results = famsim(
-    df,
-    wff_params,
-    wagegwt,
-    daysinperiod,
-)
+    # Define the parameters for the famsim function
+    wagegwt = 0.03
+    daysinperiod = 365
 
-# --- 5. Save the Results ---
-# (This part remains the same)
-# ...
+    # Run the famsim function
+    df_results = famsim(
+        df.copy(),  # Use a copy to avoid modifying the original DataFrame in the loop
+        wff_params,
+        wagegwt,
+        daysinperiod,
+    )
+
+    # --- 5. Save the Results ---
+    results_filename = f"synthetic_population_results_{year}.csv"
+    results_path = os.path.join(population_dir, results_filename)
+    df_results.to_csv(results_path, index=False)
+    print(f"Successfully ran microsimulation for {year}.")
+    print(f"Results saved to {results_path}")
+
+print("\n--- All microsimulations complete ---\n")

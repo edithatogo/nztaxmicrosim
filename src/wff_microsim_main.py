@@ -1,11 +1,16 @@
 import pandas as pd
 
+from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
+from src.microsim import load_parameters, taxit
+from src.reporting import generate_microsim_report
 from src.wff_microsim import famsim
 
 
 def main() -> None:
     """
-    This is the main entry point for the WFF microsimulation model.
+    This is the main entry point for the Working for Families (WFF) microsimulation model.
+    It demonstrates how to load parameters, create a sample DataFrame, and run the `famsim`
+    function to calculate WFF entitlements. The results are then printed to the console.
     """
     # Load the data
     # df = pd.read_csv('data.csv')
@@ -13,6 +18,32 @@ def main() -> None:
     # For now, create a sample dataframe
     df: pd.DataFrame = pd.DataFrame(
         {
+            # Core Demographics & Household Characteristics
+            "age": [35, 40, 28],
+            "gender": ["Female", "Male", "Female"],
+            "marital_status": ["Married", "Married", "Single"],
+            "family_household_type": ["Couple with children", "Couple with children", "Single adult"],
+            "household_size": [4, 4, 1],
+            "num_dependent_children": [2, 2, 0],
+            "ages_of_children": [[5, 8], [2, 6], []],  # Example: list of ages
+            "region": ["Auckland", "Wellington", "Christchurch"],
+            "disability_status": [False, False, True],
+            # Core Income and Employment Variables
+            "employment_income": [45000, 90000, 25000],
+            "self_employment_income": [5000, 10000, 0],
+            "investment_income": [500, 2000, 100],
+            "rental_property_income": [0, 0, 0],
+            "private_pensions_annuities": [0, 0, 0],
+            "employment_status": ["Employed", "Employed", "Unemployed"],
+            "hours_worked": [40, 40, 0],
+            # Core Government Transfers Received (Input flags)
+            "is_jss_recipient": [False, False, True],
+            "is_sps_recipient": [False, False, False],
+            "is_slp_recipient": [False, False, False],
+            "is_nz_super_recipient": [False, False, False],
+            # Core Housing Costs
+            "housing_costs": [400, 500, 250],  # Weekly costs
+            # Existing WFF-related columns (ensure consistency)
             "familyinc": [50000, 100000, 30000],
             "FTCwgt": [1, 2, 0],
             "IWTCwgt": [1, 2, 0],
@@ -36,43 +67,126 @@ def main() -> None:
         }
     )
 
-    # Set the parameters
-    ftc1: float = 6642.0
-    ftc2: float = 5412.0
-    iwtc1: float = 3770.0
-    iwtc2: float = 780.0
-    bstc: float = 3388.0
-    mftc: float = 38627.0
-    abatethresh1: float = 42700.0
-    abatethresh2: float = 80000.0
-    abaterate1: float = 0.27
-    abaterate2: float = 0.27
-    bstcthresh: float = 79000.0
-    bstcabate: float = 0.21
+    # Set the parameters for a specific year
+    year = "2023-2024"
+    params = load_parameters(year)
+    wff_params = params["wff"]
+    jss_params = params["jss"]
+    sps_params = params["sps"]
+    slp_params = params["slp"]
+    as_params = params["accommodation_supplement"]
+
     wagegwt: float = 0.0
     daysinperiod: int = 365
+
+    # Calculate total individual income (weekly for benefits)
+    df["total_individual_income_weekly"] = (
+        df["employment_income"] + df["self_employment_income"] + df["investment_income"]
+    ) / 52
+
+    # Calculate JSS
+    df["jss_entitlement"] = df.apply(
+        lambda row: calculate_jss(
+            individual_income=row["total_individual_income_weekly"],
+            is_single=row["marital_status"] == "Single",
+            is_partnered=row["marital_status"] == "Married",
+            num_dependent_children=row["num_dependent_children"],
+            jss_params=jss_params,
+        ),
+        axis=1,
+    )
+
+    # Calculate SPS
+    df["sps_entitlement"] = df.apply(
+        lambda row: calculate_sps(
+            individual_income=row["total_individual_income_weekly"],
+            num_dependent_children=row["num_dependent_children"],
+            sps_params=sps_params,
+        ),
+        axis=1,
+    )
+
+    # Calculate SLP
+    df["slp_entitlement"] = df.apply(
+        lambda row: calculate_slp(
+            individual_income=row["total_individual_income_weekly"],
+            is_single=row["marital_status"] == "Single",
+            is_partnered=row["marital_status"] == "Married",
+            is_disabled=row["disability_status"],
+            slp_params=slp_params,
+        ),
+        axis=1,
+    )
+
+    # Calculate Accommodation Supplement
+    df["accommodation_supplement_entitlement"] = df.apply(
+        lambda row: calculate_accommodation_supplement(
+            household_income=(
+                row["total_individual_income_weekly"] * row["household_size"]
+            ),  # Simplified household income
+            housing_costs=row["housing_costs"],
+            region=row["region"],
+            num_dependent_children=row["num_dependent_children"],
+            as_params=as_params,
+        ),
+        axis=1,
+    )
+
+    # Calculate annual taxable income for each individual
+    df["taxable_income"] = (
+        df["employment_income"]
+        + df["self_employment_income"]
+        + df["investment_income"]
+        + df["rental_property_income"]
+        + df["private_pensions_annuities"]
+    )
+
+    # Calculate income tax liability for each individual
+    df["tax_liability"] = df.apply(
+        lambda row: taxit(
+            taxy=row["taxable_income"],
+            r=params["tax_brackets"]["rates"],
+            t=params["tax_brackets"]["thresholds"],
+        ),
+        axis=1,
+    )
 
     # Call the famsim function
     result: pd.DataFrame = famsim(
         df,
-        ftc1,
-        ftc2,
-        iwtc1,
-        iwtc2,
-        bstc,
-        mftc,
-        abatethresh1,
-        abatethresh2,
-        abaterate1,
-        abaterate2,
-        bstcthresh,
-        bstcabate,
+        wff_params,
         wagegwt,
         daysinperiod,
     )
 
-    # Print the results
-    print(result)
+    # Calculate disposable income and AHC and add to result DataFrame
+    result["disposable_income"] = (
+        result["employment_income"]
+        + result["self_employment_income"]
+        + result["investment_income"]
+        + result["rental_property_income"]
+        + result["private_pensions_annuities"]
+        + result["jss_entitlement"] * 52
+        + result["sps_entitlement"] * 52
+        + result["slp_entitlement"] * 52
+        + result["accommodation_supplement_entitlement"] * 52
+        + result["FTCcalc"]
+        + result["IWTCcalc"]
+        + result["BSTCcalc"]
+        + result["MFTCcalc"]
+        - result["tax_liability"]
+    )
+    result["disposable_income_ahc"] = result["disposable_income"] - (result["housing_costs"] * 52)
+
+    # Ensure 'age' column is in the result DataFrame
+    if "age" not in result.columns:
+        result["age"] = df["age"]  # Assuming age is in the original df and aligns
+
+    # Generate comprehensive report
+    report_params = {
+        "poverty_line_relative": 0.5  # Example: 50% of median income for poverty line
+    }
+    generate_microsim_report(result, report_params)
 
 
 if __name__ == "__main__":

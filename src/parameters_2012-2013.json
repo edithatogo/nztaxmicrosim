@@ -7,7 +7,7 @@
     "thrin": 24000,
     "ent": 520,
     "thrab": 48000,
-    "abrate": 0.13
+    "abrate": 0.15
   },
   "wff": {
     "ftc1": 4822,
@@ -15,7 +15,7 @@
     "iwtc1": 3770,
     "iwtc2": 0,
     "bstc": 0,
-    "mftc": 23816,
+    "mftc": 23036,
     "abatethresh1": 36350,
     "abatethresh2": 36350,
     "abaterate1": 0.225,

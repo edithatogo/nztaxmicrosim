@@ -9,6 +9,7 @@ description = "A Python-based microsimulation model for the New Zealand tax and 
 dependencies = [
     "pandas",
     "numpy",
+    "pydantic",
 ]
 
 [tool.pytest.ini_options]
@@ -27,6 +28,7 @@ target-version = "py39"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"] # Error, Flake8, Warnings, Isort
 ignore = []
+exclude = ["syspop/"]
 
 [tool.ruff.format]
 quote-style = "double"

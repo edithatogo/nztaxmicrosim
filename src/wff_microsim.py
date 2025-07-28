@@ -21,47 +21,16 @@ def famsim(
     DataFrame with additional columns containing the calculated entitlements.
 
     Args:
-        df (pd.DataFrame): A DataFrame containing family information. Each row should
-            represent a family and have the following columns:
-            - 'familyinc': Total family income.
-            - 'maxkiddays': The maximum number of days a child is part of the family.
-            - 'maxkiddaysbstc': The maximum number of days a child is eligible for BSTC.
-            - 'FTCwgt': Weight for FTC calculation.
-            - 'IWTCwgt': Weight for IWTC calculation.
-            - 'iwtc_elig': Flag indicating IWTC eligibility.
-            - 'BSTC0wgt': Weight for BSTC for children under 1.
-            - 'BSTC01wgt': Weight for BSTC for children between 1 and 3.
-            - 'BSTC1wgt': Weight for BSTC for children over 3.
-            - 'pplcnt': Number of people in the family.
-            - 'MFTC_total': Total MFTC amount.
-            - 'MFTC_elig': Flag indicating MFTC eligibility.
-            - 'sharedcare': Flag indicating if care is shared.
-            - 'sharecareFTCwgt': Weight for shared care FTC.
-            - 'sharecareBSTC0wgt': Weight for shared care BSTC for children under 1.
-            - 'sharecareBSTC01wgt': Weight for shared care BSTC for children between 1 and 3.
-            - 'MFTCwgt': Weight for MFTC.
-            - 'iwtc': IWTC amount.
-            - 'selfempind': Flag indicating self-employment.
-        wff_params (dict): A dictionary of WFF parameters.
+        df (pd.DataFrame): A DataFrame containing family information.
+        wff_params (dict): A dictionary of WFF parameters (ftc1, ftc2, iwtc1, iwtc2,
+            bstc, mftc, abatethresh1, abatethresh2, abaterate1, abaterate2,
+            bstcthresh, bstcabate).
         wagegwt (float): Wage growth - growth in average ordinary weekly earnings on a March year basis.
         daysinperiod (int): Number of days in the period.
 
     Returns:
         pd.DataFrame: The input DataFrame with additional columns for the calculated
-            WFF entitlements. The new columns include:
-            - 'familyinc_grossed_up': Family income adjusted for wage growth.
-            - 'abate_amt': The amount of abatement based on family income.
-            - 'BSTCabate_amt': The amount of abatement for BSTC.
-            - 'maxFTCent': Maximum FTC entitlement.
-            - 'maxIWTCent': Maximum IWTC entitlement.
-            - 'maxBSTC0ent': Maximum BSTC entitlement for children under 1.
-            - 'maxBSTC01ent': Maximum BSTC entitlement for children between 1 and 3.
-            - 'maxBSTC1ent': Maximum BSTC entitlement for children over 3.
-            - 'maxMFTCent': Maximum MFTC entitlement.
-            - 'FTCcalc': Calculated FTC entitlement.
-            - 'IWTCcalc': Calculated IWTC entitlement.
-            - 'MFTCcalc': Calculated MFTC entitlement.
-            - 'BSTCcalc': Calculated BSTC entitlement.
+            WFF entitlements.
     """
     # Gross up family income by wage growth
     df["familyinc_grossed_up"] = df["familyinc"] * (1 + wagegwt)

@@ -1,0 +1,6 @@
+person_id,household_id,familyinc,num_children,adults,maxkiddays,maxkiddaysbstc,FTCwgt,IWTCwgt,iwtc_elig,BSTC0wgt,BSTC01wgt,BSTC1wgt,pplcnt,MFTC_total,MFTC_elig,sharedcare,sharecareFTCwgt,sharecareBSTC0wgt,sharecareBSTC01wgt,sharecareBSTC1wgt,MFTCwgt,iwtc,selfempind,familyinc_grossed_up,abate_amt,BSTCabate_amt,maxFTCent,maxIWTCent,maxBSTC0ent,maxBSTC01ent,maxBSTC1ent,maxMFTCent,FTCcalc,IWTCcalc,MFTCcalc,BSTCcalc,FTCcalcTEMP,carryforward_abate
+1,1,50000.0,2,2,365,365,1,1,1,0,0,0,4,0.0,0,0,0,0,0,0,0,0.0,0,51500.0,2376.0,0.0,6642,422.5,0.0,0.0,0,0.0,4266.0,422.5,0.0,0.0,0.0,0.0
+2,1,0.0,2,2,365,365,1,1,1,0,0,0,4,0.0,0,0,0,0,0,0,0,0.0,0,0.0,0.0,0.0,6642,422.5,0.0,0.0,0,0.0,6642.0,422.5,0.0,0.0,0.0,0.0
+3,2,75000.0,1,2,365,365,1,1,1,0,0,0,3,0.0,0,0,0,0,0,0,0,0.0,0,77250.0,9328.5,0.0,6642,422.5,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,2686.5
+4,2,25000.0,1,2,365,365,1,1,1,0,0,0,3,0.0,0,0,0,0,0,0,0,0.0,0,25750.0,0.0,0.0,6642,422.5,0.0,0.0,0,0.0,6642.0,422.5,0.0,0.0,0.0,0.0
+5,3,100000.0,0,1,365,365,1,1,1,0,0,0,1,0.0,0,0,0,0,0,0,0,0.0,0,103000.0,16281.0,5040.0,6642,422.5,0.0,0.0,0,0.0,0.0,0.0,0.0,0.0,0.0,9639.0

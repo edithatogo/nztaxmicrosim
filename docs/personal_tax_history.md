@@ -1,18 +1,3 @@
-Great. I’ll compile a comprehensive history of New Zealand’s personal income tax rules and thresholds from the present day back as far as records are available. This will include resident and non-resident tax rates, personal tax credits such as the Independent Earner Tax Credit and Working for Families, levies like ACC, and full bracket structures.
-
-The findings will be presented in markdown format with the following structure:
-
-* Introduction and objective
-* Search strategy and methodology
-* Summary of findings and sources
-* Tables of tax rules and thresholds by year
-* Key changes and policy shifts
-* Mermaid diagrams for key policy transitions
-* Appendices including source links and visualisation code (e.g., for plotting bracket changes over time).
-
-I’ll get started and notify you as soon as it’s ready for review.
-
-
 # Introduction and Objective
 
 New Zealand’s personal income tax system has evolved significantly since its inception in 1891, moving from minimal flat-rate taxes to a modern progressive structure with multiple brackets, credits, and levies. This document provides a **comprehensive historical record of New Zealand’s personal income tax rules and thresholds**, from the present day back to the earliest available records. The objective is to support the auditing and enhancement of a tax microsimulation model by cataloguing tax rates, bracket thresholds, tax credits, and mandatory levies across time. We emphasize **personal income tax for individuals (both residents and non-residents)**, including **tax bracket rates and thresholds**, **personal tax credits** (such as the Independent Earner Tax Credit and Working for Families credits), and **levies or mandatory deductions affecting take-home pay** (notably the ACC earner’s levy and historical analogues). We also identify **major structural reforms** – for example, the introduction or removal of tax brackets, the creation of new tax credits, or significant shifts in tax policy – to contextualize how the system has changed over time.

@@ -1088,3 +1088,414 @@ INFO:root:Attempting to write examples/synthetic_population/supermarket_data.par
 INFO:root:Successfully wrote examples/synthetic_population/supermarket_data.parquet.
 INFO:root:Attempting to write examples/synthetic_population/wholesale_data.parquet with 6 rows.
 INFO:root:Successfully wrote examples/synthetic_population/wholesale_data.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_base.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_base.parquet.
+INFO:root:Attempting to write examples/synthetic_population/syspop_household.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_household.parquet.
+INFO:root:Attempting to write examples/synthetic_population/syspop_travel.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_travel.parquet.
+INFO:root:Attempting to write examples/synthetic_population/syspop_work.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_work.parquet.
+INFO:root:Attempting to write examples/synthetic_population/syspop_school.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_school.parquet.
+INFO:root:Attempting to write examples/synthetic_population/syspop_shared_space.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_shared_space.parquet.
+INFO:root:Attempting to write examples/synthetic_population/household_data.parquet with 434 rows.
+INFO:root:Successfully wrote examples/synthetic_population/household_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/employer_data.parquet with 117699 rows.
+INFO:root:Successfully wrote examples/synthetic_population/employer_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/school_data.parquet with 6890 rows.
+INFO:root:Successfully wrote examples/synthetic_population/school_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/hospital_data.parquet with 147 rows.
+INFO:root:Successfully wrote examples/synthetic_population/hospital_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/bakery_data.parquet with 66 rows.
+INFO:root:Successfully wrote examples/synthetic_population/bakery_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/cafe_data.parquet with 358 rows.
+INFO:root:Successfully wrote examples/synthetic_population/cafe_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/department_store_data.parquet with 20 rows.
+INFO:root:Successfully wrote examples/synthetic_population/department_store_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/fast_food_data.parquet with 341 rows.
+INFO:root:Successfully wrote examples/synthetic_population/fast_food_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/park_data.parquet with 694 rows.
+INFO:root:Successfully wrote examples/synthetic_population/park_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/pub_data.parquet with 67 rows.
+INFO:root:Successfully wrote examples/synthetic_population/pub_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/restaurant_data.parquet with 348 rows.
+INFO:root:Successfully wrote examples/synthetic_population/restaurant_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/supermarket_data.parquet with 83 rows.
+INFO:root:Successfully wrote examples/synthetic_population/supermarket_data.parquet.
+INFO:root:Attempting to write examples/synthetic_population/wholesale_data.parquet with 6 rows.
+INFO:root:Successfully wrote examples/synthetic_population/wholesale_data.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 0.0%
+INFO:root:* Missing bakery: 76.19%
+INFO:root:* Missing cafe: 76.19%
+INFO:root:* Missing department_store: 76.19%
+INFO:root:* Missing fast_food: 76.19%
+INFO:root:* Missing park: 76.19%
+INFO:root:* Missing pub: 76.19%
+INFO:root:* Missing restaurant: 76.19%
+INFO:root:* Missing supermarket: 76.19%
+INFO:root:* Missing wholesale: 88.1%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 120: 0%
+INFO:root:Attempting to write examples/synthetic_population/syspop_full.parquet with 120 rows.
+INFO:root:Successfully wrote examples/synthetic_population/syspop_full.parquet.

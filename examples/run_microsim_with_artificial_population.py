@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.microsim import calcietc, taxit
+from src.microsim import calcietc, load_parameters, taxit
 from src.wff_microsim import famsim
 
 # --- 1. Create an Artificial Population ---
@@ -49,67 +49,35 @@ df["selfempind"] = 0
 
 # --- 3. Run the Microsimulation ---
 
+# Load parameters for a specific year
+params = load_parameters("2024-2025")
+wff_params = params["wff"]
+tax_params = params["tax_brackets"]
+ietc_params = params["ietc"]
+
 # Define the parameters for the famsim function
-ftc1 = 5000
-ftc2 = 3000
-iwtc1 = 1000
-iwtc2 = 500
-bstc = 3000
-mftc = 25000
-abatethresh1 = 42700
-abatethresh2 = 100000
-abaterate1 = 0.27
-abaterate2 = 0.3
-bstcthresh = 42700
-bstcabate = 0.27
 wagegwt = 0.03
 daysinperiod = 365
-
-# Define placeholder tax parameters for taxit and calcietc (2022 rates)
-# These should be updated with 2024-2025 rates as per future roadmap
-tax_rates = [0.105, 0.175, 0.30, 0.33, 0.39]
-tax_thresholds = [14000, 48000, 70000, 180000]
-
-# IETC parameters (placeholders)
-ietc_thrin = 24000
-ietc_ent = 520
-ietc_thrab = 44000
-ietc_abrate = 0.13
 
 # Run the famsim function
 df_results = famsim(
     df,
-    ftc1,
-    ftc2,
-    iwtc1,
-    iwtc2,
-    bstc,
-    mftc,
-    abatethresh1,
-    abatethresh2,
-    abaterate1,
-    abaterate2,
-    bstcthresh,
-    bstcabate,
+    wff_params,
     wagegwt,
     daysinperiod,
 )
 
 # Calculate income tax and IETC for each person
-df_results["income_tax_payable"] = df_results["income"].apply(lambda x: taxit(x, tax_rates, tax_thresholds))
+df_results["income_tax_payable"] = df_results["income"].apply(
+    lambda x: taxit(x, tax_params["rates"], tax_params["thresholds"])
+)
 df_results["ietc_amount"] = df_results.apply(
     lambda row: calcietc(
-        row["income"],
-        "ys",  # Placeholder, assuming 'ys' for now
-        row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"],  # Total WFF as wffamt
-        0,  # supamt placeholder
-        0,  # benamt placeholder
-        ietc_thrin,
-        ietc_ent,
-        ietc_thrab,
-        ietc_abrate,
-        0,  # ietc0 placeholder
-        row["income"],  # taxinc0 placeholder
+        taxable_income=row["income"],
+        is_wff_recipient=(row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"]) > 0,
+        is_super_recipient=False,  # Placeholder
+        is_benefit_recipient=False,  # Placeholder
+        ietc_params=ietc_params,
     ),
     axis=1,
 )
