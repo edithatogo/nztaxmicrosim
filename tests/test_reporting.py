@@ -176,14 +176,14 @@ def test_generate_microsim_report_expected_keys(sample_dataframe, tmp_path, monk
 
 
 def test_lorenz_and_inequality_indices():
-    incomes = pd.Series([1, 2, 3, 4])
+    incomes = pd.Series([-1, 1, 2, 3, 4])
 
     # Lorenz curve should start at (0,0) and end at (1,1)
     lorenz = reporting.lorenz_curve(incomes)
     expected = pd.DataFrame(
         {
-            "population_share": [0.0, 0.25, 0.5, 0.75, 1.0],
-            "income_share": [0.0, 0.1, 0.3, 0.6, 1.0],
+            "population_share": [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+            "income_share": [0.0, 0.0, 0.1, 0.3, 0.6, 1.0],
         }
     )
     pd.testing.assert_frame_equal(lorenz.reset_index(drop=True), expected)

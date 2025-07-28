@@ -8,11 +8,15 @@ import seaborn as sns
 
 
 def calculate_lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
-    """Return cumulative income shares for the Lorenz curve."""
+    """Return cumulative income shares for the Lorenz curve.
+
+    Negative values are treated as zero so that the curve always starts at the
+    origin and remains bounded between 0 and 1.
+    """
     if income_series.empty:
         return pd.DataFrame({"population_share": [0.0], "income_share": [0.0]})
 
-    sorted_income = income_series.sort_values().to_numpy()
+    sorted_income = income_series.clip(lower=0).sort_values().to_numpy()
     cum_income = np.cumsum(sorted_income)
     total_income = cum_income[-1]
     population_share = np.arange(1, len(sorted_income) + 1) / len(sorted_income)
@@ -25,7 +29,11 @@ def calculate_lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
 
 
 def calculate_atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
-    """Return the Atkinson index for ``income_series``."""
+    """Return the Atkinson index for ``income_series``.
+
+    ``epsilon`` governs the inequality aversion with larger values giving more
+    weight to the lower end of the distribution.
+    """
     values = income_series[income_series > 0].to_numpy()
     if values.size == 0:
         return 0.0
