@@ -140,12 +140,7 @@ make install-dev-deps
 
 ### Running Tests
 
-Before running the tests, ensure that all development dependencies are installed.
-You can install them easily with the following command:
-
-```bash
-make install-dev-deps
-```
+Before running the tests, ensure that all development dependencies are installed by running `make install-dev-deps` as described in the section above.
 
 Once the dependencies are installed, execute the test suite:
 
