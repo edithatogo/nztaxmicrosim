@@ -1,7 +1,16 @@
 {
   "tax_brackets": {
-    "rates": [0.125, 0.22, 0.33, 0.38],
-    "thresholds": [14000, 48000, 70000]
+    "rates": [
+      0.125,
+      0.22,
+      0.33,
+      0.38
+    ],
+    "thresholds": [
+      14000,
+      48000,
+      70000
+    ]
   },
   "ietc": {
     "thrin": 24000,
@@ -22,5 +31,14 @@
     "abaterate2": 0.2,
     "bstcthresh": 0,
     "bstcabate": 0
+  },
+  "ppl": {
+    "enabled": false,
+    "weekly_rate": 712.17,
+    "max_weeks": 26
+  },
+  "child_support": {
+    "enabled": false,
+    "support_rate": 0.18
   }
 }
