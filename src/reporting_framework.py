@@ -7,6 +7,49 @@ import pandas as pd
 import seaborn as sns
 
 
+def calculate_lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
+    """Return cumulative income shares for the Lorenz curve."""
+    if income_series.empty:
+        return pd.DataFrame({"population_share": [0.0], "income_share": [0.0]})
+
+    sorted_income = income_series.sort_values().to_numpy()
+    cum_income = np.cumsum(sorted_income)
+    total_income = cum_income[-1]
+    population_share = np.arange(1, len(sorted_income) + 1) / len(sorted_income)
+    income_share = cum_income / total_income if total_income != 0 else cum_income
+
+    # Prepend origin (0,0)
+    population_share = np.insert(population_share, 0, 0.0)
+    income_share = np.insert(income_share, 0, 0.0)
+    return pd.DataFrame({"population_share": population_share, "income_share": income_share})
+
+
+def calculate_atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
+    """Return the Atkinson index for ``income_series``."""
+    values = income_series[income_series > 0].to_numpy()
+    if values.size == 0:
+        return 0.0
+
+    mean_income = values.mean()
+    if epsilon == 1:
+        geo_mean = np.exp(np.log(values).mean())
+        return 1 - geo_mean / mean_income
+    else:
+        exp_val = (values ** (1 - epsilon)).mean() ** (1 / (1 - epsilon))
+        return 1 - exp_val / mean_income
+
+
+def calculate_theil_index(income_series: pd.Series) -> float:
+    """Return the Theil T index for ``income_series``."""
+    values = income_series[income_series > 0].to_numpy()
+    if values.size == 0:
+        return 0.0
+
+    mean_income = values.mean()
+    ratios = values / mean_income
+    return float(np.mean(ratios * np.log(ratios)))
+
+
 # Define a base class for report components to ensure modularity and a common interface
 class ReportComponent:
     """
