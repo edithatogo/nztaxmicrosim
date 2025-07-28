@@ -2,6 +2,10 @@
 
 from .acc_levy import calculate_acc_levy, calculate_payroll_deductions
 from .budget_analysis import calculate_budget_impact
+from .sensitivity_analysis import (
+    run_deterministic_analysis,
+    run_probabilistic_analysis,
+)
 from .value_of_information import calculate_evpi
 
 __all__ = [
@@ -9,4 +13,6 @@ __all__ = [
     "calculate_evpi",
     "calculate_acc_levy",
     "calculate_payroll_deductions",
+    "run_deterministic_analysis",
+    "run_probabilistic_analysis",
 ]

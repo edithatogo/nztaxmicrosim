@@ -60,6 +60,7 @@ def test_run_deterministic_analysis_shape_and_impact():
         assert df.shape[0] == len(params_to_vary)
         assert set(df.columns) == {"parameter", "low_value", "high_value", "baseline", "impact"}
         np.testing.assert_allclose(df["impact"], df["high_value"] - df["low_value"])
+        assert df["baseline"].dtype.kind in "fiu"
 
 
 def test_run_probabilistic_analysis_shape():
