@@ -103,7 +103,8 @@ The project currently includes parameter files for the following tax years, loca
 ### Budget Impact Analysis
 
 To compare the fiscal outcomes of two scenarios, use
-`calculate_budget_impact` from `src.budget_analysis`:
+`calculate_budget_impact` from either `src.budget_analysis` or the
+`src.reporting` convenience wrapper:
 
 ```python
 import pandas as pd
