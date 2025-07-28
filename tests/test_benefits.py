@@ -1,4 +1,11 @@
-from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
+from src.benefits import (
+    calculate_accommodation_supplement,
+    calculate_child_support,
+    calculate_jss,
+    calculate_ppl,
+    calculate_slp,
+    calculate_sps,
+)
 
 # Dummy parameters for testing (replace with actual loaded parameters in integration tests)
 jss_params = {
@@ -24,6 +31,9 @@ as_params = {
     "housing_cost_contribution_rate": 0.70,
     "housing_cost_threshold": 25.0,
 }
+
+ppl_params = {"enabled": True, "weekly_rate": 600.0, "max_weeks": 26}
+child_support_params = {"enabled": True, "support_rate": 0.18}
 
 
 def test_calculate_jss():
@@ -106,3 +116,22 @@ def test_calculate_accommodation_supplement():
 
     # Test case 5: Housing costs too low
     assert calculate_accommodation_supplement(100, 10, "Auckland", 0, as_params) == 0.0
+
+
+def test_calculate_ppl():
+    """PPL should pay the weekly rate up to the maximum weeks when enabled."""
+
+    assert calculate_ppl(10, ppl_params) == 600.0 * 10
+    assert calculate_ppl(30, ppl_params) == 600.0 * 26
+
+    disabled = {"enabled": False, "weekly_rate": 600.0, "max_weeks": 26}
+    assert calculate_ppl(10, disabled) == 0.0
+
+
+def test_calculate_child_support():
+    """Child support is a fixed share of liable income when enabled."""
+
+    assert calculate_child_support(50000, child_support_params) == 50000 * 0.18
+
+    disabled = {"enabled": False, "support_rate": 0.18}
+    assert calculate_child_support(50000, disabled) == 0.0

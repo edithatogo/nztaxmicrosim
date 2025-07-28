@@ -60,5 +60,7 @@
     "income_threshold": 140000,
     "abatement_rate": 0.25,
     "max_income": 180000
-  }
+  },
+  "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
+  "child_support": {"enabled": false, "support_rate": 0.18}
 }

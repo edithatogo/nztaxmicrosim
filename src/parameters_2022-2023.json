@@ -22,5 +22,7 @@
     "abaterate2": 0.27,
     "bstcthresh": 79000,
     "bstcabate": 0.21
-  }
+  },
+  "ppl": {"enabled": false, "weekly_rate": 712.17, "max_weeks": 26},
+  "child_support": {"enabled": false, "support_rate": 0.18}
 }

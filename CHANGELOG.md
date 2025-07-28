@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `LICENSE` file (MIT License).
 - `CONTRIBUTING.md` with contribution guidelines.
 - `CITATION.cff` for citation information.
+- Optional modules for Paid Parental Leave and child support modelling.
 - `SECURITY.md` for vulnerability reporting.
 - `sas_models/` directory for original SAS model files.
 - `docs/` directory for documentation files.
