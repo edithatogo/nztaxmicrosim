@@ -1,0 +1,4 @@
+- To automatically ensure code style, install pre-commit hooks by running `pre-commit install`.
+- Before committing, run `make test` and confirm all tests pass.
+- Update relevant documentation (e.g., `README.md`, `CHANGELOG.md`) when features change.
+- Use clear, descriptive commit messages.

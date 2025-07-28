@@ -11,6 +11,9 @@ from src.reporting_framework import (
     IncomeDecileImpactChart,
     PovertyRateChangesChart,
     ReportGenerator,
+    calculate_atkinson_index,
+    calculate_lorenz_curve,
+    calculate_theil_index,
 )
 
 # Instantiate helpers used by the backward compatible wrapper functions.
@@ -61,6 +64,21 @@ def calculate_child_poverty_rate(df: pd.DataFrame, income_column: str, poverty_l
 def calculate_gini_coefficient(income_series: pd.Series) -> float:
     """Return the Gini coefficient for ``income_series``."""
     return _stats_helper._calculate_gini_coefficient(income_series)
+
+
+def lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
+    """Return the Lorenz curve for ``income_series``."""
+    return calculate_lorenz_curve(income_series)
+
+
+def atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
+    """Return the Atkinson inequality index for ``income_series``."""
+    return calculate_atkinson_index(income_series, epsilon)
+
+
+def theil_index(income_series: pd.Series) -> float:
+    """Return the Theil T index for ``income_series``."""
+    return calculate_theil_index(income_series)
 
 
 def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[str, Any]) -> Dict[str, Any]:
@@ -122,5 +140,8 @@ __all__ = [
     "calculate_poverty_rate",
     "calculate_child_poverty_rate",
     "calculate_gini_coefficient",
+    "lorenz_curve",
+    "atkinson_index",
+    "theil_index",
     "generate_microsim_report",
 ]

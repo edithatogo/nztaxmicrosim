@@ -1,6 +1,7 @@
 import pandas as pd
 import pytest
 
+import src.reporting as reporting
 from src.reporting import (
     calculate_child_poverty_rate,
     calculate_disposable_income,
@@ -172,3 +173,21 @@ def test_generate_microsim_report_expected_keys(sample_dataframe, tmp_path, monk
 
     assert "Executive Summary" in result
     assert "Fiscal Impact Summary" in result
+
+
+def test_lorenz_and_inequality_indices():
+    incomes = pd.Series([1, 2, 3, 4])
+
+    # Lorenz curve should start at (0,0) and end at (1,1)
+    lorenz = reporting.lorenz_curve(incomes)
+    expected = pd.DataFrame(
+        {
+            "population_share": [0.0, 0.25, 0.5, 0.75, 1.0],
+            "income_share": [0.0, 0.1, 0.3, 0.6, 1.0],
+        }
+    )
+    pd.testing.assert_frame_equal(lorenz.reset_index(drop=True), expected)
+
+    # Atkinson and Theil indices for this distribution
+    assert reporting.atkinson_index(incomes, epsilon=0.5) == pytest.approx(0.0556, abs=1e-3)
+    assert reporting.theil_index(incomes) == pytest.approx(0.1064, abs=1e-3)
