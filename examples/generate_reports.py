@@ -52,15 +52,7 @@ def generate_reports():
     # Concatenate all dataframes for combined analysis
     df = pd.concat(all_dfs.values(), ignore_index=True)
 
-    # Define abatement thresholds from parameters (using the first year's parameters for now)
-    first_year_param_file = args.param_files[0]
-    first_year = os.path.basename(first_year_param_file).split("_")[1].split(".")[0]
-    first_year_params = load_parameters(first_year)
-    abatethresh1 = first_year_params["wff"]["abatethresh1"]
-    abatethresh2 = first_year_params["wff"]["abatethresh2"]
-    bstcthresh = first_year_params["wff"]["bstcthresh"]
-
-    # Define abatement thresholds from parameters (using the first year's parameters for now)
+    # Define abatement thresholds from the first year's parameters
     first_year_param_file = args.param_files[0]
     first_year = os.path.basename(first_year_param_file).split("_")[1].split(".")[0]
     first_year_params = load_parameters(first_year)
