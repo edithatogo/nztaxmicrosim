@@ -157,11 +157,11 @@ make install-dev-deps
 `tabulate` is required so that `DataFrame.to_markdown()` works correctly during tests.
 
 ### Running Tests
-
-Before running the tests, make sure the project dependencies are installed. You can do this with `pip install -e .` or by running `make install-dev-deps`.
+Before running the tests, ensure the development dependencies are installed.
+Run `make install-dev-deps` — or `pip install -e .` followed by
+`pip install -r requirements-dev.txt` — before executing `pytest`.
 
 To run the unit tests for the project, execute:
-
 ```bash
 make test
 ```
