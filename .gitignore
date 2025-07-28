@@ -138,8 +138,9 @@ sas_models/
 # Synthetic Population Output
 examples/synthetic_population/
 
-# Generated data and system files
+# macOS metadata files
 .DS_Store
-examples/reports/
-syspop
-syspop.*
+
+# System population archive files
+syspop.20250701
+syspop.20250702
