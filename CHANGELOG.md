@@ -45,3 +45,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `src/acc_levy.py` with ACC levy and payroll deduction functions.
 - New unit tests for ACC levy calculations.
 - Added inequality metrics helpers (`lorenz_curve`, `atkinson_index`, `theil_index`).
+- Added simple dynamic simulation utilities for iterating policies across years.
