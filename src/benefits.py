@@ -33,9 +33,8 @@ def calculate_jss(
         base_rate = jss_params.single_rate
     elif is_partnered:
         base_rate = jss_params.couple_rate
-
     base_rate += num_dependent_children * jss_params.child_rate
-    
+
     if individual_income > jss_params.income_abatement_threshold:
         abatement = (individual_income - jss_params.income_abatement_threshold) * jss_params.abatement_rate
         return max(0.0, base_rate - abatement)
