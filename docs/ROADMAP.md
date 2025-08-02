@@ -20,6 +20,10 @@ This document outlines upcoming development priorities for the NZ Microsimulatio
    - *Milestone:* Introduce additional indicators of distributional effects (e.g., progressivity indexes).
    - *Priority:* **Medium**
 
+5. **Modular Simulation Pipeline**
+   - *Milestone:* Allow tax and benefit rules to be assembled via plug-in modules with configurable order and substitution.
+   - *Priority:* **Medium**
+
 ## Short-Term Milestones
 
 - **Q3 2025:** Deliver the completed sensitivity tools and begin work on value-of-information analysis.

@@ -1,11 +1,12 @@
 from src.microsim import calcietc, simrwt, taxit
+from src.parameters import IETCParams, TaxBracketParams
 from src.tax_calculator import TaxCalculator
 
 
 def test_tax_calculator_income_tax_and_ietc() -> None:
     calc = TaxCalculator.from_year("2023-2024")
     income = 50_000
-    expected_tax = taxit(income, calc.params["tax_brackets"]["rates"], calc.params["tax_brackets"]["thresholds"])
+    expected_tax = taxit(income, TaxBracketParams.from_dict(calc.params["tax_brackets"]))
     assert calc.income_tax(income) == expected_tax
 
     expected_ietc = calcietc(
@@ -13,7 +14,7 @@ def test_tax_calculator_income_tax_and_ietc() -> None:
         is_wff_recipient=False,
         is_super_recipient=False,
         is_benefit_recipient=False,
-        ietc_params=calc.params["ietc"],
+        ietc_params=IETCParams.from_dict(calc.params["ietc"]),
     )
     assert (
         calc.ietc(
