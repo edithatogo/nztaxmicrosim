@@ -28,12 +28,18 @@ def load_parameters(year: str) -> Parameters:
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        params: dict[str, Any] = json.load(f)
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            params: dict[str, Any] = json.load(f)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Parameter file not found: {file_path}") from e
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in parameter file {file_path}: {e}") from e
+
     try:
         return Parameters.from_dict(params)
     except (KeyError, TypeError) as e:
-        raise ValueError(f"Parameter validation failed: {e}") from e
+        raise ValueError(f"Parameter validation failed for {file_path}: {e}") from e
 
 
 def taxit(taxy: float, params: TaxBracketParams) -> float:
