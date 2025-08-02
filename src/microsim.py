@@ -25,7 +25,7 @@ def load_parameters(year: str) -> Parameters:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Parameter file not found: {file_path}")
 
-    with open(file_path, "r") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         params: dict[str, Any] = json.load(f)
 
     try:
