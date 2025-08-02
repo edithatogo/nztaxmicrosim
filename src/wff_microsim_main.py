@@ -1,3 +1,5 @@
+from dataclasses import asdict
+
 import pandas as pd
 
 from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
@@ -159,7 +161,7 @@ def main() -> None:
 
     # Calculate income tax liability for each individual
     df["tax_liability"] = df.apply(
-        lambda row: tax_calc.income_tax(row["taxable_income"]),
+        lambda row: taxit(row["taxable_income"], params.tax_brackets),
         axis=1,
     )
 
