@@ -15,6 +15,7 @@ renders it by default when viewing the repository.
   Perfect Information (EVPI)
 - Optional modules for Paid Parental Leave and Child Support
 - Experimental dynamic simulation tools
+- Modular simulation pipeline with pluggable rule components
 - Script to discover historical tax datasets via the data.govt.nz API
 
 ### Feature Matrix
