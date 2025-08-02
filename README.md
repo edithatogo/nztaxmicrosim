@@ -65,19 +65,19 @@ Install development dependencies:
 make install-dev-deps
 ```
 
-Run the test suite:
+Run the test suite with [tox](https://tox.wiki/):
 
 ```bash
-make test
+tox
 ```
 
-### Linting and Formatting
+### Linting, Type Checking and Security
 
-Use [Ruff](https://docs.astral.sh/ruff/) for code style checks:
+Run formatting, linting, static type checks and security scans with
+[pre-commit](https://pre-commit.com/):
 
 ```bash
-make lint
-make format  # apply formatting
+pre-commit run --all-files
 ```
 
 Install pre-commit hooks with `pre-commit install` to run these checks
