@@ -6,6 +6,7 @@ from .sensitivity_analysis import (
     run_deterministic_analysis,
     run_probabilistic_analysis,
 )
+from .tax_calculator import TaxCalculator
 from .value_of_information import calculate_evpi
 
 __all__ = [
@@ -15,4 +16,5 @@ __all__ = [
     "calculate_payroll_deductions",
     "run_deterministic_analysis",
     "run_probabilistic_analysis",
+    "TaxCalculator",
 ]

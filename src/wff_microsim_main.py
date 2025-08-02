@@ -3,8 +3,8 @@ from dataclasses import asdict
 import pandas as pd
 
 from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
-from src.microsim import load_parameters, taxit
 from src.reporting import generate_microsim_report
+from src.tax_calculator import TaxCalculator
 from src.validation import SimulationInputSchema, validate_input_data
 from src.wff_microsim import famsim
 
@@ -86,12 +86,13 @@ def main() -> None:
 
     # Set the parameters for a specific year
     year = "2023-2024"
-    params = load_parameters(year)
-    wff_params = asdict(params.wff)
-    jss_params = params.jss
-    sps_params = params.sps
-    slp_params = params.slp
-    as_params = params.accommodation_supplement
+    tax_calc = TaxCalculator.from_year(year)
+    params = tax_calc.params
+    wff_params = params["wff"]
+    jss_params = params["jss"]
+    sps_params = params["sps"]
+    slp_params = params["slp"]
+    as_params = params["accommodation_supplement"]
 
     wagegwt: float = 0.0
     daysinperiod: int = 365

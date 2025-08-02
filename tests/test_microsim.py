@@ -5,6 +5,11 @@ This module contains tests for the functions defined in `src/microsim.py`,
 ensuring their correctness and adherence to the original SAS model logic.
 """
 
+import inspect
+from pathlib import Path
+
+import pytest
+
 from src.microsim import (
     calcietc,
     calctax,
@@ -21,6 +26,24 @@ from src.parameters import TaxBracketParams
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")
 params_2024_25 = load_parameters("2024-2025")
+
+
+def test_load_parameters_missing_file():
+    """load_parameters should raise FileNotFoundError for missing files."""
+    with pytest.raises(FileNotFoundError):
+        load_parameters("1900-1901")
+
+
+def test_load_parameters_invalid_json():
+    """Invalid JSON should raise a ValueError during validation."""
+    module_dir = Path(inspect.getfile(load_parameters)).parent
+    invalid_path = module_dir / "parameters_invalid.json"
+    invalid_path.write_text('{"tax_brackets": {"rates": "not a list", "thresholds": []}}')
+    try:
+        with pytest.raises(ValueError):
+            load_parameters("invalid")
+    finally:
+        invalid_path.unlink()
 
 
 def test_taxit():

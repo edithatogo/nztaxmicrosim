@@ -12,6 +12,7 @@ extensible form.
   Perfect Information (EVPI)
 - Optional modules for Paid Parental Leave and Child Support
 - Experimental dynamic simulation tools
+- Script to discover historical tax datasets via the data.govt.nz API
 
 ## Quick Start
 
@@ -31,10 +32,10 @@ pip install -e .
 
 ### Running an Example
 
-Load policy parameters and inspect a value:
+Load policy parameters and compute income tax using the convenience class:
 
 ```python
-from src.microsim import load_parameters
+from src.tax_calculator import TaxCalculator
 
 params = load_parameters("2024-2025")
 tax_brackets = params.tax_brackets
@@ -65,19 +66,19 @@ Install development dependencies:
 make install-dev-deps
 ```
 
-Run the test suite:
+Run the test suite with [tox](https://tox.wiki/):
 
 ```bash
-make test
+tox
 ```
 
-### Linting and Formatting
+### Linting, Type Checking and Security
 
-Use [Ruff](https://docs.astral.sh/ruff/) for code style checks:
+Run formatting, linting, static type checks and security scans with
+[pre-commit](https://pre-commit.com/):
 
 ```bash
-make lint
-make format  # apply formatting
+pre-commit run --all-files
 ```
 
 Install pre-commit hooks with `pre-commit install` to run these checks
@@ -86,9 +87,6 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
-`src/`. Use `load_parameters` to load them for a given tax year. The function
-returns a `Parameters` dataclass with fields for each parameter group
-(`tax_brackets`, `ietc`, `jss`, etc.).
 
 ## Changelog
 

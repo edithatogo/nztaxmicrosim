@@ -10,6 +10,15 @@ from .parameters import (
 )
 
 
+def _apply_abatement(base: float, income: float, threshold: float, rate: float) -> float:
+    """Apply income abatement to a benefit or entitlement."""
+
+    if income > threshold:
+        abatement = (income - threshold) * rate
+        return max(0.0, base - abatement)
+    return base
+
+
 def calculate_jss(
     individual_income: float,
     is_single: bool,
@@ -26,7 +35,7 @@ def calculate_jss(
         base_rate = jss_params.couple_rate
 
     base_rate += num_dependent_children * jss_params.child_rate
-
+    
     if individual_income > jss_params.income_abatement_threshold:
         abatement = (individual_income - jss_params.income_abatement_threshold) * jss_params.abatement_rate
         return max(0.0, base_rate - abatement)

@@ -1,4 +1,5 @@
 from src.benefits import (
+    _apply_abatement,
     calculate_accommodation_supplement,
     calculate_child_support,
     calculate_jss,
@@ -47,6 +48,12 @@ as_params = AccommodationSupplementParams(
 
 ppl_params = PPLParams(enabled=True, weekly_rate=600.0, max_weeks=26)
 child_support_params = ChildSupportParams(enabled=True, support_rate=0.18)
+
+
+def test_apply_abatement():
+    assert _apply_abatement(100, 50, 100, 0.5) == 100
+    assert _apply_abatement(100, 150, 100, 0.5) == 75
+    assert _apply_abatement(100, 400, 100, 1.0) == 0
 
 
 def test_calculate_jss():
