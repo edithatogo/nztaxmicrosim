@@ -5,6 +5,7 @@ This directory contains the core Python source code for the NZ Microsimulation M
 ## Contents:
 
 *   `microsim.py`: Contains functions for income tax and related calculations (e.g., `taxit`, `calctax`, `netavg`, `calcietc`, `eitc`, `simrwt`, `supstd`).
+*   `tax_calculator.py`: Convenience class that wraps core tax calculations and stores parameter sets.
 *   `acc_levy.py`: Implements the ACC earner's levy and payroll deduction helpers.
 *   `wff_microsim.py`: Implements the Working for Families (WFF) microsimulation model (`famsim`).
 *   `wff_microsim_main.py`: A script to run the WFF microsimulation model with sample data.
