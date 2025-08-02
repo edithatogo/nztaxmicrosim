@@ -4,6 +4,9 @@ A Python-based microsimulation model for the New Zealand tax and transfer
 system. The project re-implements Inland Revenue’s SAS models in an open and
 extensible form.
 
+The filename of this document is capitalised as `README.md` so that GitHub
+renders it by default when viewing the repository.
+
 ## Key Features
 
 - Income tax, Working for Families and FamilyBoost modules
