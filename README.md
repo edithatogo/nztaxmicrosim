@@ -31,13 +31,13 @@ pip install -e .
 
 ### Running an Example
 
-Load policy parameters and inspect a value:
+Load policy parameters and compute income tax using the convenience class:
 
 ```python
-from src.microsim import load_parameters
+from src.tax_calculator import TaxCalculator
 
-params = load_parameters("2024-2025")
-tax_brackets = params["tax_brackets"]
+tax_calc = TaxCalculator.from_year("2024-2025")
+tax = tax_calc.income_tax(50_000)
 ```
 
 Or execute the example script:
@@ -86,7 +86,7 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
-`src/`. Use `load_parameters` to load them for a given tax year.
+`src/`. Use `TaxCalculator.from_year()` to load them for a given tax year.
 
 ## Changelog
 
