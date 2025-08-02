@@ -106,4 +106,5 @@ family_boost = family_boost_credit(
     childcare_costs=childcare_costs,
     family_boost_params=params_2024_25.family_boost,
 )
-print(f"FamilyBoost Credit: ${family_boost:.2f}")
+if family_boost > 0:
+    print(f"FamilyBoost Credit: ${family_boost:.2f}")
