@@ -11,13 +11,14 @@ See ``README.md`` lines 188-194 for the broader context.
 
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, Sequence
+from typing import Callable, Dict, Sequence
 
 import pandas as pd
 
 from .microsim import load_parameters, taxit
+from .parameters import Parameters
 
-LabourFunc = Callable[[pd.DataFrame, dict[str, Any]], pd.DataFrame]
+LabourFunc = Callable[[pd.DataFrame, Parameters], pd.DataFrame]
 
 
 def run_dynamic_simulation(
@@ -53,13 +54,7 @@ def run_dynamic_simulation(
             current = labour_response(current, params)
 
         current = current.copy()
-        current["tax_liability"] = current["taxable_income"].apply(
-            lambda inc: taxit(
-                inc,
-                params["tax_brackets"]["rates"],
-                params["tax_brackets"]["thresholds"],
-            )
-        )
+        current["tax_liability"] = current["taxable_income"].apply(lambda inc: taxit(inc, params.tax_brackets))
 
         results[year] = current.copy()
 

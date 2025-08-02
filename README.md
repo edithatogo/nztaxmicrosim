@@ -37,8 +37,8 @@ Load policy parameters and compute income tax using the convenience class:
 ```python
 from src.tax_calculator import TaxCalculator
 
-tax_calc = TaxCalculator.from_year("2024-2025")
-tax = tax_calc.income_tax(50_000)
+params = load_parameters("2024-2025")
+tax_brackets = params.tax_brackets
 ```
 
 Or execute the example script:
@@ -87,7 +87,6 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
-`src/`. Use `TaxCalculator.from_year()` to load them for a given tax year.
 
 ## Changelog
 
