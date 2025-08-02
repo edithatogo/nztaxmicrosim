@@ -37,7 +37,7 @@ Load policy parameters and inspect a value:
 from src.microsim import load_parameters
 
 params = load_parameters("2024-2025")
-tax_brackets = params["tax_brackets"]
+tax_brackets = params.tax_brackets
 ```
 
 Or execute the example script:
@@ -86,7 +86,9 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
-`src/`. Use `load_parameters` to load them for a given tax year.
+`src/`. Use `load_parameters` to load them for a given tax year. The function
+returns a `Parameters` dataclass with fields for each parameter group
+(`tax_brackets`, `ietc`, `jss`, etc.).
 
 ## Changelog
 

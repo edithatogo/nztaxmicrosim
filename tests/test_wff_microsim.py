@@ -5,6 +5,8 @@ This module contains tests for the `famsim` function defined in `src/wff_microsi
 ensuring its correctness and adherence to the original SAS model logic.
 """
 
+from dataclasses import asdict
+
 import numpy as np
 import pandas as pd
 
@@ -47,7 +49,7 @@ def test_famsim():
     )
 
     # Set the parameters
-    wff_params = params_2022_23["wff"]
+    wff_params = asdict(params_2022_23.wff)
     wagegwt = 0
     daysinperiod = 365
 

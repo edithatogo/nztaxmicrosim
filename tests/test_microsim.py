@@ -16,6 +16,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
+from src.parameters import TaxBracketParams
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")
@@ -29,31 +30,34 @@ def test_taxit():
     # Rates and thresholds for the 2023 tax year
     rates = [0.105, 0.175, 0.30, 0.33, 0.39]
     thresholds = [14000, 48000, 70000, 180000]
+    params = TaxBracketParams(rates=rates, thresholds=thresholds)
 
     # Test case 1: Income within the first bracket
-    assert taxit(10000, rates, thresholds) == 1050
+    params = TaxBracketParams(rates=rates, thresholds=thresholds)
+
+    assert taxit(10000, params) == 1050
 
     # Test case 2: Income in the second bracket
-    assert taxit(20000, rates, thresholds) == 14000 * 0.105 + (20000 - 14000) * 0.175
+    assert taxit(20000, params) == 14000 * 0.105 + (20000 - 14000) * 0.175
 
     # Test case 3: Income in the third bracket
-    assert taxit(60000, rates, thresholds) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + ((60000 - 48000) * 0.30)
+    assert taxit(60000, params) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + ((60000 - 48000) * 0.30)
 
     # Test case 4: Income in the fourth bracket
-    assert taxit(100000, rates, thresholds) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + (
-        (70000 - 48000) * 0.30
-    ) + ((100000 - 70000) * 0.33)
+    assert taxit(100000, params) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + ((70000 - 48000) * 0.30) + (
+        (100000 - 70000) * 0.33
+    )
 
     # Test case 5: Income in the fifth bracket
-    assert taxit(200000, rates, thresholds) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + (
-        (70000 - 48000) * 0.30
-    ) + ((180000 - 70000) * 0.33) + ((200000 - 180000) * 0.39)
+    assert taxit(200000, params) == (14000 * 0.105) + ((48000 - 14000) * 0.175) + ((70000 - 48000) * 0.30) + (
+        (180000 - 70000) * 0.33
+    ) + ((200000 - 180000) * 0.39)
 
     # Test case 6: Zero income
-    assert taxit(0, rates, thresholds) == 0
+    assert taxit(0, params) == 0
 
     # Test case 7: Negative income
-    assert taxit(-1000, rates, thresholds) == 0
+    assert taxit(-1000, params) == 0
 
 
 def test_calctax():
@@ -61,21 +65,19 @@ def test_calctax():
     Tests the calctax function for split-year tax calculations.
     """
     # Rates and thresholds for the 2023 tax year
-    rates1 = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds1 = [14000, 48000, 70000, 180000]
+    params1 = TaxBracketParams(rates=[0.105, 0.175, 0.30, 0.33, 0.39], thresholds=[14000, 48000, 70000, 180000])
 
     # Rates and thresholds for the 2024 tax year
-    rates2 = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds2 = [14000, 48000, 70000, 180000]
+    params2 = TaxBracketParams(rates=[0.105, 0.175, 0.30, 0.33, 0.39], thresholds=[14000, 48000, 70000, 180000])
 
     # Test case 1: Split year with same rates and thresholds
-    assert calctax(60000, 6, rates1, thresholds1, rates1, thresholds1) == taxit(60000, rates1, thresholds1)
+    assert calctax(60000, 6, params1, params1) == taxit(60000, params1)
 
     # Test case 2: Split year with different rates and thresholds
-    tax1 = taxit(60000, rates1, thresholds1)
-    tax2 = taxit(60000, rates2, thresholds2)
+    tax1 = taxit(60000, params1)
+    tax2 = taxit(60000, params2)
     expected_tax = tax1 * 0.5 + tax2 * 0.5
-    assert calctax(60000, 6, rates1, thresholds1, rates2, thresholds2) == expected_tax
+    assert calctax(60000, 6, params1, params2) == expected_tax
 
 
 def test_netavg():
@@ -85,21 +87,22 @@ def test_netavg():
     # Rates and thresholds for the 2023 tax year
     rates = [0.105, 0.175, 0.30, 0.33, 0.39]
     thresholds = [14000, 48000, 70000, 180000]
+    params = TaxBracketParams(rates=rates, thresholds=thresholds)
     eprt = 0.0146
 
     # Test case 1
     incvar = 1000
     annearn = incvar * 52
-    temptax = taxit(annearn, rates, thresholds)
+    temptax = taxit(annearn, params)
     expected_net = int(100 * (annearn * (1 - eprt) - temptax) / 52) / 100
-    assert netavg(incvar, eprt, rates, thresholds) == expected_net
+    assert netavg(incvar, eprt, params) == expected_net
 
 
 def test_calcietc():
     """
     Tests the calcietc function for IETC calculation.
     """
-    ietc_params = params_2022_23["ietc"]
+    ietc_params = params_2022_23.ietc
 
     # Test case 1: Eligible for the full credit.
     assert (
@@ -285,7 +288,7 @@ def test_supstd():
     # Base year parameters
     base_year_awe = 1462.81
     base_year_ep_rate = 0.0153
-    tax_params_base = params_2022_23["tax_brackets"]
+    tax_params_base = params_2022_23.tax_brackets
 
     # Simulation year parameters
     cpi_factors = [1.05, 1.04, 1.03, 1.02]
@@ -293,10 +296,10 @@ def test_supstd():
     ep = [0.016, 0.016, 0.016, 0.016]
     fl = [0.66, 0.66, 0.66, 0.66]
     tax_params = [
-        params_2022_23["tax_brackets"],
-        params_2022_23["tax_brackets"],
-        params_2022_23["tax_brackets"],
-        params_2022_23["tax_brackets"],
+        params_2022_23.tax_brackets,
+        params_2022_23.tax_brackets,
+        params_2022_23.tax_brackets,
+        params_2022_23.tax_brackets,
     ]
 
     # Expected results
@@ -304,8 +307,7 @@ def test_supstd():
     expected_stdnet22 = netavg(
         expected_std22 / 2,
         base_year_ep_rate,
-        tax_params_base["rates"],
-        tax_params_base["thresholds"],
+        tax_params_base,
     )
 
     expected_std = []
@@ -313,7 +315,7 @@ def test_supstd():
     std_prev = expected_std22
     for i in range(4):
         std = max(awe[i] * fl[i] * 2, std_prev * cpi_factors[i])
-        stdnet = netavg(std / 2, ep[i], tax_params[i]["rates"], tax_params[i]["thresholds"])
+        stdnet = netavg(std / 2, ep[i], tax_params[i])
         expected_std.append(std)
         expected_stdnet.append(stdnet)
         std_prev = std
@@ -347,17 +349,17 @@ def test_family_boost_credit():
     """
     Tests the family_boost_credit function with various scenarios.
     """
-    family_boost_params = params_2024_25["family_boost"]
+    family_boost_params = params_2024_25.family_boost
 
     # Test case 1: Income below threshold, credit is 25% of costs
     assert family_boost_credit(100000, 1000, family_boost_params) == 250
 
     # Test case 2: Income below threshold, credit is capped at max_credit
-    assert family_boost_credit(100000, 20000, family_boost_params) == family_boost_params["max_credit"]
+    assert family_boost_credit(100000, 20000, family_boost_params) == family_boost_params.max_credit
 
     # Test case 3: Income above threshold, credit is abated
-    credit = min(10000 * 0.25, family_boost_params["max_credit"])
-    abatement = (150000 - family_boost_params["income_threshold"]) * family_boost_params["abatement_rate"]
+    credit = min(10000 * 0.25, family_boost_params.max_credit)
+    abatement = (150000 - family_boost_params.income_threshold) * family_boost_params.abatement_rate
     expected_credit = max(0, credit - abatement)
     assert family_boost_credit(150000, 10000, family_boost_params) == expected_credit
 

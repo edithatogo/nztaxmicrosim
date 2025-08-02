@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .parameters import TaxBracketParams
+
 
 def calculate_acc_levy(income: float, levy_rate: float, max_income: float) -> float:
     """Calculate the ACC earner's levy for a given income.
@@ -26,14 +28,13 @@ def calculate_acc_levy(income: float, levy_rate: float, max_income: float) -> fl
 
 def calculate_payroll_deductions(
     income: float,
-    rates: list[float],
-    thresholds: list[float],
+    tax_params: "TaxBracketParams",
     levy_rate: float,
     levy_max_income: float,
 ) -> float:
     """Calculate total payroll deductions including income tax and ACC levy."""
     from .microsim import taxit
 
-    income_tax = taxit(income, rates, thresholds)
+    income_tax = taxit(income, tax_params)
     levy = calculate_acc_levy(income, levy_rate, levy_max_income)
     return income_tax + levy

@@ -1,3 +1,5 @@
+from dataclasses import asdict
+
 import pandas as pd
 
 from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
@@ -85,11 +87,11 @@ def main() -> None:
     # Set the parameters for a specific year
     year = "2023-2024"
     params = load_parameters(year)
-    wff_params = params["wff"]
-    jss_params = params["jss"]
-    sps_params = params["sps"]
-    slp_params = params["slp"]
-    as_params = params["accommodation_supplement"]
+    wff_params = asdict(params.wff)
+    jss_params = params.jss
+    sps_params = params.sps
+    slp_params = params.slp
+    as_params = params.accommodation_supplement
 
     wagegwt: float = 0.0
     daysinperiod: int = 365
@@ -158,11 +160,7 @@ def main() -> None:
 
     # Calculate income tax liability for each individual
     df["tax_liability"] = df.apply(
-        lambda row: taxit(
-            taxy=row["taxable_income"],
-            r=params["tax_brackets"]["rates"],
-            t=params["tax_brackets"]["thresholds"],
-        ),
+        lambda row: taxit(row["taxable_income"], params.tax_brackets),
         axis=1,
     )
 
