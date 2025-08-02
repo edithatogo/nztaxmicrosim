@@ -14,6 +14,7 @@ dependencies = [
     "seaborn",
     "joblib",
     "scipy",
+    "tabulate",
 ]
 
 [tool.pytest.ini_options]
