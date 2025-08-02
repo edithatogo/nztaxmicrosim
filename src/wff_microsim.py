@@ -2,40 +2,33 @@ import numpy as np
 import pandas as pd
 
 
-def famsim(
-    df: pd.DataFrame,
-    wff_params: dict[str, float],
-    wagegwt: float,
-    daysinperiod: int,
-) -> pd.DataFrame:
-    """
-    Calculates the Working for Families (WFF) tax credits for a given dataset of families.
-
-    This function replicates the logic of the SAS macro `%famsim` and applies a series
-    of calculations to determine the entitlement for various WFF components, including
-    Family Tax Credit (FTC), In-Work Tax Credit (IWTC), Best Start Tax Credit (BSTC),
-    and Minimum Family Tax Credit (MFTC).
-
-    The function takes a pandas DataFrame as input, where each row represents a family
-    and contains all the necessary information for the calculation. It returns the same
-    DataFrame with additional columns containing the calculated entitlements.
+def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
+    """Gross up family income by wage growth.
 
     Args:
-        df (pd.DataFrame): A DataFrame containing family information.
-        wff_params (dict): A dictionary of WFF parameters (ftc1, ftc2, iwtc1, iwtc2,
-            bstc, mftc, abatethresh1, abatethresh2, abaterate1, abaterate2,
-            bstcthresh, bstcabate).
-        wagegwt (float): Wage growth - growth in average ordinary weekly earnings on a March year basis.
-        daysinperiod (int): Number of days in the period.
+        df: DataFrame with a ``familyinc`` column.
+        wagegwt: Wage growth rate.
 
     Returns:
-        pd.DataFrame: The input DataFrame with additional columns for the calculated
-            WFF entitlements.
+        DataFrame with an added ``familyinc_grossed_up`` column.
     """
-    # Gross up family income by wage growth
+    df = df.copy()
     df["familyinc_grossed_up"] = df["familyinc"] * (1 + wagegwt)
+    return df
 
-    # Abatement calculation
+
+def calculate_abatement(df: pd.DataFrame, wff_params: dict[str, float], daysinperiod: int) -> pd.DataFrame:
+    """Calculate WFF abatement amounts.
+
+    Args:
+        df: DataFrame containing grossed up income and kid day counts.
+        wff_params: Dictionary of WFF parameters.
+        daysinperiod: Number of days in the period.
+
+    Returns:
+        DataFrame with ``abate_amt`` and ``BSTCabate_amt`` columns.
+    """
+    df = df.copy()
     df["abate_amt"] = np.where(
         df["familyinc_grossed_up"] <= wff_params["abatethresh1"],
         0,
@@ -61,8 +54,20 @@ def famsim(
         * df["maxkiddaysbstc"]
         / daysinperiod,
     )
+    return df
 
-    # Maximum entitlement calculation
+
+def calculate_max_entitlements(df: pd.DataFrame, wff_params: dict[str, float]) -> pd.DataFrame:
+    """Calculate maximum WFF entitlements before abatement.
+
+    Args:
+        df: DataFrame with WFF weight and eligibility columns.
+        wff_params: Dictionary of WFF parameters.
+
+    Returns:
+        DataFrame with maximum entitlement columns.
+    """
+    df = df.copy()
     df["maxFTCent"] = np.where(
         df["FTCwgt"] <= 1,
         wff_params["ftc1"] * df["FTCwgt"],
@@ -96,8 +101,20 @@ def famsim(
         np.minimum((wff_params["mftc"] - df["familyinc_grossed_up"]) * (1 - 0.175), df["MFTC_total"]),
         0,
     )
+    return df
 
-    # Abated entitlement calculation
+
+def apply_care_logic(df: pd.DataFrame, wff_params: dict[str, float]) -> pd.DataFrame:
+    """Apply shared and unshared care logic to compute entitlements.
+
+    Args:
+        df: DataFrame containing maximum entitlement and abatement columns.
+        wff_params: Dictionary of WFF parameters.
+
+    Returns:
+        DataFrame with calculated FTC, IWTC, BSTC and MFTC amounts.
+    """
+    df = df.copy()
     df["FTCcalc"] = 0.0
     df["IWTCcalc"] = 0.0
     df["MFTCcalc"] = 0.0
@@ -162,10 +179,46 @@ def famsim(
     )
 
     df.loc[shared_care_mask, "BSTCcalc"] = bstccalc_shared[shared_care_mask]
-
     df.loc[shared_care_mask, "MFTCcalc"] = df.loc[shared_care_mask, "maxMFTCent"] * df.loc[shared_care_mask, "MFTCwgt"]
+    return df
 
-    # Calibrations
+
+def apply_calibrations(df: pd.DataFrame) -> pd.DataFrame:
+    """Apply model calibrations to calculated entitlements.
+
+    Currently sets IWTC to zero for self-employed individuals with no IWTC.
+
+    Args:
+        df: DataFrame with calculated entitlements.
+
+    Returns:
+        DataFrame with calibrations applied.
+    """
+    df = df.copy()
     df.loc[(df["iwtc"] == 0) & (df["selfempind"] == 1), "IWTCcalc"] = 0
+    return df
 
+
+def famsim(
+    df: pd.DataFrame,
+    wff_params: dict[str, float],
+    wagegwt: float,
+    daysinperiod: int,
+) -> pd.DataFrame:
+    """Compose the WFF calculation phases into a single driver.
+
+    Args:
+        df: DataFrame containing family information.
+        wff_params: Dictionary of WFF parameters.
+        wagegwt: Wage growth rate.
+        daysinperiod: Number of days in the period.
+
+    Returns:
+        DataFrame with calculated WFF entitlements.
+    """
+    df = gross_up_income(df, wagegwt)
+    df = calculate_abatement(df, wff_params, daysinperiod)
+    df = calculate_max_entitlements(df, wff_params)
+    df = apply_care_logic(df, wff_params)
+    df = apply_calibrations(df)
     return df
