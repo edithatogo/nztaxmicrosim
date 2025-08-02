@@ -2,10 +2,13 @@ import json
 import os
 from typing import Any
 
-from pydantic import ValidationError
-
-from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
-from .parameters_model import TaxParameters
+from .parameters import (
+    FamilyBoostParams,
+    IETCParams,
+    Parameters,
+    RWTParams,
+    TaxBracketParams,
+)
 
 
 def load_parameters(year: str) -> Parameters:
@@ -25,22 +28,12 @@ def load_parameters(year: str) -> Parameters:
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    with open(file_path, "r") as f:
-        params: dict[str, Any] = json.load(f)
-    return Parameters.from_dict(params)
-
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Parameter file not found: {file_path}")
-
     with open(file_path, "r", encoding="utf-8") as f:
-        params = json.load(f)
-
+        params: dict[str, Any] = json.load(f)
     try:
-        validated = TaxParameters.model_validate(params)
-    except ValidationError as e:
+        return Parameters.from_dict(params)
+    except (KeyError, TypeError) as e:
         raise ValueError(f"Parameter validation failed: {e}") from e
-
-    return validated.model_dump()
 
 
 def taxit(taxy: float, params: TaxBracketParams) -> float:
@@ -177,14 +170,7 @@ def eitc(
         )
 
 
-def simrwt(
-    interest: float,
-    rwt_rate_10_5: float,
-    rwt_rate_17_5: float,
-    rwt_rate_30: float,
-    rwt_rate_33: float,
-    rwt_rate_39: float,
-) -> float:
+def simrwt(interest: float, params: RWTParams) -> float:
     """
     Simulates the Resident Withholding Tax (RWT).
 
@@ -192,27 +178,22 @@ def simrwt(
 
     Args:
         interest (float): The interest income.
-        rwt_rate_10_5 (float): The RWT rate for the 10.5% tax bracket.
-        rwt_rate_17_5 (float): The RWT rate for the 17.5% tax bracket.
-        rwt_rate_30 (float): The RWT rate for the 30% tax bracket.
-        rwt_rate_33 (float): The RWT rate for the 33% tax bracket.
-        rwt_rate_39 (float): The RWT rate for the 39% tax bracket.
+        params (RWTParams): The RWT parameters containing rates for each tax bracket.
 
     Returns:
         float: The calculated RWT.
     """
     if interest <= 0:
         return 0.0
-    else:
-        outtax: float = interest * (
-            0.0
-            + 1.05 * rwt_rate_10_5
-            + 1.75 * rwt_rate_17_5
-            + 0.30 * rwt_rate_30
-            + 0.33 * rwt_rate_33
-            + 0.39 * rwt_rate_39
-        )
-        return min(interest, outtax)
+    outtax: float = interest * (
+        0.0
+        + 1.05 * params.rwt_rate_10_5
+        + 1.75 * params.rwt_rate_17_5
+        + 0.30 * params.rwt_rate_30
+        + 0.33 * params.rwt_rate_33
+        + 0.39 * params.rwt_rate_39
+    )
+    return min(interest, outtax)
 
 
 def supstd(

@@ -194,6 +194,27 @@ class PPLParams:
 
 
 @dataclass
+class RWTParams:
+    rwt_rate_10_5: float
+    rwt_rate_17_5: float
+    rwt_rate_30: float
+    rwt_rate_33: float
+    rwt_rate_39: float
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "RWTParams":
+        required = [
+            "rwt_rate_10_5",
+            "rwt_rate_17_5",
+            "rwt_rate_30",
+            "rwt_rate_33",
+            "rwt_rate_39",
+        ]
+        _require_fields(data, required)
+        return cls(**{k: float(data[k]) for k in required})
+
+
+@dataclass
 class ChildSupportParams:
     enabled: bool
     support_rate: float
@@ -242,6 +263,7 @@ class Parameters:
     accommodation_supplement: AccommodationSupplementParams
     family_boost: FamilyBoostParams
     ppl: PPLParams
+    rwt: RWTParams
     child_support: ChildSupportParams
     kiwisaver: KiwisaverParams
     student_loan: StudentLoanParams
@@ -268,6 +290,18 @@ class Parameters:
                 )
             ),
             ppl=PPLParams.from_dict(data.get("ppl", {"enabled": False, "weekly_rate": 0.0, "max_weeks": 0})),
+            rwt=RWTParams.from_dict(
+                data.get(
+                    "rwt",
+                    {
+                        "rwt_rate_10_5": 0.0,
+                        "rwt_rate_17_5": 0.0,
+                        "rwt_rate_30": 0.0,
+                        "rwt_rate_33": 0.0,
+                        "rwt_rate_39": 0.0,
+                    },
+                )
+            ),
             child_support=ChildSupportParams.from_dict(
                 data.get("child_support", {"enabled": False, "support_rate": 0.0})
             ),
