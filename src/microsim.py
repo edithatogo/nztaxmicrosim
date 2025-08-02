@@ -2,6 +2,10 @@ import json
 import os
 from typing import Any
 
+from pydantic import ValidationError
+
+from .parameters_model import TaxParameters
+
 
 def load_parameters(year: str) -> dict[str, Any]:
     """
@@ -16,9 +20,19 @@ def load_parameters(year: str) -> dict[str, Any]:
     # Get the directory of the current script
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
-    with open(file_path, "r") as f:
+
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Parameter file not found: {file_path}")
+
+    with open(file_path, "r", encoding="utf-8") as f:
         params = json.load(f)
-    return params
+
+    try:
+        validated = TaxParameters.model_validate(params)
+    except ValidationError as e:
+        raise ValueError(f"Parameter validation failed: {e}") from e
+
+    return validated.model_dump()
 
 
 def taxit(taxy: float, r: list[float], t: list[float]) -> float:
