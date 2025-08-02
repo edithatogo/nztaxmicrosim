@@ -1,54 +1,55 @@
 import json
 import os
-from typing import Any
-
-from pydantic import ValidationError
+from typing import Any, Mapping, Sequence
 
 from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
-from .parameters_model import TaxParameters
 
 
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
     Parameters are stored as JSON files named ``parameters_YYYY-YYYY.json``.
-    This function parses the JSON into structured dataclasses, validating that
-    all required fields are present and of the expected type.
+    The JSON is parsed into structured dataclasses, with basic validation of
+    required fields.
 
     Args:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
 
     Returns:
-        Parameters: A dataclass containing all parameter groups for the year.
+        A :class:`Parameters` instance containing all parameter groups.
     """
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    with open(file_path, "r") as f:
-        params: dict[str, Any] = json.load(f)
-    return Parameters.from_dict(params)
-
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Parameter file not found: {file_path}")
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        params = json.load(f)
+    with open(file_path, "r") as f:
+        params: dict[str, Any] = json.load(f)
 
     try:
-        validated = TaxParameters.model_validate(params)
-    except ValidationError as e:
+        return Parameters.from_dict(params)
+    except (TypeError, KeyError) as e:
         raise ValueError(f"Parameter validation failed: {e}") from e
 
-    return validated.model_dump()
 
-
-def taxit(taxy: float, params: TaxBracketParams) -> float:
+def taxit(
+    taxy: float,
+    params: TaxBracketParams | Sequence[float],
+    thresholds: Sequence[float] | None = None,
+) -> float:
     """Calculate income tax using progressive brackets.
+
+    ``params`` may be provided either as a :class:`TaxBracketParams` instance or
+    as a sequence of rates.  When passing rates directly, ``thresholds`` must
+    also be supplied.
 
     Args:
         taxy: The taxable income.
-        params: Tax bracket parameters containing ``rates`` and ``thresholds``.
+        params: Tax bracket parameters or a sequence of rates.
+        thresholds: Thresholds matching ``params`` when rates are supplied
+            directly.
 
     Returns:
         The calculated income tax.
@@ -57,10 +58,19 @@ def taxit(taxy: float, params: TaxBracketParams) -> float:
     if taxy <= 0:
         return 0.0
 
-    t_extended: list[float] = [0.0] + params.thresholds
+    if isinstance(params, TaxBracketParams):
+        rates = params.rates
+        thresh = params.thresholds
+    else:
+        if thresholds is None:
+            raise TypeError("thresholds must be provided when passing rates directly")
+        rates = list(params)
+        thresh = list(thresholds)
+
+    t_extended: list[float] = [0.0] + list(thresh)
     tax: float = 0.0
 
-    for i, rate in enumerate(params.rates):
+    for i, rate in enumerate(rates):
         if taxy > t_extended[i]:
             if i == len(t_extended) - 1 or taxy <= t_extended[i + 1]:
                 tax += (taxy - t_extended[i]) * rate
@@ -94,7 +104,7 @@ def calcietc(
     is_wff_recipient: bool,
     is_super_recipient: bool,
     is_benefit_recipient: bool,
-    ietc_params: IETCParams,
+    ietc_params: IETCParams | Mapping[str, float],
 ) -> float:
     """
     Calculates the Independent Earner Tax Credit (IETC).
@@ -116,10 +126,16 @@ def calcietc(
     if is_wff_recipient or is_super_recipient or is_benefit_recipient:
         return 0.0
 
-    income_threshold_min = ietc_params.thrin
-    income_threshold_max = ietc_params.thrab
-    max_entitlement = ietc_params.ent
-    abatement_rate = ietc_params.abrate
+    if isinstance(ietc_params, Mapping):
+        income_threshold_min = ietc_params["thrin"]
+        income_threshold_max = ietc_params["thrab"]
+        max_entitlement = ietc_params["ent"]
+        abatement_rate = ietc_params["abrate"]
+    else:
+        income_threshold_min = ietc_params.thrin
+        income_threshold_max = ietc_params.thrab
+        max_entitlement = ietc_params.ent
+        abatement_rate = ietc_params.abrate
 
     # Calculate IETC based on income thresholds.
     if taxable_income <= income_threshold_min:

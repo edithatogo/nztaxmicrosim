@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, is_dataclass
 from typing import Any, Dict, List
 
 
@@ -279,3 +279,15 @@ class Parameters:
                 )
             ),
         )
+
+    def __getitem__(self, key: str) -> Any:
+        """Allow dictionary-style access to parameter groups.
+
+        If the attribute is a dataclass, return it as a plain dictionary so
+        existing code expecting a mapping continues to work.
+        """
+
+        value = getattr(self, key)
+        if is_dataclass(value):
+            return asdict(value)
+        return value

@@ -13,6 +13,7 @@ extensible form.
 - Optional modules for Paid Parental Leave and Child Support
 - Experimental dynamic simulation tools
 - Script to discover historical tax datasets via the data.govt.nz API
+- Rule-based architecture for Working for Families calculations
 
 ## Quick Start
 

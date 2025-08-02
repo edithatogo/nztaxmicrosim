@@ -21,8 +21,8 @@ class TaxCalculator:
 
         Parameters are drawn from ``params['tax_brackets']``.
         """
-        tax_params = self.params["tax_brackets"]
-        return taxit(taxy=taxable_income, r=tax_params["rates"], t=tax_params["thresholds"])
+        tax_params = self.params.tax_brackets
+        return taxit(taxable_income, tax_params)
 
     def ietc(
         self,
@@ -37,7 +37,7 @@ class TaxCalculator:
             is_wff_recipient=is_wff_recipient,
             is_super_recipient=is_super_recipient,
             is_benefit_recipient=is_benefit_recipient,
-            ietc_params=self.params["ietc"],
+            ietc_params=self.params.ietc,
         )
 
     def rwt(self, interest: float) -> float:
