@@ -8,13 +8,13 @@ install-dev-deps:
 	pip install -r requirements-dev.txt
 
 test:
-        pytest
+	pytest
 
 coverage:
-        pytest --cov=src --cov-report=term-missing
+	pytest --cov=src --cov-report=term-missing
 
 profile:
-        pytest --profile
+	pytest --profile
 
 lint:
 	ruff check .
