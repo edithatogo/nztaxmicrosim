@@ -315,9 +315,11 @@ class Parameters:
         )
 
     def __getitem__(self, key: str) -> Any:
-        """Enable dict-style access to parameter groups.
+        """Allow dictionary-style access to parameter groups.
 
-        Nested dataclasses are converted to dictionaries to provide a
+        If the requested attribute is itself a dataclass it is converted to a
+        plain ``dict`` for compatibility with code that expects mapping-style
+        parameters. Nested dataclasses are converted to dictionaries to provide a
         serialization-friendly view of the parameters.
         """
         value = getattr(self, key)

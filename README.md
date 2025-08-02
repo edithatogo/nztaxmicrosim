@@ -56,8 +56,8 @@ Load policy parameters and compute income tax using the convenience class:
 ```python
 from src.tax_calculator import TaxCalculator
 
-params = load_parameters("2024-2025")
-tax_brackets = params.tax_brackets
+calc = TaxCalculator.from_year("2024-2025")
+tax = calc.income_tax(50_000)
 ```
 
 Or execute the example script:
@@ -106,6 +106,13 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
+`src/`. Loaded parameter sets behave like both objects and mappings, so you can
+access groups with attribute or dictionary-style syntax:
+
+```python
+params = load_parameters("2024-2025")
+rates = params["tax_brackets"]["rates"]
+```
 
 ## Changelog
 
@@ -137,4 +144,3 @@ If you use this software in your research, cite the project as described in
 2. Add behavioural responses, advanced sensitivity analysis and integrations
    with other social policy models.
 3. Ongoing maintenance, documentation and feature improvements.
-
