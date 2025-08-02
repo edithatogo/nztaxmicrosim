@@ -1,6 +1,9 @@
+bandit
+mypy
+pre-commit
 pytest
 ruff
-pre-commit
+tox
 matplotlib
 seaborn
 joblib
