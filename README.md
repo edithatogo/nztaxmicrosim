@@ -10,6 +10,7 @@ renders it by default when viewing the repository.
 ## Key Features
 
 - Income tax, Working for Families and FamilyBoost modules
+- Rule-based engine for composing Working for Families calculations
 - Parameterised policy rules for multiple tax years
 - Reporting utilities and sensitivity analysis, including Expected Value of
   Perfect Information (EVPI)

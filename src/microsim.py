@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Any
+from typing import Any, Mapping
 
 from .parameters import (
     FamilyBoostParams,
@@ -36,7 +36,20 @@ def load_parameters(year: str) -> Parameters:
         raise ValueError(f"Parameter validation failed: {e}") from e
 
 
-def taxit(taxy: float, params: TaxBracketParams) -> float:
+def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBracketParams:
+    """Convert a mapping of tax parameters into :class:`TaxBracketParams`."""
+
+    if isinstance(params, TaxBracketParams):
+        return params
+    return TaxBracketParams.from_dict(
+        {
+            "rates": params["rates"],
+            "thresholds": params["thresholds"],
+        }
+    )
+
+
+def taxit(taxy: float, params: Mapping[str, Any] | TaxBracketParams) -> float:
     """Calculate income tax using progressive brackets.
 
     Args:
@@ -50,10 +63,11 @@ def taxit(taxy: float, params: TaxBracketParams) -> float:
     if taxy <= 0:
         return 0.0
 
-    t_extended: list[float] = [0.0] + params.thresholds
+    tax_params = _coerce_tax_brackets(params)
+    t_extended: list[float] = [0.0] + tax_params.thresholds
     tax: float = 0.0
 
-    for i, rate in enumerate(params.rates):
+    for i, rate in enumerate(tax_params.rates):
         if taxy > t_extended[i]:
             if i == len(t_extended) - 1 or taxy <= t_extended[i + 1]:
                 tax += (taxy - t_extended[i]) * rate
@@ -82,12 +96,18 @@ def netavg(incvar: float, eprt: float, params: TaxBracketParams) -> float:
     return outnet
 
 
+def _coerce_ietc(params: Mapping[str, Any] | IETCParams) -> IETCParams:
+    if isinstance(params, IETCParams):
+        return params
+    return IETCParams.from_dict(params)  # type: ignore[arg-type]
+
+
 def calcietc(
     taxable_income: float,
     is_wff_recipient: bool,
     is_super_recipient: bool,
     is_benefit_recipient: bool,
-    ietc_params: IETCParams,
+    ietc_params: Mapping[str, Any] | IETCParams,
 ) -> float:
     """
     Calculates the Independent Earner Tax Credit (IETC).
@@ -109,10 +129,11 @@ def calcietc(
     if is_wff_recipient or is_super_recipient or is_benefit_recipient:
         return 0.0
 
-    income_threshold_min = ietc_params.thrin
-    income_threshold_max = ietc_params.thrab
-    max_entitlement = ietc_params.ent
-    abatement_rate = ietc_params.abrate
+    params = _coerce_ietc(ietc_params)
+    income_threshold_min = params.thrin
+    income_threshold_max = params.thrab
+    max_entitlement = params.ent
+    abatement_rate = params.abrate
 
     # Calculate IETC based on income thresholds.
     if taxable_income <= income_threshold_min:
