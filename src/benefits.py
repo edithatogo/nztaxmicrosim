@@ -1,6 +1,15 @@
 from typing import Any
 
 
+def _apply_abatement(base: float, income: float, threshold: float, rate: float) -> float:
+    """Apply income abatement to a benefit or entitlement."""
+
+    if income > threshold:
+        abatement = (income - threshold) * rate
+        return max(0.0, base - abatement)
+    return base
+
+
 def calculate_jss(
     individual_income: float,
     is_single: bool,
@@ -35,11 +44,12 @@ def calculate_jss(
     # Add child rate if applicable
     base_rate += num_dependent_children * jss_params.get("child_rate", 0.0)
 
-    # Apply abatement
-    if individual_income > jss_params["income_abatement_threshold"]:
-        abatement = (individual_income - jss_params["income_abatement_threshold"]) * jss_params["abatement_rate"]
-        return max(0.0, base_rate - abatement)
-    return base_rate
+    return _apply_abatement(
+        base_rate,
+        individual_income,
+        jss_params["income_abatement_threshold"],
+        jss_params["abatement_rate"],
+    )
 
 
 def calculate_sps(
@@ -65,11 +75,12 @@ def calculate_sps(
         return 0.0
 
     base_rate = sps_params["base_rate"]
-
-    if individual_income > sps_params["income_abatement_threshold"]:
-        abatement = (individual_income - sps_params["income_abatement_threshold"]) * sps_params["abatement_rate"]
-        return max(0.0, base_rate - abatement)
-    return base_rate
+    return _apply_abatement(
+        base_rate,
+        individual_income,
+        sps_params["income_abatement_threshold"],
+        sps_params["abatement_rate"],
+    )
 
 
 def calculate_slp(
@@ -104,11 +115,12 @@ def calculate_slp(
         base_rate = slp_params["single_rate"]
     elif is_partnered:
         base_rate = slp_params["couple_rate"]
-
-    if individual_income > slp_params["income_abatement_threshold"]:
-        abatement = (individual_income - slp_params["income_abatement_threshold"]) * slp_params["abatement_rate"]
-        return max(0.0, base_rate - abatement)
-    return base_rate
+    return _apply_abatement(
+        base_rate,
+        individual_income,
+        slp_params["income_abatement_threshold"],
+        slp_params["abatement_rate"],
+    )
 
 
 def calculate_accommodation_supplement(
@@ -152,10 +164,12 @@ def calculate_accommodation_supplement(
     initial_entitlement = min(initial_entitlement, max_entitlement)
 
     # Apply abatement based on household income
-    if household_income > income_threshold:
-        abatement = (household_income - income_threshold) * as_params["abatement_rate"]
-        return max(0.0, initial_entitlement - abatement)
-    return initial_entitlement
+    return _apply_abatement(
+        initial_entitlement,
+        household_income,
+        income_threshold,
+        as_params["abatement_rate"],
+    )
 
 
 def calculate_ppl(weeks_taken: int, ppl_params: dict[str, Any]) -> float:
