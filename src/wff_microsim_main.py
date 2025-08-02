@@ -1,8 +1,7 @@
-from dataclasses import asdict
-
 import pandas as pd
 
 from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
+from src.microsim import taxit
 from src.reporting import generate_microsim_report
 from src.tax_calculator import TaxCalculator
 from src.validation import SimulationInputSchema, validate_input_data

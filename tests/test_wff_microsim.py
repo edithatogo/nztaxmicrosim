@@ -1,7 +1,5 @@
 """Unit tests for the Working for Families microsimulation functions."""
 
-from dataclasses import asdict
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -47,18 +45,6 @@ def sample_df() -> pd.DataFrame:
         }
     )
 
-    # Set the parameters
-    wff_params = asdict(params_2022_23.wff)
-    wagegwt = 0
-    daysinperiod = 365
-
-    # Call the function
-    result = famsim(
-        df,
-        wff_params,
-        wagegwt,
-        daysinperiod,
-    )
 
 def test_gross_up_income(sample_df: pd.DataFrame) -> None:
     df = gross_up_income(sample_df, 0.1)

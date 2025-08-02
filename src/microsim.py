@@ -2,10 +2,9 @@ import json
 import os
 from typing import Any
 
-
-from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
 from pydantic import ValidationError
 
+from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
 from .parameters_model import TaxParameters
 
 
