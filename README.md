@@ -71,6 +71,18 @@ Run the test suite:
 make test
 ```
 
+Generate a coverage report:
+
+```bash
+make coverage
+```
+
+Create profiling data:
+
+```bash
+make profile
+```
+
 ### Linting and Formatting
 
 Use [Ruff](https://docs.astral.sh/ruff/) for code style checks:
