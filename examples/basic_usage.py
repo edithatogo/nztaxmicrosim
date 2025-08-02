@@ -48,11 +48,7 @@ family_details = pd.DataFrame(
 print("--- Calculating for 2016-2017 ---")
 
 # Calculate income tax
-tax_16_17 = taxit(
-    income,
-    params_2016_17["tax_brackets"]["rates"],
-    params_2016_17["tax_brackets"]["thresholds"],
-)
+tax_16_17 = taxit(income, params_2016_17.tax_brackets)
 print(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
 
 # Calculate IETC
@@ -61,14 +57,14 @@ ietc_16_17 = calcietc(
     is_wff_recipient=False,
     is_super_recipient=False,
     is_benefit_recipient=False,
-    ietc_params=params_2016_17["ietc"],
+    ietc_params=params_2016_17.ietc,
 )
 print(f"IETC: ${ietc_16_17:.2f}")
 
 # Calculate WFF credits
 wff_16_17 = famsim(
     family_details.copy(),
-    wff_params=params_2016_17["wff"],
+    wff_params=params_2016_17.wff,
     wagegwt=0,
     daysinperiod=365,
 )
@@ -80,11 +76,7 @@ print(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
 print("\n--- Calculating for 2024-2025 ---")
 
 # Calculate income tax
-tax_24_25 = taxit(
-    income,
-    params_2024_25["tax_brackets"]["rates"],
-    params_2024_25["tax_brackets"]["thresholds"],
-)
+tax_24_25 = taxit(income, params_2024_25.tax_brackets)
 print(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
 
 # Calculate IETC
@@ -93,14 +85,14 @@ ietc_24_25 = calcietc(
     is_wff_recipient=False,
     is_super_recipient=False,
     is_benefit_recipient=False,
-    ietc_params=params_2024_25["ietc"],
+    ietc_params=params_2024_25.ietc,
 )
 print(f"IETC: ${ietc_24_25:.2f}")
 
 # Calculate WFF credits
 wff_24_25 = famsim(
     family_details.copy(),
-    wff_params=params_2024_25["wff"],
+    wff_params=params_2024_25.wff,
     wagegwt=0,
     daysinperiod=365,
 )
@@ -109,10 +101,9 @@ print(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
-if "family_boost" in params_2024_25:
-    family_boost = family_boost_credit(
-        family_income=family_income,
-        childcare_costs=childcare_costs,
-        family_boost_params=params_2024_25["family_boost"],
-    )
-    print(f"FamilyBoost Credit: ${family_boost:.2f}")
+family_boost = family_boost_credit(
+    family_income=family_income,
+    childcare_costs=childcare_costs,
+    family_boost_params=params_2024_25.family_boost,
+)
+print(f"FamilyBoost Credit: ${family_boost:.2f}")

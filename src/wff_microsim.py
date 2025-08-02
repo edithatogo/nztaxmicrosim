@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 
+from .parameters import WFFParams
+
 
 def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
     """Gross up family income by wage growth.
@@ -17,7 +19,7 @@ def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
     return df
 
 
-def calculate_abatement(df: pd.DataFrame, wff_params: dict[str, float], daysinperiod: int) -> pd.DataFrame:
+def calculate_abatement(df: pd.DataFrame, wff_params: WFFParams, daysinperiod: int) -> pd.DataFrame:
     """Calculate WFF abatement amounts.
 
     Args:
@@ -30,34 +32,34 @@ def calculate_abatement(df: pd.DataFrame, wff_params: dict[str, float], daysinpe
     """
     df = df.copy()
     df["abate_amt"] = np.where(
-        df["familyinc_grossed_up"] <= wff_params["abatethresh1"],
+        df["familyinc_grossed_up"] <= wff_params.abatethresh1,
         0,
         np.where(
-            df["familyinc_grossed_up"] <= wff_params["abatethresh2"],
-            (df["familyinc_grossed_up"] - wff_params["abatethresh1"])
-            * wff_params["abaterate1"]
+            df["familyinc_grossed_up"] <= wff_params.abatethresh2,
+            (df["familyinc_grossed_up"] - wff_params.abatethresh1)
+            * wff_params.abaterate1
             * df["maxkiddays"]
             / daysinperiod,
             (
-                (wff_params["abatethresh2"] - wff_params["abatethresh1"]) * wff_params["abaterate1"]
-                + (df["familyinc_grossed_up"] - wff_params["abatethresh2"]) * wff_params["abaterate2"]
+                (wff_params.abatethresh2 - wff_params.abatethresh1) * wff_params.abaterate1
+                + (df["familyinc_grossed_up"] - wff_params.abatethresh2) * wff_params.abaterate2
             )
             * df["maxkiddays"]
             / daysinperiod,
         ),
     )
     df["BSTCabate_amt"] = np.where(
-        df["familyinc_grossed_up"] <= wff_params["bstcthresh"],
+        df["familyinc_grossed_up"] <= wff_params.bstcthresh,
         0,
-        (df["familyinc_grossed_up"] - wff_params["bstcthresh"])
-        * wff_params["bstcabate"]
+        (df["familyinc_grossed_up"] - wff_params.bstcthresh)
+        * wff_params.bstcabate
         * df["maxkiddaysbstc"]
         / daysinperiod,
     )
     return df
 
 
-def calculate_max_entitlements(df: pd.DataFrame, wff_params: dict[str, float]) -> pd.DataFrame:
+def calculate_max_entitlements(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
     """Calculate maximum WFF entitlements before abatement.
 
     Args:
@@ -70,8 +72,8 @@ def calculate_max_entitlements(df: pd.DataFrame, wff_params: dict[str, float]) -
     df = df.copy()
     df["maxFTCent"] = np.where(
         df["FTCwgt"] <= 1,
-        wff_params["ftc1"] * df["FTCwgt"],
-        wff_params["ftc1"] + (df["FTCwgt"] - 1) * wff_params["ftc2"],
+        wff_params.ftc1 * df["FTCwgt"],
+        wff_params.ftc1 + (df["FTCwgt"] - 1) * wff_params.ftc2,
     )
 
     df["maxIWTCent"] = np.where(
@@ -79,32 +81,32 @@ def calculate_max_entitlements(df: pd.DataFrame, wff_params: dict[str, float]) -
         0,
         np.where(
             df["IWTCwgt"] <= 1,
-            wff_params["iwtc1"] * df["IWTCwgt"] * df["iwtc_elig"] / (12 * df["IWTCwgt"]),
+            wff_params.iwtc1 * df["IWTCwgt"] * df["iwtc_elig"] / (12 * df["IWTCwgt"]),
             np.where(
                 df["IWTCwgt"] <= 3,
-                wff_params["iwtc1"] * df["iwtc_elig"] / 12,
-                (wff_params["iwtc1"] + (df["IWTCwgt"] - 3) * wff_params["iwtc2"]) * df["iwtc_elig"] / 12,
+                wff_params.iwtc1 * df["iwtc_elig"] / 12,
+                (wff_params.iwtc1 + (df["IWTCwgt"] - 3) * wff_params.iwtc2) * df["iwtc_elig"] / 12,
             ),
         ),
     )
 
-    df["maxBSTC0ent"] = np.minimum(np.maximum(df["BSTC0wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params["bstc"]
+    df["maxBSTC0ent"] = np.minimum(np.maximum(df["BSTC0wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params.bstc
     df["maxBSTC01ent"] = np.where(
         df["BSTC0wgt"] > 0,
-        df["BSTC01wgt"] * wff_params["bstc"],
-        np.minimum(np.maximum(df["BSTC01wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params["bstc"],
+        df["BSTC01wgt"] * wff_params.bstc,
+        np.minimum(np.maximum(df["BSTC01wgt"] - df["pplcnt"] / 26, 0), 1) * wff_params.bstc,
     )
-    df["maxBSTC1ent"] = wff_params["bstc"] * df["BSTC1wgt"]
+    df["maxBSTC1ent"] = wff_params.bstc * df["BSTC1wgt"]
 
     df["maxMFTCent"] = np.where(
-        (df["familyinc_grossed_up"] < wff_params["mftc"]) & (df["MFTC_total"] > 0) & (df["MFTC_elig"] > 0),
-        np.minimum((wff_params["mftc"] - df["familyinc_grossed_up"]) * (1 - 0.175), df["MFTC_total"]),
+        (df["familyinc_grossed_up"] < wff_params.mftc) & (df["MFTC_total"] > 0) & (df["MFTC_elig"] > 0),
+        np.minimum((wff_params.mftc - df["familyinc_grossed_up"]) * (1 - 0.175), df["MFTC_total"]),
         0,
     )
     return df
 
 
-def apply_care_logic(df: pd.DataFrame, wff_params: dict[str, float]) -> pd.DataFrame:
+def apply_care_logic(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
     """Apply shared and unshared care logic to compute entitlements.
 
     Args:
@@ -172,7 +174,7 @@ def apply_care_logic(df: pd.DataFrame, wff_params: dict[str, float]) -> pd.DataF
 
     bstc1_mask = (df["BSTC1wgt"] > 0) & shared_care_mask
     bstccalc_shared[bstc1_mask] += (
-        np.maximum(0, wff_params["bstc"] - df.loc[bstc1_mask, "BSTCabate_amt"])
+        np.maximum(0, wff_params.bstc - df.loc[bstc1_mask, "BSTCabate_amt"])
         * df.loc[bstc1_mask, "BSTC1wgt"]
         * df.loc[bstc1_mask, "sharecareBSTC1wgt"]
         / df.loc[bstc1_mask, "BSTC1wgt"]
@@ -201,7 +203,7 @@ def apply_calibrations(df: pd.DataFrame) -> pd.DataFrame:
 
 def famsim(
     df: pd.DataFrame,
-    wff_params: dict[str, float],
+    wff_params: WFFParams,
     wagegwt: float,
     daysinperiod: int,
 ) -> pd.DataFrame:
