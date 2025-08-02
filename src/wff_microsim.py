@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from .parameters import WFFParams
+from .rules_engine import Rule, RuleEngine
 
 
 def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
@@ -218,9 +219,12 @@ def famsim(
     Returns:
         DataFrame with calculated WFF entitlements.
     """
-    df = gross_up_income(df, wagegwt)
-    df = calculate_abatement(df, wff_params, daysinperiod)
-    df = calculate_max_entitlements(df, wff_params)
-    df = apply_care_logic(df, wff_params)
-    df = apply_calibrations(df)
-    return df
+    rules = [
+        Rule(lambda d: gross_up_income(d, wagegwt)),
+        Rule(lambda d: calculate_abatement(d, wff_params, daysinperiod)),
+        Rule(lambda d: calculate_max_entitlements(d, wff_params)),
+        Rule(lambda d: apply_care_logic(d, wff_params)),
+        Rule(apply_calibrations),
+    ]
+    engine = RuleEngine(rules)
+    return engine.run(df)
