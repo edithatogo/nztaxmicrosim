@@ -87,6 +87,9 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
+the `src` directory. These files are loaded into dataclasses via
+`load_parameters`, which performs basic type checks and ensures required fields
+are present.
 
 ## Changelog
 
