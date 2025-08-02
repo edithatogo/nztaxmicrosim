@@ -10,3 +10,7 @@ matplotlib
 seaborn
 joblib
 tabulate
+pandas
+numpy
+pydantic
+scipy
