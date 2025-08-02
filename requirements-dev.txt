@@ -2,6 +2,8 @@ bandit
 mypy
 pre-commit
 pytest
+pytest-cov
+pytest-profiling
 ruff
 tox
 matplotlib

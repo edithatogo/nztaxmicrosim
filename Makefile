@@ -1,4 +1,4 @@
-.PHONY: test lint format install-dev-deps install clean run-example
+.PHONY: test coverage profile lint format install-dev-deps install clean run-example
 
 install:
 	pip install .
@@ -8,7 +8,13 @@ install-dev-deps:
 	pip install -r requirements-dev.txt
 
 test:
-	pytest
+        pytest
+
+coverage:
+        pytest --cov=src --cov-report=term-missing
+
+profile:
+        pytest --profile
 
 lint:
 	ruff check .
