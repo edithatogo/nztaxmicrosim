@@ -58,6 +58,14 @@ def calculate_theil_index(income_series: pd.Series) -> float:
     return float(np.mean(ratios * np.log(ratios)))
 
 
+def calculate_reynolds_smolensky_index(pre_tax_income: pd.Series, post_tax_income: pd.Series) -> float:
+    """Calculate the Reynolds-Smolensky index of tax progressivity."""
+    stats_helper = DistributionalStatisticsTable()
+    gini_pre_tax = stats_helper._calculate_gini_coefficient(pre_tax_income)
+    gini_post_tax = stats_helper._calculate_gini_coefficient(post_tax_income)
+    return gini_pre_tax - gini_post_tax
+
+
 # Define a base class for report components to ensure modularity and a common interface
 class ReportComponent:
     """
@@ -274,6 +282,52 @@ class DistributionalStatisticsTable(ReportComponent):
 
 
 # --- Figure Components ---
+
+
+class EquityMetricsTable(ReportComponent):
+    def __init__(self):
+        super().__init__(
+            title="Equity Metrics",
+            description="Summary of key equity metrics.",
+        )
+
+    def _calculate_market_income(self, df: pd.DataFrame) -> pd.Series:
+        market_income = (
+            df.get("employment_income", 0)
+            + df.get("self_employment_income", 0)
+            + df.get("investment_income", 0)
+            + df.get("rental_property_income", 0)
+            + df.get("private_pensions_annuities", 0)
+        )
+        return market_income
+
+    def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> pd.DataFrame:
+        market_income = self._calculate_market_income(data)
+        disposable_income = DistributionalStatisticsTable()._calculate_disposable_income(data)
+
+        gini = DistributionalStatisticsTable()._calculate_gini_coefficient(disposable_income)
+        atkinson = calculate_atkinson_index(disposable_income)
+        theil = calculate_theil_index(disposable_income)
+        reynolds_smolensky = calculate_reynolds_smolensky_index(market_income, disposable_income)
+
+        equity_data = {
+            "Metric": [
+                "Gini Coefficient (Disposable Income)",
+                "Atkinson Index (Disposable Income, e=0.5)",
+                "Theil Index (Disposable Income)",
+                "Reynolds-Smolensky Index",
+            ],
+            "Value": [gini, atkinson, theil, reynolds_smolensky],
+        }
+        return pd.DataFrame(equity_data)
+
+    def to_markdown(self, content: pd.DataFrame) -> str:
+        return f"""## {self.title}
+
+{self.description}
+
+{content.to_markdown(index=False)}
+"""
 
 
 class IncomeDecileImpactChart(ReportComponent):
