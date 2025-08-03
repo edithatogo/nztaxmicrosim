@@ -26,6 +26,10 @@ from src.reporting_framework import (
     EquityMetricsTable,
     calculate_reynolds_smolensky_index,
 )
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
 
 
 @pytest.fixture
@@ -221,8 +225,13 @@ def test_plot_evppi(tmp_path):
     evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
     output_file = tmp_path / "evppi_plot.png"
 
-    reporting.plot_evppi(evppi_results, output_path=str(output_file))
-
+    reporting.plot_evppi(
+        evppi_results,
+        output_path=str(output_file),
+        palette="coolwarm",
+        xlabel="Custom X Label",
+        ylabel="Custom Y Label",
+    )
     assert os.path.exists(output_file)
 
 
@@ -269,8 +278,12 @@ def test_plot_evppi_tornado(tmp_path):
     """Test that plot_evppi_tornado creates an output file."""
     evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
     output_file = tmp_path / "evppi_tornado_plot.png"
-
-    reporting.plot_evppi_tornado(evppi_results, output_path=str(output_file))
+    reporting.plot_evppi_tornado(
+        evppi_results,
+        output_path=str(output_file),
+        color="red",
+        xlabel="Custom X Label",
+    )
 
     assert os.path.exists(output_file)
 
