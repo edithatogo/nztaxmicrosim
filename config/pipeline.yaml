@@ -1,0 +1,15 @@
+rules:
+  - name: JSSRule
+  - name: SPSRule
+  - name: SLPRule
+  - name: AccommodationSupplementRule
+  - name: IncomeTaxRule
+  - name: GrossUpIncomeRule
+    params:
+      wagegwt: 0.0
+  - name: CalculateAbatementRule
+    params:
+      daysinperiod: 365
+  - name: CalculateMaxEntitlementsRule
+  - name: ApplyCareLogicRule
+  - name: ApplyCalibrationsRule

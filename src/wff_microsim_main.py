@@ -1,11 +1,8 @@
 import pandas as pd
 
-from src.benefits import calculate_accommodation_supplement, calculate_jss, calculate_slp, calculate_sps
-from src.microsim import taxit
 from src.reporting import generate_microsim_report
 from src.tax_calculator import TaxCalculator
 from src.validation import SimulationInputSchema, validate_input_data
-from src.wff_microsim import famsim
 
 
 def main() -> None:
@@ -87,90 +84,46 @@ def main() -> None:
     year = "2023-2024"
     tax_calc = TaxCalculator.from_year(year)
     params = tax_calc.params
-    wff_params = params.wff
-    jss_params = params.jss
-    sps_params = params.sps
-    slp_params = params.slp
-    as_params = params.accommodation_supplement
-
-    wagegwt: float = 0.0
-    daysinperiod: int = 365
 
     # Calculate total individual income (weekly for benefits)
     df["total_individual_income_weekly"] = (
         df["employment_income"] + df["self_employment_income"] + df["investment_income"]
     ) / 52
 
-    # Calculate JSS
-    df["jss_entitlement"] = df.apply(
-        lambda row: calculate_jss(
-            individual_income=row["total_individual_income_weekly"],
-            is_single=row["marital_status"] == "Single",
-            is_partnered=row["marital_status"] == "Married",
-            num_dependent_children=row["num_children"],
-            jss_params=jss_params,
-        ),
-        axis=1,
+    from .benefit_rules import (
+        AccommodationSupplementRule,
+        JSSRule,
+        SLPRule,
+        SPSRule,
+    )
+    from .pipeline import IncomeTaxRule, SimulationPipeline
+    from .wff_rules import (
+        ApplyCalibrationsRule,
+        ApplyCareLogicRule,
+        CalculateAbatementRule,
+        CalculateFinalEntitlementsRule,
+        CalculateMaxEntitlementsRule,
+        GrossUpIncomeRule,
     )
 
-    # Calculate SPS
-    df["sps_entitlement"] = df.apply(
-        lambda row: calculate_sps(
-            individual_income=row["total_individual_income_weekly"],
-            num_dependent_children=row["num_children"],
-            sps_params=sps_params,
-        ),
-        axis=1,
+    pipeline = SimulationPipeline(
+        [
+            JSSRule(jss_params=params.jss),
+            SPSRule(sps_params=params.sps),
+            SLPRule(slp_params=params.slp),
+            AccommodationSupplementRule(as_params=params.accommodation_supplement),
+            IncomeTaxRule(tax_calc),
+            GrossUpIncomeRule(),
+            CalculateMaxEntitlementsRule(),
+            ApplyCareLogicRule(),
+            CalculateAbatementRule(),
+            CalculateFinalEntitlementsRule(),
+            ApplyCalibrationsRule(),
+        ]
     )
 
-    # Calculate SLP
-    df["slp_entitlement"] = df.apply(
-        lambda row: calculate_slp(
-            individual_income=row["total_individual_income_weekly"],
-            is_single=row["marital_status"] == "Single",
-            is_partnered=row["marital_status"] == "Married",
-            is_disabled=row["disability_status"],
-            slp_params=slp_params,
-        ),
-        axis=1,
-    )
-
-    # Calculate Accommodation Supplement
-    df["accommodation_supplement_entitlement"] = df.apply(
-        lambda row: calculate_accommodation_supplement(
-            household_income=(
-                row["total_individual_income_weekly"] * row["household_size"]
-            ),  # Simplified household income
-            housing_costs=row["housing_costs"],
-            region=row["region"],
-            num_dependent_children=row["num_children"],
-            as_params=as_params,
-        ),
-        axis=1,
-    )
-
-    # Calculate annual taxable income for each individual
-    df["taxable_income"] = (
-        df["employment_income"]
-        + df["self_employment_income"]
-        + df["investment_income"]
-        + df["rental_property_income"]
-        + df["private_pensions_annuities"]
-    )
-
-    # Calculate income tax liability for each individual
-    df["tax_liability"] = df.apply(
-        lambda row: taxit(row["taxable_income"], params.tax_brackets),
-        axis=1,
-    )
-
-    # Call the famsim function
-    result: pd.DataFrame = famsim(
-        df,
-        wff_params,
-        wagegwt,
-        daysinperiod,
-    )
+    result_data = pipeline.run({"df": df.copy()})
+    result = result_data["df"]
 
     # Calculate disposable income and AHC and add to result DataFrame
     result["disposable_income"] = (

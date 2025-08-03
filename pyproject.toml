@@ -16,6 +16,7 @@ dependencies = [
     "scipy",
     "tabulate",
     "requests",
+    "pyyaml",
 ]
 
 [tool.pytest.ini_options]

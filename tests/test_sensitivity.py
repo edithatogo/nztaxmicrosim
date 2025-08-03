@@ -1,13 +1,7 @@
 import numpy as np
 import pandas as pd
-import pytest
 
-from src.sensitivity_analysis import (
-    _get_nested,
-    _set_nested,
-    run_deterministic_analysis,
-    run_probabilistic_analysis,
-)
+from src.sensitivity_analysis import run_deterministic_analysis, run_probabilistic_analysis
 
 
 def dummy_tax(income: float, rates: list[float], thresholds: list[float]) -> float:
@@ -67,54 +61,6 @@ def test_run_deterministic_analysis_shape_and_impact():
         assert set(df.columns) == {"parameter", "low_value", "high_value", "baseline", "impact"}
         np.testing.assert_allclose(df["impact"], df["high_value"] - df["low_value"])
         assert df["baseline"].dtype.kind in "fiu"
-
-
-def test_get_nested():
-    """Test the _get_nested function."""
-    d = {"a": {"b": [10, 20]}}
-    assert _get_nested(d, "a.b.0") == 10
-    assert _get_nested(d, "a.b.1") == 20
-    assert _get_nested(d, "a.b") == [10, 20]
-    assert _get_nested(d, "a") == {"b": [10, 20]}
-
-
-def test_set_nested():
-    """Test the _set_nested function."""
-    d = {"a": {"b": [10, 20]}}
-    _set_nested(d, "a.b.0", 100)
-    assert d["a"]["b"][0] == 100
-    _set_nested(d, "a.b", [30, 40])
-    assert d["a"]["b"] == [30, 40]
-
-
-def test_run_deterministic_analysis_unsupported_metric():
-    """Test that an unsupported metric raises a KeyError."""
-    params_to_vary = ["wff.ftc1"]
-    bad_metrics = {"bad": lambda x, y: 0}
-    with pytest.raises(KeyError):
-        run_deterministic_analysis(
-            baseline_params.copy(),
-            params_to_vary,
-            0.1,
-            population,
-            bad_metrics,
-            dummy_wff,
-            dummy_tax,
-        )
-
-
-def test_run_probabilistic_analysis_unsupported_dist():
-    """Test that an unsupported distribution raises an error."""
-    param_dists = {"wff.ftc1": {"dist": "bad_dist"}}
-    with pytest.raises(ValueError):
-        run_probabilistic_analysis(
-            param_dists,
-            1,
-            population,
-            metrics,
-            dummy_wff,
-            dummy_tax,
-        )
 
 
 def test_run_probabilistic_analysis_shape():

@@ -23,11 +23,30 @@ class Rule(Protocol):
         ...
 
 
+import yaml
+
 @dataclass
 class SimulationPipeline:
     """Sequentially execute enabled rules to update a simulation ``state``."""
 
     rules: list[Rule] = field(default_factory=list)
+
+    @classmethod
+    def from_config(cls, config_path: str, params: dict[str, Any]) -> "SimulationPipeline":
+        """Create a SimulationPipeline from a YAML configuration file."""
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+
+        rules = []
+        for rule_config in config["rules"]:
+            rule_name = rule_config["name"]
+            # Note: This is a simple factory. For more complex rules, you might need a more robust mechanism.
+            if rule_name == "IncomeTaxRule":
+                rules.append(IncomeTaxRule(calculator=TaxCalculator(params)))
+            elif rule_name == "IETCRule":
+                rules.append(IETCRule(calculator=TaxCalculator(params)))
+            # Add other rules here as they are created
+        return cls(rules)
 
     def _find_rule_index(self, name: str) -> int | None:
         """Find the index of a rule by name."""
@@ -69,9 +88,9 @@ class IncomeTaxRule:
     name: str = "income_tax"
     enabled: bool = True
 
-    def __call__(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
-        income = state.get("taxable_income", 0.0)
-        state["income_tax"] = self.calculator.income_tax(income)
+    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - simple
+        df = data["df"]
+        df["tax_liability"] = df["familyinc"].apply(self.calculator.income_tax)
 
 
 @dataclass
@@ -82,11 +101,14 @@ class IETCRule:
     name: str = "ietc"
     enabled: bool = True
 
-    def __call__(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
-        income = state.get("taxable_income", 0.0)
-        state["ietc"] = self.calculator.ietc(
-            taxable_income=income,
-            is_wff_recipient=state.get("is_wff_recipient", False),
-            is_super_recipient=state.get("is_super_recipient", False),
-            is_benefit_recipient=state.get("is_benefit_recipient", False),
+    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - simple
+        df = data["df"]
+        df["ietc"] = df.apply(
+            lambda row: self.calculator.ietc(
+                taxable_income=row["familyinc"],
+                is_wff_recipient=row.get("is_wff_recipient", False),
+                is_super_recipient=row.get("is_super_recipient", False),
+                is_benefit_recipient=row.get("is_benefit_recipient", False),
+            ),
+            axis=1,
         )
