@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
+<<<<<<< HEAD
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import Parameters, TaxBracketParams
+from .parameters import Parameters
 
 
 @dataclass
@@ -20,9 +20,9 @@ class TaxCalculator:
     def income_tax(self, taxable_income: float) -> float:
         """Calculate income tax for a given taxable income.
 
-        Parameters are drawn from ``params['tax_brackets']``.
+        Parameters are drawn from ``params.tax_brackets``.
         """
-        tax_params: TaxBracketParams = self.params.tax_brackets
+        tax_params = self.params["tax_brackets"]
         return taxit(taxy=taxable_income, params=tax_params)
 
     def ietc(
@@ -41,17 +41,9 @@ class TaxCalculator:
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float, rwt_params: Dict[str, float] | None = None) -> float:
+    def rwt(self, interest: float) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        rwt_params = rwt_params or {}
-        return simrwt(
-            interest=interest,
-            rwt_rate_10_5=rwt_params.get("rwt_rate_10_5", 0.0),
-            rwt_rate_17_5=rwt_params.get("rwt_rate_17_5", 0.0),
-            rwt_rate_30=rwt_params.get("rwt_rate_30", 0.0),
-            rwt_rate_33=rwt_params.get("rwt_rate_33", 0.0),
-            rwt_rate_39=rwt_params.get("rwt_rate_39", 0.0),
-        )
+        return simrwt(interest=interest, params=self.params.rwt)
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":

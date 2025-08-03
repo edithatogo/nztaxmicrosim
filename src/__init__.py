@@ -2,6 +2,7 @@
 
 from .acc_levy import calculate_acc_levy, calculate_payroll_deductions
 from .budget_analysis import calculate_budget_impact
+from .pipeline import Rule, SimulationPipeline
 from .sensitivity_analysis import (
     run_deterministic_analysis,
     run_probabilistic_analysis,
@@ -17,4 +18,6 @@ __all__ = [
     "run_deterministic_analysis",
     "run_probabilistic_analysis",
     "TaxCalculator",
+    "Rule",
+    "SimulationPipeline",
 ]
