@@ -241,8 +241,6 @@ def plot_evppi_tornado(
     else:
         plt.show()
 
-
-# ---------------------------------------------------------------------------
 # Helper functions for unit tests
 __all__ = [
     "plot_evppi_tornado",
