@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import pytest
 
@@ -201,6 +203,22 @@ def test_inequality_edge_cases():
     incomes_empty = pd.Series([], dtype=float)
     lorenz = reporting.lorenz_curve(incomes_empty)
     assert lorenz.equals(pd.DataFrame({"population_share": [0.0], "income_share": [0.0]}))
+
+
+def test_plot_evppi(tmp_path):
+    """Test that plot_evppi creates an output file."""
+    evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
+    output_file = tmp_path / "evppi_plot.png"
+
+    reporting.plot_evppi(evppi_results, output_path=str(output_file))
+
+    assert os.path.exists(output_file)
+
+
+def test_plot_evppi_no_data():
+    """Test that plot_evppi handles empty data without crashing."""
+    # This test just checks that the function runs without error
+    reporting.plot_evppi({})
 
 
 def test_atkinson_epsilon_one():
