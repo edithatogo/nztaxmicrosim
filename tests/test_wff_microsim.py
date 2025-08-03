@@ -5,14 +5,14 @@ import pandas as pd
 import pytest
 
 from src.microsim import load_parameters
-from src.wff_microsim import (
+from src.wff_logic import (
     apply_calibrations,
     apply_care_logic,
     calculate_abatement,
     calculate_max_entitlements,
-    famsim,
     gross_up_income,
 )
+from src.wff_microsim import famsim
 
 params_2022_23 = load_parameters("2022-2023")
 

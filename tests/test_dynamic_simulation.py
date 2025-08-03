@@ -1,29 +1,59 @@
 """Tests for the dynamic simulation framework."""
 
 import pandas as pd
+import pytest
 
 from src.dynamic_simulation import run_dynamic_simulation
 from src.microsim import load_parameters, taxit
 from src.parameters import Parameters
 
 
-def test_year_to_year_progression():
-    df = pd.DataFrame({"taxable_income": [30000, 60000]})
+@pytest.fixture
+def sample_dataframe():
+    """A sample dataframe for testing the simulation functions."""
+    data = {
+        "taxable_income": [30000, 60000],
+        "familyinc": [70000, 70000],
+        "FTCwgt": [2, 2],
+        "IWTCwgt": [2, 2],
+        "BSTC0wgt": [0, 0],
+        "BSTC01wgt": [0, 0],
+        "BSTC1wgt": [1, 1],
+        "MFTCwgt": [0, 0],
+        "iwtc_elig": [12, 12],
+        "pplcnt": [4, 4],
+        "MFTC_total": [0, 0],
+        "MFTC_elig": [0, 0],
+        "sharedcare": [0, 0],
+        "sharecareFTCwgt": [0, 0],
+        "sharecareBSTC0wgt": [0, 0],
+        "sharecareBSTC01wgt": [0, 0],
+        "sharecareBSTC1wgt": [0, 0],
+        "iwtc": [1, 1],
+        "selfempind": [0, 0],
+        "maxkiddays": [365, 365],
+        "maxkiddaysbstc": [365, 365],
+    }
+    return pd.DataFrame(data)
+
+
+def test_year_to_year_progression(sample_dataframe):
     years = ["2022-2023", "2023-2024"]
 
-    results = run_dynamic_simulation(df, years)
+    results = run_dynamic_simulation(sample_dataframe, years)
 
     params1 = load_parameters("2022-2023")
-    expected1 = [taxit(i, params1.tax_brackets) for i in df["taxable_income"]]
+    expected1 = [taxit(i, params1.tax_brackets) for i in sample_dataframe["taxable_income"]]
     assert results["2022-2023"]["tax_liability"].tolist() == expected1
+    assert "FTCcalc" in results["2022-2023"].columns
 
     params2 = load_parameters("2023-2024")
-    expected2 = [taxit(i, params2.tax_brackets) for i in df["taxable_income"]]
+    expected2 = [taxit(i, params2.tax_brackets) for i in sample_dataframe["taxable_income"]]
     assert results["2023-2024"]["tax_liability"].tolist() == expected2
+    assert "FTCcalc" in results["2023-2024"].columns
 
 
-def test_labour_response_applied():
-    df = pd.DataFrame({"taxable_income": [1000]})
+def test_labour_response_applied(sample_dataframe):
     years = ["2022-2023", "2023-2024"]
 
     def labour(df: pd.DataFrame, _params: Parameters) -> pd.DataFrame:
@@ -31,14 +61,14 @@ def test_labour_response_applied():
         updated["taxable_income"] *= 1.1
         return updated
 
-    results = run_dynamic_simulation(df, years, labour_response=labour)
+    results = run_dynamic_simulation(sample_dataframe, years, labour_response=labour)
 
     params1 = load_parameters("2022-2023")
-    income1 = 1000 * 1.1
+    income1 = sample_dataframe["taxable_income"].iloc[0] * 1.1
     expected1 = taxit(income1, params1.tax_brackets)
     assert results["2022-2023"]["tax_liability"].iloc[0] == expected1
 
     params2 = load_parameters("2023-2024")
-    income2 = 1000 * 1.1 * 1.1
+    income2 = sample_dataframe["taxable_income"].iloc[0] * 1.1 * 1.1
     expected2 = taxit(income2, params2.tax_brackets)
     assert results["2023-2024"]["tax_liability"].iloc[0] == expected2

@@ -50,13 +50,13 @@ def main() -> None:
             "housing_costs": [400, 500, 250],  # Weekly costs
             # Existing WFF-related columns (ensure consistency)
             "familyinc": [50000, 100000, 30000],
-            "FTCwgt": [1, 2, 0],
-            "IWTCwgt": [1, 2, 0],
+            "FTCwgt": [1, 1, 0],
+            "IWTCwgt": [1, 1, 0],
             "BSTC0wgt": [1, 0, 0],
             "BSTC01wgt": [0, 1, 0],
             "BSTC1wgt": [0, 0, 1],
             "MFTCwgt": [1, 0, 0],
-            "iwtc_elig": [12, 12, 12],
+            "iwtc_elig": [1, 1, 0],
             "MFTC_total": [1000, 1000, 1000],
             "MFTC_elig": [1, 1, 1],
             "sharedcare": [0, 1, 0],

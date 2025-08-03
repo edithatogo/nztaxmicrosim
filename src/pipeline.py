@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """Simple plug-in pipeline for orchestrating tax and benefit rules."""
 
 from __future__ import annotations
@@ -91,4 +90,3 @@ class IETCRule:
             is_super_recipient=state.get("is_super_recipient", False),
             is_benefit_recipient=state.get("is_benefit_recipient", False),
         )
-
