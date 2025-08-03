@@ -7,13 +7,24 @@ import src.reporting as reporting
 from src.reporting import (
     calculate_child_poverty_rate,
     calculate_disposable_income,
-    calculate_disposable_income_ahc,
-    calculate_gini_coefficient,
-    calculate_net_fiscal_impact,
-    calculate_poverty_rate,
-    calculate_total_tax_revenue,
-    calculate_total_welfare_transfers,
-    generate_microsim_report,
+)
+from src.reporting import calculate_disposable_income_ahc, calculate_gini_coefficient
+from src.reporting import calculate_net_fiscal_impact
+from src.reporting import calculate_poverty_rate
+from src.reporting import calculate_total_tax_revenue
+from src.reporting import calculate_total_welfare_transfers
+from src.reporting import generate_microsim_report
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
 )
 from src.reporting_framework import (
     EquityMetricsTable,
@@ -221,7 +232,6 @@ def test_plot_evppi(tmp_path):
         xlabel="Custom X Label",
         ylabel="Custom Y Label",
     )
-
     assert os.path.exists(output_file)
 
 
@@ -268,7 +278,6 @@ def test_plot_evppi_tornado(tmp_path):
     """Test that plot_evppi_tornado creates an output file."""
     evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
     output_file = tmp_path / "evppi_tornado_plot.png"
-
     reporting.plot_evppi_tornado(
         evppi_results,
         output_path=str(output_file),
