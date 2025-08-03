@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Lightweight rule engine for policy calculations.
 
 This module defines a tiny framework that allows model calculations to be
@@ -33,3 +34,4 @@ class RuleEngine:
         for rule in self.rules:
             df = rule.apply(df, context)
         return df
+
