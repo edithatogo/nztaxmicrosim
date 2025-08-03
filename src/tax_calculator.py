@@ -21,6 +21,7 @@ class TaxCalculator:
 
         Parameters are drawn from ``params.tax_brackets``.
         """
+<<<<<<< HEAD
         tax_params = self.params["tax_brackets"]
         return taxit(taxy=taxable_income, params=tax_params)
 
