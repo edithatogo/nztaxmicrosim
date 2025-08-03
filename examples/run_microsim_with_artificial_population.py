@@ -51,9 +51,9 @@ df["selfempind"] = 0
 
 # Load parameters for a specific year
 params = load_parameters("2024-2025")
-wff_params = params["wff"]
-tax_params = params["tax_brackets"]
-ietc_params = params["ietc"]
+wff_params = params.wff
+tax_params = params.tax_brackets
+ietc_params = params.ietc
 
 # Define the parameters for the famsim function
 wagegwt = 0.03

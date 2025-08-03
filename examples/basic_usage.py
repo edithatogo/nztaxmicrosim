@@ -60,14 +60,14 @@ ietc_16_17 = calcietc(
     is_wff_recipient=False,
     is_super_recipient=False,
     is_benefit_recipient=False,
-    ietc_params=params_2016_17["ietc"],
+    ietc_params=params_2016_17.ietc,
 )
 print(f"IETC: ${ietc_16_17:.2f}")
 
 # Calculate WFF credits
 wff_16_17 = famsim(
     family_details.copy(),
-    wff_params=params_2016_17["wff"],
+    wff_params=params_2016_17.wff,
     wagegwt=0,
     daysinperiod=365,
 )
@@ -91,14 +91,14 @@ ietc_24_25 = calcietc(
     is_wff_recipient=False,
     is_super_recipient=False,
     is_benefit_recipient=False,
-    ietc_params=params_2024_25["ietc"],
+    ietc_params=params_2024_25.ietc,
 )
 print(f"IETC: ${ietc_24_25:.2f}")
 
 # Calculate WFF credits
 wff_24_25 = famsim(
     family_details.copy(),
-    wff_params=params_2024_25["wff"],
+    wff_params=params_2024_25.wff,
     wagegwt=0,
     daysinperiod=365,
 )
@@ -107,10 +107,11 @@ print(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
-if params_2024_25.family_boost.max_credit > 0:
+if hasattr(params_2024_25, "family_boost") and params_2024_25.family_boost.max_credit > 0:
     family_boost = family_boost_credit(
         family_income=family_income,
         childcare_costs=childcare_costs,
-        family_boost_params=params_2024_25["family_boost"],
+        family_boost_params=params_2024_25.family_boost,
     )
-    print(f"FamilyBoost Credit: ${family_boost:.2f}")
+    if family_boost > 0:
+        print(f"FamilyBoost Credit: ${family_boost:.2f}")
