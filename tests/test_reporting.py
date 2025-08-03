@@ -34,6 +34,10 @@ from src.reporting_framework import (
     EquityMetricsTable,
     calculate_reynolds_smolensky_index,
 )
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
 
 
 @pytest.fixture
@@ -236,6 +240,7 @@ def test_plot_evppi(tmp_path):
         xlabel="Custom X Label",
         ylabel="Custom Y Label",
     )
+
     assert os.path.exists(output_file)
 
 
