@@ -24,6 +24,8 @@ renders it by default when viewing the repository.
 
 ### Feature Matrix
 
+For a more detailed comparison with other microsimulation platforms, see the [full feature matrix](feature-matrix.md).
+
 | Feature | Module | Release Status |
 | --- | --- | --- |
 | Income tax calculations | Income Tax | Core |
