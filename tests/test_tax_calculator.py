@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from src.microsim import calcietc, load_parameters, simrwt, taxit
 <<<<<<< HEAD
 =======
