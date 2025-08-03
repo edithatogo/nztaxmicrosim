@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 
 from .parameters import WFFParams
+<<<<<<< HEAD
+=======
 from .rules_engine import Rule, RuleEngine
 
 
