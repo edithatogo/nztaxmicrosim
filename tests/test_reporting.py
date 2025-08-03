@@ -256,7 +256,7 @@ def test_equity_metrics_table(sample_dataframe):
     assert len(result) == 4
     assert "Reynolds-Smolensky Index" in result["Metric"].values
 
-
+    
 def test_atkinson_epsilon_one():
     incomes = pd.Series([1, 2, 3, 4])
     assert reporting.atkinson_index(incomes, epsilon=1) == pytest.approx(0.1147, abs=1e-3)
