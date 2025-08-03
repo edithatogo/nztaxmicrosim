@@ -1,11 +1,15 @@
 import os
 from typing import Any, Dict
 
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
+import seaborn as sns
 
 # Import report components from the new framework
 from src.reporting_framework import (
     DistributionalStatisticsTable,
+    EquityMetricsTable,
     ExecutiveSummary,
     FiscalImpactTable,
     IncomeDecileImpactChart,
@@ -13,6 +17,7 @@ from src.reporting_framework import (
     ReportGenerator,
     calculate_atkinson_index,
     calculate_lorenz_curve,
+    calculate_reynolds_smolensky_index,
     calculate_theil_index,
 )
 
@@ -135,6 +140,7 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
         ExecutiveSummary(),
         FiscalImpactTable(),
         DistributionalStatisticsTable(),
+        EquityMetricsTable(),
         IncomeDecileImpactChart(),
         PovertyRateChangesChart(),
     ]
@@ -162,8 +168,95 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
 
 
 # ---------------------------------------------------------------------------
+def plot_evppi(
+    evppi_results: Dict[str, float],
+    title: str = "Expected Value of Perfect Partial Information",
+    output_path: str = None,
+    palette: str = "viridis",
+    xlabel: str = "EVPPI",
+    ylabel: str = "Parameters",
+):
+    """
+    Generates a bar chart of EVPPI results.
+
+    Args:
+        evppi_results (Dict[str, float]): A dictionary where keys are parameter
+                                          names and values are their EVPPI.
+        title (str, optional): The title of the plot. Defaults to "Expected Value of Perfect Partial Information".
+        output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
+        palette (str, optional): The color palette to use for the plot. Defaults to "viridis".
+        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
+        ylabel (str, optional): The label for the y-axis. Defaults to "Parameters".
+    """
+    if not evppi_results:
+        print("No EVPPI results to plot.")
+        return
+
+    # Sort by value for better visualization
+    sorted_evppi = sorted(evppi_results.items(), key=lambda item: item[1], reverse=True)
+    params, values = zip(*sorted_evppi)
+
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x=list(values), y=list(params), palette=palette)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.tight_layout()
+
+    if output_path:
+        plt.savefig(output_path)
+        print(f"Plot saved to {output_path}")
+    else:
+        plt.show()
+
+
+# ---------------------------------------------------------------------------
+def plot_evppi_tornado(
+    evppi_results: Dict[str, float],
+    title: str = "Tornado Plot of EVPPI",
+    output_path: str = None,
+    color: str = "skyblue",
+    xlabel: str = "EVPPI",
+):
+    """
+    Generates a tornado plot of EVPPI results.
+
+    Args:
+        evppi_results (Dict[str, float]): A dictionary where keys are parameter
+                                          names and values are their EVPPI.
+        title (str, optional): The title of the plot. Defaults to "Tornado Plot of EVPPI".
+        output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
+        color (str, optional): The color of the bars. Defaults to "skyblue".
+        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
+    """
+    if not evppi_results:
+        print("No EVPPI results to plot.")
+        return
+
+    # Sort by value for better visualization
+    sorted_evppi = sorted(evppi_results.items(), key=lambda item: item[1], reverse=False)
+    params, values = zip(*sorted_evppi)
+
+    plt.figure(figsize=(10, 6))
+    y_pos = np.arange(len(params))
+    plt.barh(y_pos, values, align="center", color=color)
+    plt.yticks(y_pos, params)
+    plt.xlabel(xlabel)
+    plt.title(title)
+    plt.tight_layout()
+
+    if output_path:
+        plt.savefig(output_path)
+        print(f"Plot saved to {output_path}")
+    else:
+        plt.show()
+
+
+# ---------------------------------------------------------------------------
 # Helper functions for unit tests
 __all__ = [
+    "plot_evppi_tornado",
+    "plot_evppi",
     "calculate_total_tax_revenue",
     "calculate_total_welfare_transfers",
     "calculate_net_fiscal_impact",
@@ -175,6 +268,7 @@ __all__ = [
     "lorenz_curve",
     "atkinson_index",
     "theil_index",
+    "calculate_reynolds_smolensky_index",
     "calculate_budget_impact",
     "generate_microsim_report",
 ]
