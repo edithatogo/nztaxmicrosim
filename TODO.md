@@ -2,7 +2,7 @@
 
 Outstanding work:
 
-* Extend value-of-information analysis module (currently supports EVPI and EVPPI)
+* Extend value-of-information analysis module (currently supports EVPI, EVPPI, and plotting)
 * Implement budget impact calculations
 * Integrate personal income and equity metrics
 * Add support for both static and dynamic simulation modes
