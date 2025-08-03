@@ -10,11 +10,9 @@ renders it by default when viewing the repository.
 ## Key Features
 
 - Income tax, Working for Families and FamilyBoost modules
-<<<<<<< HEAD
 - Modular plug-in simulation pipeline where tax and benefit rules can be
   independently enabled, ordered or substituted
 - Rule-based engine for composing Working for Families calculations
->>>>>>> main
 - Parameterised policy rules for multiple tax years
 - Reporting utilities and sensitivity analysis, including Expected Value of
   Perfect Information (EVPI)
@@ -111,6 +109,10 @@ automatically.
 ## Parameters
 
 Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
+the `src` directory. These files are loaded into dataclasses via
+`load_parameters`, which performs basic type checks and ensures required fields
+are present.
+
 `src/`. Loaded parameter sets behave like both objects and mappings, so you can
 access groups with attribute or dictionary-style syntax:
 

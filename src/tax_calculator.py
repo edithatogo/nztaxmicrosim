@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+<<<<<<< HEAD
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
 from .parameters import Parameters

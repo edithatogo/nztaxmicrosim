@@ -2,7 +2,6 @@ import json
 import os
 from typing import Any, Mapping
 
-<<<<<<< HEAD
 from .parameters import (
     FamilyBoostParams,
     IETCParams,
@@ -15,9 +14,9 @@ from .parameters import (
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
-    Parameters are stored as JSON files named ``parameters_YYYY-YYYY.json``.
-    The JSON is parsed into structured dataclasses, with basic validation of
-    required fields.
+    Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
+    This function parses the JSON into structured dataclasses, validating that
+    all required fields are present and of the expected type.
 
     Args:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
