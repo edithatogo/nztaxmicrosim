@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 
 from .parameters import WFFParams
+<<<<<<< HEAD
+=======
+from .rules_engine import Rule, RuleEngine
 
 
 def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
@@ -24,7 +27,7 @@ def calculate_abatement(df: pd.DataFrame, wff_params: WFFParams, daysinperiod: i
 
     Args:
         df: DataFrame containing grossed up income and kid day counts.
-        wff_params: Dictionary of WFF parameters.
+        wff_params: Structured WFF parameters.
         daysinperiod: Number of days in the period.
 
     Returns:
@@ -64,7 +67,7 @@ def calculate_max_entitlements(df: pd.DataFrame, wff_params: WFFParams) -> pd.Da
 
     Args:
         df: DataFrame with WFF weight and eligibility columns.
-        wff_params: Dictionary of WFF parameters.
+        wff_params: Structured WFF parameters.
 
     Returns:
         DataFrame with maximum entitlement columns.
@@ -111,7 +114,7 @@ def apply_care_logic(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
 
     Args:
         df: DataFrame containing maximum entitlement and abatement columns.
-        wff_params: Dictionary of WFF parameters.
+        wff_params: Structured WFF parameters.
 
     Returns:
         DataFrame with calculated FTC, IWTC, BSTC and MFTC amounts.
@@ -211,16 +214,19 @@ def famsim(
 
     Args:
         df: DataFrame containing family information.
-        wff_params: Dictionary of WFF parameters.
+        wff_params: Structured WFF parameters.
         wagegwt: Wage growth rate.
         daysinperiod: Number of days in the period.
 
     Returns:
         DataFrame with calculated WFF entitlements.
     """
-    df = gross_up_income(df, wagegwt)
-    df = calculate_abatement(df, wff_params, daysinperiod)
-    df = calculate_max_entitlements(df, wff_params)
-    df = apply_care_logic(df, wff_params)
-    df = apply_calibrations(df)
-    return df
+    rules = [
+        Rule(lambda d: gross_up_income(d, wagegwt)),
+        Rule(lambda d: calculate_abatement(d, wff_params, daysinperiod)),
+        Rule(lambda d: calculate_max_entitlements(d, wff_params)),
+        Rule(lambda d: apply_care_logic(d, wff_params)),
+        Rule(apply_calibrations),
+    ]
+    engine = RuleEngine(rules)
+    return engine.run(df)
