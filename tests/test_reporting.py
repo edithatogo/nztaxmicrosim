@@ -7,13 +7,40 @@ import src.reporting as reporting
 from src.reporting import (
     calculate_child_poverty_rate,
     calculate_disposable_income,
-    calculate_disposable_income_ahc,
-    calculate_gini_coefficient,
-    calculate_net_fiscal_impact,
-    calculate_poverty_rate,
-    calculate_total_tax_revenue,
-    calculate_total_welfare_transfers,
-    generate_microsim_report,
+)
+from src.reporting import calculate_disposable_income_ahc, calculate_gini_coefficient
+from src.reporting import calculate_net_fiscal_impact
+from src.reporting import calculate_poverty_rate
+from src.reporting import calculate_total_tax_revenue
+from src.reporting import calculate_total_welfare_transfers
+from src.reporting import generate_microsim_report
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
 )
 from src.reporting_framework import (
     EquityMetricsTable,
