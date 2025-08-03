@@ -1,37 +1,48 @@
-<<<<<<< HEAD
-"""Lightweight rule engine for policy calculations.
+from __future__ import annotations
 
-This module defines a tiny framework that allows model calculations to be
-expressed as a sequence of *rules*. Each rule encapsulates a single
-transformation on a :class:`pandas.DataFrame`.  New policy steps can be added by
-creating additional rules and appending them to the rule list used by a
-`RuleEngine`.
-"""
-
-from dataclasses import dataclass
-from typing import Any, Callable, Iterable, Mapping
+from dataclasses import dataclass, field
+from typing import Any, Callable, Dict, Iterable, List
 
 import pandas as pd
 
 
 @dataclass
 class Rule:
-    """A single transformation applied to a DataFrame."""
+    """A single transformation applied to a :class:`pandas.DataFrame`.
+
+    Parameters
+    ----------
+    name:
+        Human readable name for the rule.
+    func:
+        Callable that accepts a DataFrame as its first argument followed by
+        any keyword arguments supplied via ``options``.
+    options:
+        Optional keyword arguments forwarded to ``func`` when the rule is
+        executed.
+    """
 
     name: str
-    apply: Callable[[pd.DataFrame, Mapping[str, Any]], pd.DataFrame]
+    func: Callable[..., pd.DataFrame]
+    options: Dict[str, Any] = field(default_factory=dict)
+
+    def apply(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Apply the rule to ``df`` and return the modified DataFrame."""
+        return self.func(df, **self.options)
 
 
 class RuleEngine:
-    """Execute a sequence of rules against a DataFrame."""
+    """Execute a sequence of :class:`Rule` objects in order."""
 
-    def __init__(self, rules: Iterable[Rule]):
-        self.rules = list(rules)
+    def __init__(self, rules: Iterable[Rule] | None = None) -> None:
+        self.rules: List[Rule] = list(rules) if rules is not None else []
 
-    def run(self, df: pd.DataFrame, context: Mapping[str, Any]) -> pd.DataFrame:
-        """Apply each rule in order and return the transformed DataFrame."""
+    def add_rule(self, rule: Rule) -> None:
+        """Append ``rule`` to the engine."""
+        self.rules.append(rule)
 
+    def run(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Run all rules over ``df`` sequentially."""
         for rule in self.rules:
-            df = rule.apply(df, context)
+            df = rule.apply(df)
         return df
-
