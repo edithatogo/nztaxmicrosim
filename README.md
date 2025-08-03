@@ -31,7 +31,7 @@ This document compares the features of the NZ-Microsim library with the original
 | --- | --- | --- | --- | --- |
 | **Core Focus** | New Zealand tax and transfer system | New Zealand tax and transfer system | Multi-country tax and benefit systems | Generic microsimulation framework ("Legislation as code") |
 | **Technology** | Python | SAS | Python | Python |
-| **Open Source** | Yes (Apache 2.0 License) | No (Proprietary) | Yes (AGPL-3.0) | Yes (AGPL-3.0) |
+| **Open Source** | Yes (Apache 2.0 License) | Yes (MIT License) | Yes (AGPL-3.0) | Yes (AGPL-3.0) |
 | **Core Engine** | Custom-built | Custom-built | PolicyEngine Core (fork of OpenFisca-Core) | OpenFisca-Core |
 | **Modularity** | Modular design with pluggable components | Macro-based (`famsim`) | Highly modular (core engine + country packages) | Highly modular (core engine + country packages) |
 | **Country Coverage** | New Zealand only | New Zealand only | US, UK, Canada | France, Spain, Senegal, and others |
