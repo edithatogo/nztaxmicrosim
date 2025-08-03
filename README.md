@@ -18,6 +18,7 @@ renders it by default when viewing the repository.
 - Experimental dynamic simulation tools
 - Modular simulation pipeline with pluggable rule components
 - Script to discover historical tax datasets via the data.govt.nz API
+- Rule-based architecture for Working for Families calculations
 
 ### Feature Matrix
 

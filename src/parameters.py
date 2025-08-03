@@ -315,6 +315,7 @@ class Parameters:
         )
 
     def __getitem__(self, key: str) -> Any:
+<<<<<<< HEAD
         """Enable dict-style access to parameter groups.
 
         Nested dataclasses are converted to dictionaries to provide a

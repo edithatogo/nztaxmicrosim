@@ -1,31 +1,37 @@
-from __future__ import annotations
+<<<<<<< HEAD
+"""Lightweight rule engine for policy calculations.
+
+This module defines a tiny framework that allows model calculations to be
+expressed as a sequence of *rules*. Each rule encapsulates a single
+transformation on a :class:`pandas.DataFrame`.  New policy steps can be added by
+creating additional rules and appending them to the rule list used by a
+`RuleEngine`.
+"""
 
 from dataclasses import dataclass
-from typing import Callable, Iterable, List
+from typing import Any, Callable, Iterable, Mapping
 
 import pandas as pd
 
 
 @dataclass
 class Rule:
-    """A single transformation applied to a :class:`pandas.DataFrame`."""
+    """A single transformation applied to a DataFrame."""
 
-    func: Callable[[pd.DataFrame], pd.DataFrame]
-
-    def apply(self, df: pd.DataFrame) -> pd.DataFrame:
-        return self.func(df)
+    name: str
+    apply: Callable[[pd.DataFrame, Mapping[str, Any]], pd.DataFrame]
 
 
 class RuleEngine:
-    """Execute a sequence of :class:`Rule` objects."""
+    """Execute a sequence of rules against a DataFrame."""
 
-    def __init__(self, rules: Iterable[Rule] | None = None) -> None:
-        self.rules: List[Rule] = list(rules) if rules is not None else []
+    def __init__(self, rules: Iterable[Rule]):
+        self.rules = list(rules)
 
-    def add_rule(self, rule: Rule) -> None:
-        self.rules.append(rule)
+    def run(self, df: pd.DataFrame, context: Mapping[str, Any]) -> pd.DataFrame:
+        """Apply each rule in order and return the transformed DataFrame."""
 
-    def run(self, df: pd.DataFrame) -> pd.DataFrame:
         for rule in self.rules:
-            df = rule.apply(df)
+            df = rule.apply(df, context)
         return df
+
