@@ -56,9 +56,9 @@ def generate_reports():
     first_year_param_file = args.param_files[0]
     first_year = os.path.basename(first_year_param_file).split("_")[1].split(".")[0]
     first_year_params = load_parameters(first_year)
-    abatethresh1 = first_year_params["wff"]["abatethresh1"]
-    abatethresh2 = first_year_params["wff"]["abatethresh2"]
-    bstcthresh = first_year_params["wff"]["bstcthresh"]
+    abatethresh1 = first_year_params.wff.abatethresh1
+    abatethresh2 = first_year_params.wff.abatethresh2
+    bstcthresh = first_year_params.wff.bstcthresh
 
     # Prepare data for the new reporting framework
     # The reporting framework expects 'disposable_income' and 'disposable_income_ahc'

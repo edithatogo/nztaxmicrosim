@@ -51,9 +51,9 @@ df["selfempind"] = 0
 
 # Load parameters for a specific year
 params = load_parameters("2024-2025")
-wff_params = params["wff"]
-tax_params = params["tax_brackets"]
-ietc_params = params["ietc"]
+wff_params = params.wff
+tax_params = params.tax_brackets
+ietc_params = params.ietc
 
 # Define the parameters for the famsim function
 wagegwt = 0.03
@@ -68,9 +68,7 @@ df_results = famsim(
 )
 
 # Calculate income tax and IETC for each person
-df_results["income_tax_payable"] = df_results["income"].apply(
-    lambda x: taxit(x, tax_params["rates"], tax_params["thresholds"])
-)
+df_results["income_tax_payable"] = df_results["income"].apply(lambda x: taxit(x, tax_params))
 df_results["ietc_amount"] = df_results.apply(
     lambda row: calcietc(
         taxable_income=row["income"],

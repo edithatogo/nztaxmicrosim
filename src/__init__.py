@@ -1,8 +1,13 @@
-"""Utility imports for the NZ microsimulation package."""
+"""NZ tax microsimulation package.
+
+This package exposes modules without importing optional heavy dependencies at
+import time. Only a minimal set of symbols are re-exported here.
+"""
 
 from .acc_levy import calculate_acc_levy, calculate_payroll_deductions
 from .budget_analysis import calculate_budget_impact
-from .pipeline import Rule, SimulationPipeline
+<<<<<<< HEAD
+from .pipeline import IETCRule, IncomeTaxRule, Rule, SimulationPipeline
 from .sensitivity_analysis import (
     run_deterministic_analysis,
     run_probabilistic_analysis,
@@ -20,4 +25,6 @@ __all__ = [
     "TaxCalculator",
     "Rule",
     "SimulationPipeline",
+    "IncomeTaxRule",
+    "IETCRule",
 ]
