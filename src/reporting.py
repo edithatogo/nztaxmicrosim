@@ -8,6 +8,7 @@ import seaborn as sns
 # Import report components from the new framework
 from src.reporting_framework import (
     DistributionalStatisticsTable,
+    EquityMetricsTable,
     ExecutiveSummary,
     FiscalImpactTable,
     IncomeDecileImpactChart,
@@ -15,6 +16,7 @@ from src.reporting_framework import (
     ReportGenerator,
     calculate_atkinson_index,
     calculate_lorenz_curve,
+    calculate_reynolds_smolensky_index,
     calculate_theil_index,
 )
 
@@ -137,6 +139,7 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
         ExecutiveSummary(),
         FiscalImpactTable(),
         DistributionalStatisticsTable(),
+        EquityMetricsTable(),
         IncomeDecileImpactChart(),
         PovertyRateChangesChart(),
     ]
@@ -215,6 +218,7 @@ __all__ = [
     "lorenz_curve",
     "atkinson_index",
     "theil_index",
+    "calculate_reynolds_smolensky_index",
     "calculate_budget_impact",
     "generate_microsim_report",
 ]
