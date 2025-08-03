@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 from src.microsim import calcietc, load_parameters, simrwt, taxit
-<<<<<<< HEAD
-=======
 from src.parameters import RWTParams
 from src.tax_calculator import TaxCalculator
 
