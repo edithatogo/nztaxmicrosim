@@ -172,6 +172,9 @@ def plot_evppi(
     evppi_results: Dict[str, float],
     title: str = "Expected Value of Perfect Partial Information",
     output_path: str = None,
+    palette: str = "viridis",
+    xlabel: str = "EVPPI",
+    ylabel: str = "Parameters",
 ):
     """
     Generates a bar chart of EVPPI results.
@@ -181,6 +184,9 @@ def plot_evppi(
                                           names and values are their EVPPI.
         title (str, optional): The title of the plot. Defaults to "Expected Value of Perfect Partial Information".
         output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
+        palette (str, optional): The color palette to use for the plot. Defaults to "viridis".
+        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
+        ylabel (str, optional): The label for the y-axis. Defaults to "Parameters".
     """
     if not evppi_results:
         print("No EVPPI results to plot.")
@@ -191,9 +197,9 @@ def plot_evppi(
     params, values = zip(*sorted_evppi)
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=list(values), y=list(params), palette="viridis")
-    plt.xlabel("EVPPI")
-    plt.ylabel("Parameters")
+    sns.barplot(x=list(values), y=list(params), palette=palette)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     plt.title(title)
     plt.tight_layout()
 
@@ -209,6 +215,8 @@ def plot_evppi_tornado(
     evppi_results: Dict[str, float],
     title: str = "Tornado Plot of EVPPI",
     output_path: str = None,
+    color: str = "skyblue",
+    xlabel: str = "EVPPI",
 ):
     """
     Generates a tornado plot of EVPPI results.
@@ -218,6 +226,8 @@ def plot_evppi_tornado(
                                           names and values are their EVPPI.
         title (str, optional): The title of the plot. Defaults to "Tornado Plot of EVPPI".
         output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
+        color (str, optional): The color of the bars. Defaults to "skyblue".
+        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
     """
     if not evppi_results:
         print("No EVPPI results to plot.")
@@ -229,9 +239,9 @@ def plot_evppi_tornado(
 
     plt.figure(figsize=(10, 6))
     y_pos = np.arange(len(params))
-    plt.barh(y_pos, values, align="center")
+    plt.barh(y_pos, values, align="center", color=color)
     plt.yticks(y_pos, params)
-    plt.xlabel("EVPPI")
+    plt.xlabel(xlabel)
     plt.title(title)
     plt.tight_layout()
 
@@ -240,6 +250,7 @@ def plot_evppi_tornado(
         print(f"Plot saved to {output_path}")
     else:
         plt.show()
+
 
 # ---------------------------------------------------------------------------
 # Helper functions for unit tests
