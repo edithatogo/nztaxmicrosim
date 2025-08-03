@@ -18,7 +18,10 @@ class DummyRule:
     value: int = 1
     enabled: bool = True
 
-    def __call__(self, state: dict) -> None:  # pragma: no cover - trivial
+    def __call__(self, state: dict) -> None:
+        state[self.name] = self.value
+
+    def apply(self, state: dict) -> None:  # pragma: no cover - trivial
         state[self.name] = self.value
 
 

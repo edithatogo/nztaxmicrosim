@@ -274,10 +274,51 @@ class Parameters:
             tax_brackets=TaxBracketParams.from_dict(data["tax_brackets"]),
             ietc=IETCParams.from_dict(data["ietc"]),
             wff=WFFParams.from_dict(data["wff"]),
-            jss=JSSParams.from_dict(data["jss"]),
-            sps=SPSParams.from_dict(data["sps"]),
-            slp=SLPParams.from_dict(data["slp"]),
-            accommodation_supplement=AccommodationSupplementParams.from_dict(data["accommodation_supplement"]),
+            jss=JSSParams.from_dict(
+                data.get(
+                    "jss",
+                    {
+                        "single_rate": 0.0,
+                        "couple_rate": 0.0,
+                        "child_rate": 0.0,
+                        "income_abatement_threshold": 0.0,
+                        "abatement_rate": 0.0,
+                    },
+                )
+            ),
+            sps=SPSParams.from_dict(
+                data.get(
+                    "sps",
+                    {
+                        "base_rate": 0.0,
+                        "income_abatement_threshold": 0.0,
+                        "abatement_rate": 0.0,
+                    },
+                )
+            ),
+            slp=SLPParams.from_dict(
+                data.get(
+                    "slp",
+                    {
+                        "single_rate": 0.0,
+                        "couple_rate": 0.0,
+                        "income_abatement_threshold": 0.0,
+                        "abatement_rate": 0.0,
+                    },
+                )
+            ),
+            accommodation_supplement=AccommodationSupplementParams.from_dict(
+                data.get(
+                    "accommodation_supplement",
+                    {
+                        "income_thresholds": {},
+                        "abatement_rate": 0.0,
+                        "max_entitlement_rates": {},
+                        "housing_cost_contribution_rate": 0.0,
+                        "housing_cost_threshold": 0.0,
+                    },
+                )
+            ),
             family_boost=FamilyBoostParams.from_dict(
                 data.get(
                     "family_boost",
