@@ -2,6 +2,7 @@ import os
 from typing import Any, Dict
 
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import seaborn as sns
 
@@ -204,8 +205,45 @@ def plot_evppi(
 
 
 # ---------------------------------------------------------------------------
+def plot_evppi_tornado(
+    evppi_results: Dict[str, float],
+    title: str = "Tornado Plot of EVPPI",
+    output_path: str = None,
+):
+    """
+    Generates a tornado plot of EVPPI results.
+
+    Args:
+        evppi_results (Dict[str, float]): A dictionary where keys are parameter
+                                          names and values are their EVPPI.
+        title (str, optional): The title of the plot. Defaults to "Tornado Plot of EVPPI".
+        output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
+    """
+    if not evppi_results:
+        print("No EVPPI results to plot.")
+        return
+
+    # Sort by value for better visualization
+    sorted_evppi = sorted(evppi_results.items(), key=lambda item: item[1], reverse=False)
+    params, values = zip(*sorted_evppi)
+
+    plt.figure(figsize=(10, 6))
+    y_pos = np.arange(len(params))
+    plt.barh(y_pos, values, align="center")
+    plt.yticks(y_pos, params)
+    plt.xlabel("EVPPI")
+    plt.title(title)
+    plt.tight_layout()
+
+    if output_path:
+        plt.savefig(output_path)
+        print(f"Plot saved to {output_path}")
+    else:
+        plt.show()
+
 # Helper functions for unit tests
 __all__ = [
+    "plot_evppi_tornado",
     "plot_evppi",
     "calculate_total_tax_revenue",
     "calculate_total_welfare_transfers",

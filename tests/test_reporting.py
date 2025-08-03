@@ -18,6 +18,10 @@ from src.reporting_framework import (
     EquityMetricsTable,
     calculate_reynolds_smolensky_index,
 )
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
 
 
 @pytest.fixture
@@ -256,7 +260,23 @@ def test_equity_metrics_table(sample_dataframe):
     assert len(result) == 4
     assert "Reynolds-Smolensky Index" in result["Metric"].values
 
-    
+
+def test_plot_evppi_tornado(tmp_path):
+    """Test that plot_evppi_tornado creates an output file."""
+    evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
+    output_file = tmp_path / "evppi_tornado_plot.png"
+
+    reporting.plot_evppi_tornado(evppi_results, output_path=str(output_file))
+
+    assert os.path.exists(output_file)
+
+
+def test_plot_evppi_tornado_no_data():
+    """Test that plot_evppi_tornado handles empty data without crashing."""
+    # This test just checks that the function runs without error
+    reporting.plot_evppi_tornado({})
+
+
 def test_atkinson_epsilon_one():
     incomes = pd.Series([1, 2, 3, 4])
     assert reporting.atkinson_index(incomes, epsilon=1) == pytest.approx(0.1147, abs=1e-3)
