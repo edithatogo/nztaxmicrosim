@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import pytest
 
@@ -5,13 +7,16 @@ import src.reporting as reporting
 from src.reporting import (
     calculate_child_poverty_rate,
     calculate_disposable_income,
-    calculate_disposable_income_ahc,
-    calculate_gini_coefficient,
-    calculate_net_fiscal_impact,
-    calculate_poverty_rate,
-    calculate_total_tax_revenue,
-    calculate_total_welfare_transfers,
-    generate_microsim_report,
+)
+from src.reporting import calculate_disposable_income_ahc, calculate_gini_coefficient
+from src.reporting import calculate_net_fiscal_impact
+from src.reporting import calculate_poverty_rate
+from src.reporting import calculate_total_tax_revenue
+from src.reporting import calculate_total_welfare_transfers
+from src.reporting import generate_microsim_report
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
 )
 
 
@@ -201,6 +206,55 @@ def test_inequality_edge_cases():
     incomes_empty = pd.Series([], dtype=float)
     lorenz = reporting.lorenz_curve(incomes_empty)
     assert lorenz.equals(pd.DataFrame({"population_share": [0.0], "income_share": [0.0]}))
+
+
+def test_plot_evppi(tmp_path):
+    """Test that plot_evppi creates an output file."""
+    evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
+    output_file = tmp_path / "evppi_plot.png"
+
+    reporting.plot_evppi(evppi_results, output_path=str(output_file))
+
+    assert os.path.exists(output_file)
+
+
+def test_plot_evppi_no_data():
+    """Test that plot_evppi handles empty data without crashing."""
+    # This test just checks that the function runs without error
+    reporting.plot_evppi({})
+
+
+def test_calculate_reynolds_smolensky_index(sample_dataframe):
+    """Test the Reynolds-Smolensky index calculation."""
+    market_income = (
+        sample_dataframe["employment_income"]
+        + sample_dataframe["self_employment_income"]
+        + sample_dataframe["investment_income"]
+        + sample_dataframe["rental_property_income"]
+        + sample_dataframe["private_pensions_annuities"]
+    )
+    disposable_income = calculate_disposable_income(sample_dataframe)
+
+    # Gini of market income - Gini of disposable income
+    # Gini of market income - Gini of disposable income
+    gini_market = calculate_gini_coefficient(market_income)
+    gini_disposable = calculate_gini_coefficient(disposable_income)
+    expected_rs = gini_market - gini_disposable
+
+    rs_index = calculate_reynolds_smolensky_index(market_income, disposable_income)
+    assert rs_index == pytest.approx(expected_rs)
+
+
+def test_equity_metrics_table(sample_dataframe):
+    """Test the EquityMetricsTable component."""
+    equity_table = EquityMetricsTable()
+    result = equity_table.generate(sample_dataframe, {})
+
+    assert isinstance(result, pd.DataFrame)
+    assert "Metric" in result.columns
+    assert "Value" in result.columns
+    assert len(result) == 4
+    assert "Reynolds-Smolensky Index" in result["Metric"].values
 
 
 def test_atkinson_epsilon_one():
