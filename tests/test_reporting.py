@@ -42,6 +42,10 @@ from src.reporting_framework import (
     EquityMetricsTable,
     calculate_reynolds_smolensky_index,
 )
+from src.reporting_framework import (
+    EquityMetricsTable,
+    calculate_reynolds_smolensky_index,
+)
 
 
 @pytest.fixture
