@@ -10,14 +10,32 @@ renders it by default when viewing the repository.
 ## Key Features
 
 - Income tax, Working for Families and FamilyBoost modules
+<<<<<<< HEAD
 - Modular plug-in simulation pipeline where tax and benefit rules can be
   independently enabled, ordered or substituted
+- Rule-based engine for composing Working for Families calculations
+>>>>>>> main
 - Parameterised policy rules for multiple tax years
 - Reporting utilities and sensitivity analysis, including Expected Value of
   Perfect Information (EVPI)
 - Optional modules for Paid Parental Leave and Child Support
 - Experimental dynamic simulation tools
+- Modular simulation pipeline with pluggable rule components
 - Script to discover historical tax datasets via the data.govt.nz API
+
+### Feature Matrix
+
+| Feature | Module | Release Status |
+| --- | --- | --- |
+| Income tax calculations | Income Tax | Core |
+| Working for Families | Working for Families | Core |
+| FamilyBoost | FamilyBoost | Core |
+| Paid Parental Leave | Paid Parental Leave | Optional |
+| Child Support | Child Support | Optional |
+| Policy rules for multiple tax years | Parameterised Policy Rules | Core |
+| Reporting and EVPI analysis | Reporting & Sensitivity | Core |
+| Dynamic simulation tools | Dynamic Simulation | Experimental |
+| Historical tax dataset discovery | Data.govt.nz API Script | Experimental |
 
 ## Quick Start
 

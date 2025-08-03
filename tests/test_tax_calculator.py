@@ -1,12 +1,13 @@
-from src.microsim import calcietc, simrwt, taxit
-from src.parameters import IETCParams, TaxBracketParams
+<<<<<<< HEAD
+from src.microsim import calcietc, load_parameters, simrwt, taxit
+from src.parameters import RWTParams
 from src.tax_calculator import TaxCalculator
 
 
 def test_tax_calculator_income_tax_and_ietc() -> None:
     calc = TaxCalculator.from_year("2023-2024")
     income = 50_000
-    expected_tax = taxit(income, TaxBracketParams.from_dict(calc.params["tax_brackets"]))
+    expected_tax = taxit(income, calc.params.tax_brackets)
     assert calc.income_tax(income) == expected_tax
 
     expected_ietc = calcietc(
@@ -14,7 +15,7 @@ def test_tax_calculator_income_tax_and_ietc() -> None:
         is_wff_recipient=False,
         is_super_recipient=False,
         is_benefit_recipient=False,
-        ietc_params=IETCParams.from_dict(calc.params["ietc"]),
+        ietc_params=calc.params.ietc,
     )
     assert (
         calc.ietc(
@@ -28,18 +29,9 @@ def test_tax_calculator_income_tax_and_ietc() -> None:
 
 
 def test_tax_calculator_rwt_delegates() -> None:
-    params = {
-        "tax_brackets": {"rates": [0.1], "thresholds": [1_000]},
-        "ietc": {"thrin": 0, "ent": 0, "thrab": 0, "abrate": 0},
-        "rwt": {
-            "rwt_rate_10_5": 0.1,
-            "rwt_rate_17_5": 0.2,
-            "rwt_rate_30": 0.3,
-            "rwt_rate_33": 0.33,
-            "rwt_rate_39": 0.39,
-        },
-    }
+    params = load_parameters("2023-2024")
+    params.rwt = RWTParams(0.1, 0.2, 0.3, 0.33, 0.39)
     calc = TaxCalculator(params)
     interest = 100.0
-    expected = simrwt(interest, 0.1, 0.2, 0.3, 0.33, 0.39)
+    expected = simrwt(interest, params.rwt)
     assert calc.rwt(interest) == expected

@@ -53,14 +53,14 @@ def test_gross_up_income(sample_df: pd.DataFrame) -> None:
 
 def test_calculate_abatement(sample_df: pd.DataFrame) -> None:
     df = gross_up_income(sample_df, 0)
-    df = calculate_abatement(df, params_2022_23["wff"], 365)
+    df = calculate_abatement(df, params_2022_23.wff, 365)
     assert np.allclose(df["abate_amt"], np.array([1971.0, 15471.0, 0.0]))
     assert np.allclose(df["BSTCabate_amt"], np.array([0.0, 4410.0, 0.0]))
 
 
 def test_calculate_max_entitlements(sample_df: pd.DataFrame) -> None:
     df = gross_up_income(sample_df, 0)
-    df = calculate_max_entitlements(df, params_2022_23["wff"])
+    df = calculate_max_entitlements(df, params_2022_23.wff)
     assert np.allclose(df["maxFTCent"], np.array([6642.0, 12054.0, 0.0]))
     assert np.allclose(df["maxIWTCent"], np.array([3770.0, 3770.0, 0.0]))
     assert np.allclose(df["maxBSTC0ent"], np.array([3388.0, 0.0, 0.0]))
@@ -70,7 +70,7 @@ def test_calculate_max_entitlements(sample_df: pd.DataFrame) -> None:
 
 
 def test_apply_care_logic(sample_df: pd.DataFrame) -> None:
-    wff_params = params_2022_23["wff"]
+    wff_params = params_2022_23.wff
     df = gross_up_income(sample_df, 0)
     df = calculate_abatement(df, wff_params, 365)
     df = calculate_max_entitlements(df, wff_params)
@@ -92,7 +92,7 @@ def test_apply_calibrations() -> None:
 
 
 def test_famsim(sample_df: pd.DataFrame) -> None:
-    wff_params = params_2022_23["wff"]
+    wff_params = params_2022_23.wff
     result = famsim(sample_df.copy(), wff_params, 0, 365)
     expected_FTCcalc = np.array([4671.0, 0.0, 0.0])
     expected_IWTCcalc = np.array([3770.0, 353.0, 0.0])

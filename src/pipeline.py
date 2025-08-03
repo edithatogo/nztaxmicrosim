@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Simple plug-in pipeline for orchestrating tax and benefit rules."""
 
 from __future__ import annotations
@@ -9,13 +10,17 @@ from .tax_calculator import TaxCalculator
 
 
 class Rule(Protocol):
-    """Protocol for a single tax or benefit calculation module."""
+    """Protocol for a simulation rule.
+
+    Rules have a ``name`` used for identification, an ``enabled`` flag to
+    control execution and are callable with a single ``data`` argument that is
+    mutated in-place.
+    """
 
     name: str
     enabled: bool
 
-    def apply(self, state: dict[str, Any]) -> None:
-        """Apply the rule to ``state`` modifying it in-place."""
+    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - Protocol
         ...
 
 
@@ -25,35 +30,36 @@ class SimulationPipeline:
 
     rules: list[Rule] = field(default_factory=list)
 
-    def run(self, state: dict[str, Any]) -> dict[str, Any]:
-        """Execute all enabled rules in order."""
+    def _find_rule_index(self, name: str) -> int | None:
+        """Find the index of a rule by name."""
+        for i, rule in enumerate(self.rules):
+            if rule.name == name:
+                return i
+        return None
+
+    def run(self, data: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Run all enabled rules sequentially."""
+        if data is None:
+            data = {}
         for rule in self.rules:
             if getattr(rule, "enabled", True):
-                rule.apply(state)
-        return state
-
-    # Management helpers -------------------------------------------------
+                rule(data)
+        return data
 
     def enable(self, name: str) -> None:
         """Enable the rule ``name`` if present."""
-        for rule in self.rules:
-            if rule.name == name:
-                rule.enabled = True
-                break
+        if (idx := self._find_rule_index(name)) is not None:
+            self.rules[idx].enabled = True
 
     def disable(self, name: str) -> None:
         """Disable the rule ``name`` if present."""
-        for rule in self.rules:
-            if rule.name == name:
-                rule.enabled = False
-                break
+        if (idx := self._find_rule_index(name)) is not None:
+            self.rules[idx].enabled = False
 
     def replace(self, name: str, new_rule: Rule) -> None:
         """Replace the rule ``name`` with ``new_rule``."""
-        for idx, rule in enumerate(self.rules):
-            if rule.name == name:
-                self.rules[idx] = new_rule
-                break
+        if (idx := self._find_rule_index(name)) is not None:
+            self.rules[idx] = new_rule
 
 
 @dataclass
@@ -64,7 +70,7 @@ class IncomeTaxRule:
     name: str = "income_tax"
     enabled: bool = True
 
-    def apply(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
+    def __call__(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
         income = state.get("taxable_income", 0.0)
         state["income_tax"] = self.calculator.income_tax(income)
 
@@ -77,7 +83,7 @@ class IETCRule:
     name: str = "ietc"
     enabled: bool = True
 
-    def apply(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
+    def __call__(self, state: dict[str, Any]) -> None:  # pragma: no cover - simple
         income = state.get("taxable_income", 0.0)
         state["ietc"] = self.calculator.ietc(
             taxable_income=income,
@@ -85,3 +91,4 @@ class IETCRule:
             is_super_recipient=state.get("is_super_recipient", False),
             is_benefit_recipient=state.get("is_benefit_recipient", False),
         )
+

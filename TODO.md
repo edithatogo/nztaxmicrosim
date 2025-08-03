@@ -2,8 +2,10 @@
 
 Outstanding work:
 
-* Build VOI analysis module
+* Build value-of-information analysis module
 * Implement budget impact calculations
-* Integrate equity metrics
+* Integrate personal income and equity metrics
+* Add support for both static and dynamic simulation modes
+* Refine modular simulation pipeline and add additional rule plug-ins
 * Add more tests
 * Extend modular pipeline with additional tax and benefit rules

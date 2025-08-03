@@ -87,11 +87,11 @@ def main() -> None:
     year = "2023-2024"
     tax_calc = TaxCalculator.from_year(year)
     params = tax_calc.params
-    wff_params = params["wff"]
-    jss_params = params["jss"]
-    sps_params = params["sps"]
-    slp_params = params["slp"]
-    as_params = params["accommodation_supplement"]
+    wff_params = params.wff
+    jss_params = params.jss
+    sps_params = params.sps
+    slp_params = params.slp
+    as_params = params.accommodation_supplement
 
     wagegwt: float = 0.0
     daysinperiod: int = 365

@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
-from typing import Any
+from dataclasses import dataclass
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import IETCParams, TaxBracketParams
+from .parameters import Parameters
 
 
 @dataclass
@@ -15,14 +14,14 @@ class TaxCalculator:
     methods which delegate to the functions defined in :mod:`microsim`.
     """
 
-    params: dict[str, Any]
+    params: Parameters
 
     def income_tax(self, taxable_income: float) -> float:
         """Calculate income tax for a given taxable income.
 
-        Parameters are drawn from ``params['tax_brackets']``.
+        Parameters are drawn from ``params.tax_brackets``.
         """
-        tax_params = TaxBracketParams.from_dict(self.params["tax_brackets"])
+        tax_params = self.params.tax_brackets
         return taxit(taxy=taxable_income, params=tax_params)
 
     def ietc(
@@ -38,23 +37,15 @@ class TaxCalculator:
             is_wff_recipient=is_wff_recipient,
             is_super_recipient=is_super_recipient,
             is_benefit_recipient=is_benefit_recipient,
-            ietc_params=IETCParams.from_dict(self.params["ietc"]),
+            ietc_params=self.params.ietc,
         )
 
     def rwt(self, interest: float) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        rwt_params = self.params.get("rwt", {})
-        return simrwt(
-            interest=interest,
-            rwt_rate_10_5=rwt_params.get("rwt_rate_10_5", 0.0),
-            rwt_rate_17_5=rwt_params.get("rwt_rate_17_5", 0.0),
-            rwt_rate_30=rwt_params.get("rwt_rate_30", 0.0),
-            rwt_rate_33=rwt_params.get("rwt_rate_33", 0.0),
-            rwt_rate_39=rwt_params.get("rwt_rate_39", 0.0),
-        )
+        return simrwt(interest=interest, params=self.params.rwt)
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":
         """Construct a :class:`TaxCalculator` from stored parameter files."""
         params = load_parameters(year)
-        return cls(asdict(params))
+        return cls(params)
