@@ -107,7 +107,7 @@ print(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
-if hasattr(params_2024_25, "family_boost"):
+if params_2024_25.family_boost.max_credit > 0:
     family_boost = family_boost_credit(
         family_income=family_income,
         childcare_costs=childcare_costs,
