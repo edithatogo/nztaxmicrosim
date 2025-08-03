@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-<<<<<<< HEAD
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
 from .parameters import Parameters
@@ -22,9 +21,7 @@ class TaxCalculator:
 
         Parameters are drawn from ``params.tax_brackets``.
         """
-
         tax_params = self.params.tax_brackets
-
         return taxit(taxy=taxable_income, params=tax_params)
 
     def ietc(

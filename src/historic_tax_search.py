@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from typing import Iterable
+from typing import Any, Iterable
 
 import requests
 
@@ -36,7 +36,7 @@ def fetch_datasets(query: str, rows: int = 50) -> list[DatasetInfo]:
         Maximum number of results to return.
     """
 
-    params = {"q": query, "rows": rows}
+    params: dict[str, Any] = {"q": query, "rows": rows}
     response = requests.get(DATA_GOVT_API, params=params, timeout=30)
     response.raise_for_status()
     data = response.json()
