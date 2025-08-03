@@ -68,9 +68,7 @@ df_results = famsim(
 )
 
 # Calculate income tax and IETC for each person
-df_results["income_tax_payable"] = df_results["income"].apply(
-    lambda x: taxit(x, tax_params["rates"], tax_params["thresholds"])
-)
+df_results["income_tax_payable"] = df_results["income"].apply(lambda x: taxit(x, tax_params))
 df_results["ietc_amount"] = df_results.apply(
     lambda row: calcietc(
         taxable_income=row["income"],

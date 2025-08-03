@@ -50,8 +50,7 @@ print("--- Calculating for 2016-2017 ---")
 # Calculate income tax
 tax_16_17 = taxit(
     income,
-    params_2016_17["tax_brackets"]["rates"],
-    params_2016_17["tax_brackets"]["thresholds"],
+    params_2016_17.tax_brackets,
 )
 print(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
 
@@ -82,8 +81,7 @@ print("\n--- Calculating for 2024-2025 ---")
 # Calculate income tax
 tax_24_25 = taxit(
     income,
-    params_2024_25["tax_brackets"]["rates"],
-    params_2024_25["tax_brackets"]["thresholds"],
+    params_2024_25.tax_brackets,
 )
 print(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
 
@@ -109,7 +107,7 @@ print(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
-if "family_boost" in params_2024_25:
+if hasattr(params_2024_25, "family_boost"):
     family_boost = family_boost_credit(
         family_income=family_income,
         childcare_costs=childcare_costs,
