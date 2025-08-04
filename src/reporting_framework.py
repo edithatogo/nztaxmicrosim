@@ -143,6 +143,9 @@ class FiscalImpactTable(ReportComponent):
             "sps_entitlement",
             "slp_entitlement",
             "accommodation_supplement_entitlement",
+        ]:
+            total_welfare += df.get(col, pd.Series([0])).sum() * 52
+        for col in [
             "FTCcalc",
             "IWTCcalc",
             "BSTCcalc",
