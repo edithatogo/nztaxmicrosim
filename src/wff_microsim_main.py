@@ -106,6 +106,7 @@ def main() -> None:
         GrossUpIncomeRule,
     )
 
+    from .tax_rules import ACCLevyRule
     pipeline = SimulationPipeline(
         [
             JSSRule(jss_params=params.jss),
@@ -113,6 +114,7 @@ def main() -> None:
             SLPRule(slp_params=params.slp),
             AccommodationSupplementRule(as_params=params.accommodation_supplement),
             IncomeTaxRule(tax_calc),
+            ACCLevyRule(acc_levy_params=params.acc_levy),
             GrossUpIncomeRule(),
             CalculateMaxEntitlementsRule(),
             ApplyCareLogicRule(),
@@ -141,6 +143,7 @@ def main() -> None:
         + result["BSTCcalc"]
         + result["MFTCcalc"]
         - result["tax_liability"]
+        - result["acc_levy"]
     )
     result["disposable_income_ahc"] = result["disposable_income"] - (result["housing_costs"] * 52)
 
