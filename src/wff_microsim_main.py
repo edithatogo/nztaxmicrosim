@@ -106,7 +106,7 @@ def main() -> None:
         GrossUpIncomeRule,
     )
 
-    from .tax_rules import ACCLevyRule
+    from .tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule
     pipeline = SimulationPipeline(
         [
             JSSRule(jss_params=params.jss),
@@ -115,6 +115,8 @@ def main() -> None:
             AccommodationSupplementRule(as_params=params.accommodation_supplement),
             IncomeTaxRule(tax_calc),
             ACCLevyRule(acc_levy_params=params.acc_levy),
+            KiwiSaverRule(kiwisaver_params=params.kiwisaver),
+            StudentLoanRule(student_loan_params=params.student_loan),
             GrossUpIncomeRule(),
             CalculateMaxEntitlementsRule(),
             ApplyCareLogicRule(),
@@ -144,6 +146,8 @@ def main() -> None:
         + result["MFTCcalc"]
         - result["tax_liability"]
         - result["acc_levy"]
+        - result["kiwisaver_contribution"]
+        - result["student_loan_repayment"]
     )
     result["disposable_income_ahc"] = result["disposable_income"] - (result["housing_costs"] * 52)
 
