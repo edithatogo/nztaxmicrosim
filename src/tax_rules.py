@@ -69,3 +69,29 @@ class StudentLoanRule(Rule):
                 repayment_rate=self.student_loan_params.repayment_rate,
             )
         )
+
+
+@dataclass
+class IETCRule(Rule):
+    """Rule to calculate the Independent Earner Tax Credit."""
+
+    name: str = "ietc"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the IETC and adds it to the DataFrame."""
+        from .tax_calculator import TaxCalculator
+
+        df = data["df"]
+        tax_calc = TaxCalculator(params=data["params"])
+        df["ietc"] = df.apply(
+            lambda row: tax_calc.ietc(
+                taxable_income=row["familyinc"],
+                is_wff_recipient=row["FTCcalc"] > 0,
+                is_super_recipient=row["is_nz_super_recipient"],
+                is_benefit_recipient=row["is_jss_recipient"]
+                or row["is_sps_recipient"]
+                or row["is_slp_recipient"],
+            ),
+            axis=1,
+        )

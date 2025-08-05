@@ -63,3 +63,31 @@ def test_student_loan_rule():
     assert "student_loan_repayment" in data["df"].columns
     assert data["df"]["student_loan_repayment"][0] == (50000 - 20000) * 0.12
     assert data["df"]["student_loan_repayment"][1] == (150000 - 20000) * 0.12
+
+
+from src.parameters import IETCParams
+from src.tax_rules import IETCRule
+from src.microsim import load_parameters
+
+
+def test_ietc_rule():
+    """Test the IETCRule."""
+    rule = IETCRule()
+    data = {
+        "df": pd.DataFrame(
+            {
+                "familyinc": [20000, 30000, 50000],
+                "FTCcalc": [0, 0, 100],
+                "is_nz_super_recipient": [False, False, False],
+                "is_jss_recipient": [False, False, False],
+                "is_sps_recipient": [False, False, False],
+                "is_slp_recipient": [False, False, False],
+            }
+        ),
+        "params": load_parameters("2023-2024"),
+    }
+    rule(data)
+    assert "ietc" in data["df"].columns
+    assert data["df"]["ietc"][0] == 0
+    assert data["df"]["ietc"][1] == 520
+    assert data["df"]["ietc"][2] == 0
