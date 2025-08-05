@@ -24,7 +24,6 @@ renders it by default when viewing the repository.
 
 ### Feature Matrix
 
-
 This document compares the features of the NZ-Microsim library with the original SAS models it is based on, as well as two other popular open-source microsimulation platforms: PolicyEngine and OpenFisca.
 
 | Feature | NZ-Microsim (This Repo) | Original SAS Models | PolicyEngine | OpenFisca |
@@ -42,8 +41,6 @@ This document compares the features of the NZ-Microsim library with the original
 | **Extensibility** | Designed to be extensible | Limited | Designed to be extensible through new country packages or policies | Designed to be extensible through new country packages or policies |
 | **Tax Year Coverage** | 2005-2025 | Not specified | Varies by country | Varies by country |
 | **Community** | Small, focused on this project | Internal to Inland Revenue | Active community | Active community |
-
-For a more detailed comparison with other microsimulation platforms, see the [full feature matrix](feature-matrix.md).
 
 | Feature | Module | Release Status |
 | --- | --- | --- |
