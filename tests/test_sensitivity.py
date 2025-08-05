@@ -149,3 +149,20 @@ def test_run_probabilistic_analysis_unsupported_dist():
             dummy_wff,
             dummy_tax,
         )
+
+
+from src.sensitivity_analysis import _get_nested, _set_nested
+
+
+def _test_get_nested():
+    d = {"a": {"b": [1, 2, {"c": 3}]}}
+    assert _get_nested(d, "a.b.0") == 1
+    assert _get_nested(d, "a.b.2.c") == 3
+
+
+def _test_set_nested():
+    d = {"a": {"b": [1, 2, {"c": 3}]}}
+    _set_nested(d, "a.b.0", 4)
+    assert d["a"]["b"][0] == 4
+    _set_nested(d, "a.b.2.c", 5)
+    assert d["a"]["b"][2]["c"] == 5

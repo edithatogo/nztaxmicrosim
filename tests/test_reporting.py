@@ -228,12 +228,17 @@ def test_plot_evppi(tmp_path):
     )
 
     assert os.path.exists(output_file)
+    # Add a check for the content of the plot
+    from PIL import Image
+    img = Image.open(output_file)
+    assert img.size == (1000, 600)
 
 
-def test_plot_evppi_no_data():
+def test_plot_evppi_no_data(capsys):
     """Test that plot_evppi handles empty data without crashing."""
-    # This test just checks that the function runs without error
     reporting.plot_evppi({})
+    captured = capsys.readouterr()
+    assert "No EVPPI results to plot." in captured.out
 
 
 def test_plot_evppi_no_output_path():
@@ -291,12 +296,17 @@ def test_plot_evppi_tornado(tmp_path):
     )
 
     assert os.path.exists(output_file)
+    # Add a check for the content of the plot
+    from PIL import Image
+    img = Image.open(output_file)
+    assert img.size == (1000, 600)
 
 
-def test_plot_evppi_tornado_no_data():
+def test_plot_evppi_tornado_no_data(capsys):
     """Test that plot_evppi_tornado handles empty data without crashing."""
-    # This test just checks that the function runs without error
     reporting.plot_evppi_tornado({})
+    captured = capsys.readouterr()
+    assert "No EVPPI results to plot." in captured.out
 
 
 def test_plot_evppi_tornado_no_output_path():
