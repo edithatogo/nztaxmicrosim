@@ -87,5 +87,10 @@
     "acc_levy": {
         "rate": 0.0153,
         "max_income": 139111
+  },
+  "wep": {
+    "single_rate": 20.46,
+    "couple_rate": 31.82,
+    "child_rate": 0
     }
 }

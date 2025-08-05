@@ -268,6 +268,19 @@ class ACCLevyParams:
 
 
 @dataclass
+class WEPParams:
+    single_rate: float
+    couple_rate: float
+    child_rate: float
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "WEPParams":
+        required = ["single_rate", "couple_rate", "child_rate"]
+        _require_fields(data, required)
+        return cls(**{k: float(data[k]) for k in required})
+
+
+@dataclass
 class Parameters:
     tax_brackets: TaxBracketParams
     ietc: IETCParams
@@ -283,6 +296,7 @@ class Parameters:
     kiwisaver: KiwisaverParams
     student_loan: StudentLoanParams
     acc_levy: ACCLevyParams
+    wep: WEPParams
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Parameters":
@@ -329,6 +343,7 @@ class Parameters:
                 )
             ),
             acc_levy=ACCLevyParams.from_dict(data.get("acc_levy", {"rate": 0.0, "max_income": 0.0})),
+            wep=WEPParams.from_dict(data.get("wep", {"single_rate": 0.0, "couple_rate": 0.0, "child_rate": 0.0})),
         )
 
     def __getitem__(self, key: str) -> Any:

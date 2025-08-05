@@ -59,3 +59,23 @@ def test_accommodation_supplement_rule(sample_dataframe):
     data = {"df": sample_dataframe.copy()}
     rule(data)
     assert "accommodation_supplement_entitlement" in data["df"].columns
+
+
+from src.benefit_rules import WEPRule
+
+
+def test_wep_rule(sample_dataframe):
+    """Test the WEPRule."""
+    params = load_parameters("2023-2024")
+    rule = WEPRule(wep_params=params.wep)
+    df = sample_dataframe.copy()
+    df["is_jss_recipient"] = [True, False, False]
+    df["is_sps_recipient"] = [False, False, False]
+    df["is_slp_recipient"] = [False, False, True]
+    df["is_nz_super_recipient"] = [False, True, False]
+    data = {"df": df}
+    rule(data)
+    assert "wep_entitlement" in data["df"].columns
+    assert data["df"]["wep_entitlement"][0] == 20.46
+    assert data["df"]["wep_entitlement"][1] == 31.82
+    assert data["df"]["wep_entitlement"][2] == 20.46

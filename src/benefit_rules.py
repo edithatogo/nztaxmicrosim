@@ -38,6 +38,34 @@ class JSSRule(Rule):
 
 
 @dataclass
+class WEPRule(Rule):
+    """Rule to calculate the Winter Energy Payment."""
+
+    wep_params: "WEPParams"
+    name: str = "wep"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the WEP and adds it to the DataFrame."""
+        from .benefits import calculate_wep
+
+        df = data["df"]
+        df["wep_entitlement"] = df.apply(
+            lambda row: calculate_wep(
+                is_eligible=row["is_jss_recipient"]
+                or row["is_sps_recipient"]
+                or row["is_slp_recipient"]
+                or row["is_nz_super_recipient"],
+                is_single=row["marital_status"] == "Single",
+                is_partnered=row["marital_status"] == "Married",
+                num_dependent_children=row["num_children"],
+                wep_params=self.wep_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
 class SPSRule(Rule):
     """Rule to calculate Sole Parent Support."""
 

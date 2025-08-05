@@ -126,3 +126,25 @@ def calculate_child_support(liable_income: float, cs_params: ChildSupportParams)
         return 0.0
 
     return max(0.0, liable_income * cs_params.support_rate)
+
+
+def calculate_wep(
+    is_eligible: bool,
+    is_single: bool,
+    is_partnered: bool,
+    num_dependent_children: int,
+    wep_params: "WEPParams",
+) -> float:
+    """Calculate the Winter Energy Payment (WEP) entitlement."""
+
+    if not is_eligible:
+        return 0.0
+
+    base_rate = 0.0
+    if is_single:
+        base_rate = wep_params.single_rate
+    elif is_partnered:
+        base_rate = wep_params.couple_rate
+    base_rate += num_dependent_children * wep_params.child_rate
+
+    return base_rate
