@@ -170,3 +170,24 @@ def calculate_bstc(
             bstc_params.abatement_rate,
         )
     return base_rate
+
+
+def calculate_ftc(
+    family_income: float,
+    num_children: int,
+    ftc_params: "FTCParams",
+) -> float:
+    """Calculate the Family Tax Credit (FTC) entitlement."""
+
+    if num_children == 0:
+        return 0.0
+
+    base_rate = ftc_params.base_rate
+    base_rate += (num_children - 1) * ftc_params.child_rate
+
+    return _apply_abatement(
+        base_rate,
+        family_income,
+        ftc_params.income_threshold,
+        ftc_params.abatement_rate,
+    )

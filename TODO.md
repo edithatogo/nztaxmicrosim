@@ -9,3 +9,5 @@ Outstanding work:
   * Added `KiwiSaverRule`
   * Added `StudentLoanRule`
   * Added `IETCRule`
+  * Added `WEPRule`
+  * Added `BSTCRule`

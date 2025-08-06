@@ -97,3 +97,21 @@ def test_bstc_rule(sample_dataframe):
     assert data["df"]["bstc_entitlement"][0] == 3640
     assert data["df"]["bstc_entitlement"][1] == 3640 - (80000 - 79000) * 0.21
     assert data["df"]["bstc_entitlement"][2] == 0
+
+
+from src.benefit_rules import FTCRule
+
+
+def test_ftc_rule(sample_dataframe):
+    """Test the FTCRule."""
+    params = load_parameters("2023-2024")
+    rule = FTCRule(ftc_params=params.ftc)
+    df = sample_dataframe.copy()
+    df["familyinc"] = [40000, 50000, 100000]
+    df["num_children"] = [1, 2, 3]
+    data = {"df": df}
+    rule(data)
+    assert "ftc_entitlement" in data["df"].columns
+    assert data["df"]["ftc_entitlement"][0] == 6645
+    assert data["df"]["ftc_entitlement"][1] == 6645 + 5415 - (50000 - 42700) * 0.27
+    assert data["df"]["ftc_entitlement"][2] == 6645 + 2 * 5415 - (100000 - 42700) * 0.27

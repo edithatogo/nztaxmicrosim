@@ -300,6 +300,20 @@ class BSTCParams:
 
 
 @dataclass
+class FTCParams:
+    base_rate: float
+    child_rate: float
+    income_threshold: float
+    abatement_rate: float
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "FTCParams":
+        required = ["base_rate", "child_rate", "income_threshold", "abatement_rate"]
+        _require_fields(data, required)
+        return cls(**{k: float(data[k]) for k in required})
+
+
+@dataclass
 class Parameters:
     tax_brackets: TaxBracketParams
     ietc: IETCParams
@@ -317,6 +331,7 @@ class Parameters:
     acc_levy: ACCLevyParams
     wep: WEPParams
     bstc: BSTCParams
+    ftc: FTCParams
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Parameters":
@@ -372,6 +387,17 @@ class Parameters:
                         "income_threshold": 0.0,
                         "abatement_rate": 0.0,
                         "max_age": 0,
+                    },
+                )
+            ),
+            ftc=FTCParams.from_dict(
+                data.get(
+                    "ftc",
+                    {
+                        "base_rate": 0.0,
+                        "child_rate": 0.0,
+                        "income_threshold": 0.0,
+                        "abatement_rate": 0.0,
                     },
                 )
             ),

@@ -98,5 +98,11 @@
     "income_threshold": 79000,
     "abatement_rate": 0.21,
     "max_age": 3
+  },
+  "ftc": {
+    "base_rate": 6645,
+    "child_rate": 5415,
+    "income_threshold": 42700,
+    "abatement_rate": 0.27
     }
 }

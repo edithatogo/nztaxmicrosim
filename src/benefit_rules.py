@@ -38,6 +38,29 @@ class JSSRule(Rule):
 
 
 @dataclass
+class FTCRule(Rule):
+    """Rule to calculate the Family Tax Credit."""
+
+    ftc_params: "FTCParams"
+    name: str = "ftc"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the FTC and adds it to the DataFrame."""
+        from .benefits import calculate_ftc
+
+        df = data["df"]
+        df["ftc_entitlement"] = df.apply(
+            lambda row: calculate_ftc(
+                family_income=row["familyinc"],
+                num_children=row["num_children"],
+                ftc_params=self.ftc_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
 class BSTCRule(Rule):
     """Rule to calculate the Best Start Tax Credit."""
 
