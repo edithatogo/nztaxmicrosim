@@ -281,6 +281,25 @@ class WEPParams:
 
 
 @dataclass
+class BSTCParams:
+    base_rate: float
+    income_threshold: float
+    abatement_rate: float
+    max_age: int
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "BSTCParams":
+        required = ["base_rate", "income_threshold", "abatement_rate", "max_age"]
+        _require_fields(data, required)
+        return cls(
+            base_rate=float(data["base_rate"]),
+            income_threshold=float(data["income_threshold"]),
+            abatement_rate=float(data["abatement_rate"]),
+            max_age=int(data["max_age"]),
+        )
+
+
+@dataclass
 class Parameters:
     tax_brackets: TaxBracketParams
     ietc: IETCParams
@@ -297,6 +316,7 @@ class Parameters:
     student_loan: StudentLoanParams
     acc_levy: ACCLevyParams
     wep: WEPParams
+    bstc: BSTCParams
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Parameters":
@@ -344,6 +364,17 @@ class Parameters:
             ),
             acc_levy=ACCLevyParams.from_dict(data.get("acc_levy", {"rate": 0.0, "max_income": 0.0})),
             wep=WEPParams.from_dict(data.get("wep", {"single_rate": 0.0, "couple_rate": 0.0, "child_rate": 0.0})),
+            bstc=BSTCParams.from_dict(
+                data.get(
+                    "bstc",
+                    {
+                        "base_rate": 0.0,
+                        "income_threshold": 0.0,
+                        "abatement_rate": 0.0,
+                        "max_age": 0,
+                    },
+                )
+            ),
         )
 
     def __getitem__(self, key: str) -> Any:

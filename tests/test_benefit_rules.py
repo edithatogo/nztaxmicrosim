@@ -79,3 +79,21 @@ def test_wep_rule(sample_dataframe):
     assert data["df"]["wep_entitlement"][0] == 20.46
     assert data["df"]["wep_entitlement"][1] == 31.82
     assert data["df"]["wep_entitlement"][2] == 20.46
+
+
+from src.benefit_rules import BSTCRule
+
+
+def test_bstc_rule(sample_dataframe):
+    """Test the BSTCRule."""
+    params = load_parameters("2023-2024")
+    rule = BSTCRule(bstc_params=params.bstc)
+    df = sample_dataframe.copy()
+    df["familyinc"] = [50000, 80000, 100000]
+    df["ages_of_children"] = [[0], [2], [4]]
+    data = {"df": df}
+    rule(data)
+    assert "bstc_entitlement" in data["df"].columns
+    assert data["df"]["bstc_entitlement"][0] == 3640
+    assert data["df"]["bstc_entitlement"][1] == 3640 - (80000 - 79000) * 0.21
+    assert data["df"]["bstc_entitlement"][2] == 0

@@ -148,3 +148,25 @@ def calculate_wep(
     base_rate += num_dependent_children * wep_params.child_rate
 
     return base_rate
+
+
+def calculate_bstc(
+    family_income: float,
+    child_age: int,
+    bstc_params: "BSTCParams",
+) -> float:
+    """Calculate the Best Start Tax Credit (BSTC) entitlement."""
+
+    if child_age > bstc_params.max_age:
+        return 0.0
+
+    base_rate = bstc_params.base_rate
+
+    if child_age >= 1:
+        return _apply_abatement(
+            base_rate,
+            family_income,
+            bstc_params.income_threshold,
+            bstc_params.abatement_rate,
+        )
+    return base_rate

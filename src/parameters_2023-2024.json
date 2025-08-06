@@ -92,5 +92,11 @@
     "single_rate": 20.46,
     "couple_rate": 31.82,
     "child_rate": 0
+  },
+  "bstc": {
+    "base_rate": 3640,
+    "income_threshold": 79000,
+    "abatement_rate": 0.21,
+    "max_age": 3
     }
 }

@@ -38,6 +38,30 @@ class JSSRule(Rule):
 
 
 @dataclass
+class BSTCRule(Rule):
+    """Rule to calculate the Best Start Tax Credit."""
+
+    bstc_params: "BSTCParams"
+    name: str = "bstc"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the BSTC and adds it to the DataFrame."""
+        from .benefits import calculate_bstc
+
+        df = data["df"]
+        # Assume the first child's age is the relevant one for this calculation
+        df["bstc_entitlement"] = df.apply(
+            lambda row: calculate_bstc(
+                family_income=row["familyinc"],
+                child_age=row["ages_of_children"][0] if row["ages_of_children"] else 99,
+                bstc_params=self.bstc_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
 class WEPRule(Rule):
     """Rule to calculate the Winter Energy Payment."""
 
