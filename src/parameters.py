@@ -314,6 +314,44 @@ class FTCParams:
 
 
 @dataclass
+class IWTCParams:
+    base_rate: float
+    child_rate: float
+    income_threshold: float
+    abatement_rate: float
+    min_hours_worked: int
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "IWTCParams":
+        required = [
+            "base_rate",
+            "child_rate",
+            "income_threshold",
+            "abatement_rate",
+            "min_hours_worked",
+        ]
+        _require_fields(data, required)
+        return cls(
+            base_rate=float(data["base_rate"]),
+            child_rate=float(data["child_rate"]),
+            income_threshold=float(data["income_threshold"]),
+            abatement_rate=float(data["abatement_rate"]),
+            min_hours_worked=int(data["min_hours_worked"]),
+        )
+
+
+@dataclass
+class MFTCParams:
+    guaranteed_income: float
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "MFTCParams":
+        required = ["guaranteed_income"]
+        _require_fields(data, required)
+        return cls(guaranteed_income=float(data["guaranteed_income"]))
+
+
+@dataclass
 class Parameters:
     tax_brackets: TaxBracketParams
     ietc: IETCParams
@@ -332,6 +370,8 @@ class Parameters:
     wep: WEPParams
     bstc: BSTCParams
     ftc: FTCParams
+    iwtc: IWTCParams
+    mftc: MFTCParams
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "Parameters":
@@ -401,6 +441,19 @@ class Parameters:
                     },
                 )
             ),
+            iwtc=IWTCParams.from_dict(
+                data.get(
+                    "iwtc",
+                    {
+                        "base_rate": 0.0,
+                        "child_rate": 0.0,
+                        "income_threshold": 0.0,
+                        "abatement_rate": 0.0,
+                        "min_hours_worked": 0,
+                    },
+                )
+            ),
+            mftc=MFTCParams.from_dict(data.get("mftc", {"guaranteed_income": 0.0})),
         )
 
     def __getitem__(self, key: str) -> Any:

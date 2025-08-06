@@ -11,3 +11,5 @@ Outstanding work:
   * Added `IETCRule`
   * Added `WEPRule`
   * Added `BSTCRule`
+  * Added `FTCRule`
+  * Added `IWTCRule`

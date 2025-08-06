@@ -191,3 +191,44 @@ def calculate_ftc(
         ftc_params.income_threshold,
         ftc_params.abatement_rate,
     )
+
+
+def calculate_iwtc(
+    family_income: float,
+    num_children: int,
+    hours_worked: int,
+    iwtc_params: "IWTCParams",
+) -> float:
+    """Calculate the In-Work Tax Credit (IWTC) entitlement."""
+
+    if num_children == 0:
+        return 0.0
+
+    if hours_worked < iwtc_params.min_hours_worked:
+        return 0.0
+
+    base_rate = iwtc_params.base_rate
+    base_rate += (num_children - 1) * iwtc_params.child_rate
+
+    return _apply_abatement(
+        base_rate,
+        family_income,
+        iwtc_params.income_threshold,
+        iwtc_params.abatement_rate,
+    )
+
+
+def calculate_mftc(
+    family_income: float,
+    tax_paid: float,
+    mftc_params: "MFTCParams",
+) -> float:
+    """Calculate the Minimum Family Tax Credit (MFTC) entitlement."""
+
+    guaranteed_income = mftc_params.guaranteed_income
+    net_income = family_income - tax_paid
+
+    if net_income >= guaranteed_income:
+        return 0.0
+
+    return guaranteed_income - net_income

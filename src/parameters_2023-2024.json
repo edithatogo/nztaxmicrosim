@@ -104,5 +104,15 @@
     "child_rate": 5415,
     "income_threshold": 42700,
     "abatement_rate": 0.27
+  },
+  "iwtc": {
+    "base_rate": 3770,
+    "child_rate": 780,
+    "income_threshold": 42700,
+    "abatement_rate": 0.27,
+    "min_hours_worked": 20
+  },
+  "mftc": {
+    "guaranteed_income": 34320
     }
 }

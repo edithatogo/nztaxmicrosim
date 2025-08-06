@@ -38,6 +38,53 @@ class JSSRule(Rule):
 
 
 @dataclass
+class MFTCRule(Rule):
+    """Rule to calculate the Minimum Family Tax Credit."""
+
+    mftc_params: "MFTCParams"
+    name: str = "mftc"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the MFTC and adds it to the DataFrame."""
+        from .benefits import calculate_mftc
+
+        df = data["df"]
+        df["mftc_entitlement"] = df.apply(
+            lambda row: calculate_mftc(
+                family_income=row["familyinc"],
+                tax_paid=row["tax_liability"],
+                mftc_params=self.mftc_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
+class IWTCRule(Rule):
+    """Rule to calculate the In-Work Tax Credit."""
+
+    iwtc_params: "IWTCParams"
+    name: str = "iwtc"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculates the IWTC and adds it to the DataFrame."""
+        from .benefits import calculate_iwtc
+
+        df = data["df"]
+        df["iwtc_entitlement"] = df.apply(
+            lambda row: calculate_iwtc(
+                family_income=row["familyinc"],
+                num_children=row["num_children"],
+                hours_worked=row["hours_worked"],
+                iwtc_params=self.iwtc_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
 class FTCRule(Rule):
     """Rule to calculate the Family Tax Credit."""
 

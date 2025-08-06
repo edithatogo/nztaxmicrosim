@@ -115,3 +115,40 @@ def test_ftc_rule(sample_dataframe):
     assert data["df"]["ftc_entitlement"][0] == 6645
     assert data["df"]["ftc_entitlement"][1] == 6645 + 5415 - (50000 - 42700) * 0.27
     assert data["df"]["ftc_entitlement"][2] == 6645 + 2 * 5415 - (100000 - 42700) * 0.27
+
+
+from src.benefit_rules import IWTCRule
+
+
+def test_iwtc_rule(sample_dataframe):
+    """Test the IWTCRule."""
+    params = load_parameters("2023-2024")
+    rule = IWTCRule(iwtc_params=params.iwtc)
+    df = sample_dataframe.copy()
+    df["familyinc"] = [40000, 50000, 100000]
+    df["num_children"] = [1, 2, 3]
+    df["hours_worked"] = [25, 30, 10]
+    data = {"df": df}
+    rule(data)
+    assert "iwtc_entitlement" in data["df"].columns
+    assert data["df"]["iwtc_entitlement"][0] == 3770
+    assert data["df"]["iwtc_entitlement"][1] == 3770 + 780 - (50000 - 42700) * 0.27
+    assert data["df"]["iwtc_entitlement"][2] == 0
+
+
+from src.benefit_rules import MFTCRule
+
+
+def test_mftc_rule(sample_dataframe):
+    """Test the MFTCRule."""
+    params = load_parameters("2023-2024")
+    rule = MFTCRule(mftc_params=params.mftc)
+    df = sample_dataframe.copy()
+    df["familyinc"] = [30000, 40000, 50000]
+    df["tax_liability"] = [3000, 5000, 8000]
+    data = {"df": df}
+    rule(data)
+    assert "mftc_entitlement" in data["df"].columns
+    assert data["df"]["mftc_entitlement"][0] == 34320 - (30000 - 3000)
+    assert data["df"]["mftc_entitlement"][1] == 0
+    assert data["df"]["mftc_entitlement"][2] == 0
