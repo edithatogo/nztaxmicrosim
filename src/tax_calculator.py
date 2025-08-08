@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import Parameters
+from .parameters import Parameters, RWTParams
 
 
 @dataclass
@@ -40,9 +40,10 @@ class TaxCalculator:
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float) -> float:
+    def rwt(self, interest: float, rwt_params: RWTParams | None = None) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        return simrwt(interest=interest, params=self.params.rwt)
+        params = rwt_params if rwt_params is not None else self.params.rwt
+        return simrwt(interest=interest, params=params)
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":
