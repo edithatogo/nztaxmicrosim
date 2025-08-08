@@ -2,6 +2,12 @@ import numpy as np
 import pandas as pd
 
 from .parameters import WFFParams
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+from .rules_engine import Rule, RuleEngine
+>>>>>>> main
 
 
 def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
@@ -207,7 +213,12 @@ def famsim(
     wagegwt: float,
     daysinperiod: int,
 ) -> pd.DataFrame:
-    """Compose the WFF calculation phases into a single driver.
+    """Compose the WFF calculation phases using a simple rule engine.
+
+    Each phase of the Working for Families calculation is wrapped in a
+    :class:`~src.rules_engine.Rule` and executed sequentially by
+    :class:`~src.rules_engine.RuleEngine`. This makes it straightforward to
+    extend or reorder the calculation logic without modifying this function.
 
     Args:
         df: DataFrame containing family information.
@@ -218,9 +229,19 @@ def famsim(
     Returns:
         DataFrame with calculated WFF entitlements.
     """
-    df = gross_up_income(df, wagegwt)
-    df = calculate_abatement(df, wff_params, daysinperiod)
-    df = calculate_max_entitlements(df, wff_params)
-    df = apply_care_logic(df, wff_params)
-    df = apply_calibrations(df)
-    return df
+
+    engine = RuleEngine(
+        [
+            Rule("gross_up_income", gross_up_income, {"wagegwt": wagegwt}),
+            Rule(
+                "calculate_abatement",
+                calculate_abatement,
+                {"wff_params": wff_params, "daysinperiod": daysinperiod},
+            ),
+            Rule("calculate_max_entitlements", calculate_max_entitlements, {"wff_params": wff_params}),
+            Rule("apply_care_logic", apply_care_logic, {"wff_params": wff_params}),
+            Rule("apply_calibrations", apply_calibrations),
+        ]
+    )
+
+    return engine.run(df)

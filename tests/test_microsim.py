@@ -21,7 +21,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import TaxBracketParams
+from src.parameters import RWTParams, TaxBracketParams
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")
@@ -288,20 +288,28 @@ def test_eitc():
 
 
 def test_simrwt():
-    """
-    Tests the simrwt function for Resident Withholding Tax simulation.
-    """
+    """Tests the simrwt function for Resident Withholding Tax simulation."""
+    params = RWTParams(0.1, 0.2, 0.3, 0.4, 0.5)
+
     # Test case 1
-    assert simrwt(1000, 0.1, 0.2, 0.3, 0.4, 0.5) == min(
+    assert simrwt(1000, params) == min(
         1000,
-        1000 * (0.0 + 1.05 * 0.1 + 1.75 * 0.2 + 0.30 * 0.3 + 0.33 * 0.4 + 0.39 * 0.5),
+        1000
+        * (
+            0.0
+            + 1.05 * params.rwt_rate_10_5
+            + 1.75 * params.rwt_rate_17_5
+            + 0.30 * params.rwt_rate_30
+            + 0.33 * params.rwt_rate_33
+            + 0.39 * params.rwt_rate_39
+        ),
     )
 
     # Test case 2: Zero interest
-    assert simrwt(0, 0.1, 0.2, 0.3, 0.4, 0.5) == 0
+    assert simrwt(0, params) == 0
 
     # Test case 3: Negative interest
-    assert simrwt(-1000, 0.1, 0.2, 0.3, 0.4, 0.5) == 0
+    assert simrwt(-1000, params) == 0
 
 
 def test_supstd():

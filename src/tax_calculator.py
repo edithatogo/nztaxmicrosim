@@ -20,7 +20,7 @@ class TaxCalculator(BaseModel):
     def income_tax(self, taxable_income: float) -> float:
         """Calculate income tax for a given taxable income.
 
-        Parameters are drawn from ``params['tax_brackets']``.
+        Parameters are drawn from ``params.tax_brackets``.
         """
         tax_params: TaxBracketParams = self.params.tax_brackets
         return taxit(taxy=taxable_income, params=tax_params)

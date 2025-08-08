@@ -48,7 +48,7 @@ except ValueError as e:
 # --- 3. Run the Microsimulation ---
 # Use the 2024-2025 parameters by default
 params = load_parameters("2024-2025")
-wff_params = params["wff"]
+wff_params = params.wff
 wagegwt = 0.03
 daysinperiod = 365
 

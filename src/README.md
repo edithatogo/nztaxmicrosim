@@ -8,6 +8,7 @@ This directory contains the core Python source code for the NZ Microsimulation M
 *   `tax_calculator.py`: Convenience class that wraps core tax calculations and stores parameter sets.
 *   `acc_levy.py`: Implements the ACC earner's levy and payroll deduction helpers.
 *   `wff_microsim.py`: Implements the Working for Families (WFF) microsimulation model (`famsim`).
+*   `rules_engine.py`: Lightweight rule engine used to compose policy calculations.
 *   `wff_microsim_main.py`: A script to run the WFF microsimulation model with sample data.
 *   `payroll_deductions.py`: Helper functions for KiwiSaver contributions and student loan repayments.
 *   `value_of_information.py`: Functions for computing the Expected Value of Perfect Information (EVPI) from probabilistic sensitivity analysis outputs.

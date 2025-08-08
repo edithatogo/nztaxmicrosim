@@ -35,7 +35,7 @@ def fetch_datasets(query: str, rows: int = 50) -> list[DatasetInfo]:
         Maximum number of results to return.
     """
 
-    params = {"q": query, "rows": rows}
+    params: dict[str, Any] = {"q": query, "rows": rows}
     response = requests.get(DATA_GOVT_API, params=params, timeout=30)
     response.raise_for_status()
     data = response.json()
@@ -63,10 +63,3 @@ def save_datasets(datasets: Iterable[DatasetInfo], path: str) -> None:
     serialised = [dataset.model_dump() for dataset in datasets]
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serialised, f, indent=2)
-
-
-if __name__ == "__main__":
-    query = "income tax rates"
-    results = fetch_datasets(query)
-    for dataset in results:
-        print(format_dataset(dataset))
