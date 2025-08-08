@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """Simple plug-in pipeline for orchestrating tax and benefit rules."""
 
 from __future__ import annotations

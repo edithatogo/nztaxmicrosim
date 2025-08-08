@@ -147,7 +147,7 @@ for param_file in args.param_files:
     year = os.path.basename(param_file).split("_")[1].split(".")[0]
     print(f"\n--- Running microsimulation with parameters from: {param_file} ({year}) ---")
     params = load_parameters(year)
-    wff_params = params["wff"]
+    wff_params = params.wff
 
     # Define the parameters for the famsim function
     wagegwt = 0.03

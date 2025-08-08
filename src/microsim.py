@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import os
 from typing import Any, Mapping
@@ -14,7 +16,7 @@ from .parameters import (
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
-    Parameters are stored as JSON files named ``parameters_YYYY-YYYY.json``.
+    Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
     This function parses the JSON into structured dataclasses, validating that
     all required fields are present and of the expected type.
 
@@ -22,7 +24,7 @@ def load_parameters(year: str) -> Parameters:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
 
     Returns:
-        Parameters: A dataclass containing all parameter groups for the year.
+        A :class:`Parameters` instance containing all parameter groups.
     """
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -58,9 +60,15 @@ def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBra
 def taxit(taxy: float, params: Mapping[str, Any] | TaxBracketParams) -> float:
     """Calculate income tax using progressive brackets.
 
+    ``params`` may be provided either as a :class:`TaxBracketParams` instance or
+    as a sequence of rates.  When passing rates directly, ``thresholds`` must
+    also be supplied.
+
     Args:
         taxy: The taxable income.
-        params: Tax bracket parameters containing ``rates`` and ``thresholds``.
+        params: Tax bracket parameters or a sequence of rates.
+        thresholds: Thresholds matching ``params`` when rates are supplied
+            directly.
 
     Returns:
         The calculated income tax.

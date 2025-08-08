@@ -208,7 +208,7 @@ def famsim(
     wagegwt: float,
     daysinperiod: int,
 ) -> pd.DataFrame:
-    """Compose the WFF calculation phases into a single driver.
+    """Compose the WFF calculation phases.
 
     Args:
         df: DataFrame containing family information.
@@ -219,12 +219,18 @@ def famsim(
     Returns:
         DataFrame with calculated WFF entitlements.
     """
-    rules = [
-        Rule(lambda d: gross_up_income(d, wagegwt)),
-        Rule(lambda d: calculate_abatement(d, wff_params, daysinperiod)),
-        Rule(lambda d: calculate_max_entitlements(d, wff_params)),
-        Rule(lambda d: apply_care_logic(d, wff_params)),
-        Rule(apply_calibrations),
-    ]
-    engine = RuleEngine(rules)
+    engine = RuleEngine(
+        [
+            Rule("gross_up_income", gross_up_income, {"wagegwt": wagegwt}),
+            Rule(
+                "calculate_abatement",
+                calculate_abatement,
+                {"wff_params": wff_params, "daysinperiod": daysinperiod},
+            ),
+            Rule("calculate_max_entitlements", calculate_max_entitlements, {"wff_params": wff_params}),
+            Rule("apply_care_logic", apply_care_logic, {"wff_params": wff_params}),
+            Rule("apply_calibrations", apply_calibrations),
+        ]
+    )
+
     return engine.run(df)
