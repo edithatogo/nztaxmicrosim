@@ -56,6 +56,18 @@ def run_dynamic_simulation(
         current = current.copy()
         current["tax_liability"] = current["taxable_income"].apply(lambda inc: taxit(inc, params.tax_brackets))
 
+        # Assuming daysinperiod is constant for simplicity.
+        # A more robust implementation might get this from parameters.
+        daysinperiod = 365
+
+        # Assuming wagegwt is 0 for simplicity.
+        wagegwt = 0
+
+        # Import famsim here to avoid circular dependency at module level.
+        from .wff_microsim import famsim
+
+        current = famsim(current, params.wff, wagegwt, daysinperiod)
+
         results[year] = current.copy()
 
     return results

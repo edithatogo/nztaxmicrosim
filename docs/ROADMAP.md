@@ -8,23 +8,31 @@ This document outlines development priorities for the NZ Microsimulation Model, 
    - *Milestone:* Finalize baseline calculations for individual liabilities and incomes.
    - *Priority:* **High**
 
-2. **Dynamic Behavioural Extensions**
+2. **Modular Simulation Pipeline**
+   - *Milestone:* Design plug-in architecture for tax and benefit rules.
+   - *Priority:* **High**
+
+3. **Dynamic Behavioural Extensions**
    - *Milestone:* Introduce modules that capture behavioural responses and longitudinal impacts of policy changes.
    - *Priority:* **Medium**
 
-3. **Complete Sensitivity Analysis Tools**
+4. **Complete Sensitivity Analysis Tools**
    - *Milestone:* Finalize parameter sweep utilities and integrate with scenario management.
    - *Priority:* **Medium**
 
-4. **Budget Impact Modules**
+5. **Budget Impact Modules**
    - *Milestone:* Build routines to aggregate fiscal costs and savings across scenarios.
    - *Priority:* **High**
 
-5. **Expanded Equity Metrics**
+6. **Expanded Equity Metrics**
    - *Milestone:* Introduce additional indicators of distributional effects (e.g., progressivity indexes).
    - *Priority:* **Medium**
 
-6. **Value-of-Information Analysis**
+7. **Modular Simulation Pipeline**
+   - *Milestone:* Allow tax and benefit rules to be assembled via plug-in modules with configurable order and substitution.
+   - *Priority:* **Medium**
+
+8. **Value-of-Information Analysis**
    - *Milestone:* Add module for assessing the benefit of additional data sources or improved data quality.
    - *Priority:* **Medium**
 

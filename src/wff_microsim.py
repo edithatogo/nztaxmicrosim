@@ -207,7 +207,7 @@ def famsim(
     wagegwt: float,
     daysinperiod: int,
 ) -> pd.DataFrame:
-    """Compose the WFF calculation phases into a single driver.
+    """Compose the WFF calculation phases.
 
     Args:
         df: DataFrame containing family information.

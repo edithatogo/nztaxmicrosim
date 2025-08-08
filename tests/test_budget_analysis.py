@@ -1,7 +1,7 @@
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from src.budget_analysis import calculate_budget_impact
+from src.reporting import calculate_budget_impact
 
 
 def test_calculate_budget_impact():

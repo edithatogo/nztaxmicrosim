@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Any
+from typing import Any, Mapping
 
 from .parameters import (
     FamilyBoostParams,
@@ -16,7 +16,7 @@ from .parameters import (
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
-    Parameters are stored as JSON files named ``parameters_YYYY-YYYY.json``.
+    Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
     This function parses the JSON into structured dataclasses, validating that
     all required fields are present and of the expected type.
 
@@ -24,26 +24,51 @@ def load_parameters(year: str) -> Parameters:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
 
     Returns:
-        Parameters: A dataclass containing all parameter groups for the year.
+        A :class:`Parameters` instance containing all parameter groups.
     """
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        params: dict[str, Any] = json.load(f)
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            params: dict[str, Any] = json.load(f)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Parameter file not found: {file_path}") from e
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON in parameter file {file_path}: {e}") from e
+
     try:
         return Parameters.from_dict(params)
     except (KeyError, TypeError) as e:
-        raise ValueError(f"Parameter validation failed: {e}") from e
+        raise ValueError(f"Parameter validation failed for {file_path}: {e}") from e
 
 
-def taxit(taxy: float, params: TaxBracketParams) -> float:
+def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBracketParams:
+    """Convert a mapping of tax parameters into :class:`TaxBracketParams`."""
+
+    if isinstance(params, TaxBracketParams):
+        return params
+    return TaxBracketParams.from_dict(
+        {
+            "rates": params["rates"],
+            "thresholds": params["thresholds"],
+        }
+    )
+
+
+def taxit(taxy: float, params: Mapping[str, Any] | TaxBracketParams) -> float:
     """Calculate income tax using progressive brackets.
+
+    ``params`` may be provided either as a :class:`TaxBracketParams` instance or
+    as a sequence of rates.  When passing rates directly, ``thresholds`` must
+    also be supplied.
 
     Args:
         taxy: The taxable income.
-        params: Tax bracket parameters containing ``rates`` and ``thresholds``.
+        params: Tax bracket parameters or a sequence of rates.
+        thresholds: Thresholds matching ``params`` when rates are supplied
+            directly.
 
     Returns:
         The calculated income tax.
@@ -52,10 +77,11 @@ def taxit(taxy: float, params: TaxBracketParams) -> float:
     if taxy <= 0:
         return 0.0
 
-    t_extended: list[float] = [0.0] + params.thresholds
+    tax_params = _coerce_tax_brackets(params)
+    t_extended: list[float] = [0.0] + tax_params.thresholds
     tax: float = 0.0
 
-    for i, rate in enumerate(params.rates):
+    for i, rate in enumerate(tax_params.rates):
         if taxy > t_extended[i]:
             if i == len(t_extended) - 1 or taxy <= t_extended[i + 1]:
                 tax += (taxy - t_extended[i]) * rate
@@ -84,12 +110,18 @@ def netavg(incvar: float, eprt: float, params: TaxBracketParams) -> float:
     return outnet
 
 
+def _coerce_ietc(params: Mapping[str, Any] | IETCParams) -> IETCParams:
+    if isinstance(params, IETCParams):
+        return params
+    return IETCParams.from_dict(params)  # type: ignore[arg-type]
+
+
 def calcietc(
     taxable_income: float,
     is_wff_recipient: bool,
     is_super_recipient: bool,
     is_benefit_recipient: bool,
-    ietc_params: IETCParams,
+    ietc_params: Mapping[str, Any] | IETCParams,
 ) -> float:
     """
     Calculates the Independent Earner Tax Credit (IETC).
@@ -111,10 +143,11 @@ def calcietc(
     if is_wff_recipient or is_super_recipient or is_benefit_recipient:
         return 0.0
 
-    income_threshold_min = ietc_params.thrin
-    income_threshold_max = ietc_params.thrab
-    max_entitlement = ietc_params.ent
-    abatement_rate = ietc_params.abrate
+    params = _coerce_ietc(ietc_params)
+    income_threshold_min = params.thrin
+    income_threshold_max = params.thrab
+    max_entitlement = params.ent
+    abatement_rate = params.abrate
 
     # Calculate IETC based on income thresholds.
     if taxable_income <= income_threshold_min:
