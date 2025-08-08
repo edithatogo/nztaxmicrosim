@@ -9,7 +9,7 @@ repos:
     rev: v1.10.0
     hooks:
       - id: mypy
-        additional_dependencies: [pandas, numpy, pydantic]
+        additional_dependencies: [pandas, numpy, pydantic, types-requests]
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.6
     hooks:

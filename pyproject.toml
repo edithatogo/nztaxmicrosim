@@ -15,6 +15,7 @@ dependencies = [
     "joblib",
     "scipy",
     "tabulate",
+    "requests",
 ]
 
 [tool.pytest.ini_options]
