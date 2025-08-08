@@ -1,28 +1,29 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any
+from typing import Dict
+
+from pydantic import BaseModel
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
+from .parameters import Parameters, TaxBracketParams
 
 
-@dataclass
-class TaxCalculator:
+class TaxCalculator(BaseModel):
     """Convenience wrapper around core tax calculations.
 
     The class stores a set of policy parameters and exposes small helper
     methods which delegate to the functions defined in :mod:`microsim`.
     """
 
-    params: dict[str, Any]
+    params: Parameters
 
     def income_tax(self, taxable_income: float) -> float:
         """Calculate income tax for a given taxable income.
 
         Parameters are drawn from ``params['tax_brackets']``.
         """
-        tax_params = self.params["tax_brackets"]
-        return taxit(taxy=taxable_income, r=tax_params["rates"], t=tax_params["thresholds"])
+        tax_params: TaxBracketParams = self.params.tax_brackets
+        return taxit(taxy=taxable_income, params=tax_params)
 
     def ietc(
         self,
@@ -37,12 +38,12 @@ class TaxCalculator:
             is_wff_recipient=is_wff_recipient,
             is_super_recipient=is_super_recipient,
             is_benefit_recipient=is_benefit_recipient,
-            ietc_params=self.params["ietc"],
+            ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float) -> float:
+    def rwt(self, interest: float, rwt_params: Dict[str, float] | None = None) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        rwt_params = self.params.get("rwt", {})
+        rwt_params = rwt_params or {}
         return simrwt(
             interest=interest,
             rwt_rate_10_5=rwt_params.get("rwt_rate_10_5", 0.0),
@@ -56,4 +57,4 @@ class TaxCalculator:
     def from_year(cls, year: str) -> "TaxCalculator":
         """Construct a :class:`TaxCalculator` from stored parameter files."""
         params = load_parameters(year)
-        return cls(params)
+        return cls(params=params)

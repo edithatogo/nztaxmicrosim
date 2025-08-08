@@ -1,4 +1,3 @@
-from dataclasses import asdict
 from typing import Any, Callable, Dict, List
 
 import numpy as np
@@ -175,7 +174,7 @@ def run_probabilistic_analysis(
 
     def _run_simulation(sample_row):
         """Helper function to run a single simulation."""
-        params = asdict(load_parameters("2023-2024"))
+        params = load_parameters("2023-2024").model_dump()
 
         for j, (param_path, dist_info) in enumerate(param_distributions.items()):
             if dist_info["dist"] == "norm":

@@ -9,20 +9,19 @@ historical tax information.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
 from typing import Iterable
 
 import requests
+from pydantic import BaseModel
 
 DATA_GOVT_API = "https://catalogue.data.govt.nz/api/3/action/package_search"
 
 
-@dataclass
-class DatasetInfo:
+class DatasetInfo(BaseModel):
     """Basic information about a dataset returned from data.govt.nz."""
 
     title: str
-    resources: list[str]
+    resources: list[str] = []
 
 
 def fetch_datasets(query: str, rows: int = 50) -> list[DatasetInfo]:
@@ -61,7 +60,7 @@ def format_dataset(dataset: DatasetInfo) -> str:
 def save_datasets(datasets: Iterable[DatasetInfo], path: str) -> None:
     """Save ``datasets`` as JSON at ``path``."""
 
-    serialised = [dataset.__dict__ for dataset in datasets]
+    serialised = [dataset.model_dump() for dataset in datasets]
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serialised, f, indent=2)
 

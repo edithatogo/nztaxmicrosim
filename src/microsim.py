@@ -5,42 +5,35 @@ from typing import Any
 from pydantic import ValidationError
 
 from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
-from .parameters_model import TaxParameters
 
 
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
-    Parameters are stored as JSON files named ``parameters_YYYY-YYYY.json``.
-    This function parses the JSON into structured dataclasses, validating that
-    all required fields are present and of the expected type.
+    Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
+    This function parses the JSON into Pydantic models, validating that all
+    required fields are present and of the expected type.
 
     Args:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
 
     Returns:
-        Parameters: A dataclass containing all parameter groups for the year.
+        Parameters: A Pydantic model containing all parameter groups for the year.
     """
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    with open(file_path, "r") as f:
-        params: dict[str, Any] = json.load(f)
-    return Parameters.from_dict(params)
-
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Parameter file not found: {file_path}")
 
     with open(file_path, "r", encoding="utf-8") as f:
-        params = json.load(f)
+        params: dict[str, Any] = json.load(f)
 
     try:
-        validated = TaxParameters.model_validate(params)
+        return Parameters.model_validate(params)
     except ValidationError as e:
         raise ValueError(f"Parameter validation failed: {e}") from e
-
-    return validated.model_dump()
 
 
 def taxit(taxy: float, params: TaxBracketParams) -> float:
@@ -299,7 +292,7 @@ def family_boost_credit(
     Args:
         family_income: The total family income.
         childcare_costs: The total childcare costs.
-        family_boost_params: FamilyBoost parameter dataclass.
+    family_boost_params: FamilyBoost parameter model.
 
     Returns:
         float: The calculated FamilyBoost credit.
