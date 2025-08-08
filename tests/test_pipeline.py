@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+import pandas as pd
+
 from src.microsim import load_parameters
 from src.pipeline import (
     IETCRule,
@@ -19,11 +21,11 @@ class DummyRule:
     value: int = 1
     enabled: bool = True
 
-    def __call__(self, state: dict) -> None:  # pragma: no cover - trivial
+    def __call__(self, state: dict) -> None:
         state[self.name] = self.value
 
-
-import pandas as pd
+    def apply(self, state: dict) -> None:  # pragma: no cover - trivial
+        state[self.name] = self.value
 
 
 def test_pipeline_integration_runs_rules():

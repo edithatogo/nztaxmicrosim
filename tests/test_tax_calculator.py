@@ -28,9 +28,26 @@ def test_tax_calculator_income_tax_and_ietc() -> None:
 
 
 def test_tax_calculator_rwt_delegates() -> None:
+<<<<<<< HEAD
+    calc = TaxCalculator.from_year("2023-2024")
+    interest = 100.0
+    rwt_params = {
+        "rwt_rate_10_5": 0.1,
+        "rwt_rate_17_5": 0.2,
+        "rwt_rate_30": 0.3,
+        "rwt_rate_33": 0.33,
+        "rwt_rate_39": 0.39,
+    }
+    expected = simrwt(interest, 0.1, 0.2, 0.3, 0.33, 0.39)
+    assert calc.rwt(interest, rwt_params) == expected
+=======
     params = load_parameters("2023-2024")
-    params.rwt = RWTParams(0.1, 0.2, 0.3, 0.33, 0.39)
     calc = TaxCalculator(params)
     interest = 100.0
-    expected = simrwt(interest, params.rwt)
-    assert calc.rwt(interest) == expected
+    # Test with default parameters
+    assert calc.rwt(interest) == simrwt(interest, calc.params.rwt)
+
+    # Test with custom parameters
+    custom_params = RWTParams(0.1, 0.2, 0.3, 0.33, 0.39)
+    assert calc.rwt(interest, custom_params) == simrwt(interest, custom_params)
+>>>>>>> main

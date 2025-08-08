@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from typing import Dict
+
+from pydantic import BaseModel
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import Parameters
+from .parameters import Parameters, TaxBracketParams
 
 
-@dataclass
-class TaxCalculator:
+class TaxCalculator(BaseModel):
     """Convenience wrapper around core tax calculations.
 
     The class stores a set of policy parameters and exposes small helper
@@ -21,7 +22,7 @@ class TaxCalculator:
 
         Parameters are drawn from ``params.tax_brackets``.
         """
-        tax_params = self.params.tax_brackets
+        tax_params: TaxBracketParams = self.params.tax_brackets
         return taxit(taxy=taxable_income, params=tax_params)
 
     def ietc(
@@ -40,12 +41,20 @@ class TaxCalculator:
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float) -> float:
+    def rwt(self, interest: float, rwt_params: Dict[str, float] | None = None) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        return simrwt(interest=interest, params=self.params.rwt)
+        rwt_params = rwt_params or {}
+        return simrwt(
+            interest=interest,
+            rwt_rate_10_5=rwt_params.get("rwt_rate_10_5", 0.0),
+            rwt_rate_17_5=rwt_params.get("rwt_rate_17_5", 0.0),
+            rwt_rate_30=rwt_params.get("rwt_rate_30", 0.0),
+            rwt_rate_33=rwt_params.get("rwt_rate_33", 0.0),
+            rwt_rate_39=rwt_params.get("rwt_rate_39", 0.0),
+        )
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":
         """Construct a :class:`TaxCalculator` from stored parameter files."""
         params = load_parameters(year)
-        return cls(params)
+        return cls(params=params)

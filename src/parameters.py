@@ -1,48 +1,21 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, is_dataclass
-from typing import Any, Dict, List
+from pydantic import BaseModel, Field
 
 
-def _require_fields(data: Dict[str, Any], required: List[str]) -> None:
-    """Ensure all required fields are present in ``data``."""
-    missing = [field for field in required if field not in data]
-    if missing:
-        raise KeyError(f"Missing required fields: {', '.join(missing)}")
+class TaxBracketParams(BaseModel):
+    rates: list[float]
+    thresholds: list[float]
 
 
-@dataclass
-class TaxBracketParams:
-    rates: List[float]
-    thresholds: List[float]
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "TaxBracketParams":
-        _require_fields(data, ["rates", "thresholds"])
-        if not isinstance(data["rates"], list) or not isinstance(data["thresholds"], list):
-            raise TypeError("rates and thresholds must be lists")
-        return cls(
-            rates=[float(r) for r in data["rates"]],
-            thresholds=[float(t) for t in data["thresholds"]],
-        )
-
-
-@dataclass
-class IETCParams:
+class IETCParams(BaseModel):
     thrin: float
     ent: float
     thrab: float
     abrate: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "IETCParams":
-        required = ["thrin", "ent", "thrab", "abrate"]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
 
-
-@dataclass
-class WFFParams:
+class WFFParams(BaseModel):
     ftc1: float
     ftc2: float
     iwtc1: float
@@ -56,303 +29,65 @@ class WFFParams:
     bstcthresh: float
     bstcabate: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "WFFParams":
-        required = [
-            "ftc1",
-            "ftc2",
-            "iwtc1",
-            "iwtc2",
-            "bstc",
-            "mftc",
-            "abatethresh1",
-            "abatethresh2",
-            "abaterate1",
-            "abaterate2",
-            "bstcthresh",
-            "bstcabate",
-        ]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
 
-
-@dataclass
-class JSSParams:
+class JSSParams(BaseModel):
     single_rate: float
     couple_rate: float
     child_rate: float
     income_abatement_threshold: float
     abatement_rate: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "JSSParams":
-        required = [
-            "single_rate",
-            "couple_rate",
-            "child_rate",
-            "income_abatement_threshold",
-            "abatement_rate",
-        ]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
 
-
-@dataclass
-class SPSParams:
+class SPSParams(BaseModel):
     base_rate: float
     income_abatement_threshold: float
     abatement_rate: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "SPSParams":
-        required = ["base_rate", "income_abatement_threshold", "abatement_rate"]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
 
-
-@dataclass
-class SLPParams:
+class SLPParams(BaseModel):
     single_rate: float
     couple_rate: float
     income_abatement_threshold: float
     abatement_rate: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "SLPParams":
-        required = [
-            "single_rate",
-            "couple_rate",
-            "income_abatement_threshold",
-            "abatement_rate",
-        ]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
 
-
-@dataclass
-class AccommodationSupplementParams:
-    income_thresholds: Dict[str, float]
+class AccommodationSupplementParams(BaseModel):
+    income_thresholds: dict[str, float]
     abatement_rate: float
-    max_entitlement_rates: Dict[str, Dict[str, float]]
+    max_entitlement_rates: dict[str, dict[str, float]]
     housing_cost_contribution_rate: float
     housing_cost_threshold: float
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "AccommodationSupplementParams":
-        required = [
-            "income_thresholds",
-            "abatement_rate",
-            "max_entitlement_rates",
-            "housing_cost_contribution_rate",
-            "housing_cost_threshold",
-        ]
-        _require_fields(data, required)
-        if not isinstance(data["income_thresholds"], dict) or not isinstance(data["max_entitlement_rates"], dict):
-            raise TypeError("income_thresholds and max_entitlement_rates must be dicts")
-        income_thresholds = {k: float(v) for k, v in data["income_thresholds"].items()}
-        max_entitlement_rates = {
-            region: {k: float(v) for k, v in rates.items()} for region, rates in data["max_entitlement_rates"].items()
-        }
-        return cls(
-            income_thresholds=income_thresholds,
-            abatement_rate=float(data["abatement_rate"]),
-            max_entitlement_rates=max_entitlement_rates,
-            housing_cost_contribution_rate=float(data["housing_cost_contribution_rate"]),
-            housing_cost_threshold=float(data["housing_cost_threshold"]),
-        )
+
+class FamilyBoostParams(BaseModel):
+    max_credit: float = 0.0
+    income_threshold: float = 0.0
+    abatement_rate: float = 0.0
+    max_income: float = 0.0
 
 
-@dataclass
-class FamilyBoostParams:
-    max_credit: float
-    income_threshold: float
-    abatement_rate: float
-    max_income: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "FamilyBoostParams":
-        required = ["max_credit", "income_threshold", "abatement_rate", "max_income"]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
+class PPLParams(BaseModel):
+    enabled: bool = False
+    weekly_rate: float = 0.0
+    max_weeks: int = 0
 
 
-@dataclass
-class PPLParams:
-    enabled: bool
-    weekly_rate: float
-    max_weeks: int
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "PPLParams":
-        required = ["enabled", "weekly_rate", "max_weeks"]
-        _require_fields(data, required)
-        return cls(
-            enabled=bool(data["enabled"]),
-            weekly_rate=float(data["weekly_rate"]),
-            max_weeks=int(data["max_weeks"]),
-        )
+class ChildSupportParams(BaseModel):
+    enabled: bool = False
+    support_rate: float = 0.0
 
 
-@dataclass
-class RWTParams:
-    rwt_rate_10_5: float
-    rwt_rate_17_5: float
-    rwt_rate_30: float
-    rwt_rate_33: float
-    rwt_rate_39: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "RWTParams":
-        required = [
-            "rwt_rate_10_5",
-            "rwt_rate_17_5",
-            "rwt_rate_30",
-            "rwt_rate_33",
-            "rwt_rate_39",
-        ]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
+class KiwisaverParams(BaseModel):
+    contribution_rate: float = 0.0
 
 
-@dataclass
-class ChildSupportParams:
-    enabled: bool
-    support_rate: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ChildSupportParams":
-        required = ["enabled", "support_rate"]
-        _require_fields(data, required)
-        return cls(enabled=bool(data["enabled"]), support_rate=float(data["support_rate"]))
+class StudentLoanParams(BaseModel):
+    repayment_threshold: float = 0.0
+    repayment_rate: float = 0.0
 
 
-@dataclass
-class KiwisaverParams:
-    contribution_rate: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "KiwisaverParams":
-        required = ["contribution_rate"]
-        _require_fields(data, required)
-        return cls(contribution_rate=float(data["contribution_rate"]))
-
-
-@dataclass
-class StudentLoanParams:
-    repayment_threshold: float
-    repayment_rate: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "StudentLoanParams":
-        required = ["repayment_threshold", "repayment_rate"]
-        _require_fields(data, required)
-        return cls(
-            repayment_threshold=float(data["repayment_threshold"]),
-            repayment_rate=float(data["repayment_rate"]),
-        )
-
-
-@dataclass
-class ACCLevyParams:
-    rate: float
-    max_income: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "ACCLevyParams":
-        required = ["rate", "max_income"]
-        _require_fields(data, required)
-        return cls(
-            rate=float(data["rate"]),
-            max_income=float(data["max_income"]),
-        )
-
-
-@dataclass
-class WEPParams:
-    single_rate: float
-    couple_rate: float
-    child_rate: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "WEPParams":
-        required = ["single_rate", "couple_rate", "child_rate"]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
-
-
-@dataclass
-class BSTCParams:
-    base_rate: float
-    income_threshold: float
-    abatement_rate: float
-    max_age: int
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "BSTCParams":
-        required = ["base_rate", "income_threshold", "abatement_rate", "max_age"]
-        _require_fields(data, required)
-        return cls(
-            base_rate=float(data["base_rate"]),
-            income_threshold=float(data["income_threshold"]),
-            abatement_rate=float(data["abatement_rate"]),
-            max_age=int(data["max_age"]),
-        )
-
-
-@dataclass
-class FTCParams:
-    base_rate: float
-    child_rate: float
-    income_threshold: float
-    abatement_rate: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "FTCParams":
-        required = ["base_rate", "child_rate", "income_threshold", "abatement_rate"]
-        _require_fields(data, required)
-        return cls(**{k: float(data[k]) for k in required})
-
-
-@dataclass
-class IWTCParams:
-    base_rate: float
-    child_rate: float
-    income_threshold: float
-    abatement_rate: float
-    min_hours_worked: int
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "IWTCParams":
-        required = [
-            "base_rate",
-            "child_rate",
-            "income_threshold",
-            "abatement_rate",
-            "min_hours_worked",
-        ]
-        _require_fields(data, required)
-        return cls(
-            base_rate=float(data["base_rate"]),
-            child_rate=float(data["child_rate"]),
-            income_threshold=float(data["income_threshold"]),
-            abatement_rate=float(data["abatement_rate"]),
-            min_hours_worked=int(data["min_hours_worked"]),
-        )
-
-
-@dataclass
-class MFTCParams:
-    guaranteed_income: float
-
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "MFTCParams":
-        required = ["guaranteed_income"]
-        _require_fields(data, required)
-        return cls(guaranteed_income=float(data["guaranteed_income"]))
-
-
-@dataclass
-class Parameters:
+<<<<<<< HEAD
+class Parameters(BaseModel):
     tax_brackets: TaxBracketParams
     ietc: IETCParams
     wff: WFFParams
@@ -360,111 +95,25 @@ class Parameters:
     sps: SPSParams
     slp: SLPParams
     accommodation_supplement: AccommodationSupplementParams
-    family_boost: FamilyBoostParams
-    ppl: PPLParams
-    rwt: RWTParams
-    child_support: ChildSupportParams
-    kiwisaver: KiwisaverParams
-    student_loan: StudentLoanParams
-    acc_levy: ACCLevyParams
-    wep: WEPParams
-    bstc: BSTCParams
-    ftc: FTCParams
-    iwtc: IWTCParams
-    mftc: MFTCParams
+    family_boost: FamilyBoostParams = Field(default_factory=FamilyBoostParams)
+    ppl: PPLParams = Field(default_factory=PPLParams)
+    child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
+    kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
+    student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
 
-    @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Parameters":
-        return cls(
-            tax_brackets=TaxBracketParams.from_dict(data["tax_brackets"]),
-            ietc=IETCParams.from_dict(data["ietc"]),
-            wff=WFFParams.from_dict(data["wff"]),
-            jss=JSSParams.from_dict(data["jss"]),
-            sps=SPSParams.from_dict(data["sps"]),
-            slp=SLPParams.from_dict(data["slp"]),
-            accommodation_supplement=AccommodationSupplementParams.from_dict(data["accommodation_supplement"]),
-            family_boost=FamilyBoostParams.from_dict(
-                data.get(
-                    "family_boost",
-                    {
-                        "max_credit": 0.0,
-                        "income_threshold": 0.0,
-                        "abatement_rate": 0.0,
-                        "max_income": 0.0,
-                    },
-                )
-            ),
-            ppl=PPLParams.from_dict(data.get("ppl", {"enabled": False, "weekly_rate": 0.0, "max_weeks": 0})),
-            rwt=RWTParams.from_dict(
-                data.get(
-                    "rwt",
-                    {
-                        "rwt_rate_10_5": 0.0,
-                        "rwt_rate_17_5": 0.0,
-                        "rwt_rate_30": 0.0,
-                        "rwt_rate_33": 0.0,
-                        "rwt_rate_39": 0.0,
-                    },
-                )
-            ),
-            child_support=ChildSupportParams.from_dict(
-                data.get("child_support", {"enabled": False, "support_rate": 0.0})
-            ),
-            kiwisaver=KiwisaverParams.from_dict(data.get("kiwisaver", {"contribution_rate": 0.0})),
-            student_loan=StudentLoanParams.from_dict(
-                data.get(
-                    "student_loan",
-                    {"repayment_threshold": 0.0, "repayment_rate": 0.0},
-                )
-            ),
-            acc_levy=ACCLevyParams.from_dict(data.get("acc_levy", {"rate": 0.0, "max_income": 0.0})),
-            wep=WEPParams.from_dict(data.get("wep", {"single_rate": 0.0, "couple_rate": 0.0, "child_rate": 0.0})),
-            bstc=BSTCParams.from_dict(
-                data.get(
-                    "bstc",
-                    {
-                        "base_rate": 0.0,
-                        "income_threshold": 0.0,
-                        "abatement_rate": 0.0,
-                        "max_age": 0,
-                    },
-                )
-            ),
-            ftc=FTCParams.from_dict(
-                data.get(
-                    "ftc",
-                    {
-                        "base_rate": 0.0,
-                        "child_rate": 0.0,
-                        "income_threshold": 0.0,
-                        "abatement_rate": 0.0,
-                    },
-                )
-            ),
-            iwtc=IWTCParams.from_dict(
-                data.get(
-                    "iwtc",
-                    {
-                        "base_rate": 0.0,
-                        "child_rate": 0.0,
-                        "income_threshold": 0.0,
-                        "abatement_rate": 0.0,
-                        "min_hours_worked": 0,
-                    },
-                )
-            ),
-            mftc=MFTCParams.from_dict(data.get("mftc", {"guaranteed_income": 0.0})),
-        )
 
-    def __getitem__(self, key: str) -> Any:
-        """Allow dictionary-style access to parameter groups.
-
-        If the requested attribute is itself a dataclass it is converted to a
-        plain ``dict`` for compatibility with code that expects mapping-style
-        parameters. Nested dataclasses are converted to dictionaries to provide a
-        serialization-friendly view of the parameters.
-        """
-        value = getattr(self, key)
-        if is_dataclass(value):
-            return asdict(value)
-        return value
+__all__ = [
+    "AccommodationSupplementParams",
+    "ChildSupportParams",
+    "FamilyBoostParams",
+    "IETCParams",
+    "JSSParams",
+    "KiwisaverParams",
+    "Parameters",
+    "PPLParams",
+    "SLPParams",
+    "SPSParams",
+    "StudentLoanParams",
+    "TaxBracketParams",
+    "WFFParams",
+]

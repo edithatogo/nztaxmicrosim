@@ -1,45 +1,42 @@
+from __future__ import annotations
+
 import json
 import os
 from typing import Any, Mapping
 
-from .parameters import (
-    FamilyBoostParams,
-    IETCParams,
-    Parameters,
-    RWTParams,
-    TaxBracketParams,
-)
+from pydantic import ValidationError
+
+from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
 
 
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year``.
 
     Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
-    This function parses the JSON into structured dataclasses, validating that
-    all required fields are present and of the expected type.
+    This function parses the JSON into Pydantic models, validating that all
+    required fields are present and of the expected type.
 
     Args:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
 
     Returns:
-        A :class:`Parameters` instance containing all parameter groups.
+        Parameters: A Pydantic model containing all parameter groups for the year.
     """
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
-    try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            params: dict[str, Any] = json.load(f)
-    except FileNotFoundError as e:
-        raise FileNotFoundError(f"Parameter file not found: {file_path}") from e
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON in parameter file {file_path}: {e}") from e
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Parameter file not found: {file_path}")
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        params: dict[str, Any] = json.load(f)
 
     try:
-        return Parameters.from_dict(params)
-    except (KeyError, TypeError) as e:
-        raise ValueError(f"Parameter validation failed for {file_path}: {e}") from e
+        return Parameters.model_validate(params)
+    except ValidationError as e:
+        raise ValueError(f"Parameter validation failed: {e}") from e
+
 
 
 def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBracketParams:
@@ -313,7 +310,7 @@ def family_boost_credit(
     Args:
         family_income: The total family income.
         childcare_costs: The total childcare costs.
-        family_boost_params: FamilyBoost parameter dataclass.
+    family_boost_params: FamilyBoost parameter model.
 
     Returns:
         float: The calculated FamilyBoost credit.
