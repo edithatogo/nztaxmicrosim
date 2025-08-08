@@ -31,6 +31,9 @@ def test_tax_calculator_rwt_delegates() -> None:
     params = load_parameters("2023-2024")
     calc = TaxCalculator(params)
     interest = 100.0
+    # Test with default parameters
+    assert calc.rwt(interest) == simrwt(interest, calc.params.rwt)
+
+    # Test with custom parameters
     custom_params = RWTParams(0.1, 0.2, 0.3, 0.33, 0.39)
-    expected = simrwt(interest, custom_params)
-    assert calc.rwt(interest, custom_params) == expected
+    assert calc.rwt(interest, custom_params) == simrwt(interest, custom_params)
