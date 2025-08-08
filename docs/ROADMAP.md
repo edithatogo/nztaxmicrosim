@@ -28,7 +28,11 @@ This document outlines development priorities for the NZ Microsimulation Model, 
    - *Milestone:* Introduce additional indicators of distributional effects (e.g., progressivity indexes).
    - *Priority:* **Medium**
 
-7. **Value-of-Information Analysis**
+7. **Modular Simulation Pipeline**
+   - *Milestone:* Allow tax and benefit rules to be assembled via plug-in modules with configurable order and substitution.
+   - *Priority:* **Medium**
+
+8. **Value-of-Information Analysis**
    - *Milestone:* Add module for assessing the benefit of additional data sources or improved data quality.
    - *Priority:* **Medium**
 

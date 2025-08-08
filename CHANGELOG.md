@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `pytest` for unit testing.
 - `ruff` for linting and formatting.
 - `pre-commit` hooks for automated code quality checks.
-- `LICENSE` file (MIT License).
+- `LICENSE` file (Apache 2.0 License).
 - `CONTRIBUTING.md` with contribution guidelines.
 - `CITATION.cff` for citation information.
 - Optional modules for Paid Parental Leave and child support modelling.

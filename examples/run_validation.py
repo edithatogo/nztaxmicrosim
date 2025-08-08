@@ -57,7 +57,7 @@ def run_validation():
 
         # Load the parameters
         params = load_parameters(year)
-        wff_params = params["wff"]
+        wff_params = params.wff
 
         # Run the simulation
         result_df = famsim(
