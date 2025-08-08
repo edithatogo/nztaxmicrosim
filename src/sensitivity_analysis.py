@@ -103,10 +103,11 @@ def run_deterministic_analysis(
                 results[name] = func(tax_df, wff_df)
         return results
 
+    baseline_results = _run_simulation(baseline_params)
     tasks = []
     for param_path in params_to_vary:
-        params_low = pd.DataFrame([baseline_params]).to_dict(orient="records")[0]
-        params_high = pd.DataFrame([baseline_params]).to_dict(orient="records")[0]
+        params_low = copy.deepcopy(baseline_params)
+        params_high = copy.deepcopy(baseline_params)
 
         current_value = _get_nested(params_low, param_path)
         low_value = current_value * (1 - pct_change)
@@ -122,7 +123,6 @@ def run_deterministic_analysis(
     parallel_results = Parallel(n_jobs=-1)(tasks)
 
     # Process results
-    baseline_results = _run_simulation(baseline_params)
     output_data = {name: [] for name in output_metric_funcs}
 
     for i, param_path in enumerate(params_to_vary):

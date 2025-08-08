@@ -86,6 +86,7 @@ class StudentLoanParams(BaseModel):
     repayment_rate: float = 0.0
 
 
+<<<<<<< HEAD
 class Parameters(BaseModel):
     tax_brackets: TaxBracketParams
     ietc: IETCParams

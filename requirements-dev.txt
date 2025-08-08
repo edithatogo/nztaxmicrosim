@@ -5,6 +5,7 @@ mypy
 numpy
 pandas
 pydantic
+pyyaml
 pre-commit
 pytest
 pytest-cov

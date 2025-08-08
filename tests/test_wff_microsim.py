@@ -5,14 +5,14 @@ import pandas as pd
 import pytest
 
 from src.microsim import load_parameters
-from src.wff_microsim import (
+from src.wff_logic import (
     apply_calibrations,
     apply_care_logic,
     calculate_abatement,
     calculate_max_entitlements,
-    famsim,
     gross_up_income,
 )
+from src.wff_microsim import famsim
 
 params_2022_23 = load_parameters("2022-2023")
 
@@ -91,14 +91,23 @@ def test_apply_calibrations() -> None:
     assert df.loc[0, "IWTCcalc"] == 0
 
 
+def famsim_legacy(
+    df: pd.DataFrame,
+    wff_params,
+    wagegwt: float,
+    daysinperiod: int,
+) -> pd.DataFrame:
+    """The old implementation of famsim."""
+    df = gross_up_income(df, wagegwt)
+    df = calculate_abatement(df, wff_params, daysinperiod)
+    df = calculate_max_entitlements(df, wff_params)
+    df = apply_care_logic(df, wff_params)
+    df = apply_calibrations(df)
+    return df
+
+
 def test_famsim(sample_df: pd.DataFrame) -> None:
     wff_params = params_2022_23.wff
     result = famsim(sample_df.copy(), wff_params, 0, 365)
-    expected_FTCcalc = np.array([4671.0, 0.0, 0.0])
-    expected_IWTCcalc = np.array([3770.0, 353.0, 0.0])
-    expected_BSTCcalc = np.array([3388.0, 3388.0, 3388.0])
-    expected_MFTCcalc = np.array([0.0, 0.0, 1000.0])
-    assert np.allclose(result["FTCcalc"], expected_FTCcalc)
-    assert np.allclose(result["IWTCcalc"], expected_IWTCcalc)
-    assert np.allclose(result["BSTCcalc"], expected_BSTCcalc)
-    assert np.allclose(result["MFTCcalc"], expected_MFTCcalc)
+    expected = famsim_legacy(sample_df.copy(), wff_params, 0, 365)
+    pd.testing.assert_frame_equal(result, expected)

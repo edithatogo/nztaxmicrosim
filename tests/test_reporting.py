@@ -18,34 +18,6 @@ from src.reporting_framework import (
     EquityMetricsTable,
     calculate_reynolds_smolensky_index,
 )
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
-from src.reporting_framework import (
-    EquityMetricsTable,
-    calculate_reynolds_smolensky_index,
-)
 
 
 @pytest.fixture
@@ -87,10 +59,10 @@ def test_calculate_total_tax_revenue(sample_dataframe):
 
 def test_calculate_total_welfare_transfers(sample_dataframe):
     expected_welfare_transfers = (
-        sample_dataframe["jss_entitlement"].sum()
-        + sample_dataframe["sps_entitlement"].sum()
-        + sample_dataframe["slp_entitlement"].sum()
-        + sample_dataframe["accommodation_supplement_entitlement"].sum()
+        sample_dataframe["jss_entitlement"].sum() * 52
+        + sample_dataframe["sps_entitlement"].sum() * 52
+        + sample_dataframe["slp_entitlement"].sum() * 52
+        + sample_dataframe["accommodation_supplement_entitlement"].sum() * 52
         + sample_dataframe["FTCcalc"].sum()
         + sample_dataframe["IWTCcalc"].sum()
         + sample_dataframe["BSTCcalc"].sum()
@@ -174,8 +146,12 @@ def test_calculate_child_poverty_rate(sample_dataframe):
     assert calculate_child_poverty_rate(sample_dataframe, "disposable_income_ahc", poverty_line) == 100.0
 
     # Test with no children in dataframe
-    df_no_children = sample_dataframe[sample_dataframe["age"] >= 18]
+    df_no_children = sample_dataframe[sample_dataframe["age"] >= 18].copy()
     assert calculate_child_poverty_rate(df_no_children, "disposable_income", poverty_line) == 0.0
+
+    # Test with no income column
+    df_no_income = sample_dataframe.drop(columns=["disposable_income"])
+    assert calculate_child_poverty_rate(df_no_income, "disposable_income", poverty_line) == 0.0
 
 
 def test_calculate_gini_coefficient(sample_dataframe):
@@ -206,6 +182,7 @@ def test_generate_microsim_report_expected_keys(sample_dataframe, tmp_path, monk
 
     assert "Executive Summary" in result
     assert "Fiscal Impact Summary" in result
+    assert os.path.exists("reports/microsimulation_report.md")
 
 
 def test_lorenz_and_inequality_indices():
@@ -250,12 +227,26 @@ def test_plot_evppi(tmp_path):
     )
 
     assert os.path.exists(output_file)
+    # Add a check for the content of the plot
+    from PIL import Image
+    img = Image.open(output_file)
+    assert img.size == (1000, 600)
 
 
-def test_plot_evppi_no_data():
+def test_plot_evppi_no_data(capsys):
     """Test that plot_evppi handles empty data without crashing."""
-    # This test just checks that the function runs without error
     reporting.plot_evppi({})
+    captured = capsys.readouterr()
+    assert "No EVPPI results to plot." in captured.out
+
+
+def test_plot_evppi_no_output_path():
+    """Test that plot_evppi shows the plot when output_path is None."""
+    import matplotlib.pyplot as plt
+
+    plt.show = lambda: None  # Mock plt.show to avoid blocking tests
+    evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
+    reporting.plot_evppi(evppi_results, output_path=None)
 
 
 def test_calculate_reynolds_smolensky_index(sample_dataframe):
@@ -304,12 +295,26 @@ def test_plot_evppi_tornado(tmp_path):
     )
 
     assert os.path.exists(output_file)
+    # Add a check for the content of the plot
+    from PIL import Image
+    img = Image.open(output_file)
+    assert img.size == (1000, 600)
 
 
-def test_plot_evppi_tornado_no_data():
+def test_plot_evppi_tornado_no_data(capsys):
     """Test that plot_evppi_tornado handles empty data without crashing."""
-    # This test just checks that the function runs without error
     reporting.plot_evppi_tornado({})
+    captured = capsys.readouterr()
+    assert "No EVPPI results to plot." in captured.out
+
+
+def test_plot_evppi_tornado_no_output_path():
+    """Test that plot_evppi_tornado shows the plot when output_path is None."""
+    import matplotlib.pyplot as plt
+
+    plt.show = lambda: None  # Mock plt.show to avoid blocking tests
+    evppi_results = {"param1": 0.5, "param2": 1.2, "param3": 0.8}
+    reporting.plot_evppi_tornado(evppi_results, output_path=None)
 
 
 def test_atkinson_epsilon_one():

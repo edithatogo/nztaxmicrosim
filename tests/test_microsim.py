@@ -21,7 +21,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import RWTParams, TaxBracketParams
+from src.parameters import IETCParams, RWTParams, TaxBracketParams
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")
@@ -396,3 +396,97 @@ def test_family_boost_credit():
 
     # Test case 4: Income above max_income, credit is 0
     assert family_boost_credit(190000, 10000, family_boost_params) == 0
+
+
+def test_calcietc_new():
+    """Test the calcietc function."""
+    ietc_params = IETCParams(
+        thrin=24000,
+        ent=520,
+        thrab=48000,
+        abrate=0.13,
+    )
+
+    # Test case 1: Not eligible due to being a WFF recipient
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=True,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 0
+    )
+
+    # Test case 2: Not eligible due to being a superannuation recipient
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=True,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 0
+    )
+
+    # Test case 3: Not eligible due to being a main benefit recipient
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=True,
+            ietc_params=ietc_params,
+        )
+        == 0
+    )
+
+    # Test case 4: Not eligible due to income being too low
+    assert (
+        calcietc(
+            taxable_income=20000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 0
+    )
+
+    # Test case 5: Eligible for maximum entitlement
+    assert (
+        calcietc(
+            taxable_income=30000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 520
+    )
+
+    # Test case 6: Eligible for abated entitlement
+    assert (
+        calcietc(
+            taxable_income=50000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 520 - (50000 - 48000) * 0.13
+    )
+
+    # Test case 7: Not eligible due to income being too high
+    assert (
+        calcietc(
+            taxable_income=100000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+            ietc_params=ietc_params,
+        )
+        == 0
+    )

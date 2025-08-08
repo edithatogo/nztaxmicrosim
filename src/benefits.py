@@ -126,3 +126,109 @@ def calculate_child_support(liable_income: float, cs_params: ChildSupportParams)
         return 0.0
 
     return max(0.0, liable_income * cs_params.support_rate)
+
+
+def calculate_wep(
+    is_eligible: bool,
+    is_single: bool,
+    is_partnered: bool,
+    num_dependent_children: int,
+    wep_params: "WEPParams",
+) -> float:
+    """Calculate the Winter Energy Payment (WEP) entitlement."""
+
+    if not is_eligible:
+        return 0.0
+
+    base_rate = 0.0
+    if is_single:
+        base_rate = wep_params.single_rate
+    elif is_partnered:
+        base_rate = wep_params.couple_rate
+    base_rate += num_dependent_children * wep_params.child_rate
+
+    return base_rate
+
+
+def calculate_bstc(
+    family_income: float,
+    child_age: int,
+    bstc_params: "BSTCParams",
+) -> float:
+    """Calculate the Best Start Tax Credit (BSTC) entitlement."""
+
+    if child_age > bstc_params.max_age:
+        return 0.0
+
+    base_rate = bstc_params.base_rate
+
+    if child_age >= 1:
+        return _apply_abatement(
+            base_rate,
+            family_income,
+            bstc_params.income_threshold,
+            bstc_params.abatement_rate,
+        )
+    return base_rate
+
+
+def calculate_ftc(
+    family_income: float,
+    num_children: int,
+    ftc_params: "FTCParams",
+) -> float:
+    """Calculate the Family Tax Credit (FTC) entitlement."""
+
+    if num_children == 0:
+        return 0.0
+
+    base_rate = ftc_params.base_rate
+    base_rate += (num_children - 1) * ftc_params.child_rate
+
+    return _apply_abatement(
+        base_rate,
+        family_income,
+        ftc_params.income_threshold,
+        ftc_params.abatement_rate,
+    )
+
+
+def calculate_iwtc(
+    family_income: float,
+    num_children: int,
+    hours_worked: int,
+    iwtc_params: "IWTCParams",
+) -> float:
+    """Calculate the In-Work Tax Credit (IWTC) entitlement."""
+
+    if num_children == 0:
+        return 0.0
+
+    if hours_worked < iwtc_params.min_hours_worked:
+        return 0.0
+
+    base_rate = iwtc_params.base_rate
+    base_rate += (num_children - 1) * iwtc_params.child_rate
+
+    return _apply_abatement(
+        base_rate,
+        family_income,
+        iwtc_params.income_threshold,
+        iwtc_params.abatement_rate,
+    )
+
+
+def calculate_mftc(
+    family_income: float,
+    tax_paid: float,
+    mftc_params: "MFTCParams",
+) -> float:
+    """Calculate the Minimum Family Tax Credit (MFTC) entitlement."""
+
+    guaranteed_income = mftc_params.guaranteed_income
+    net_income = family_income - tax_paid
+
+    if net_income >= guaranteed_income:
+        return 0.0
+
+    return guaranteed_income - net_income

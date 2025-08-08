@@ -16,6 +16,7 @@ dependencies = [
     "scipy",
     "tabulate",
     "requests",
+    "pyyaml",
 ]
 
 [tool.pytest.ini_options]
@@ -49,3 +50,6 @@ python_version = "3.11"
 ignore_missing_imports = true
 allow_untyped_globals = true
 disable_error_code = ["var-annotated"]
+
+[tool.coverage.run]
+source = ["src"]
