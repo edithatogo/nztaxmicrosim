@@ -53,3 +53,6 @@ disable_error_code = ["var-annotated"]
 
 [tool.coverage.run]
 source = ["src"]
+
+[tool.setuptools.package-data]
+nztaxmicrosim = ["docs/*"]
