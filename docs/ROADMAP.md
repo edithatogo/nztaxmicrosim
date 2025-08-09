@@ -52,6 +52,14 @@ This document outlines development priorities for the NZ Microsimulation Model, 
 
 ## Future Features
 
+10. **Historical Analysis Enhancements**
+    - *Description:* Improve the model's capability to conduct robust historical analysis by incorporating economic and demographic changes over time.
+    - *Tasks:*
+      - **Inflation and Wage Adjustment:** Introduce a mechanism to adjust population incomes and monetary values to a common year's terms, enabling meaningful "real terms" comparisons of policy impacts across different eras.
+      - **Demographic Evolution:** Develop a module to simulate changes in the population's structure over time (e.g., age distribution, family size), allowing for more realistic long-term analysis.
+      - **Historical Reporting Framework:** Create dedicated reporting functions to generate standard outputs for historical comparisons, such as plots of effective tax rates or benefit entitlements by decile over time.
+    - *Priority:* **Medium**
+
 9. **Policy Optimisation Module**
    - *Description:* Introduce a module to search for optimal policy parameters based on user-defined objectives (e.g., maximizing revenue while minimizing inequality).
    - *Priority:* **Low**
