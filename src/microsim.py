@@ -60,20 +60,21 @@ def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBra
 
 
 def taxit(taxy: float, params: Mapping[str, Any] | TaxBracketParams) -> float:
-    """Calculate income tax using progressive brackets.
+    """
+    Calculate income tax using a progressive tax bracket system.
 
-    ``params`` may be provided either as a :class:`TaxBracketParams` instance or
-    as a sequence of rates.  When passing rates directly, ``thresholds`` must
-    also be supplied.
+    This function iterates through the tax brackets defined in `params`. For each
+    bracket, it calculates the tax owed on the portion of income that falls
+    within that bracket's range. The total tax is the sum of the tax from
+    each bracket.
 
     Args:
         taxy: The taxable income.
-        params: Tax bracket parameters or a sequence of rates.
-        thresholds: Thresholds matching ``params`` when rates are supplied
-            directly.
+        params: A `TaxBracketParams` instance or a mapping containing
+            `rates` and `thresholds` for the tax brackets.
 
     Returns:
-        The calculated income tax.
+        The total calculated income tax.
     """
 
     if taxy <= 0:
@@ -96,7 +97,23 @@ def taxit(taxy: float, params: Mapping[str, Any] | TaxBracketParams) -> float:
 
 
 def calctax(taxy: float, split: int, params1: TaxBracketParams, params2: TaxBracketParams) -> float:
-    """Calculate income tax for a split year."""
+    """
+    Calculate income tax for a year with a mid-year policy change (split year).
+
+    This is used when tax rules change during a financial year. It calculates
+    the tax for the full year under the old rules (`params1`) and the new rules
+    (`params2`), then prorates the results based on the `split` month.
+
+    Args:
+        taxy: The total taxable income for the year.
+        split: The month number (1-12) in which the tax change occurs. The
+            new rules apply from this month onwards.
+        params1: The tax bracket parameters for the first part of the year.
+        params2: The tax bracket parameters for the second part of the year.
+
+    Returns:
+        The total income tax for the split year.
+    """
 
     taxa: float = taxit(taxy, params1)
     taxb: float = taxit(taxy, params2)
@@ -104,7 +121,21 @@ def calctax(taxy: float, split: int, params1: TaxBracketParams, params2: TaxBrac
 
 
 def netavg(incvar: float, eprt: float, params: TaxBracketParams) -> float:
-    """Calculate the net average income."""
+    """
+    Calculate the net average weekly income after tax and ACC levy.
+
+    This function annualizes the weekly income, calculates the annual income tax,
+    deducts the ACC Earner's Premium, and then converts the result back to a
+    weekly net income.
+
+    Args:
+        incvar: The gross weekly income.
+        eprt: The ACC Earner's Premium rate.
+        params: The tax bracket parameters.
+
+    Returns:
+        The net average weekly income, rounded to two decimal places.
+    """
 
     annearn: float = incvar * 52
     temptax: float = taxit(annearn, params)
@@ -175,20 +206,28 @@ def eitc(
     """
     Calculates the Earned Income Tax Credit (EITC).
 
+    The EITC calculation has three phases based on income:
+    1.  **Phase-in:** For income between `min_income_threshold` and
+        `max_entitlement_income`, the credit increases at the `earning_rate`.
+    2.  **Plateau:** For income between `max_entitlement_income` and
+        `abatement_income_threshold`, the credit is at its maximum.
+    3.  **Phase-out:** For income above `abatement_income_threshold`, the
+        credit is reduced at the `abatement_rate`.
+
     This function replicates the logic of the SAS macro `%eitc`.
 
     Args:
-        is_credit_enabled (bool): A flag to indicate if the credit is on or off.
-        is_eligible (bool): A flag to indicate if the person is eligible.
-        income (float): The income variable.
-        min_income_threshold (float): The income threshold to be eligible.
-        max_entitlement_income (float): The income point at which the maximum entitlement is first attained.
-        abatement_income_threshold (float): The income point at which the entitlement starts to abate.
-        earning_rate (float): The rate at which the credit is earned.
-        abatement_rate (float): The rate at which the credit is abated.
+        is_credit_enabled: Flag to enable or disable the credit calculation.
+        is_eligible: Flag indicating if the individual is eligible for the credit.
+        income: The income amount to base the calculation on.
+        min_income_threshold: The income level at which the credit begins.
+        max_entitlement_income: The income level where the credit reaches its maximum.
+        abatement_income_threshold: The income level at which the credit begins to abate.
+        earning_rate: The rate at which the credit is earned during phase-in.
+        abatement_rate: The rate at which the credit is reduced during phase-out.
 
     Returns:
-        float: The calculated EITC.
+        The calculated EITC amount.
     """
     if not is_credit_enabled or not is_eligible:
         return 0.0
@@ -244,24 +283,32 @@ def supstd(
     base_year_tax_parameters: TaxBracketParams,
 ) -> dict[str, float]:
     """
-    Calculates standard superannuation.
+    Calculates standard superannuation rates for a base year and 4 simulation years.
+
+    This function projects superannuation payments, ensuring they are indexed
+    to the higher of CPI inflation or a "floor" relative to the average weekly
+    earnings. It calculates both gross and net superannuation amounts.
 
     This function replicates the logic of the SAS macro `%supstd`.
 
     Args:
-        cpi_factors (list[float]): A list of 4 CPI factors for the simulation years.
-        average_weekly_earnings (list[float]): A list of 4 average weekly earnings for the simulation years.
-        earner_premium_rates (list[float]): A list of 4 earner premium rates for the simulation years.
-        super_floor_relativities (list[float]): A list of 4 superannuation accord
-            floor relativities for the simulation years.
-        tax_parameters (list[TaxBracketParams]): A list of 4 parameter sets for
-            the simulation years.
-        base_year_average_weekly_earnings (float): The average weekly earnings for the base year.
-        base_year_earner_premium_rate (float): The earner premium rate for the base year.
-        base_year_tax_parameters (TaxBracketParams): Tax parameters for the base year.
+        cpi_factors: A list of 4 CPI factors for the simulation years.
+        average_weekly_earnings: A list of 4 average weekly earnings for the
+            simulation years.
+        earner_premium_rates: A list of 4 ACC earner premium rates for the
+            simulation years.
+        super_floor_relativities: A list of 4 superannuation accord floor
+            relativities for the simulation years.
+        tax_parameters: A list of 4 tax parameter sets for the simulation years.
+        base_year_average_weekly_earnings: The average weekly earnings for the
+            base year.
+        base_year_earner_premium_rate: The ACC earner premium rate for the
+            base year.
+        base_year_tax_parameters: Tax parameters for the base year.
 
     Returns:
-        dict: A dictionary containing the calculated standard superannuation amounts.
+        A dictionary containing the calculated gross and net standard
+        superannuation amounts for the base year and 4 simulation years.
     """
     results: dict[str, float] = {}
 
@@ -314,13 +361,18 @@ def family_boost_credit(
     """
     Calculates the FamilyBoost childcare tax credit.
 
+    The credit is calculated as 25% of childcare costs, up to a maximum
+    credit amount. The credit is then abated for families with income above
+    a certain threshold.
+
     Args:
         family_income: The total family income.
-        childcare_costs: The total childcare costs.
-    family_boost_params: FamilyBoost parameter model.
+        childcare_costs: The total childcare costs for the period.
+        family_boost_params: The parameters for the FamilyBoost credit,
+            including max credit, income thresholds, and abatement rate.
 
     Returns:
-        float: The calculated FamilyBoost credit.
+        The calculated FamilyBoost credit amount.
     """
     max_credit = family_boost_params.max_credit
     income_threshold = family_boost_params.income_threshold
