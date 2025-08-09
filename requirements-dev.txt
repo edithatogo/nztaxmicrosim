@@ -6,9 +6,12 @@ numpy
 pandas
 pydantic
 pyyaml
-pre-commit
 pytest
 pytest-cov
+pre-commit
+mkdocs
+mkdocs-material
+
 pytest-profiling
 ruff
 scipy

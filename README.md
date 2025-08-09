@@ -1,8 +1,8 @@
-# NZ Microsimulation Model
+# NZ Tax Microsimulation Model
 
-A Python-based microsimulation model for the New Zealand tax and transfer
-system. The project re-implements Inland Revenue’s SAS models in an open and
-extensible form.
+A microsimulation model for New Zealand's tax and benefit system.
+
+This model is designed to be a flexible and extensible tool for researchers, policymakers, and the public to explore the impacts of different tax and benefit policies in New Zealand.
 
 The filename of this document is capitalised as `README.md` so that GitHub
 renders it by default when viewing the repository.

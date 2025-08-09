@@ -40,3 +40,6 @@ run-microsim-comparison:
 
 generate-reports:
 	./syspop/venv/bin/python examples/generate_reports.py --param_files $(PARAM_FILES)
+
+docs:
+	mkdocs serve

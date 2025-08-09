@@ -1,0 +1,23 @@
+site_name: NZ Tax Microsimulation Model
+theme:
+  name: material
+nav:
+  - 'Home': 'index.md'
+  - 'User Guide':
+    - 'Contributing': 'CONTRIBUTING.md'
+    - 'Citing this work': 'CITATION.cff'
+    - 'Code of Conduct': '../CODE_OF_CONDUCT.md'
+    - 'License': 'LICENSE'
+  - 'Project Documentation':
+    - 'Roadmap': 'ROADMAP.md'
+    - 'Changelog': '../CHANGELOG.md'
+    - 'Development Log': 'development_log.md'
+    - 'Security': 'SECURITY.md'
+  - 'Model Documentation':
+    - 'Data Dictionary': 'data_dictionary.md'
+    - 'Feature Matrix': 'feature_matrix.md'
+    - 'Policy Changes': 'policy_changes.md'
+    - 'Optimisation Module Proposal': 'optimisation_module_proposal.md'
+repo_url: https://github.com/d-doughnut/nztaxmicrosim
+repo_name: d-doughnut/nztaxmicrosim
+docs_dir: docs

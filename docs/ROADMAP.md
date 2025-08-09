@@ -50,3 +50,12 @@ This document outlines development priorities for the NZ Microsimulation Model, 
 - **Q3 2025:** Deliver the completed static personal income model and begin work on dynamic behavioural extensions.
 - **Q4 2025:** Release budget impact functionality alongside the first round of new equity metrics and value-of-information analysis.
 
+## Future Features
+
+9. **Policy Optimisation Module**
+   - *Description:* Introduce a module to search for optimal policy parameters based on user-defined objectives (e.g., maximizing revenue while minimizing inequality).
+   - *Priority:* **Low**
+   - *Implementation Plan:*
+     - **Phase 1: Simple Parameter Scanning:** Develop the core infrastructure to programmatically run the simulation with a grid of different input parameters and save the results. This provides a basic but robust tool for exploring policy options.
+     - **Phase 2: Advanced Optimization:** Integrate a general-purpose optimization library (e.g., Optuna) to intelligently and efficiently search the parameter space for optimal policies, building on the foundation from Phase 1.
+
