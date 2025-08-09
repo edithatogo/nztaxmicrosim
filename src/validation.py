@@ -1,5 +1,5 @@
 import pandas as pd
-from pydantic import BaseModel, Field, ...
+from pydantic import BaseModel, Field
 
 
 class SimulationInputSchema(BaseModel):
@@ -28,9 +28,9 @@ class SimulationInputSchema(BaseModel):
     MFTC_elig: int = Field(default=..., ge=0, le=1, description="Eligibility for Minimum Family Tax Credit.")
     sharedcare: int = Field(default=..., ge=0, le=1, description="Shared care indicator.")
     sharecareFTCwgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for Family Tax Credit.")
-    sharecareBSTC0wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for Best Start Tax Credit (0-1).")
-    sharecareBSTC01wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for Best Start Tax Credit (1-2).")
-    sharecareBSTC1wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for Best Start Tax Credit (2-3).")
+    sharecareBSTC0wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for BSTC (0-1).")
+    sharecareBSTC01wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for BSTC (1-2).")
+    sharecareBSTC1wgt: int = Field(default=..., ge=0, le=1, description="Shared care weight for BSTC (2-3).")
     MFTCwgt: int = Field(default=..., ge=0, le=1, description="Weight for Minimum Family Tax Credit.")
     iwtc: float = Field(default=..., ge=0, description="In-Work Tax Credit amount.")
     selfempind: int = Field(default=..., ge=0, le=1, description="Self-employment indicator.")

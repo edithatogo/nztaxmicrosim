@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Dict
-
 from pydantic import BaseModel
 
 from .microsim import calcietc, load_parameters, simrwt, taxit

@@ -51,7 +51,6 @@ def load_parameters(year: str) -> Parameters:
         raise ValueError(f"Parameter validation failed: {e}") from e
 
 
-
 def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBracketParams:
     """Convert a mapping of tax parameters into :class:`TaxBracketParams`."""
 

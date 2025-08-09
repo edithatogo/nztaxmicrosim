@@ -63,9 +63,7 @@ class CalculateAbatementRule:
         df = data["df"]
         abatement_threshold = 42700
         abatement_rate = 0.27
-        df["abatement"] = np.maximum(
-            0, (df["wff_income"] - abatement_threshold) * abatement_rate
-        )
+        df["abatement"] = np.maximum(0, (df["wff_income"] - abatement_threshold) * abatement_rate)
 
 
 @dataclass

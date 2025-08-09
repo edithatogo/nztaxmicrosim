@@ -1,7 +1,6 @@
-import os
 import runpy
 from typing import Any
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,13 +9,15 @@ import pytest
 
 from src.reporting_framework import (
     DistributionalStatisticsTable,
-    EquityMetricsTable,
     ExecutiveSummary,
     FiscalImpactTable,
     IncomeDecileImpactChart,
     PovertyRateChangesChart,
     ReportComponent,
     ReportGenerator,
+    calculate_atkinson_index,
+    calculate_lorenz_curve,
+    calculate_theil_index,
 )
 
 
@@ -73,6 +74,7 @@ def test_main_block():
     # Generate the report
     # Create dummy data for demonstration
     import numpy as np
+
     np.random.seed(42)
     num_people = 1000
     dummy_data = pd.DataFrame(
@@ -96,7 +98,7 @@ def test_main_block():
             "familyinc": np.random.normal(50000, 15000, num_people),
         }
     )
-    
+
     # Calculate disposable income and AHC for dummy data
     # These functions would ideally come from src/reporting.py or a shared utility
     def calculate_disposable_income_dummy(df: pd.DataFrame) -> pd.Series:
@@ -120,8 +122,8 @@ def test_main_block():
 
     dummy_data["disposable_income"] = calculate_disposable_income_dummy(dummy_data)
     dummy_data["disposable_income_ahc"] = calculate_disposable_income_ahc_dummy(dummy_data)
-    
-    generated_report_content = report_gen.generate_report(dummy_data, global_report_params)
+
+    report_gen.generate_report(dummy_data, global_report_params)
 
     # Compile to Markdown
     full_markdown_report = report_gen.to_markdown_report()
@@ -167,9 +169,9 @@ def test_report_component_generate():
 def test_fiscal_impact_table_no_tax_liability():
     """Test the FiscalImpactTable when 'tax_liability' is missing."""
     table = FiscalImpactTable()
-    df = pd.DataFrame({'jss_entitlement': [10]})
+    df = pd.DataFrame({"jss_entitlement": [10]})
     result = table.generate(df, {})
-    assert result['Value'][0] == 0.0
+    assert result["Value"][0] == 0.0
 
 
 def test_distributional_statistics_table_poverty_rate_empty():
@@ -194,7 +196,8 @@ def test_poverty_rate_changes_chart_error_handling(sample_dataframe):
         chart.generate(df, {})
 
 
-from src.reporting_framework import calculate_lorenz_curve, calculate_atkinson_index, calculate_theil_index
+
+
 
 def test_calculate_lorenz_curve_zero_income():
     """Test the Lorenz curve calculation with zero total income."""
@@ -204,18 +207,21 @@ def test_calculate_lorenz_curve_zero_income():
     assert "income_share" in lorenz.columns
     assert lorenz["income_share"].iloc[-1] == 0.0
 
+
 def test_calculate_lorenz_curve_empty_series():
     """Test the Lorenz curve calculation with an empty series."""
     income_series = pd.Series([], dtype=float)
     lorenz = calculate_lorenz_curve(income_series)
     assert "population_share" in lorenz.columns
     assert "income_share" in lorenz.columns
-    assert lorenz.to_dict() == {'population_share': {0: 0.0}, 'income_share': {0: 0.0}}
+    assert lorenz.to_dict() == {"population_share": {0: 0.0}, "income_share": {0: 0.0}}
+
 
 def test_calculate_atkinson_index_empty_series():
     """Test the Atkinson index calculation with an empty series."""
     income_series = pd.Series([], dtype=float)
     assert calculate_atkinson_index(income_series) == 0.0
+
 
 def test_calculate_theil_index_empty_series():
     """Test the Theil index calculation with an empty series."""
@@ -231,26 +237,30 @@ def test_calculate_atkinson_index_epsilon_one():
     # The expected index is 1 - (2.605 / 3.0) = 0.1316
     assert np.isclose(calculate_atkinson_index(income_series, epsilon=1), 0.13160963843421614)
 
+
 def test_distributional_statistics_table_empty_input():
     """Test the DistributionalStatisticsTable with an empty DataFrame."""
     table = DistributionalStatisticsTable()
-    df = pd.DataFrame({
-        "familyinc": [],
-        "tax_liability": [],
-        "jss_entitlement": [],
-        "sps_entitlement": [],
-        "slp_entitlement": [],
-        "accommodation_supplement_entitlement": [],
-        "FTCcalc": [],
-        "IWTCcalc": [],
-        "BSTCcalc": [],
-        "MFTCcalc": [],
-        "housing_costs": [],
-    })
+    df = pd.DataFrame(
+        {
+            "familyinc": [],
+            "tax_liability": [],
+            "jss_entitlement": [],
+            "sps_entitlement": [],
+            "slp_entitlement": [],
+            "accommodation_supplement_entitlement": [],
+            "FTCcalc": [],
+            "IWTCcalc": [],
+            "BSTCcalc": [],
+            "MFTCcalc": [],
+            "housing_costs": [],
+        }
+    )
     # Expect the generate method to handle empty input gracefully
     result = table.generate(df, {})
     assert isinstance(result, pd.DataFrame)
     assert not result.empty
+
 
 def test_income_decile_impact_chart_to_markdown():
     """Test the to_markdown method of IncomeDecileImpactChart."""
@@ -263,12 +273,14 @@ def test_income_decile_impact_chart_to_markdown():
     markdown = chart.to_markdown("Error: Test error")
     assert "Error: Test error" in markdown
 
+
 def test_report_generator_to_markdown_fallback():
     """Test the fallback case in ReportGenerator.to_markdown_report."""
+
     class SimpleComponent(ReportComponent):
         def generate(self, data: pd.DataFrame, params: dict) -> Any:
             return "Simple content"
-    
+
     components = [SimpleComponent("Simple Component", "A simple component.")]
     report_gen = ReportGenerator(components)
     report_gen.generate_report(pd.DataFrame(), {})
@@ -286,7 +298,7 @@ def test_distributional_statistics_table_to_markdown_string_input():
 
 def test_main_script_execution():
     """Test the main execution block of the script."""
-    with patch('builtins.print') as mock_print:
-        runpy.run_path('src/reporting_framework.py', run_name='__main__')
+    with patch("builtins.print") as mock_print:
+        runpy.run_path("src/reporting_framework.py", run_name="__main__")
         # Check that the final print statement is called
         mock_print.assert_called_with("Dummy report components generated and saved to 'reports/' directory.")

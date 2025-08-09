@@ -25,9 +25,6 @@ class Rule(Protocol):
     def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - Protocol
         ...
 
-
-import yaml
-
 @dataclass
 class SimulationPipeline:
     """A pipeline for running a series of simulation rules.
@@ -36,7 +33,7 @@ class SimulationPipeline:
     given data dictionary. Rules can be enabled, disabled, or replaced.
     """
 
-            rules: list[Rule] = []
+    rules: list[Rule] = field(default_factory=list)
 
     @classmethod
     def from_config(cls, config_path: str, params: dict[str, Any]) -> "SimulationPipeline":

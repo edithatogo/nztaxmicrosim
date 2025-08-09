@@ -1,7 +1,6 @@
 """Tests for the tax rules."""
 
 import pandas as pd
-import pytest
 
 from src.microsim import load_parameters
 from src.parameters import (
