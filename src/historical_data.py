@@ -7,6 +7,7 @@ from typing import Any, Dict, List
 
 from .parameters import Parameters
 
+
 def load_historical_data() -> List[Dict[str, Any]]:
     """Loads the historical tax data from the JSON file."""
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -17,6 +18,7 @@ def load_historical_data() -> List[Dict[str, Any]]:
 
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 def transform_historical_record(record: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -56,14 +58,15 @@ def transform_historical_record(record: Dict[str, Any]) -> Dict[str, Any]:
 
     return transformed_record
 
+
 def get_historical_parameters(year_str: str) -> Parameters:
     """
     Gets the parameters for a given year from the historical data.
     """
     from .microsim import load_parameters
-    
+
     historical_data = load_historical_data()
-    
+
     year = int(year_str.split("-")[0])
 
     # Find the most recent record for the given year
@@ -71,12 +74,12 @@ def get_historical_parameters(year_str: str) -> Parameters:
     for record in historical_data:
         try:
             record_year_str = str(record.get("year", ""))
-            record_year = int(re.split(r'[/ ]', record_year_str)[0])
+            record_year = int(re.split(r"[/ ]", record_year_str)[0])
             if record_year <= year:
                 if relevant_record is None:
                     relevant_record = record
                 else:
-                    current_best_year = int(re.split(r'[/ ]', str(relevant_record.get("year", "")))[0])
+                    current_best_year = int(re.split(r"[/ ]", str(relevant_record.get("year", "")))[0])
                     if record_year > current_best_year:
                         relevant_record = record
         except (ValueError, TypeError, IndexError):
@@ -89,14 +92,14 @@ def get_historical_parameters(year_str: str) -> Parameters:
         param_files = [f for f in os.listdir(script_dir) if f.startswith("parameters_") and f.endswith(".json")]
         latest_param_file = sorted(param_files, reverse=True)[0]
         latest_year = latest_param_file.replace("parameters_", "").replace(".json", "")
-        
+
         base_params = load_parameters(latest_year).model_dump()
-        
+
         transformed_data = transform_historical_record(relevant_record)
-        
+
         # Merge the transformed data with the base parameters
         base_params.update(transformed_data)
-        
+
         return Parameters.model_validate(base_params)
     else:
         raise FileNotFoundError(f"No historical data found for year {year_str}")

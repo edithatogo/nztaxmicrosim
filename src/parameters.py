@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from typing import Optional
 
 from pydantic import BaseModel, Field
@@ -69,8 +70,12 @@ class AccommodationSupplementParams(BaseModel):
 
     income_thresholds: dict[str, float] = Field(description="Income thresholds by region.")
     abatement_rate: float = Field(description="The abatement rate for the supplement.")
-    max_entitlement_rates: dict[str, dict[str, float]] = Field(description="Maximum entitlement rates by region and family type.")
-    housing_cost_contribution_rate: float = Field(description="The rate at which housing costs are contributed to the calculation.")
+    max_entitlement_rates: dict[str, dict[str, float]] = Field(
+        description="Maximum entitlement rates by region and family type."
+    )
+    housing_cost_contribution_rate: float = Field(
+        description="The rate at which housing costs are contributed to the calculation."
+    )
     housing_cost_threshold: float = Field(description="The threshold for housing costs.")
 
 
@@ -129,7 +134,7 @@ class WEPParams(BaseModel):
     child_rate: float = Field(description="The additional weekly payment rate per child.")
 
 
-from typing import Optional
+
 
 class StudentLoanParams(BaseModel):
     """Parameters for Student Loan repayments."""
@@ -206,6 +211,7 @@ class Parameters(BaseModel):
     - `acc_levy`: Parameters for the ACC Earner's Levy.
     - `wep`: Parameters for the Winter Energy Payment (WEP).
     """
+
     tax_brackets: TaxBracketParams
     ietc: IETCParams
     wff: WFFParams

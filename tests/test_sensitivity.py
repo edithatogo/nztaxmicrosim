@@ -198,10 +198,6 @@ def test_run_deterministic_analysis_values():
 
 
 
-
-from src.sensitivity_analysis import _get_nested, _set_nested
-
-
 def _test_get_nested():
     d = {"a": {"b": [1, 2, {"c": 3}]}}
     assert _get_nested(d, "a.b.0") == 1

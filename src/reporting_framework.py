@@ -160,6 +160,7 @@ class ReportComponent:
 
 class ExecutiveSummary(ReportComponent):
     """A report component for generating an executive summary."""
+
     def __init__(self):
         super().__init__(
             title="Executive Summary", description="Concise overview of key objectives, assumptions, and findings."
@@ -193,6 +194,7 @@ class ExecutiveSummary(ReportComponent):
 
 class FiscalImpactTable(ReportComponent):
     """A report component for summarizing the fiscal impact of a policy."""
+
     def __init__(self):
         super().__init__(
             title="Fiscal Impact Summary", description="Simulation of total revenue and benefit spending by category."
@@ -259,6 +261,7 @@ class FiscalImpactTable(ReportComponent):
 
 class DistributionalStatisticsTable(ReportComponent):
     """A report component for summarizing the distributional statistics of income."""
+
     def __init__(self):
         super().__init__(
             title="Distributional Statistics",
@@ -384,6 +387,7 @@ class DistributionalStatisticsTable(ReportComponent):
 
 class EquityMetricsTable(ReportComponent):
     """A report component for summarizing key equity metrics."""
+
     def __init__(self):
         super().__init__(
             title="Equity Metrics",
@@ -444,6 +448,7 @@ class EquityMetricsTable(ReportComponent):
 
 class IncomeDecileImpactChart(ReportComponent):
     """A report component for visualizing the impact on different income deciles."""
+
     def __init__(self):
         super().__init__(
             title="Tax/Benefit Impact by Income Decile", description="Bar or line chart of net effect on each decile."
@@ -503,6 +508,7 @@ class IncomeDecileImpactChart(ReportComponent):
 
 class PovertyRateChangesChart(ReportComponent):
     """A report component for visualizing changes in poverty rates."""
+
     def __init__(self):
         super().__init__(
             title="Poverty Rate Changes by Group",
@@ -574,6 +580,7 @@ class PovertyRateChangesChart(ReportComponent):
 
 class ReportGenerator:
     """A class for orchestrating the generation of a multi-component report."""
+
     def __init__(self, components: List[ReportComponent]):
         self.components = components
         self.generated_content: Dict[str, Any] = {}

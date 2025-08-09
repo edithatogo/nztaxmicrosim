@@ -97,6 +97,7 @@ def main() -> None:
         SPSRule,
     )
     from .pipeline import IncomeTaxRule, SimulationPipeline
+    from .tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule
     from .wff_rules import (
         ApplyCalibrationsRule,
         ApplyCareLogicRule,
@@ -106,7 +107,6 @@ def main() -> None:
         GrossUpIncomeRule,
     )
 
-    from .tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule
     pipeline = SimulationPipeline(
         [
             JSSRule(jss_params=params.jss),

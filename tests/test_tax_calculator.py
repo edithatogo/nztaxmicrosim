@@ -46,5 +46,3 @@ def test_tax_calculator_rwt_with_custom_params() -> None:
         rwt_rate_39=0.5,
     )
     assert calc.rwt(interest, rwt_params=custom_rwt_params) == simrwt(interest, custom_rwt_params)
-
-
