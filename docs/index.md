@@ -10,4 +10,4 @@ This directory contains various documentation files related to the NZ Microsimul
 *   `CONTRIBUTING.md`: Guidelines for contributing to the project.
 *   `SECURITY.md`: Details on how to report security vulnerabilities.
 *   `LICENSE`: Specifies the project's licensing (Apache 2.0 License).
-*   `external/`: Contains external reference documents, such as original PDF files from Inland Revenue. See the [external directory](external/) for more details.
+*   `external/`: Contains external reference documents, such as original PDF files from Inland Revenue. See the [external directory](external/index.md) for more details.
