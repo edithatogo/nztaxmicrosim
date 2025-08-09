@@ -98,14 +98,17 @@ def run_deterministic_analysis(
         tax_df = pd.DataFrame(
             {
                 "tax": population_df["familyinc"].apply(
-                    tax_runner,
-                    args=(params,),
+                    lambda income: tax_runner(
+                        income,
+                        rates=params["tax_brackets"]["rates"],
+                        thresholds=params["tax_brackets"]["thresholds"],
+                    )
                 )
             }
         )
         wff_df = wff_runner(
             population_df.copy(),
-            params,
+            params["wff"],
             0.0,
             365,  # wagegwt  # daysinperiod
         )
@@ -113,11 +116,11 @@ def run_deterministic_analysis(
         results = {}
         for name, func in output_metric_funcs.items():
             if name == "Total WFF Entitlement":
-                results[name] = func(wff_df)
+                results[name] = func(wff_df, tax_df)
             elif name == "Total Tax Revenue":
-                results[name] = func(tax_df)
+                results[name] = func(wff_df, tax_df)
             elif name == "Net Cost to Government":
-                results[name] = func(tax_df, wff_df)
+                results[name] = func(wff_df, tax_df)
         return results
 
     baseline_results = _run_simulation(baseline_params)
@@ -214,21 +217,24 @@ def run_probabilistic_analysis(
         tax_df = pd.DataFrame(
             {
                 "tax": population_df["familyinc"].apply(
-                    tax_runner,
-                    args=(params,),
+                    lambda income: tax_runner(
+                        income,
+                        rates=params["tax_brackets"]["rates"],
+                        thresholds=params["tax_brackets"]["thresholds"],
+                    )
                 )
             }
         )
-        wff_df = wff_runner(population_df.copy(), params, 0.0, 365)
+        wff_df = wff_runner(population_df.copy(), params["wff"], 0.0, 365)
 
         results = {}
         for name, func in output_metric_funcs.items():
             if name == "Total WFF Entitlement":
-                results[name] = func(wff_df)
+                results[name] = func(wff_df, tax_df)
             elif name == "Total Tax Revenue":
-                results[name] = func(tax_df)
+                results[name] = func(wff_df, tax_df)
             elif name == "Net Cost to Government":
-                results[name] = func(tax_df, wff_df)
+                results[name] = func(wff_df, tax_df)
         return results
 
     parallel_results = Parallel(n_jobs=n_jobs)(delayed(_run_simulation)(sample_row) for sample_row in sample)

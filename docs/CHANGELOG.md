@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Improved documentation for contributors, including a more open security policy,
   a new development guide, and clearer instructions in the Code of Conduct.
+- Updated sensitivity analysis runners to pass parameters more explicitly.
 
 ### Added
 
