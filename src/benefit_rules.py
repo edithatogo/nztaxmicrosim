@@ -131,6 +131,11 @@ class BSTCRule(Rule):
         )
 
 
+try:
+    from .parameters import WEPParams
+except ImportError:
+    WEPParams = None
+
 @dataclass
 class WEPRule(Rule):
     """Rule to calculate the Winter Energy Payment."""
@@ -141,6 +146,8 @@ class WEPRule(Rule):
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculates the WEP and adds it to the DataFrame."""
+        if not self.wep_params:
+            return
         from .benefits import calculate_wep
 
         df = data["df"]

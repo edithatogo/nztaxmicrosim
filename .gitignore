@@ -145,3 +145,4 @@ examples/synthetic_population/
 # System population archive files
 syspop.20250701
 syspop.20250702
+*.tmp

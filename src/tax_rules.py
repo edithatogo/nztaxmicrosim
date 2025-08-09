@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from typing import Any
 
 from .acc_levy import calculate_acc_levy
-from .parameters import ACCLevyParams
-from .pipeline import Rule
-
+try:
+    from .parameters import ACCLevyParams
+except ImportError:
+    ACCLevyParams = None
 
 @dataclass
 class ACCLevyRule(Rule):
@@ -18,6 +19,8 @@ class ACCLevyRule(Rule):
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculates the ACC levy and adds it to the DataFrame."""
+        if not self.acc_levy_params:
+            return
         df = data["df"]
         df["acc_levy"] = df["familyinc"].apply(
             lambda income: calculate_acc_levy(

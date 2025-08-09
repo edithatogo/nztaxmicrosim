@@ -162,8 +162,4 @@ If you use this software in your research, cite the project as described in
    Families.
 2. Add behavioural responses, advanced sensitivity analysis and integrations
    with other social policy models.
-<<<<<<< HEAD
 3. Ongoing maintenance, documentation and feature improvements.
-=======
-3. Ongoing maintenance, documentation and feature improvements.
->>>>>>> main
