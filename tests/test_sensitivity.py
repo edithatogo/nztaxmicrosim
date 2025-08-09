@@ -196,8 +196,6 @@ def test_run_deterministic_analysis_values():
     np.testing.assert_allclose(df["high_value"][0], 330)
 
 
-
-
 def _test_get_nested():
     d = {"a": {"b": [1, 2, {"c": 3}]}}
     assert _get_nested(d, "a.b.0") == 1
