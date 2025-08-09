@@ -19,3 +19,5 @@ scipy
 seaborn
 tabulate
 tox
+types-PyYAML
+types-requests
