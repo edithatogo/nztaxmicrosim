@@ -618,9 +618,8 @@ class ReportGenerator:
                 markdown_output.append(component.to_markdown(content))
             else:
                 markdown_output.append(f"""## {title}
-
 {content}
-"""  # Fallback
+""")
         return "\n".join(markdown_output)
 
 
