@@ -104,6 +104,29 @@ def test_calculate_child_poverty_rate():
     )
 
 
+def test_calculate_child_poverty_rate_no_age_column():
+    df = pd.DataFrame(
+        {
+            "disposable_income": [15000, 30000, 20000, 50000, 10000],
+        }
+    )
+    poverty_line = 18000
+    assert calculate_child_poverty_rate(df, "disposable_income", poverty_line) == 0.0
+
+
+def test_calculate_child_poverty_rate_no_children():
+    df = pd.DataFrame(
+        {
+            "age": [20, 25, 35, 40, 50],
+            "disposable_income": [15000, 30000, 20000, 50000, 10000],
+        }
+    )
+    poverty_line = 18000
+    assert calculate_child_poverty_rate(df, "disposable_income", poverty_line) == 0.0
+
+
+
+
 def test_calculate_gini_coefficient():
     income_series = pd.Series([1, 2, 3, 4, 5])
     # Gini for this series is 0.2666...
@@ -184,3 +207,143 @@ def test_calculate_budget_impact():
     expected["Difference"] = expected["Reform"] - expected["Baseline"]
 
     assert_frame_equal(result.reset_index(drop=True), expected.reset_index(drop=True))
+
+
+from unittest.mock import patch, mock_open
+from src.reporting import generate_microsim_report
+
+def test_generate_microsim_report():
+    """Test the generate_microsim_report function."""
+    # Create a dummy DataFrame
+    simulated_data = pd.DataFrame({
+        'familyinc': [50000],
+        'tax_liability': [10000],
+        'jss_entitlement': [0],
+        'sps_entitlement': [0],
+        'slp_entitlement': [0],
+        'accommodation_supplement_entitlement': [0],
+        'FTCcalc': [0],
+        'IWTCcalc': [0],
+        'BSTCcalc': [0],
+        'MFTCcalc': [0],
+        'housing_costs': [0],
+        'age': [30],
+        'employment_income': [50000],
+        'self_employment_income': [0],
+        'investment_income': [0],
+        'rental_property_income': [0],
+        'private_pensions_annuities': [0],
+    })
+    report_params = {'poverty_line_relative': 0.5}
+
+    # Mock the file writing
+    m = mock_open()
+    with patch('builtins.open', m):
+        with patch('os.path.exists', return_value=True):
+            result = generate_microsim_report(simulated_data, report_params)
+
+    # Check that the report was "written"
+    m.assert_called_once_with('reports/microsimulation_report.md', 'w')
+    
+    # Check that the returned dictionary contains the expected components
+    expected_keys = [
+        'Executive Summary',
+        'Fiscal Impact Summary',
+        'Distributional Statistics',
+        'Equity Metrics',
+        'Tax/Benefit Impact by Income Decile',
+        'Poverty Rate Changes by Group'
+    ]
+    assert all(key in result for key in expected_keys)
+
+
+def test_generate_microsim_report_no_dir():
+    """Test the generate_microsim_report function when the reports dir does not exist."""
+    # Create a dummy DataFrame
+    simulated_data = pd.DataFrame({
+        'familyinc': [50000],
+        'tax_liability': [10000],
+        'jss_entitlement': [0],
+        'sps_entitlement': [0],
+        'slp_entitlement': [0],
+        'accommodation_supplement_entitlement': [0],
+        'FTCcalc': [0],
+        'IWTCcalc': [0],
+        'BSTCcalc': [0],
+        'MFTCcalc': [0],
+        'housing_costs': [0],
+        'age': [30],
+        'employment_income': [50000],
+        'self_employment_income': [0],
+        'investment_income': [0],
+        'rental_property_income': [0],
+        'private_pensions_annuities': [0],
+    })
+    report_params = {'poverty_line_relative': 0.5}
+
+    # Mock the file writing
+    m = mock_open()
+    with patch('builtins.open', m):
+        with patch('os.path.exists', return_value=False):
+            with patch('os.makedirs') as mock_makedirs:
+                result = generate_microsim_report(simulated_data, report_params)
+
+    # Check that the directory was created
+    mock_makedirs.assert_called_once_with('reports')
+
+    # Check that the report was "written"
+    m.assert_called_once_with('reports/microsimulation_report.md', 'w')
+    
+    # Check that the returned dictionary contains the expected components
+    expected_keys = [
+        'Executive Summary',
+        'Fiscal Impact Summary',
+        'Distributional Statistics',
+        'Equity Metrics',
+        'Tax/Benefit Impact by Income Decile',
+        'Poverty Rate Changes by Group'
+    ]
+    assert all(key in result for key in expected_keys)
+
+
+from src.reporting import plot_evppi, plot_evppi_tornado
+
+@patch('matplotlib.pyplot.show')
+def test_plot_evppi(mock_show):
+    """Test the plot_evppi function."""
+    evppi_results = {'param1': 0.1, 'param2': 0.2}
+    plot_evppi(evppi_results)
+    mock_show.assert_called_once()
+
+@patch('matplotlib.pyplot.show')
+def test_plot_evppi_no_results(mock_show):
+    """Test the plot_evppi function with no results."""
+    plot_evppi({})
+    mock_show.assert_not_called()
+
+@patch('matplotlib.pyplot.savefig')
+def test_plot_evppi_save_to_path(mock_savefig):
+    """Test the plot_evppi function with an output path."""
+    evppi_results = {'param1': 0.1, 'param2': 0.2}
+    plot_evppi(evppi_results, output_path='test.png')
+    mock_savefig.assert_called_once_with('test.png')
+
+@patch('matplotlib.pyplot.show')
+def test_plot_evppi_tornado(mock_show):
+    """Test the plot_evppi_tornado function."""
+    evppi_results = {'param1': 0.1, 'param2': 0.2}
+    plot_evppi_tornado(evppi_results)
+    mock_show.assert_called_once()
+
+@patch('matplotlib.pyplot.show')
+def test_plot_evppi_tornado_no_results(mock_show):
+    """Test the plot_evppi_tornado function with no results."""
+    plot_evppi_tornado({})
+    mock_show.assert_not_called()
+
+@patch('matplotlib.pyplot.savefig')
+def test_plot_evppi_tornado_save_to_path(mock_savefig):
+    """Test the plot_evppi_tornado function with an output path."""
+    evppi_results = {'param1': 0.1, 'param2': 0.2}
+    plot_evppi_tornado(evppi_results, output_path='test.png')
+    mock_savefig.assert_called_once_with('test.png')

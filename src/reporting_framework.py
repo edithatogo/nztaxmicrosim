@@ -410,6 +410,13 @@ class PovertyRateChangesChart(ReportComponent):
         return fig
 
     def to_markdown(self, content: plt.Figure) -> str:
+        if isinstance(content, str) and content.startswith("Error:"):
+            return f"""## {self.title}
+
+{self.description}
+
+{content}
+"""
         filepath = f"reports/{self.title.replace(' ', '_').lower()}.png"
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         content.savefig(filepath)
