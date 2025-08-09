@@ -63,3 +63,9 @@ def save_datasets(datasets: Iterable[DatasetInfo], path: str) -> None:
     serialised = [dataset.model_dump() for dataset in datasets]
     with open(path, "w", encoding="utf-8") as f:
         json.dump(serialised, f, indent=2)
+
+
+if __name__ == "__main__":
+    datasets = fetch_datasets(query="tax")
+    for dataset in datasets:
+        print(format_dataset(dataset))

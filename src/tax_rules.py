@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from .acc_levy import calculate_acc_levy
+from .pipeline import Rule
 try:
     from .parameters import ACCLevyParams
 except ImportError:

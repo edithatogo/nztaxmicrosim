@@ -46,6 +46,6 @@ def validate_input_data(df: pd.DataFrame) -> pd.DataFrame:
         # Pydantic can validate a list of records
         records = df.to_dict("records")
         validated_records = [SimulationInputSchema(**r) for r in records]
-        return pd.DataFrame([r.dict() for r in validated_records])
+        return pd.DataFrame([r.model_dump() for r in validated_records])
     except Exception as e:
         raise ValueError(f"Data validation failed: {e}")

@@ -1,11 +1,16 @@
 """Tests for the tax rules."""
 
 import pandas as pd
+import pytest
+from src.parameters import (
+    ACCLevyParams,
+    KiwisaverParams,
+    StudentLoanParams,
+    IETCParams,
+)
+from src.tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule, IETCRule
+from src.microsim import load_parameters
 
-try:
-    from src.parameters import ACCLevyParams
-except ImportError:
-    ACCLevyParams = None
 
 @pytest.mark.skipif(not ACCLevyParams, reason="ACCLevyParams not available")
 def test_acc_levy_rule():
@@ -26,14 +31,9 @@ def test_acc_levy_rule():
     assert data["df"]["acc_levy"][1] == 139111 * 0.0153
 
 
-from src.parameters import StudentLoanParams
-
-
 def test_kiwisaver_rule():
     """Test the KiwiSaverRule."""
-    rule = KiwiSaverRule(
-        kiwisaver_params=KiwisaverParams(contribution_rate=0.03)
-    )
+    rule = KiwiSaverRule(kiwisaver_params=KiwisaverParams(contribution_rate=0.03))
     data = {
         "df": pd.DataFrame(
             {
@@ -65,11 +65,6 @@ def test_student_loan_rule():
     assert "student_loan_repayment" in data["df"].columns
     assert data["df"]["student_loan_repayment"][0] == (50000 - 20000) * 0.12
     assert data["df"]["student_loan_repayment"][1] == (150000 - 20000) * 0.12
-
-
-from src.parameters import IETCParams
-from src.tax_rules import IETCRule
-from src.microsim import load_parameters
 
 
 def test_ietc_rule():

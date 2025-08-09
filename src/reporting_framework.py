@@ -143,13 +143,11 @@ class FiscalImpactTable(ReportComponent):
             "sps_entitlement",
             "slp_entitlement",
             "accommodation_supplement_entitlement",
-        ]:
-            total_welfare += df.get(col, pd.Series([0])).sum() * 52
-        for col in [
-            "FTCcalc",
-            "IWTCcalc",
-            "BSTCcalc",
-            "MFTCcalc",
+            "wep_entitlement",
+            "bstc_entitlement",
+            "ftc_entitlement",
+            "iwtc_entitlement",
+            "mftc_entitlement",
         ]:
             total_welfare += df.get(col, pd.Series([0])).sum()
         return total_welfare
@@ -185,22 +183,16 @@ class DistributionalStatisticsTable(ReportComponent):
         )
 
     def _calculate_disposable_income(self, df: pd.DataFrame) -> pd.Series:
-        disposable_income = (
-            df["employment_income"]
-            + df["self_employment_income"]
-            + df["investment_income"]
-            + df["rental_property_income"]
-            + df["private_pensions_annuities"]
-        )
+        disposable_income = df["familyinc"]
         for col in [
             "jss_entitlement",
             "sps_entitlement",
             "slp_entitlement",
             "accommodation_supplement_entitlement",
         ]:
-            disposable_income += df[col] * 52
-        for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]:
             disposable_income += df[col]
+        for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]:
+            disposable_income += df.get(col, 0)
         if "tax_liability" in df.columns:
             disposable_income -= df["tax_liability"]
         return disposable_income
@@ -208,7 +200,7 @@ class DistributionalStatisticsTable(ReportComponent):
     def _calculate_disposable_income_ahc(self, df: pd.DataFrame) -> pd.Series:
         disposable_income = self._calculate_disposable_income(df)
         if "housing_costs" in df.columns:
-            return disposable_income - (df["housing_costs"] * 52)
+            return disposable_income - df["housing_costs"]
         return disposable_income
 
     def _calculate_poverty_rate(self, income_series: pd.Series, poverty_line: float) -> float:
@@ -276,6 +268,8 @@ class DistributionalStatisticsTable(ReportComponent):
         return pd.DataFrame(stats_data)
 
     def to_markdown(self, content: pd.DataFrame) -> str:
+        if isinstance(content, str):
+            return content
         return f"""## {self.title}
 
 {self.description}
@@ -402,8 +396,8 @@ class PovertyRateChangesChart(ReportComponent):
         data["age_group"] = pd.cut(data["age"], bins=[0, 18, 65, 100], labels=["Child", "Adult", "Senior"])
 
         poverty_by_group = (
-            data.groupby("age_group")
-            .apply(lambda x: (x["disposable_income"] < poverty_line).mean() * 100)
+            data.groupby("age_group", observed=False)["disposable_income"]
+            .apply(lambda x: (x < poverty_line).mean() * 100)
             .reset_index(name="poverty_rate")
         )
 

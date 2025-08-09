@@ -160,14 +160,14 @@ def calculate_bstc(
     if child_age > bstc_params.max_age:
         return 0.0
 
-    base_rate = bstc_params.base_rate
+    base_rate = bstc_params.amount
 
     if child_age >= 1:
         return _apply_abatement(
             base_rate,
             family_income,
-            bstc_params.income_threshold,
-            bstc_params.abatement_rate,
+            bstc_params.threshold,
+            bstc_params.rate,
         )
     return base_rate
 

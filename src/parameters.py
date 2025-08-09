@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -89,9 +90,42 @@ class RWTParams(BaseModel):
     rwt_rate_39: float = 0.0
 
 
+class ACCLevyParams(BaseModel):
+    rate: float
+    max_income: float
+
+
+from typing import Optional
+
 class StudentLoanParams(BaseModel):
     repayment_threshold: float = 0.0
     repayment_rate: float = 0.0
+
+
+class BSTCParams(BaseModel):
+    threshold: float
+    rate: float
+    amount: float
+    max_age: int
+
+
+class FTCParams(BaseModel):
+    base_rate: float
+    child_rate: float
+    income_threshold: float
+    abatement_rate: float
+
+
+class IWTCParams(BaseModel):
+    base_rate: float
+    child_rate: float
+    income_threshold: float
+    abatement_rate: float
+    min_hours_worked: int
+
+
+class MFTCParams(BaseModel):
+    guaranteed_income: float
 
 
 class Parameters(BaseModel):
@@ -102,16 +136,22 @@ class Parameters(BaseModel):
     sps: SPSParams
     slp: SLPParams
     accommodation_supplement: AccommodationSupplementParams
+    bstc: Optional[BSTCParams] = None
+    ftc: Optional[FTCParams] = None
+    iwtc: Optional[IWTCParams] = None
+    mftc: Optional[MFTCParams] = None
     family_boost: FamilyBoostParams = Field(default_factory=FamilyBoostParams)
     ppl: PPLParams = Field(default_factory=PPLParams)
     child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
     kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
     student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
     rwt: RWTParams = Field(default_factory=RWTParams)
+    acc_levy: ACCLevyParams = Field(default_factory=ACCLevyParams)
 
 
 __all__ = [
     "AccommodationSupplementParams",
+    "ACCLevyParams",
     "ChildSupportParams",
     "FamilyBoostParams",
     "IETCParams",

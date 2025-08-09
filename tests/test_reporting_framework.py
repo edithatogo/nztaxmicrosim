@@ -23,13 +23,9 @@ from src.reporting_framework import (
 def sample_dataframe():
     # Create a sample DataFrame for testing reporting functions
     data = {
-        "employment_income": [50000, 100000, 30000, 0, 20000],
-        "self_employment_income": [0, 0, 5000, 0, 0],
-        "investment_income": [1000, 5000, 200, 0, 50],
-        "rental_property_income": [0, 0, 0, 0, 0],
-        "private_pensions_annuities": [0, 0, 0, 15000, 0],
+        "familyinc": [51000, 105000, 35200, 15000, 20050],
         "tax_liability": [8000, 25000, 3000, 0, 1500],
-        "jss_entitlement": [0, 0, 0, 300, 0],  # Weekly amount, will be annualized by calculate_disposable_income
+        "jss_entitlement": [0, 0, 0, 300, 0],
         "sps_entitlement": [0, 0, 0, 0, 0],
         "slp_entitlement": [0, 0, 0, 0, 0],
         "accommodation_supplement_entitlement": [
@@ -38,14 +34,14 @@ def sample_dataframe():
             0,
             100,
             0,
-        ],  # Weekly amount, will be annualized by calculate_disposable_income
+        ],
         "FTCcalc": [5000, 8000, 0, 0, 0],
         "IWTCcalc": [2000, 3000, 0, 0, 0],
         "BSTCcalc": [1000, 0, 0, 0, 0],
         "MFTCcalc": [0, 0, 0, 0, 0],
-        "housing_costs": [300, 400, 200, 150, 250],  # Weekly costs
-        "age": [35, 40, 28, 68, 10],  # Age for child poverty test
-        "num_dependent_children": [2, 2, 0, 0, 0],  # For child poverty test
+        "housing_costs": [300, 400, 200, 150, 250],
+        "age": [35, 40, 28, 68, 10],
+        "num_dependent_children": [2, 2, 0, 0, 0],
         "household_size": [4, 4, 1, 1, 1],
     }
     df = pd.DataFrame(data)

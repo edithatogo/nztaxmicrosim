@@ -94,9 +94,9 @@
     "child_rate": 0
   },
   "bstc": {
-    "base_rate": 3640,
-    "income_threshold": 79000,
-    "abatement_rate": 0.21,
+    "amount": 3640,
+    "threshold": 79000,
+    "rate": 0.21,
     "max_age": 3
   },
   "ftc": {

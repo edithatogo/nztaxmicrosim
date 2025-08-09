@@ -42,9 +42,9 @@ class SimulationPipeline:
             rule_name = rule_config["name"]
             # Note: This is a simple factory. For more complex rules, you might need a more robust mechanism.
             if rule_name == "IncomeTaxRule":
-                rules.append(IncomeTaxRule(calculator=TaxCalculator(params)))
+                rules.append(IncomeTaxRule(calculator=TaxCalculator(params=params)))
             elif rule_name == "IETCRule":
-                rules.append(IETCRule(calculator=TaxCalculator(params)))
+                rules.append(IETCRule(calculator=TaxCalculator(params=params)))
             # Add other rules here as they are created
         return cls(rules)
 
