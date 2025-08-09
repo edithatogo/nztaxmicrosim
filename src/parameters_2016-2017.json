@@ -44,5 +44,30 @@
     "acc_levy": {
         "rate": 0.0153,
         "max_income": 139111
+    },
+    "jss": {
+        "single_rate": 0,
+        "couple_rate": 0,
+        "child_rate": 0,
+        "income_abatement_threshold": 0,
+        "abatement_rate": 0
+    },
+    "sps": {
+        "base_rate": 0,
+        "income_abatement_threshold": 0,
+        "abatement_rate": 0
+    },
+    "slp": {
+        "single_rate": 0,
+        "couple_rate": 0,
+        "income_abatement_threshold": 0,
+        "abatement_rate": 0
+    },
+    "accommodation_supplement": {
+        "income_thresholds": {},
+        "abatement_rate": 0,
+        "max_entitlement_rates": {},
+        "housing_cost_contribution_rate": 0,
+        "housing_cost_threshold": 0
     }
 }

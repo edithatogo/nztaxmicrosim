@@ -45,14 +45,15 @@ family_details = pd.DataFrame(
 
 
 # --- 3. Calculate Tax and Credits for 2016-2017 ---
-print("--- Calculating for 2016-2017 ---")
+output_lines = []
+output_lines.append("--- Calculating for 2016-2017 ---")
 
 # Calculate income tax
 tax_16_17 = taxit(
     income,
     params_2016_17.tax_brackets,
 )
-print(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
+output_lines.append(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
 
 # Calculate IETC
 ietc_16_17 = calcietc(
@@ -62,7 +63,7 @@ ietc_16_17 = calcietc(
     is_benefit_recipient=False,
     ietc_params=params_2016_17.ietc,
 )
-print(f"IETC: ${ietc_16_17:.2f}")
+output_lines.append(f"IETC: ${ietc_16_17:.2f}")
 
 # Calculate WFF credits
 wff_16_17 = famsim(
@@ -71,19 +72,19 @@ wff_16_17 = famsim(
     wagegwt=0,
     daysinperiod=365,
 )
-print("Working for Families Entitlements:")
-print(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
+output_lines.append("Working for Families Entitlements:")
+output_lines.append(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
 
 
 # --- 4. Calculate Tax and Credits for 2024-2025 ---
-print("\n--- Calculating for 2024-2025 ---")
+output_lines.append("\n--- Calculating for 2024-2025 ---")
 
 # Calculate income tax
 tax_24_25 = taxit(
     income,
     params_2024_25.tax_brackets,
 )
-print(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
+output_lines.append(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
 
 # Calculate IETC
 ietc_24_25 = calcietc(
@@ -93,7 +94,7 @@ ietc_24_25 = calcietc(
     is_benefit_recipient=False,
     ietc_params=params_2024_25.ietc,
 )
-print(f"IETC: ${ietc_24_25:.2f}")
+output_lines.append(f"IETC: ${ietc_24_25:.2f}")
 
 # Calculate WFF credits
 wff_24_25 = famsim(
@@ -102,8 +103,8 @@ wff_24_25 = famsim(
     wagegwt=0,
     daysinperiod=365,
 )
-print("Working for Families Entitlements:")
-print(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2))
+output_lines.append("Working for Families Entitlements:")
+output_lines.append(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
@@ -114,4 +115,8 @@ if hasattr(params_2024_25, "family_boost") and params_2024_25.family_boost.max_c
         family_boost_params=params_2024_25.family_boost,
     )
     if family_boost > 0:
-        print(f"FamilyBoost Credit: ${family_boost:.2f}")
+        output_lines.append(f"FamilyBoost Credit: ${family_boost:.2f}")
+
+with open("basic_usage_output.txt", "w") as f:
+    for line in output_lines:
+        f.write(line + "\n")

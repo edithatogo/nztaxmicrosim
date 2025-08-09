@@ -1,0 +1,14 @@
+--- Calculating for 2016-2017 ---
+Income Tax for an income of $60000: $11020.00
+IETC: $0.00
+Working for Families Entitlements:
+   FTCcalc  IWTCcalc  BSTCcalc  MFTCcalc
+0      0.0   2121.75       0.0       0.0
+
+--- Calculating for 2024-2025 ---
+Income Tax for an income of $60000: $10485.32
+IETC: $520.00
+Working for Families Entitlements:
+   FTCcalc  IWTCcalc  BSTCcalc  MFTCcalc
+0   1983.0    5070.0    3178.0       0.0
+FamilyBoost Credit: $1250.00
