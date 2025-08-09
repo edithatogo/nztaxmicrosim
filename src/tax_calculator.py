@@ -5,7 +5,7 @@ from typing import Dict
 from pydantic import BaseModel
 
 from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import Parameters, TaxBracketParams
+from .parameters import Parameters, RWTParams, TaxBracketParams
 
 
 class TaxCalculator(BaseModel):
@@ -71,7 +71,7 @@ class TaxCalculator(BaseModel):
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float, rwt_params: Dict | None = None) -> float:
+    def rwt(self, interest: float, rwt_params: RWTParams | None = None) -> float:
         """
         Calculate Resident Withholding Tax (RWT) on interest income.
 

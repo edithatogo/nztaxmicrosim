@@ -2,22 +2,19 @@
 
 import pandas as pd
 import pytest
+
+from src.microsim import load_parameters
 from src.parameters import (
     ACCLevyParams,
     KiwisaverParams,
     StudentLoanParams,
-    IETCParams,
 )
-from src.tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule, IETCRule
-from src.microsim import load_parameters
+from src.tax_rules import ACCLevyRule, IETCRule, KiwiSaverRule, StudentLoanRule
 
 
-@pytest.mark.skipif(not ACCLevyParams, reason="ACCLevyParams not available")
 def test_acc_levy_rule():
     """Test the ACCLevyRule."""
-    rule = ACCLevyRule(
-        acc_levy_params=ACCLevyParams(rate=0.0153, max_income=139111)
-    )
+    rule = ACCLevyRule(acc_levy_params=ACCLevyParams(rate=0.0153, max_income=139111))
     data = {
         "df": pd.DataFrame(
             {
@@ -49,11 +46,7 @@ def test_kiwisaver_rule():
 
 def test_student_loan_rule():
     """Test the StudentLoanRule."""
-    rule = StudentLoanRule(
-        student_loan_params=StudentLoanParams(
-            repayment_threshold=20000, repayment_rate=0.12
-        )
-    )
+    rule = StudentLoanRule(student_loan_params=StudentLoanParams(repayment_threshold=20000, repayment_rate=0.12))
     data = {
         "df": pd.DataFrame(
             {
