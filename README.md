@@ -88,7 +88,7 @@ make run-example
 
 ## Development
 
-For more detailed development guidelines, see [DEVELOPMENT.md](DEVELOPMENT.md).
+For more detailed development guidelines, see [DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ### Tests
 

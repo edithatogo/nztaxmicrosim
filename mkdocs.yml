@@ -36,9 +36,13 @@ nav:
     - 'Validation Report': 'validation_report.md'
     - 'WFF Microsim Model Metadata': 'wff_microsim_model_metadata.md'
     - 'External': 'external/index.md'
+    - 'Feature Comparison': 'feature_comparison.md'
+    - 'Module Status': 'module_status.md'
+    - 'Feature Comparison': 'feature_comparison.md'
+    - 'Module Status': 'module_status.md'
   - 'API Reference': 'api_reference.md'
-repo_url: https://github.com/d-doughnut/nztaxmicrosim
-repo_name: d-doughnut/nztaxmicrosim
+repo_url: https://github.com/edithatogo/nztaxmicrosim
+repo_name: edithatogo/nztaxmicrosim
 docs_dir: docs
 extra:
   analytics:

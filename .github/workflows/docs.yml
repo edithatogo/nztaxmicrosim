@@ -24,8 +24,4 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Deploy docs
         run: mkdocs gh-deploy --force
-      - name: Configure GitHub Pages
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api -X POST "repos/${{ github.repository }}/pages" -f source[branch]="gh-pages" -f source[path]="/" || echo "Pages already configured."
+      

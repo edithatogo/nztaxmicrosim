@@ -15,7 +15,7 @@ To ensure a clean and maintainable codebase, we follow a simple branching strate
 
 ## Development Workflow
 
-For more detailed development guidelines, see our [DEVELOPMENT.md](../DEVELOPMENT.md) file.
+For more detailed development guidelines, see our [DEVELOPMENT.md](DEVELOPMENT.md) file.
 
 ### 1. Fork and Clone the Repository
 
