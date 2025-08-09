@@ -34,5 +34,5 @@ jobs:
           body: "This PR updates the documentation on the gh-pages branch."
           branch: "docs/gh-pages"
           base: "gh-pages"
-          path: "./site"
+          add-paths: "site/"
       
