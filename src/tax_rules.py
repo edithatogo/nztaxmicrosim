@@ -12,14 +12,28 @@ except ImportError:
 
 @dataclass
 class ACCLevyRule(Rule):
-    """Rule to calculate ACC levy."""
+    """
+    A rule to calculate the ACC (Accident Compensation Corporation) levy.
+
+    The ACC levy is a compulsory payment that helps fund the cost of accidents
+    in New Zealand. This rule calculates the levy based on an individual's
+    income, up to a maximum income threshold.
+
+    The calculation is performed by the `calculate_acc_levy` function.
+    """
 
     acc_levy_params: ACCLevyParams
     name: str = "acc_levy"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """Calculates the ACC levy and adds it to the DataFrame."""
+        """
+        Calculates the ACC levy for each individual in the DataFrame.
+
+        This method applies the `calculate_acc_levy` function to the
+        `familyinc` column of the DataFrame and stores the result in a new
+        `acc_levy` column.
+        """
         if not self.acc_levy_params:
             return
         df = data["df"]
@@ -34,14 +48,29 @@ class ACCLevyRule(Rule):
 
 @dataclass
 class KiwiSaverRule(Rule):
-    """Rule to calculate KiwiSaver contributions."""
+    """
+    A rule to calculate KiwiSaver contributions.
+
+    KiwiSaver is a voluntary savings scheme to help New Zealanders save for
+    their retirement. This rule calculates the employee's contribution based
+    on their income and a specified contribution rate.
+
+    The calculation is performed by the `calculate_kiwisaver_contribution`
+    function.
+    """
 
     kiwisaver_params: "KiwisaverParams"
     name: str = "kiwisaver"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """Calculates the KiwiSaver contribution and adds it to the DataFrame."""
+        """
+        Calculates the KiwiSaver contribution for each individual.
+
+        This method applies the `calculate_kiwisaver_contribution` function
+        to the `familyinc` column of the DataFrame and stores the result in a
+        new `kiwisaver_contribution` column.
+        """
         from .payroll_deductions import calculate_kiwisaver_contribution
 
         df = data["df"]
@@ -55,14 +84,29 @@ class KiwiSaverRule(Rule):
 
 @dataclass
 class StudentLoanRule(Rule):
-    """Rule to calculate student loan repayments."""
+    """
+    A rule to calculate student loan repayments.
+
+    This rule calculates the amount of student loan repayment required based
+    on an individual's income. Repayments are only required if the income is
+    above a certain threshold.
+
+    The calculation is performed by the `calculate_student_loan_repayment`
+    function.
+    """
 
     student_loan_params: "StudentLoanParams"
     name: str = "student_loan"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """Calculates the student loan repayment and adds it to the DataFrame."""
+        """
+        Calculates the student loan repayment for each individual.
+
+        This method applies the `calculate_student_loan_repayment` function
+        to the `familyinc` column of the DataFrame and stores the result in a
+        new `student_loan_repayment` column.
+        """
         from .payroll_deductions import calculate_student_loan_repayment
 
         df = data["df"]
@@ -77,13 +121,28 @@ class StudentLoanRule(Rule):
 
 @dataclass
 class IETCRule(Rule):
-    """Rule to calculate the Independent Earner Tax Credit."""
+    """
+    A rule to calculate the Independent Earner Tax Credit (IETC).
+
+    The IETC is a tax credit for individuals who are not receiving certain
+    other benefits. This rule determines the eligibility for and calculates
+    the amount of the IETC for each individual.
+
+    The calculation is performed by the `ietc` method of the `TaxCalculator`
+    class.
+    """
 
     name: str = "ietc"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """Calculates the IETC and adds it to the DataFrame."""
+        """
+        Calculates the IETC for each individual in the DataFrame.
+
+        This method uses the `TaxCalculator` to determine the IETC amount
+        based on the individual's income and benefit status. The result is
+        stored in a new `ietc` column.
+        """
         from .tax_calculator import TaxCalculator
 
         df = data["df"]
