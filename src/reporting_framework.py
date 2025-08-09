@@ -8,10 +8,17 @@ import seaborn as sns
 
 
 def calculate_lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
-    """Return cumulative income shares for the Lorenz curve.
+    """Calculate points for a Lorenz curve.
 
-    Negative values are treated as zero so that the curve always starts at the
-    origin and remains bounded between 0 and 1.
+    The Lorenz curve is a graphical representation of the distribution of
+    income or wealth. This function calculates the cumulative shares of
+    population and income, which can be used to plot the curve.
+
+    Args:
+        income_series: A pandas Series of income values.
+
+    Returns:
+        A DataFrame with 'population_share' and 'income_share' columns.
     """
     if income_series.empty:
         return pd.DataFrame({"population_share": [0.0], "income_share": [0.0]})
@@ -29,10 +36,20 @@ def calculate_lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
 
 
 def calculate_atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
-    """Return the Atkinson index for ``income_series``.
+    """Calculate the Atkinson index for a given income series.
 
-    ``epsilon`` governs the inequality aversion with larger values giving more
-    weight to the lower end of the distribution.
+    The Atkinson index is a measure of income inequality. It is defined as
+    1 minus the ratio of the equally distributed equivalent income to the
+    mean income.
+
+    Args:
+        income_series: A pandas Series of income values.
+        epsilon: The inequality aversion parameter. A higher value means
+            more weight is given to inequalities at the lower end of the
+            distribution.
+
+    Returns:
+        The Atkinson index.
     """
     values = income_series[income_series > 0].to_numpy()
     if values.size == 0:
@@ -48,7 +65,17 @@ def calculate_atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> 
 
 
 def calculate_theil_index(income_series: pd.Series) -> float:
-    """Return the Theil T index for ``income_series``."""
+    """Calculate the Theil T index for a given income series.
+
+    The Theil index is a measure of economic inequality. It is a special
+    case of the generalized entropy index.
+
+    Args:
+        income_series: A pandas Series of income values.
+
+    Returns:
+        The Theil T index.
+    """
     values = income_series[income_series > 0].to_numpy()
     if values.size == 0:
         return 0.0
@@ -59,7 +86,20 @@ def calculate_theil_index(income_series: pd.Series) -> float:
 
 
 def calculate_reynolds_smolensky_index(pre_tax_income: pd.Series, post_tax_income: pd.Series) -> float:
-    """Calculate the Reynolds-Smolensky index of tax progressivity."""
+    """Calculate the Reynolds-Smolensky index of tax progressivity.
+
+    The Reynolds-Smolensky index is a measure of the vertical equity of a
+    tax system. It is defined as the difference between the Gini
+    coefficient of pre-tax income and the Gini coefficient of post-tax
+    income.
+
+    Args:
+        pre_tax_income: A pandas Series of pre-tax income values.
+        post_tax_income: A pandas Series of post-tax income values.
+
+    Returns:
+        The Reynolds-Smolensky index.
+    """
     stats_helper = DistributionalStatisticsTable()
     gini_pre_tax = stats_helper._calculate_gini_coefficient(pre_tax_income)
     gini_post_tax = stats_helper._calculate_gini_coefficient(post_tax_income)
@@ -68,8 +108,7 @@ def calculate_reynolds_smolensky_index(pre_tax_income: pd.Series, post_tax_incom
 
 # Define a base class for report components to ensure modularity and a common interface
 class ReportComponent:
-    """
-    A base class for all components that can be included in a report.
+    """A base class for all components that can be included in a report.
 
     This class defines the common interface for all report components,
     ensuring that they can be generated and converted to Markdown in a
@@ -81,8 +120,7 @@ class ReportComponent:
         self.description = description
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> Any:
-        """
-        Generate the content for the report component.
+        """Generate the content for the report component.
 
         This method should be overridden by subclasses to implement the
         specific logic for generating the component's content (e.g., a
@@ -98,8 +136,7 @@ class ReportComponent:
         raise NotImplementedError("Generate method must be implemented by subclasses.")
 
     def to_markdown(self, content: Any) -> str:
-        """
-        Convert the generated component content to a Markdown string.
+        """Convert the generated component content to a Markdown string.
 
         This method can be overridden by subclasses to provide custom
         Markdown formatting for the component's content.
@@ -122,17 +159,14 @@ class ReportComponent:
 
 
 class ExecutiveSummary(ReportComponent):
-    """
-    A report component for generating an executive summary.
-    """
+    """A report component for generating an executive summary."""
     def __init__(self):
         super().__init__(
             title="Executive Summary", description="Concise overview of key objectives, assumptions, and findings."
         )
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> str:
-        """
-        Generate a summary of the key findings from the simulation.
+        """Generate a summary of the key findings from the simulation.
 
         This method should be updated to summarize the main results from the
         simulation data.
@@ -158,20 +192,20 @@ class ExecutiveSummary(ReportComponent):
 
 
 class FiscalImpactTable(ReportComponent):
-    """
-    A report component for summarizing the fiscal impact of a policy.
-    """
+    """A report component for summarizing the fiscal impact of a policy."""
     def __init__(self):
         super().__init__(
             title="Fiscal Impact Summary", description="Simulation of total revenue and benefit spending by category."
         )
 
     def _calculate_total_tax_revenue(self, df: pd.DataFrame) -> float:
+        """Calculate the total tax revenue from the 'tax_liability' column."""
         if "tax_liability" not in df.columns:
             return 0.0
         return df["tax_liability"].sum()
 
     def _calculate_total_welfare_transfers(self, df: pd.DataFrame) -> float:
+        """Calculate the total welfare transfers from various entitlement columns."""
         total_welfare = 0.0
         for col in [
             "jss_entitlement",
@@ -188,11 +222,11 @@ class FiscalImpactTable(ReportComponent):
         return total_welfare
 
     def _calculate_net_fiscal_impact(self, tax_revenue: float, welfare_transfers: float) -> float:
+        """Calculate the net fiscal impact."""
         return tax_revenue - welfare_transfers
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> pd.DataFrame:
-        """
-        Generate a table summarizing the fiscal impact of the policy.
+        """Generate a table summarizing the fiscal impact of the policy.
 
         The table includes the total tax revenue, total welfare transfers, and
         the net fiscal impact.
@@ -224,9 +258,7 @@ class FiscalImpactTable(ReportComponent):
 
 
 class DistributionalStatisticsTable(ReportComponent):
-    """
-    A report component for summarizing the distributional statistics of income.
-    """
+    """A report component for summarizing the distributional statistics of income."""
     def __init__(self):
         super().__init__(
             title="Distributional Statistics",
@@ -234,6 +266,7 @@ class DistributionalStatisticsTable(ReportComponent):
         )
 
     def _calculate_disposable_income(self, df: pd.DataFrame) -> pd.Series:
+        """Calculate disposable income before housing costs."""
         disposable_income = df["familyinc"]
         for col in [
             "jss_entitlement",
@@ -249,17 +282,20 @@ class DistributionalStatisticsTable(ReportComponent):
         return disposable_income
 
     def _calculate_disposable_income_ahc(self, df: pd.DataFrame) -> pd.Series:
+        """Calculate disposable income after housing costs."""
         disposable_income = self._calculate_disposable_income(df)
         if "housing_costs" in df.columns:
             return disposable_income - df["housing_costs"]
         return disposable_income
 
     def _calculate_poverty_rate(self, income_series: pd.Series, poverty_line: float) -> float:
+        """Calculate the poverty rate for a given income series and poverty line."""
         if income_series.empty:
             return 0.0
         return (income_series < poverty_line).sum() / len(income_series) * 100
 
     def _calculate_gini_coefficient(self, income_series: pd.Series) -> float:
+        """Calculate the Gini coefficient for a given income series."""
         if income_series.empty or len(income_series) == 1:
             return 0.0
         sorted_income = income_series.sort_values().values
@@ -269,8 +305,7 @@ class DistributionalStatisticsTable(ReportComponent):
         return numerator / denominator if denominator != 0 else 0.0
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> pd.DataFrame:
-        """
-        Generate a table of distributional statistics.
+        """Generate a table of distributional statistics.
 
         The table includes mean and median disposable income, the poverty line,
         the poverty rate, and the Gini coefficient. It also includes these
@@ -348,9 +383,7 @@ class DistributionalStatisticsTable(ReportComponent):
 
 
 class EquityMetricsTable(ReportComponent):
-    """
-    A report component for summarizing key equity metrics.
-    """
+    """A report component for summarizing key equity metrics."""
     def __init__(self):
         super().__init__(
             title="Equity Metrics",
@@ -358,6 +391,7 @@ class EquityMetricsTable(ReportComponent):
         )
 
     def _calculate_market_income(self, df: pd.DataFrame) -> pd.Series:
+        """Calculate market income from various income columns."""
         market_income = (
             df.get("employment_income", 0)
             + df.get("self_employment_income", 0)
@@ -368,8 +402,7 @@ class EquityMetricsTable(ReportComponent):
         return market_income
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> pd.DataFrame:
-        """
-        Generate a table of equity metrics.
+        """Generate a table of equity metrics.
 
         The table includes the Gini coefficient, Atkinson index, Theil index,
         and Reynolds-Smolensky index.
@@ -410,19 +443,14 @@ class EquityMetricsTable(ReportComponent):
 
 
 class IncomeDecileImpactChart(ReportComponent):
-    """
-    A report component for visualizing the impact of a policy on different
-    income deciles.
-    """
+    """A report component for visualizing the impact on different income deciles."""
     def __init__(self):
         super().__init__(
             title="Tax/Benefit Impact by Income Decile", description="Bar or line chart of net effect on each decile."
         )
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> plt.Figure:
-        """
-        Generate a bar chart showing the average disposable income for each
-        income decile.
+        """Generate a bar chart of average disposable income per income decile.
 
         Args:
             data: The simulation data, which must contain a
@@ -474,10 +502,7 @@ class IncomeDecileImpactChart(ReportComponent):
 
 
 class PovertyRateChangesChart(ReportComponent):
-    """
-    A report component for visualizing the change in poverty rates for
-    different demographic groups.
-    """
+    """A report component for visualizing changes in poverty rates."""
     def __init__(self):
         super().__init__(
             title="Poverty Rate Changes by Group",
@@ -485,8 +510,7 @@ class PovertyRateChangesChart(ReportComponent):
         )
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> plt.Figure:
-        """
-        Generate a bar chart showing the poverty rate for different age groups.
+        """Generate a bar chart of poverty rates by age group.
 
         This is a placeholder implementation. A real implementation would
         compare baseline and reform scenarios.
@@ -549,16 +573,13 @@ class PovertyRateChangesChart(ReportComponent):
 
 
 class ReportGenerator:
-    """
-    A class for orchestrating the generation of a multi-component report.
-    """
+    """A class for orchestrating the generation of a multi-component report."""
     def __init__(self, components: List[ReportComponent]):
         self.components = components
         self.generated_content: Dict[str, Any] = {}
 
     def generate_report(self, data: pd.DataFrame, global_params: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Generate all the components of the report.
+        """Generate all the components of the report.
 
         This method iterates through the list of components and calls their
         `generate` method, storing the results in a dictionary.
@@ -580,8 +601,7 @@ class ReportGenerator:
         return self.generated_content
 
     def to_markdown_report(self) -> str:
-        """
-        Compile the generated components into a single Markdown report.
+        """Compile the generated components into a single Markdown report.
 
         This method iterates through the generated content and uses each
         component's `to_markdown` method to create a single string in
