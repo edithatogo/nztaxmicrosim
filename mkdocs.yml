@@ -1,6 +1,13 @@
 site_name: NZ Tax Microsimulation Model
 theme:
   name: material
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_root_heading: yes
 nav:
   - 'Home': 'index.md'
   - 'User Guide':
@@ -18,6 +25,7 @@ nav:
     - 'Feature Matrix': 'feature_matrix.md'
     - 'Policy Changes': 'policy_changes.md'
     - 'Optimisation Module Proposal': 'optimisation_module_proposal.md'
+  - 'API Reference': 'api_reference.md'
 repo_url: https://github.com/d-doughnut/nztaxmicrosim
 repo_name: d-doughnut/nztaxmicrosim
 docs_dir: docs

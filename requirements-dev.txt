@@ -11,6 +11,7 @@ pytest-cov
 pre-commit
 mkdocs
 mkdocs-material
+mkdocstrings-python
 
 pytest-profiling
 ruff
