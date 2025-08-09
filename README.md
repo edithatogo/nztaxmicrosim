@@ -88,6 +88,8 @@ make run-example
 
 ## Development
 
+For more detailed development guidelines, see [DEVELOPMENT.md](DEVELOPMENT.md).
+
 ### Tests
 
 Install development dependencies:
@@ -128,8 +130,7 @@ See [CHANGELOG.md](CHANGELOG.md) for a history of changes.
 
 ## Security
 
-Report security vulnerabilities responsibly via
-[docs/SECURITY.md](docs/SECURITY.md).
+See our security policy in [docs/SECURITY.md](docs/SECURITY.md).
 
 ## Contributing
 

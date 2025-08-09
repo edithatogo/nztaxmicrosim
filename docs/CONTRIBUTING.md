@@ -15,13 +15,15 @@ To ensure a clean and maintainable codebase, we follow a simple branching strate
 
 ## Development Workflow
 
+For more detailed development guidelines, see our [DEVELOPMENT.md](../DEVELOPMENT.md) file.
+
 ### 1. Fork and Clone the Repository
 
 First, fork this repository to your own GitHub account. Then, clone your forked repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/irdmicrosim.git
-cd irdmicrosim
+git clone https://github.com/your-username/nztaxmicrosim.git
+cd nztaxmicrosim
 ```
 
 ### 2. Set Up Your Development Environment
