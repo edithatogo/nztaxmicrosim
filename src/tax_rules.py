@@ -4,16 +4,13 @@ from dataclasses import dataclass
 from typing import Any
 
 from .acc_levy import calculate_acc_levy
+from .parameters import ACCLevyParams, KiwisaverParams, StudentLoanParams
 from .pipeline import Rule
-try:
-    from .parameters import ACCLevyParams
-except ImportError:
-    ACCLevyParams = None
+
 
 @dataclass
 class ACCLevyRule(Rule):
-    """
-    A rule to calculate the ACC (Accident Compensation Corporation) levy.
+    """A rule to calculate the ACC (Accident Compensation Corporation) levy.
 
     The ACC levy is a compulsory payment that helps fund the cost of accidents
     in New Zealand. This rule calculates the levy based on an individual's
@@ -27,12 +24,16 @@ class ACCLevyRule(Rule):
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the ACC levy for each individual in the DataFrame.
+        """Calculate ACC levy and add it to the DataFrame.
 
         This method applies the `calculate_acc_levy` function to the
-        `familyinc` column of the DataFrame and stores the result in a new
-        `acc_levy` column.
+        `familyinc` column of the DataFrame in the `data` dictionary
+        and stores the result in a new `acc_levy` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain a 'familyinc'
+                column.
         """
         if not self.acc_levy_params:
             return
@@ -48,8 +49,7 @@ class ACCLevyRule(Rule):
 
 @dataclass
 class KiwiSaverRule(Rule):
-    """
-    A rule to calculate KiwiSaver contributions.
+    """A rule to calculate KiwiSaver contributions.
 
     KiwiSaver is a voluntary savings scheme to help New Zealanders save for
     their retirement. This rule calculates the employee's contribution based
@@ -59,17 +59,21 @@ class KiwiSaverRule(Rule):
     function.
     """
 
-    kiwisaver_params: "KiwisaverParams"
+    kiwisaver_params: KiwisaverParams
     name: str = "kiwisaver"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the KiwiSaver contribution for each individual.
+        """Calculate KiwiSaver contribution and add it to the DataFrame.
 
         This method applies the `calculate_kiwisaver_contribution` function
-        to the `familyinc` column of the DataFrame and stores the result in a
-        new `kiwisaver_contribution` column.
+        to the `familyinc` column of the DataFrame in the `data` dictionary
+        and stores the result in a new `kiwisaver_contribution` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain a 'familyinc'
+                column.
         """
         from .payroll_deductions import calculate_kiwisaver_contribution
 
@@ -84,8 +88,7 @@ class KiwiSaverRule(Rule):
 
 @dataclass
 class StudentLoanRule(Rule):
-    """
-    A rule to calculate student loan repayments.
+    """A rule to calculate student loan repayments.
 
     This rule calculates the amount of student loan repayment required based
     on an individual's income. Repayments are only required if the income is
@@ -95,17 +98,21 @@ class StudentLoanRule(Rule):
     function.
     """
 
-    student_loan_params: "StudentLoanParams"
+    student_loan_params: StudentLoanParams
     name: str = "student_loan"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the student loan repayment for each individual.
+        """Calculate student loan repayment and add it to the DataFrame.
 
         This method applies the `calculate_student_loan_repayment` function
-        to the `familyinc` column of the DataFrame and stores the result in a
-        new `student_loan_repayment` column.
+        to the `familyinc` column of the DataFrame in the `data` dictionary
+        and stores the result in a new `student_loan_repayment` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain a 'familyinc'
+                column.
         """
         from .payroll_deductions import calculate_student_loan_repayment
 
@@ -121,8 +128,7 @@ class StudentLoanRule(Rule):
 
 @dataclass
 class IETCRule(Rule):
-    """
-    A rule to calculate the Independent Earner Tax Credit (IETC).
+    """A rule to calculate the Independent Earner Tax Credit (IETC).
 
     The IETC is a tax credit for individuals who are not receiving certain
     other benefits. This rule determines the eligibility for and calculates
@@ -136,12 +142,17 @@ class IETCRule(Rule):
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the IETC for each individual in the DataFrame.
+        """Calculate IETC and add it to the DataFrame.
 
         This method uses the `TaxCalculator` to determine the IETC amount
         based on the individual's income and benefit status. The result is
         stored in a new `ietc` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame and a 'params' key with the simulation
+                parameters. The DataFrame must contain 'familyinc' and
+                benefit recipient columns (e.g., 'is_jss_recipient').
         """
         from .tax_calculator import TaxCalculator
 
