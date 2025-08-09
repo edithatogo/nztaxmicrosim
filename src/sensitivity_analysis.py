@@ -61,22 +61,30 @@ def run_deterministic_analysis(
     n_jobs: int = -1,
 ) -> Dict[str, pd.DataFrame]:
     """
-    Performs a deterministic sensitivity analysis on the microsimulation model for multiple output metrics.
+    Perform a deterministic sensitivity analysis on the microsimulation model.
+
+    This analysis involves systematically changing one parameter at a time by a
+    fixed percentage, and observing the impact on various output metrics. This
+    is useful for understanding which parameters have the most influence on the
+    model's results.
 
     Args:
-        baseline_params (Dict[str, Any]): The baseline set of parameters.
-        params_to_vary (List[str]): A list of parameter names to vary.
-        pct_change (float): The percentage change to apply to each parameter.
-        population_df (pd.DataFrame): The population data to run the simulation on.
-        output_metric_funcs (Dict[str, Callable]): A dictionary of functions that each take a
-            tax result and a wff result DataFrame and return a single output metric.
-        wff_runner (Callable): The function that runs the WFF simulation.
-        tax_runner (Callable): The function that runs the tax simulation.
-        n_jobs (int): The number of jobs to run in parallel. Defaults to -1 (using all available cores).
+        baseline_params: The baseline set of parameters for the simulation.
+        params_to_vary: A list of parameter names to be varied in the analysis.
+        pct_change: The percentage change to apply to each parameter (e.g.,
+            0.1 for 10%).
+        population_df: The population data to run the simulation on.
+        output_metric_funcs: A dictionary of functions that each take a tax
+            result and a WFF result DataFrame and return a single output
+            metric.
+        wff_runner: The function that runs the Working for Families simulation.
+        tax_runner: The function that runs the tax simulation.
+        n_jobs: The number of jobs to run in parallel. Defaults to -1, which
+            uses all available CPU cores.
 
     Returns:
-        Dict[str, pd.DataFrame]: A dictionary where keys are metric names and values are
-            DataFrames with the sensitivity analysis results for that metric.
+        A dictionary where keys are metric names and values are DataFrames
+        containing the sensitivity analysis results for that metric.
     """
 
     def _run_simulation(params):
@@ -155,22 +163,29 @@ def run_probabilistic_analysis(
     n_jobs: int = -1,
 ) -> Dict[str, np.ndarray]:
     """
-    Performs a probabilistic sensitivity analysis on the microsimulation model.
+    Perform a probabilistic sensitivity analysis on the microsimulation model.
+
+    This analysis involves sampling from probability distributions for each
+    parameter to be varied, and running the simulation for each sample. This
+    is useful for understanding the uncertainty in the model's output due to
+    uncertainty in the input parameters.
 
     Args:
-        param_distributions (Dict[str, Dict[str, Any]]): A dictionary defining the
-            probability distribution for each parameter to be varied.
-        num_samples (int): The number of samples to generate.
-        population_df (pd.DataFrame): The population data to run the simulation on.
-        output_metric_funcs (Dict[str, Callable]): A dictionary of functions that each take a
-            tax result and a wff result DataFrame and return a single output metric.
-        wff_runner (Callable): The function that runs the WFF simulation.
-        tax_runner (Callable): The function that runs the tax simulation.
-        n_jobs (int): The number of jobs to run in parallel. Defaults to -1 (using all available cores).
+        param_distributions: A dictionary defining the probability
+            distribution for each parameter to be varied.
+        num_samples: The number of samples to generate from the distributions.
+        population_df: The population data to run the simulation on.
+        output_metric_funcs: A dictionary of functions that each take a tax
+            result and a WFF result DataFrame and return a single output
+            metric.
+        wff_runner: The function that runs the Working for Families simulation.
+        tax_runner: The function that runs the tax simulation.
+        n_jobs: The number of jobs to run in parallel. Defaults to -1, which
+            uses all available CPU cores.
 
     Returns:
-        Dict[str, np.ndarray]: A dictionary where keys are metric names and values are
-            arrays with the results from all the simulations for that metric.
+        A dictionary where keys are metric names and values are arrays
+        containing the results from all the simulations for that metric.
     """
     from scipy.stats import norm, qmc, uniform
 
