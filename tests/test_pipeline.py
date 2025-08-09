@@ -110,7 +110,7 @@ def test_pipeline_from_config(tmp_path):
     config_file.write_text(config_content)
 
     params = load_parameters("2023-2024")
-    pipeline = SimulationPipeline.from_config(str(config_file), params)
+    pipeline = SimulationPipeline.from_config(str(config_file), params.model_dump())
 
     assert len(pipeline.rules) == 2
     assert isinstance(pipeline.rules[0], IncomeTaxRule)

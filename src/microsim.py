@@ -7,7 +7,13 @@ from typing import Any, Mapping
 from pydantic import ValidationError
 
 from .historical_data import get_historical_parameters
-from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
+from .parameters import (
+    FamilyBoostParams,
+    IETCParams,
+    Parameters,
+    RWTParams,
+    TaxBracketParams,
+)
 
 
 def load_parameters(year: str) -> Parameters:
@@ -51,7 +57,7 @@ def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBra
 
     if isinstance(params, TaxBracketParams):
         return params
-    return TaxBracketParams.from_dict(
+    return TaxBracketParams.model_validate(
         {
             "rates": params["rates"],
             "thresholds": params["thresholds"],
@@ -146,7 +152,7 @@ def netavg(incvar: float, eprt: float, params: TaxBracketParams) -> float:
 def _coerce_ietc(params: Mapping[str, Any] | IETCParams) -> IETCParams:
     if isinstance(params, IETCParams):
         return params
-    return IETCParams.from_dict(params)  # type: ignore[arg-type]
+    return IETCParams.model_validate(params)  # type: ignore[arg-type]
 
 
 def calcietc(

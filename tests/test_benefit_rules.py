@@ -9,7 +9,7 @@ from src.benefit_rules import (
     WEPRule,
 )
 from src.microsim import load_parameters
-from src.parameters import WEPParams
+from src.parameters import WEPParams, BSTCParams, FTCParams, IWTCParams, MFTCParams
 
 
 @pytest.fixture
@@ -66,7 +66,10 @@ def test_accommodation_supplement_rule(sample_dataframe):
 def test_wep_rule(sample_dataframe):
     """Test the WEPRule."""
     params = load_parameters("2023-2024")
-    rule = WEPRule(wep_params=params.wep)
+    wep_params = params.wep
+    if wep_params is None:
+        wep_params = WEPParams(single_rate=20.46, couple_rate=31.82, child_rate=0.0)
+    rule = WEPRule(wep_params=wep_params)
     df = sample_dataframe.copy()
     df["is_jss_recipient"] = [True, False, False]
     df["is_sps_recipient"] = [False, False, False]
@@ -86,7 +89,10 @@ from src.benefit_rules import BSTCRule
 def test_bstc_rule(sample_dataframe):
     """Test the BSTCRule."""
     params = load_parameters("2023-2024")
-    rule = BSTCRule(bstc_params=params.bstc)
+    bstc_params = params.bstc
+    if bstc_params is None:
+        bstc_params = BSTCParams(threshold=79000, rate=0.21, amount=3640, max_age=3)
+    rule = BSTCRule(bstc_params=bstc_params)
     df = sample_dataframe.copy()
     df["familyinc"] = [50000, 80000, 100000]
     df["ages_of_children"] = [[0], [2], [4]]
@@ -104,7 +110,10 @@ from src.benefit_rules import FTCRule
 def test_ftc_rule(sample_dataframe):
     """Test the FTCRule."""
     params = load_parameters("2023-2024")
-    rule = FTCRule(ftc_params=params.ftc)
+    ftc_params = params.ftc
+    if ftc_params is None:
+        ftc_params = FTCParams(base_rate=6645, child_rate=5415, income_threshold=42700, abatement_rate=0.27)
+    rule = FTCRule(ftc_params=ftc_params)
     df = sample_dataframe.copy()
     df["familyinc"] = [40000, 50000, 100000]
     df["num_children"] = [1, 2, 3]
@@ -122,7 +131,16 @@ from src.benefit_rules import IWTCRule
 def test_iwtc_rule(sample_dataframe):
     """Test the IWTCRule."""
     params = load_parameters("2023-2024")
-    rule = IWTCRule(iwtc_params=params.iwtc)
+    iwtc_params = params.iwtc
+    if iwtc_params is None:
+        iwtc_params = IWTCParams(
+            base_rate=3770,
+            child_rate=780,
+            income_threshold=42700,
+            abatement_rate=0.27,
+            min_hours_worked=20,
+        )
+    rule = IWTCRule(iwtc_params=iwtc_params)
     df = sample_dataframe.copy()
     df["familyinc"] = [40000, 50000, 100000]
     df["num_children"] = [1, 2, 3]
@@ -141,7 +159,10 @@ from src.benefit_rules import MFTCRule
 def test_mftc_rule(sample_dataframe):
     """Test the MFTCRule."""
     params = load_parameters("2023-2024")
-    rule = MFTCRule(mftc_params=params.mftc)
+    mftc_params = params.mftc
+    if mftc_params is None:
+        mftc_params = MFTCParams(guaranteed_income=34320)
+    rule = MFTCRule(mftc_params=mftc_params)
     df = sample_dataframe.copy()
     df["familyinc"] = [30000, 40000, 50000]
     df["tax_liability"] = [3000, 5000, 8000]

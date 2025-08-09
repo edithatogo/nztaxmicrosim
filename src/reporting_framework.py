@@ -286,7 +286,7 @@ class DistributionalStatisticsTable(ReportComponent):
         disposable_income = self._calculate_disposable_income(df)
         if "housing_costs" in df.columns:
             return disposable_income - df["housing_costs"]
-        return disposable_income
+        return disposable_income.copy()
 
     def _calculate_poverty_rate(self, income_series: pd.Series, poverty_line: float) -> float:
         """Calculate the poverty rate for a given income series and poverty line."""
@@ -298,10 +298,10 @@ class DistributionalStatisticsTable(ReportComponent):
         """Calculate the Gini coefficient for a given income series."""
         if income_series.empty or len(income_series) == 1:
             return 0.0
-        sorted_income = income_series.sort_values().values
+        sorted_income = income_series.sort_values().to_numpy()
         n = len(sorted_income)
         numerator = np.sum((2 * np.arange(1, n + 1) - n - 1) * sorted_income)
-        denominator = n * sorted_income.sum()
+        denominator = n * np.sum(sorted_income)
         return numerator / denominator if denominator != 0 else 0.0
 
     def generate(self, data: pd.DataFrame, params: Dict[str, Any]) -> pd.DataFrame:

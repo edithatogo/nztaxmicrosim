@@ -223,7 +223,7 @@ class Parameters(BaseModel):
     kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
     student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
     rwt: RWTParams = Field(default_factory=RWTParams)
-    acc_levy: ACCLevyParams = Field(default_factory=ACCLevyParams)
+    acc_levy: Optional[ACCLevyParams] = None
     wep: Optional[WEPParams] = None
 
 

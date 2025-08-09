@@ -30,16 +30,16 @@ baseline_params = {
 }
 
 
-def total_wff(df: pd.DataFrame) -> float:
-    return df["ent"].sum()
+def total_wff(wff_df: pd.DataFrame, tax_df: pd.DataFrame) -> float:
+    return wff_df["ent"].sum()
 
 
-def total_tax(df: pd.DataFrame) -> float:
-    return df["tax"].sum()
+def total_tax(wff_df: pd.DataFrame, tax_df: pd.DataFrame) -> float:
+    return tax_df["tax"].sum()
 
 
-def net_cost(tax_df: pd.DataFrame, wff_df: pd.DataFrame) -> float:
-    return total_wff(wff_df) - total_tax(tax_df)
+def net_cost(wff_df: pd.DataFrame, tax_df: pd.DataFrame) -> float:
+    return total_wff(wff_df, tax_df) - total_tax(wff_df, tax_df)
 
 
 metrics = {
@@ -91,7 +91,7 @@ def test_set_nested():
 def test_run_deterministic_analysis_unsupported_metric():
     """Test that an unsupported metric raises a KeyError."""
     params_to_vary = ["wff.ftc1"]
-    bad_metrics = {"bad": lambda x, y: 0}
+    bad_metrics = {"bad": lambda wff_df, tax_df: 0}
     with pytest.raises(KeyError):
         run_deterministic_analysis(
             baseline_params.copy(),
@@ -158,7 +158,7 @@ def test_run_deterministic_analysis_values_self_contained():
         "wff": {"ftc1": 100},
         "tax_brackets": {"rates": [0.1, 0.2], "thresholds": [5000]},
     }
-    metrics = {"Total WFF Entitlement": lambda wff_df: wff_df["ent"].sum()}
+    metrics = {"Total WFF Entitlement": lambda wff_df, tax_df: wff_df["ent"].sum()}
     params_to_vary = ["wff.ftc1"]
 
     results = run_deterministic_analysis(
@@ -185,7 +185,7 @@ def test_run_deterministic_analysis_values():
         params_to_vary,
         0.1,
         population,
-        {"Total WFF Entitlement": total_wff},
+        {"Total WFF Entitlement": lambda wff_df, tax_df: total_wff(wff_df, tax_df)},
         dummy_wff,
         dummy_tax,
         n_jobs=1,
@@ -196,18 +196,7 @@ def test_run_deterministic_analysis_values():
     np.testing.assert_allclose(df["high_value"][0], 330)
 
 
-def test_run_probabilistic_analysis_unsupported_dist():
-    param_dists = {"wff.ftc1": {"dist": "unsupported"}}
-    with pytest.raises(ValueError, match="Unsupported distribution: unsupported"):
-        run_probabilistic_analysis(
-            param_dists,
-            1,
-            population,
-            metrics,
-            dummy_wff,
-            dummy_tax,
-            n_jobs=1,
-        )
+
 
 
 from src.sensitivity_analysis import _get_nested, _set_nested

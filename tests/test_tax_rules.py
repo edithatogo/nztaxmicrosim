@@ -77,7 +77,8 @@ def test_ietc_rule():
         "params": load_parameters("2023-2024"),
     }
     rule(data)
-    assert "ietc" in data["df"].columns
-    assert data["df"]["ietc"][0] == 0
-    assert data["df"]["ietc"][1] == 520
-    assert data["df"]["ietc"][2] == 0
+    df = data["df"]
+    assert "ietc" in df.columns
+    assert df["ietc"][0] == 0
+    assert df["ietc"][1] == 520
+    assert df["ietc"][2] == 0
