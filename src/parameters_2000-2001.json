@@ -1,0 +1,48 @@
+{
+    "tax_brackets": {
+        "rates": [
+            0.15,
+            0.21,
+            0.33,
+            0.39
+        ],
+        "thresholds": [
+            9500,
+            38000,
+            60000
+        ]
+    },
+    "ietc": {
+        "thrin": 0,
+        "ent": 0,
+        "thrab": 0,
+        "abrate": 0
+    },
+    "wff": {
+        "ftc1": 0,
+        "ftc2": 0,
+        "iwtc1": 0,
+        "iwtc2": 0,
+        "bstc": 0,
+        "mftc": 0,
+        "abatethresh1": 0,
+        "abatethresh2": 0,
+        "abaterate1": 0,
+        "abaterate2": 0,
+        "bstcthresh": 0,
+        "bstcabate": 0
+    },
+    "ppl": {
+        "enabled": false,
+        "weekly_rate": 0,
+        "max_weeks": 0
+    },
+    "child_support": {
+        "enabled": false,
+        "support_rate": 0
+    },
+    "acc_levy": {
+        "rate": 0.0153,
+        "max_income": 139111
+    }
+}
