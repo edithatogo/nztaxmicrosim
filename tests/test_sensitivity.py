@@ -59,6 +59,7 @@ def test_run_deterministic_analysis_shape_and_impact():
         metrics,
         dummy_wff,
         dummy_tax,
+        n_jobs=1,
     )
 
     assert set(results) == set(metrics)
@@ -114,6 +115,7 @@ def test_run_probabilistic_analysis_unsupported_dist():
             metrics,
             dummy_wff,
             dummy_tax,
+            n_jobs=1,
         )
 
 
@@ -130,6 +132,7 @@ def test_run_probabilistic_analysis_shape():
         metrics,
         dummy_wff,
         dummy_tax,
+        n_jobs=1,
     )
 
     assert set(results) == set(metrics)
@@ -166,6 +169,7 @@ def test_run_deterministic_analysis_values_self_contained():
         metrics,
         dummy_wff,
         dummy_tax,
+        n_jobs=1,
     )
 
     df = results["Total WFF Entitlement"]
@@ -184,6 +188,7 @@ def test_run_deterministic_analysis_values():
         {"Total WFF Entitlement": total_wff},
         dummy_wff,
         dummy_tax,
+        n_jobs=1,
     )
     df = results["Total WFF Entitlement"]
     np.testing.assert_allclose(df["baseline"][0], 300)
@@ -201,6 +206,7 @@ def test_run_probabilistic_analysis_unsupported_dist():
             metrics,
             dummy_wff,
             dummy_tax,
+            n_jobs=1,
         )
 
 

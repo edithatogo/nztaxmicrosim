@@ -58,6 +58,7 @@ def run_deterministic_analysis(
     output_metric_funcs: Dict[str, Callable[[pd.DataFrame, pd.DataFrame], float]],
     wff_runner: Callable,
     tax_runner: Callable,
+    n_jobs: int = -1,
 ) -> Dict[str, pd.DataFrame]:
     """
     Performs a deterministic sensitivity analysis on the microsimulation model for multiple output metrics.
@@ -71,6 +72,7 @@ def run_deterministic_analysis(
             tax result and a wff result DataFrame and return a single output metric.
         wff_runner (Callable): The function that runs the WFF simulation.
         tax_runner (Callable): The function that runs the tax simulation.
+        n_jobs (int): The number of jobs to run in parallel. Defaults to -1 (using all available cores).
 
     Returns:
         Dict[str, pd.DataFrame]: A dictionary where keys are metric names and values are
@@ -121,7 +123,7 @@ def run_deterministic_analysis(
         tasks.append(delayed(_run_simulation)(params_high))
 
     # Run simulations in parallel
-    parallel_results = Parallel(n_jobs=-1)(tasks)
+    parallel_results = Parallel(n_jobs=n_jobs)(tasks)
 
     # Process results
     output_data = {name: [] for name in output_metric_funcs}
@@ -150,6 +152,7 @@ def run_probabilistic_analysis(
     output_metric_funcs: Dict[str, Callable[[pd.DataFrame, pd.DataFrame], float]],
     wff_runner: Callable,
     tax_runner: Callable,
+    n_jobs: int = -1,
 ) -> Dict[str, np.ndarray]:
     """
     Performs a probabilistic sensitivity analysis on the microsimulation model.
@@ -163,6 +166,7 @@ def run_probabilistic_analysis(
             tax result and a wff result DataFrame and return a single output metric.
         wff_runner (Callable): The function that runs the WFF simulation.
         tax_runner (Callable): The function that runs the tax simulation.
+        n_jobs (int): The number of jobs to run in parallel. Defaults to -1 (using all available cores).
 
     Returns:
         Dict[str, np.ndarray]: A dictionary where keys are metric names and values are
@@ -206,7 +210,7 @@ def run_probabilistic_analysis(
                 results[name] = func(tax_df, wff_df)
         return results
 
-    parallel_results = Parallel(n_jobs=-1)(delayed(_run_simulation)(sample_row) for sample_row in sample)
+    parallel_results = Parallel(n_jobs=n_jobs)(delayed(_run_simulation)(sample_row) for sample_row in sample)
 
     # Process results
     output_arrays = {name: [] for name in output_metric_funcs}
