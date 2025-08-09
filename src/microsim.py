@@ -6,6 +6,7 @@ from typing import Any, Mapping
 
 from pydantic import ValidationError
 
+from .historical_data import get_historical_parameters
 from .parameters import FamilyBoostParams, IETCParams, Parameters, TaxBracketParams
 
 
@@ -15,6 +16,9 @@ def load_parameters(year: str) -> Parameters:
     Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
     This function parses the JSON into Pydantic models, validating that all
     required fields are present and of the expected type.
+
+    If a specific parameter file for the given year is not found, it falls
+    back to the historical data.
 
     Args:
         year: The year for which to load the parameters (e.g., ``"2023-2024"``).
@@ -27,7 +31,10 @@ def load_parameters(year: str) -> Parameters:
     file_path = os.path.join(script_dir, f"parameters_{year}.json")
 
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Parameter file not found: {file_path}")
+        try:
+            return get_historical_parameters(year)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Parameter file not found for year {year}, and no historical data available.")
 
     with open(file_path, "r", encoding="utf-8") as f:
         params: dict[str, Any] = json.load(f)

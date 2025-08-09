@@ -30,8 +30,21 @@ params_2024_25 = load_parameters("2024-2025")
 
 def test_load_parameters_missing_file():
     """load_parameters should raise FileNotFoundError for missing files."""
-    with pytest.raises(FileNotFoundError):
-        load_parameters("1900-1901")
+    params = load_parameters("1900-1901")
+    assert params is not None
+    assert params.tax_brackets is not None
+    assert params.tax_brackets.rates == [0.05]
+    assert params.tax_brackets.thresholds == []
+
+
+def test_load_parameters_historical_fallback():
+    """load_parameters should fall back to historical data if a file is missing."""
+    # This year does not have a dedicated file, but is in the historical data
+    params = load_parameters("2000-2001")
+    assert params is not None
+    assert params.tax_brackets is not None
+    assert params.tax_brackets.rates == [0.15, 0.21, 0.33, 0.39]
+    assert params.tax_brackets.thresholds == [9500, 38000, 60000]
 
 
 def test_load_parameters_invalid_json():
@@ -289,7 +302,7 @@ def test_eitc():
 
 def test_simrwt():
     """Tests the simrwt function for Resident Withholding Tax simulation."""
-    params = RWTParams(0.1, 0.2, 0.3, 0.4, 0.5)
+    params = RWTParams(rwt_rate_10_5=0.1, rwt_rate_17_5=0.2, rwt_rate_30=0.3, rwt_rate_33=0.4, rwt_rate_39=0.5)
 
     # Test case 1
     assert simrwt(1000, params) == min(

@@ -41,17 +41,9 @@ class TaxCalculator(BaseModel):
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float, rwt_params: Dict[str, float] | None = None) -> float:
+    def rwt(self, interest: float) -> float:
         """Calculate Resident Withholding Tax on interest income."""
-        rwt_params = rwt_params or {}
-        return simrwt(
-            interest=interest,
-            rwt_rate_10_5=rwt_params.get("rwt_rate_10_5", 0.0),
-            rwt_rate_17_5=rwt_params.get("rwt_rate_17_5", 0.0),
-            rwt_rate_30=rwt_params.get("rwt_rate_30", 0.0),
-            rwt_rate_33=rwt_params.get("rwt_rate_33", 0.0),
-            rwt_rate_39=rwt_params.get("rwt_rate_39", 0.0),
-        )
+        return simrwt(interest, self.params.rwt)
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":

@@ -81,6 +81,14 @@ class KiwisaverParams(BaseModel):
     contribution_rate: float = 0.0
 
 
+class RWTParams(BaseModel):
+    rwt_rate_10_5: float = 0.0
+    rwt_rate_17_5: float = 0.0
+    rwt_rate_30: float = 0.0
+    rwt_rate_33: float = 0.0
+    rwt_rate_39: float = 0.0
+
+
 class StudentLoanParams(BaseModel):
     repayment_threshold: float = 0.0
     repayment_rate: float = 0.0
@@ -100,6 +108,7 @@ class Parameters(BaseModel):
     child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
     kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
     student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
+    rwt: RWTParams = Field(default_factory=RWTParams)
 
 
 __all__ = [
@@ -111,6 +120,7 @@ __all__ = [
     "KiwisaverParams",
     "Parameters",
     "PPLParams",
+    "RWTParams",
     "SLPParams",
     "SPSParams",
     "StudentLoanParams",
