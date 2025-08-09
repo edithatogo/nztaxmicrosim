@@ -27,8 +27,7 @@ import yaml
 
 @dataclass
 class SimulationPipeline:
-    """
-    A pipeline for running a series of simulation rules.
+    """A pipeline for running a series of simulation rules.
 
     The pipeline stores a list of rules and executes them sequentially on a
     given data dictionary. Rules can be enabled, disabled, or replaced.
@@ -38,8 +37,7 @@ class SimulationPipeline:
 
     @classmethod
     def from_config(cls, config_path: str, params: dict[str, Any]) -> "SimulationPipeline":
-        """
-        Create a SimulationPipeline from a YAML configuration file.
+        """Create a SimulationPipeline from a YAML configuration file.
 
         The configuration file should specify a list of rules to be included
         in the pipeline. This method provides a simple factory for creating
@@ -67,8 +65,7 @@ class SimulationPipeline:
         return cls(rules)
 
     def _find_rule_index(self, name: str) -> int | None:
-        """
-        Find the index of a rule by its name.
+        """Find the index of a rule by its name.
 
         Args:
             name: The name of the rule to find.
@@ -82,14 +79,14 @@ class SimulationPipeline:
         return None
 
     def run(self, data: dict[str, Any] | None = None) -> dict[str, Any]:
-        """
-        Run all enabled rules in the pipeline sequentially.
+        """Run all enabled rules in the pipeline sequentially.
 
         Each rule is called with the `data` dictionary, which it can modify
         in-place.
 
         Args:
-            data: The data dictionary to be processed by the rules.
+            data: The data dictionary to be processed by the rules. It is
+                expected to contain a 'df' key with a pandas DataFrame.
 
         Returns:
             The modified data dictionary.
@@ -102,8 +99,7 @@ class SimulationPipeline:
         return data
 
     def enable(self, name: str) -> None:
-        """
-        Enable a rule in the pipeline.
+        """Enable a rule in the pipeline.
 
         Args:
             name: The name of the rule to enable.
@@ -112,8 +108,7 @@ class SimulationPipeline:
             self.rules[idx].enabled = True
 
     def disable(self, name: str) -> None:
-        """
-        Disable a rule in the pipeline.
+        """Disable a rule in the pipeline.
 
         Args:
             name: The name of the rule to disable.
@@ -122,8 +117,7 @@ class SimulationPipeline:
             self.rules[idx].enabled = False
 
     def replace(self, name: str, new_rule: Rule) -> None:
-        """
-        Replace a rule in the pipeline.
+        """Replace a rule in the pipeline.
 
         Args:
             name: The name of the rule to replace.
@@ -135,8 +129,7 @@ class SimulationPipeline:
 
 @dataclass
 class IncomeTaxRule:
-    """
-    A rule to calculate income tax.
+    """A rule to calculate income tax.
 
     This rule uses the `TaxCalculator` to calculate the income tax for each
     individual in the DataFrame based on their `familyinc`.
@@ -146,13 +139,16 @@ class IncomeTaxRule:
     name: str = "income_tax"
     enabled: bool = True
 
-    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - simple
-        """
-        Calculates income tax and adds it to the DataFrame.
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculate income tax and add it to the DataFrame.
 
         This method applies the `income_tax` method of the `TaxCalculator`
-        to the `familyinc` column and stores the result in a new
-        `tax_liability` column.
+        to the `familyinc` column of the DataFrame in the `data` dictionary
+        and stores the result in a new `tax_liability` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame.
         """
         df = data["df"]
         df["tax_liability"] = df["familyinc"].apply(self.calculator.income_tax)
@@ -160,8 +156,7 @@ class IncomeTaxRule:
 
 @dataclass
 class IETCRule:
-    """
-    A rule to calculate the Independent Earner Tax Credit (IETC).
+    """A rule to calculate the Independent Earner Tax Credit (IETC).
 
     This rule uses the `TaxCalculator` to calculate the IETC for each
     individual in the DataFrame based on their income and benefit status.
@@ -171,12 +166,16 @@ class IETCRule:
     name: str = "ietc"
     enabled: bool = True
 
-    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - simple
-        """
-        Calculates the IETC and adds it to the DataFrame.
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculate the IETC and add it to the DataFrame.
 
         This method applies the `ietc` method of the `TaxCalculator` to each
-        row of the DataFrame and stores the result in a new `ietc` column.
+        row of the DataFrame in the `data` dictionary and stores the result
+        in a new `ietc` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame.
         """
         df = data["df"]
         df["ietc"] = df.apply(
