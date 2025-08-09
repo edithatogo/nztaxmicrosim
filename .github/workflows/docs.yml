@@ -38,14 +38,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: github-pages
+          path: site
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git clone https://github.com/${{ github.repository }}.git --branch gh-pages --single-branch gh-pages-deploy
-          cp -r site/* gh-pages-deploy/
-          cd gh-pages-deploy
-          git add .
-          git commit -m "docs: deploy to gh-pages"
-          git push --force https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: deploy to gh-pages'
+          publish_branch: gh-pages
+          force_orphan: true
       
