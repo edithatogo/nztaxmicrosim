@@ -25,14 +25,17 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Build docs
         run: mkdocs build
-      - name: Deploy docs
-        uses: peter-evans/create-pull-request@v6
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "docs: update gh-pages"
-          title: "docs: update gh-pages"
-          body: "This PR updates the documentation on the gh-pages branch."
-          branch: "docs/gh-pages"
-          base: "gh-pages"
-          add-paths: "site/"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          # The following lines are needed to ensure that the CNAME file is not deleted
+          # and that the deployment is made to the root of the gh-pages branch.
+          # See https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-secrets
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'docs: deploy to gh-pages'
+          publish_branch: gh-pages
+          force_orphan: true
       
