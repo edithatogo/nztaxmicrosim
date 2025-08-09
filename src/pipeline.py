@@ -25,6 +25,7 @@ class Rule(Protocol):
     def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - Protocol
         ...
 
+
 @dataclass
 class SimulationPipeline:
     """A pipeline for running a series of simulation rules.

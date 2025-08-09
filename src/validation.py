@@ -10,6 +10,7 @@ class SimulationInputSchema(BaseModel):
     it contains all the required columns and that the data in each column is
     of the correct type and within the expected range.
     """
+
     person_id: int = Field(default=..., description="Unique identifier for each person.")
     household_id: int = Field(default=..., description="Unique identifier for each household.")
     familyinc: float = Field(default=..., ge=0, description="Family income, must be non-negative.")
@@ -56,7 +57,9 @@ def validate_input_data(df: pd.DataFrame) -> pd.DataFrame:
     try:
         # Pydantic can validate a list of records
         records = df.to_dict("records")
-        validated_records = [SimulationInputSchema(**r) for r in records]
+        validated_records = []
+        for r in records:
+            validated_records.append(SimulationInputSchema(**{str(k): v for k, v in r.items()}))
         return pd.DataFrame([r.model_dump() for r in validated_records])
     except Exception as e:
         raise ValueError(f"Data validation failed: {e}")

@@ -210,9 +210,6 @@ def test_calculate_budget_impact():
     assert_frame_equal(result.reset_index(drop=True), expected.reset_index(drop=True))
 
 
-
-
-
 def test_generate_microsim_report():
     """Test the generate_microsim_report function."""
     # Create a dummy DataFrame
@@ -309,9 +306,6 @@ def test_generate_microsim_report_no_dir():
         "Poverty Rate Changes by Group",
     ]
     assert all(key in result for key in expected_keys)
-
-
-
 
 
 @patch("matplotlib.pyplot.show")

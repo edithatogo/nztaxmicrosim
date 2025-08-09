@@ -397,11 +397,11 @@ class EquityMetricsTable(ReportComponent):
     def _calculate_market_income(self, df: pd.DataFrame) -> pd.Series:
         """Calculate market income from various income columns."""
         market_income = (
-            df.get("employment_income", 0)
-            + df.get("self_employment_income", 0)
-            + df.get("investment_income", 0)
-            + df.get("rental_property_income", 0)
-            + df.get("private_pensions_annuities", 0)
+            df.get("employment_income", pd.Series(0, index=df.index))
+            + df.get("self_employment_income", pd.Series(0, index=df.index))
+            + df.get("investment_income", pd.Series(0, index=df.index))
+            + df.get("rental_property_income", pd.Series(0, index=df.index))
+            + df.get("private_pensions_annuities", pd.Series(0, index=df.index))
         )
         return market_income
 

@@ -134,8 +134,6 @@ class WEPParams(BaseModel):
     child_rate: float = Field(description="The additional weekly payment rate per child.")
 
 
-
-
 class StudentLoanParams(BaseModel):
     """Parameters for Student Loan repayments."""
 

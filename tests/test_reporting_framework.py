@@ -196,9 +196,6 @@ def test_poverty_rate_changes_chart_error_handling(sample_dataframe):
         chart.generate(df, {})
 
 
-
-
-
 def test_calculate_lorenz_curve_zero_income():
     """Test the Lorenz curve calculation with zero total income."""
     income_series = pd.Series([0, 0, 0, 0, 0])
