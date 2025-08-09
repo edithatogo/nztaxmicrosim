@@ -95,6 +95,12 @@ class ACCLevyParams(BaseModel):
     max_income: float
 
 
+class WEPParams(BaseModel):
+    single_rate: float
+    couple_rate: float
+    child_rate: float
+
+
 from typing import Optional
 
 class StudentLoanParams(BaseModel):
@@ -147,6 +153,7 @@ class Parameters(BaseModel):
     student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
     rwt: RWTParams = Field(default_factory=RWTParams)
     acc_levy: ACCLevyParams = Field(default_factory=ACCLevyParams)
+    wep: Optional[WEPParams] = None
 
 
 __all__ = [
@@ -164,5 +171,6 @@ __all__ = [
     "SPSParams",
     "StudentLoanParams",
     "TaxBracketParams",
+    "WEPParams",
     "WFFParams",
 ]

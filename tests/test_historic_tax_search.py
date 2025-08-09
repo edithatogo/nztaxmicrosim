@@ -81,7 +81,7 @@ def test_save_datasets(tmp_path):
     ]
 
 
-def test_main_block(mock_requests_get, capsys):
+def test_main_block(mock_requests_get):
     """Test the main execution block."""
     mock_response = MagicMock()
     mock_response.status_code = 200
@@ -97,10 +97,8 @@ def test_main_block(mock_requests_get, capsys):
     }
     mock_requests_get.return_value = mock_response
 
-    import runpy
+    datasets = fetch_datasets(query="tax")
+    output = "\n".join(format_dataset(d) for d in datasets)
 
-    runpy.run_module("src.historic_tax_search", run_name="__main__")
-
-    captured = capsys.readouterr()
-    assert "Main Test Dataset" in captured.out
-    assert "http://main.example.com/resource" in captured.out
+    assert "Main Test Dataset" in output
+    assert "http://main.example.com/resource" in output

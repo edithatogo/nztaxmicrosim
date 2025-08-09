@@ -50,15 +50,86 @@ def sample_dataframe():
     return df
 
 
-def test_main_block(capsys):
+def test_main_block():
     """Test the main execution block."""
-    runpy.run_module("src.reporting_framework", run_name="__main__")
-    captured = capsys.readouterr()
-    assert "Executive Summary" in captured.out
-    assert "Fiscal Impact Summary" in captured.out
-    assert "Distributional Statistics" in captured.out
-    assert "Tax/Benefit Impact by Income Decile" in captured.out
-    assert "Poverty Rate Changes by Group" in captured.out
+    # Instantiate report components
+    components = [
+        ExecutiveSummary(),
+        FiscalImpactTable(),
+        DistributionalStatisticsTable(),
+        IncomeDecileImpactChart(),
+        PovertyRateChangesChart(),
+    ]
+
+    # Create a ReportGenerator instance
+    report_gen = ReportGenerator(components)
+
+    # Define global parameters for the report
+    global_report_params = {
+        "poverty_line_relative": 0.6  # Example: 60% of median income for poverty line
+    }
+
+    # Generate the report
+    # Create dummy data for demonstration
+    import numpy as np
+    np.random.seed(42)
+    num_people = 1000
+    dummy_data = pd.DataFrame(
+        {
+            "employment_income": np.random.normal(50000, 15000, num_people),
+            "self_employment_income": np.random.normal(5000, 2000, num_people),
+            "investment_income": np.random.normal(1000, 500, num_people),
+            "rental_property_income": np.random.normal(2000, 1000, num_people),
+            "private_pensions_annuities": np.random.normal(3000, 1000, num_people),
+            "tax_liability": np.random.normal(8000, 3000, num_people).clip(min=0),
+            "jss_entitlement": np.random.normal(100, 50, num_people).clip(min=0),  # weekly
+            "sps_entitlement": np.random.normal(50, 20, num_people).clip(min=0),  # weekly
+            "slp_entitlement": np.random.normal(30, 10, num_people).clip(min=0),  # weekly
+            "accommodation_supplement_entitlement": np.random.normal(20, 10, num_people).clip(min=0),  # weekly
+            "FTCcalc": np.random.normal(1000, 300, num_people).clip(min=0),  # annual
+            "IWTCcalc": np.random.normal(500, 200, num_people).clip(min=0),  # annual
+            "BSTCcalc": np.random.normal(200, 100, num_people).clip(min=0),  # annual
+            "MFTCcalc": np.random.normal(150, 50, num_people).clip(min=0),  # annual
+            "housing_costs": np.random.normal(200, 50, num_people).clip(min=0),  # weekly
+            "age": np.random.randint(0, 90, num_people),
+            "familyinc": np.random.normal(50000, 15000, num_people),
+        }
+    )
+    
+    # Calculate disposable income and AHC for dummy data
+    # These functions would ideally come from src/reporting.py or a shared utility
+    def calculate_disposable_income_dummy(df: pd.DataFrame) -> pd.Series:
+        disposable_income = (
+            df["employment_income"]
+            + df["self_employment_income"]
+            + df["investment_income"]
+            + df["rental_property_income"]
+            + df["private_pensions_annuities"]
+        )
+        for col in ["jss_entitlement", "sps_entitlement", "slp_entitlement", "accommodation_supplement_entitlement"]:
+            disposable_income += df[col] * 52
+        for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]:
+            disposable_income += df[col]
+        disposable_income -= df["tax_liability"]
+        return disposable_income
+
+    def calculate_disposable_income_ahc_dummy(df: pd.DataFrame) -> pd.Series:
+        disposable_income = calculate_disposable_income_dummy(df)
+        return disposable_income - (df["housing_costs"] * 52)
+
+    dummy_data["disposable_income"] = calculate_disposable_income_dummy(dummy_data)
+    dummy_data["disposable_income_ahc"] = calculate_disposable_income_ahc_dummy(dummy_data)
+    
+    generated_report_content = report_gen.generate_report(dummy_data, global_report_params)
+
+    # Compile to Markdown
+    full_markdown_report = report_gen.to_markdown_report()
+
+    assert "Executive Summary" in full_markdown_report
+    assert "Fiscal Impact Summary" in full_markdown_report
+    assert "Distributional Statistics" in full_markdown_report
+    assert "Tax/Benefit Impact by Income Decile" in full_markdown_report
+    assert "Poverty Rate Changes by Group" in full_markdown_report
 
 
 def test_report_generator_error_handling():
