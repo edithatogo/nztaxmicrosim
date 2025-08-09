@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "nztaxmicrosim"
 version = "0.1.0"
 description = "A Python-based microsimulation model for the New Zealand tax and transfer system."
+readme = "README.md"
 dependencies = [
     "pandas",
     "numpy",
