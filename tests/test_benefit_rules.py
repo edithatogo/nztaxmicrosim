@@ -3,13 +3,17 @@ import pytest
 
 from src.benefit_rules import (
     AccommodationSupplementRule,
+    BSTCRule,
+    FTCRule,
+    IWTCRule,
     JSSRule,
+    MFTCRule,
     SLPRule,
     SPSRule,
     WEPRule,
 )
 from src.microsim import load_parameters
-from src.parameters import WEPParams, BSTCParams, FTCParams, IWTCParams, MFTCParams
+from src.parameters import BSTCParams, FTCParams, IWTCParams, MFTCParams, WEPParams
 
 
 @pytest.fixture
@@ -83,9 +87,6 @@ def test_wep_rule(sample_dataframe):
     assert data["df"]["wep_entitlement"][2] == 20.46
 
 
-from src.benefit_rules import BSTCRule
-
-
 def test_bstc_rule(sample_dataframe):
     """Test the BSTCRule."""
     params = load_parameters("2023-2024")
@@ -104,9 +105,6 @@ def test_bstc_rule(sample_dataframe):
     assert data["df"]["bstc_entitlement"][2] == 0
 
 
-from src.benefit_rules import FTCRule
-
-
 def test_ftc_rule(sample_dataframe):
     """Test the FTCRule."""
     params = load_parameters("2023-2024")
@@ -123,9 +121,6 @@ def test_ftc_rule(sample_dataframe):
     assert data["df"]["ftc_entitlement"][0] == 6645
     assert data["df"]["ftc_entitlement"][1] == 6645 + 5415 - (50000 - 42700) * 0.27
     assert data["df"]["ftc_entitlement"][2] == 6645 + 2 * 5415 - (100000 - 42700) * 0.27
-
-
-from src.benefit_rules import IWTCRule
 
 
 def test_iwtc_rule(sample_dataframe):
@@ -151,9 +146,6 @@ def test_iwtc_rule(sample_dataframe):
     assert data["df"]["iwtc_entitlement"][0] == 3770
     assert data["df"]["iwtc_entitlement"][1] == 3770 + 780 - (50000 - 42700) * 0.27
     assert data["df"]["iwtc_entitlement"][2] == 0
-
-
-from src.benefit_rules import MFTCRule
 
 
 def test_mftc_rule(sample_dataframe):
