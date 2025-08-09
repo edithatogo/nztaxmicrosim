@@ -8,7 +8,7 @@ install-dev-deps:
 	pip install -r requirements-dev.txt
 
 test:
-	pytest
+	PYTHONWARNINGS="ignore:pkg_resources is deprecated as an API" pytest
 
 coverage:
 	pytest --cov=src --cov-report=term-missing

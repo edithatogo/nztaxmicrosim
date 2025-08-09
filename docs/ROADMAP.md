@@ -8,7 +8,16 @@ This document outlines development priorities for the NZ Microsimulation Model, 
    - *Milestone:* Finalize baseline calculations for individual liabilities and incomes.
    - *Priority:* **High**
 
-2. **Modular Simulation Pipeline**
+2. **Expand Rule Coverage**
+   - *Milestone:* Implement additional personal tax, benefit, and levy rules.
+   - *Tasks:*
+     - Child Support payments
+     - Disability Allowance
+     - Taxation of investment income (e.g., PIE funds)
+     - Tax credits for charitable donations
+   - *Priority:* **High**
+
+3. **Modular Simulation Pipeline**
    - *Milestone:* Design plug-in architecture for tax and benefit rules.
    - *Priority:* **High**
 

@@ -9,18 +9,28 @@ renders it by default when viewing the repository.
 
 ## Key Features
 
-- Income tax, Working for Families and FamilyBoost modules
-- Modular plug-in simulation pipeline where tax and benefit rules can be
-  independently enabled, ordered or substituted
-- Rule-based engine for composing Working for Families calculations
-- Parameterised policy rules for multiple tax years
-- Reporting utilities and sensitivity analysis, including Expected Value of
-  Perfect Information (EVPI)
-- Optional modules for Paid Parental Leave and Child Support
-- Experimental dynamic simulation tools
-- Modular simulation pipeline with pluggable rule components
-- Script to discover historical tax datasets via the data.govt.nz API
-- Rule-based architecture for Working for Families calculations
+- **Comprehensive Rule Coverage:**
+  - **Income Tax:** Full progressive income tax brackets.
+  - **Levies:** ACC Earner's Levy.
+  - **Tax Credits:** Independent Earner Tax Credit (IETC).
+  - **Working for Families:** Family Tax Credit (FTC), In-Work Tax Credit (IWTC), Best Start Tax Credit (BSTC), and Minimum Family Tax Credit (MFTC).
+  - **Main Benefits:** Jobseeker Support (JSS), Sole Parent Support (SPS), and Supported Living Payment (SLP).
+  - **Other Assistance:** Accommodation Supplement, Winter Energy Payment, and NZ Superannuation.
+  - **Deductions:** KiwiSaver and Student Loan repayments.
+- **Extensive Historical Data:**
+  - Parameterised policy rules for tax years from 2005 to 2025.
+  - Automatic fallback to historical data, with coverage from 1890 to 2028.
+- **Synthetic Population Generation:**
+  - Includes the `syspop` tool to generate realistic synthetic populations for simulation.
+- **Flexible Simulation Modes:**
+  - Supports both **static** (single-year) and **dynamic** (multi-year) simulations.
+  - Extensible framework for modeling behavioural responses over time.
+- **Modular and Extensible:**
+  - A modular plug-in simulation pipeline where tax and benefit rules can be
+    independently enabled, ordered or substituted.
+- **Advanced Analysis Tools:**
+  - Reporting utilities and sensitivity analysis, including Expected Value of
+    Perfect Information (EVPI).
 
 ### Feature Matrix
 

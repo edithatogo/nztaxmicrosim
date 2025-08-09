@@ -6,7 +6,7 @@ A **microsimulation model** of New Zealand’s personal taxation and welfare sys
 
 ## Input Data and Key Variables
 
-A robust microsimulation requires rich micro-level input data covering *all individuals* (the entire population in private households) and all factors that affect their tax liabilities or benefit entitlements. In New Zealand, the **Household Economic Survey (HES)** is commonly used as a base dataset, often augmented with administrative records for accuracy. The **target population** is usually residents in private dwellings (excluding institutions like prisons or rest homes) so that household and family income can be measured. Key input variables for each person or household include:
+A robust microsimulation requires rich micro-level input data covering *all individuals* (the entire population in private households) and all factors that affect their tax liabilities or benefit entitlements. In New Zealand, the **Household Economic Survey (HES)** is commonly used as a base dataset, often augmented with administrative records for accuracy. The project also includes the `syspop` tool for generating realistic synthetic populations. The **target population** is usually residents in private dwellings (excluding institutions like prisons or rest homes) so that household and family income can be measured. Key input variables for each person or household include:
 
 * **Demographics and Family Structure:** Age, sex, and other personal characteristics (ethnicity, disability status, etc.), as well as identifiers for family and household membership. Family/household structure is crucial since tax and welfare programs often depend on whether a person has a partner or dependent children. For example, a *dependent child* is defined (for benefit and tax credit purposes) as an unmarried person under 18 (or under 19 in school) who isn’t financially independent. These definitions inform eligibility for family tax credits and certain benefits.
 * **Income Sources:** All forms of **taxable income** at the individual (and sometimes family) level. This includes wages and salaries from employment, self-employment or business income, and investment income (interest, dividends, rental income). Detailed income information is needed because different income types may be taxed differently or affect benefit entitlements. In practice, administrative tax data can be linked to the survey to get accurate incomes for each person. Non-taxable income (e.g. some scholarships or allowances) may also be recorded if relevant to means-tests.
@@ -32,7 +32,7 @@ A robust microsimulation requires rich micro-level input data covering *all indi
 
 ## Policy Calculations and Simulated Components
 
-Once the input dataset is prepared for a given year, the microsimulation applies **all relevant tax and transfer policy rules** to each individual (or family). In this stage, the model essentially “recalculates” everyone’s tax bills and benefit entitlements under the specified policy settings. For a comprehensive New Zealand model, **everything that affects individuals’ disposable income** should be included. The main policy components and calculations are outlined below:
+Once the input dataset is prepared for a given year, the microsimulation applies **all relevant tax and transfer policy rules** to each individual (or family). The model includes dedicated parameter files for years 2005-2025, and can fall back on historical data for years from 1890 to 2028. In this stage, the model essentially “recalculates” everyone’s tax bills and benefit entitlements under the specified policy settings. For a comprehensive New Zealand model, **everything that affects individuals’ disposable income** should be included. The main policy components and calculations are outlined below:
 
 * **Income Tax Calculation:** For each individual with taxable income, the model computes **personal income tax** owed using the progressive tax rates in effect for the year. New Zealand has a multi-bracket tax schedule (e.g. 10.5%, 17.5%, 30%, 33%, and 39% at various income thresholds in recent years). The model applies these rates to the person’s annual taxable income to get gross tax liability. It also applies any tax credits or offsets that reduce tax:
 
@@ -115,33 +115,27 @@ Looking ahead, maintaining the model’s accuracy will require regular updates t
 
 # Appendix A: Key New Zealand Tax and Welfare Programs in Microsimulation
 
-To ensure clarity, here is a list of the major tax and transfer programs that a New Zealand microsimulation model would include (as discussed in the report), and how they affect individuals’ incomes:
+To ensure clarity, here is a list of the major tax and transfer programs that are currently implemented in the New Zealand microsimulation model:
 
-* **Personal Income Tax:** Progressive rate tax on individual taxable income. Brackets (as of mid-2020s) range from 10.5% up to 39%. Affects all income-earning individuals by reducing their gross income to net income.
-* **ACC Earner’s Levy:** A flat levy on earnings (currently around 1.39%, capped at a maximum income) to fund accident insurance. Reduces take-home pay for earners, modeled alongside income tax.
-* **Independent Earner Tax Credit (IETC):** A now-discontinued tax credit for individuals with modest incomes and no government support. When applicable, it increased net income by up to \$10 per week for eligible earners. Included for historical policy years where relevant.
-* **Working for Families Tax Credits:** A set of **four** payments for families with dependent children, delivered by IRD or MSD:
-
-  * *Family Tax Credit (FTC):* Provides a base level of support per child, abated above a family income threshold.
-  * *In-Work Tax Credit (IWTC):* Additional support for working families not on a main benefit (formerly required minimum hours of work).
-  * *Best Start:* Support for families with infants and toddlers (universally given in the child’s first year, income-tested up to age 3).
-  * *Minimum Family Tax Credit (MFTC):* Ensures a minimum after-tax income for full-time working families by topping up earnings to a specified level.
-* **Main Benefits (Income Support):** Long-term support for those with no or low income, administered by MSD:
-
-  * *Jobseeker Support:* For unemployed or low-income jobseekers (includes some who work part-time below a threshold). Has different rates for single, partnered, etc., and an income abatement regime.
-  * *Sole Parent Support:* For single parents with young children (work-tested when youngest child reaches a certain age). Income above a small free area reduces the payment.
-  * *Supported Living Payment:* For people with serious disabilities/illness (or sole parents with a disabled child). Higher base rates, with income abatement for any earnings.
-  * *Youth/Young Parent Payment:* For 16–19 year-olds in hardship (with or without children). Typically a small segment; often handled via separate modeling or ignored if data is scarce.
-* **New Zealand Superannuation:** Universal pension for ages 65+. Paid at a flat rate (with couple/single differentials). Not means-tested on income or assets (except if the person opts to defer or has overseas pension offsets). A large portion of older individuals receive this – the model must include it for anyone above 65.
-* **Supplementary Benefits:** Additional means-tested support, often contingent on specific costs:
-
-  * *Accommodation Supplement (AS):* Helps low-income households with rent or mortgage. Calculated based on housing cost, region, family size, and income (including any core benefits). A significant program for both beneficiaries and low-wage workers.
-  * *Disability Allowance:* Helps with ongoing medical or disability-related expenses (up to a weekly max). Requires actual costs, which are not fully available in survey data – in practice, often partially modeled or excluded.
-  * *Temporary Additional Support (TAS):* A short-term top-up for those who still can’t meet essential costs after all other support. Highly individualized and discretionary, typically not simulated due to data limitations.
-  * *Winter Energy Payment:* Automatic extra payment during winter to those on main benefits or NZ Super, intended to offset heating costs. Straightforward to include by adding the specified amount for the relevant months (or averaged annually in the model).
-* **Student Allowances:** Means-tested support for students in tertiary education. These are targeted by parental income (for students under 24) or personal circumstances. Not included in all simulations because student status and parental income data may be incomplete, but an advanced model could incorporate them using the “studying status” variable.
-* **Childcare Subsidies:** Subsidies for preschool childcare costs for low-income working/studying parents (administered by MSD). These depend on hours of care, child age, and income. Often excluded from static microsimulations due to insufficient data on childcare usage in income surveys.
-* **Child Support Payments:** Money paid by non-custodial parents (through IRD) to support their children. While not a government benefit, changes in child support policy (like pass-on to beneficiaries) can affect custodial household incomes. A full model might include child support as part of household income if data allows, especially to evaluate policies around it.
+*   **Personal Income Tax:** Progressive rate tax on individual taxable income.
+*   **ACC Earner’s Levy:** A flat levy on earnings to fund accident insurance.
+*   **Independent Earner Tax Credit (IETC):** A tax credit for individuals with modest incomes.
+*   **Working for Families Tax Credits:**
+    *   *Family Tax Credit (FTC):* Provides a base level of support per child.
+    *   *In-Work Tax Credit (IWTC):* Additional support for working families.
+    *   *Best Start:* Support for families with infants and toddlers.
+    *   *Minimum Family Tax Credit (MFTC):* Ensures a minimum after-tax income for working families.
+*   **Main Benefits (Income Support):**
+    *   *Jobseeker Support:* For unemployed or low-income jobseekers.
+    *   *Sole Parent Support:* For single parents with young children.
+    *   *Supported Living Payment:* For people with serious disabilities/illness.
+*   **New Zealand Superannuation:** Universal pension for ages 65+.
+*   **Supplementary Benefits:**
+    *   *Accommodation Supplement (AS):* Helps low-income households with housing costs.
+    *   *Winter Energy Payment:* Extra payment during winter to those on main benefits or NZ Super.
+*   **Other:**
+    *   *KiwiSaver:* Deductions for the national superannuation scheme.
+    *   *Student Loans:* Repayments for tertiary education loans.
 
 Each of the above programs has parameters (rates, thresholds, eligibility rules) that can vary by year. A flexible microsimulation model stores these parameters and can simulate any year or any policy reform by plugging in new values. The outputs related to each program could include: how many people receive it and the total cost (for benefits/credits), or total revenue collected (for taxes/levies), as well as the change in those figures under scenario changes.
 
