@@ -71,7 +71,7 @@ class TaxCalculator(BaseModel):
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float, rwt_params=None) -> float:
+    def rwt(self, interest: float, rwt_params: Dict | None = None) -> float:
         """
         Calculate Resident Withholding Tax (RWT) on interest income.
 

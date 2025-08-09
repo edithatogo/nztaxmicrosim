@@ -27,37 +27,109 @@ _stats_helper = DistributionalStatisticsTable()
 
 
 def calculate_total_tax_revenue(df: pd.DataFrame) -> float:
-    """Return the sum of ``tax_liability`` for ``df``."""
+    """Calculate the total tax revenue from a DataFrame.
+
+    This function sums the 'tax_liability' column of the given DataFrame.
+
+    Args:
+        df: A pandas DataFrame with a 'tax_liability' column.
+
+    Returns:
+        The total tax revenue.
+    """
     return _fiscal_helper._calculate_total_tax_revenue(df)
 
 
 def calculate_total_welfare_transfers(df: pd.DataFrame) -> float:
-    """Return the total welfare transfers for ``df``."""
+    """Calculate the total welfare transfers from a DataFrame.
+
+    This function sums the entitlement columns for various benefits and
+    tax credits in the given DataFrame.
+
+    Args:
+        df: A pandas DataFrame with entitlement columns (e.g.,
+            'jss_entitlement', 'ftc_entitlement').
+
+    Returns:
+        The total welfare transfers.
+    """
     return _fiscal_helper._calculate_total_welfare_transfers(df)
 
 
 def calculate_net_fiscal_impact(tax_revenue: float, welfare_transfers: float) -> float:
-    """Return ``tax_revenue`` minus ``welfare_transfers``."""
+    """Calculate the net fiscal impact.
+
+    This is the difference between total tax revenue and total welfare
+    transfers.
+
+    Args:
+        tax_revenue: The total tax revenue.
+        welfare_transfers: The total welfare transfers.
+
+    Returns:
+        The net fiscal impact.
+    """
     return _fiscal_helper._calculate_net_fiscal_impact(tax_revenue, welfare_transfers)
 
 
 def calculate_disposable_income(df: pd.DataFrame) -> pd.Series:
-    """Calculate disposable income before housing costs."""
+    """Calculate disposable income before housing costs.
+
+    Disposable income is calculated as family income plus benefits and
+    tax credits, minus tax liability.
+
+    Args:
+        df: A pandas DataFrame with income, benefit, and tax columns.
+
+    Returns:
+        A pandas Series containing the disposable income for each row.
+    """
     return _stats_helper._calculate_disposable_income(df)
 
 
 def calculate_disposable_income_ahc(df: pd.DataFrame) -> pd.Series:
-    """Calculate disposable income after housing costs."""
+    """Calculate disposable income after housing costs.
+
+    This is disposable income minus housing costs.
+
+    Args:
+        df: A pandas DataFrame with disposable income and 'housing_costs'
+            columns.
+
+    Returns:
+        A pandas Series containing the after-housing-cost disposable
+        income for each row.
+    """
     return _stats_helper._calculate_disposable_income_ahc(df)
 
 
 def calculate_poverty_rate(income_series: pd.Series, poverty_line: float) -> float:
-    """Return the share of ``income_series`` below ``poverty_line`` as a percentage."""
+    """Calculate the poverty rate for a given income series.
+
+    The poverty rate is the percentage of individuals with income below the
+    poverty line.
+
+    Args:
+        income_series: A pandas Series of income values.
+        poverty_line: The poverty line.
+
+    Returns:
+        The poverty rate as a percentage.
+    """
     return _stats_helper._calculate_poverty_rate(income_series, poverty_line)
 
 
 def calculate_child_poverty_rate(df: pd.DataFrame, income_column: str, poverty_line: float) -> float:
-    """Return the poverty rate for people under 18."""
+    """Calculate the poverty rate for children (under 18).
+
+    Args:
+        df: A pandas DataFrame with 'age' and income columns.
+        income_column: The name of the income column to use.
+        poverty_line: The poverty line.
+
+    Returns:
+        The child poverty rate as a percentage.
+    """
     if "age" not in df.columns or income_column not in df.columns:
         return 0.0
     children = df[df["age"] < 18]
@@ -67,35 +139,82 @@ def calculate_child_poverty_rate(df: pd.DataFrame, income_column: str, poverty_l
 
 
 def calculate_gini_coefficient(income_series: pd.Series) -> float:
-    """Return the Gini coefficient for ``income_series``."""
+    """Calculate the Gini coefficient for a given income series.
+
+    The Gini coefficient is a measure of statistical dispersion intended to
+    represent the income or wealth distribution of a nation's residents,
+    and is the most commonly used measure of inequality.
+
+    Args:
+        income_series: A pandas Series of income values.
+
+    Returns:
+        The Gini coefficient.
+    """
     return _stats_helper._calculate_gini_coefficient(income_series)
 
 
 def lorenz_curve(income_series: pd.Series) -> pd.DataFrame:
-    """Return the Lorenz curve for ``income_series``.
+    """Calculate the Lorenz curve for a given income series.
 
-    The returned DataFrame contains the cumulative population and income shares
-    starting from the lowest income.
+    The Lorenz curve is a graphical representation of the distribution of
+    income or of wealth.
+
+    Args:
+        income_series: A pandas Series of income values.
+
+    Returns:
+        A DataFrame with 'population_share' and 'income_share' columns,
+        representing the points on the Lorenz curve.
     """
     return calculate_lorenz_curve(income_series)
 
 
 def atkinson_index(income_series: pd.Series, epsilon: float = 0.5) -> float:
-    """Return the Atkinson inequality index for ``income_series``.
+    """Calculate the Atkinson index for a given income series.
 
-    ``epsilon`` controls inequality aversion: larger values give more weight to
-    lower incomes.
+    The Atkinson index is a measure of income inequality.
+
+    Args:
+        income_series: A pandas Series of income values.
+        epsilon: The inequality aversion parameter. A higher value means
+            more weight is given to inequalities at the lower end of the
+            distribution.
+
+    Returns:
+        The Atkinson index.
     """
     return calculate_atkinson_index(income_series, epsilon)
 
 
 def theil_index(income_series: pd.Series) -> float:
-    """Return the Theil T index for ``income_series``."""
+    """Calculate the Theil T index for a given income series.
+
+    The Theil index is a measure of economic inequality.
+
+    Args:
+        income_series: A pandas Series of income values.
+
+    Returns:
+        The Theil T index.
+    """
     return calculate_theil_index(income_series)
 
 
 def calculate_budget_impact(baseline_df: pd.DataFrame, reform_df: pd.DataFrame) -> pd.DataFrame:
-    """Return fiscal metrics for baseline and reform scenarios and their difference."""
+    """Calculate the fiscal impact of a reform.
+
+    This function compares the fiscal metrics of a baseline scenario and a
+    reform scenario, and returns a DataFrame summarizing the differences.
+
+    Args:
+        baseline_df: A DataFrame representing the baseline scenario.
+        reform_df: A DataFrame representing the reform scenario.
+
+    Returns:
+        A DataFrame with the fiscal metrics for both scenarios and their
+        difference.
+    """
     baseline_tax = calculate_total_tax_revenue(baseline_df)
     baseline_welfare = calculate_total_welfare_transfers(baseline_df)
     baseline_net = calculate_net_fiscal_impact(baseline_tax, baseline_welfare)

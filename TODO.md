@@ -13,3 +13,6 @@ Outstanding work:
   * Added `BSTCRule`
   * Added `FTCRule`
   * Added `IWTCRule`
+* Improve code documentation
+  * Add docstrings to Pydantic models in `src/parameters.py`
+  * Set up a documentation generator (e.g., Sphinx)

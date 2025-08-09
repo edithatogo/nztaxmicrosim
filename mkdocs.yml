@@ -13,11 +13,11 @@ nav:
   - 'User Guide':
     - 'Contributing': 'CONTRIBUTING.md'
     - 'Citing this work': 'CITATION.cff'
-    - 'Code of Conduct': '../CODE_OF_CONDUCT.md'
+    - 'Code of Conduct': 'CODE_OF_CONDUCT.md'
     - 'License': 'LICENSE'
   - 'Project Documentation':
     - 'Roadmap': 'ROADMAP.md'
-    - 'Changelog': '../CHANGELOG.md'
+    - 'Changelog': 'CHANGELOG.md'
     - 'Development Log': 'development_log.md'
     - 'Security': 'SECURITY.md'
   - 'Model Documentation':
@@ -25,7 +25,21 @@ nav:
     - 'Feature Matrix': 'feature_matrix.md'
     - 'Policy Changes': 'policy_changes.md'
     - 'Optimisation Module Proposal': 'optimisation_module_proposal.md'
+    - 'Historic Tax Search Plan': 'historic_tax_search_plan.md'
+    - 'NZ Microsim Paper': 'nz_microsim_paper.md'
+    - 'Personal Tax History': 'personal_tax_history.md'
+    - 'Personal Tax History 1970-25 Narrative': 'personal_tax_history_1970-25_narrative.md'
+    - 'Personal Tax History 1970-25 Table': 'personal_tax_history_1970-25_table.md'
+    - 'Reporting Plan': 'reporting_plan.md'
+    - 'Tax Microsim I/O': 'taxmicrosim_io.md'
+    - 'Tax Microsim Report Components': 'taxmicrosim_report_components.md'
+    - 'Validation Report': 'validation_report.md'
+    - 'WFF Microsim Model Metadata': 'wff_microsim_model_metadata.md'
+    - 'External': 'external/index.md'
   - 'API Reference': 'api_reference.md'
 repo_url: https://github.com/d-doughnut/nztaxmicrosim
 repo_name: d-doughnut/nztaxmicrosim
 docs_dir: docs
+extra:
+  analytics:
+    provider: google

@@ -3,6 +3,13 @@ from pydantic import BaseModel, Field
 
 
 class SimulationInputSchema(BaseModel):
+    """
+    Defines the schema for the input data of the simulation.
+
+    This Pydantic model is used to validate the input DataFrame, ensuring that
+    it contains all the required columns and that the data in each column is
+    of the correct type and within the expected range.
+    """
     person_id: int = Field(..., description="Unique identifier for each person.")
     household_id: int = Field(..., description="Unique identifier for each household.")
     familyinc: float = Field(..., ge=0, description="Family income, must be non-negative.")
@@ -31,10 +38,14 @@ class SimulationInputSchema(BaseModel):
 
 def validate_input_data(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Validates the input DataFrame against the SimulationInputSchema.
+    Validate the input DataFrame against the SimulationInputSchema.
+
+    This function uses the Pydantic model `SimulationInputSchema` to validate
+    the input DataFrame. It checks for the presence of required columns, correct
+    data types, and value ranges.
 
     Args:
-        df: The DataFrame to validate.
+        df: The DataFrame to be validated.
 
     Returns:
         The validated DataFrame.
