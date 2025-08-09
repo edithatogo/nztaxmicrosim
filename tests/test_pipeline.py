@@ -1,6 +1,7 @@
 """Tests for the modular simulation pipeline."""
 
 from dataclasses import dataclass
+from typing import Any
 
 import pandas as pd
 
@@ -21,11 +22,11 @@ class DummyRule:
     value: int = 1
     enabled: bool = True
 
-    def __call__(self, state: dict) -> None:
-        state[self.name] = self.value
+    def __call__(self, data: dict[str, Any]) -> None:
+        data[self.name] = self.value
 
-    def apply(self, state: dict) -> None:  # pragma: no cover - trivial
-        state[self.name] = self.value
+    def apply(self, data: dict[str, Any]) -> None:  # pragma: no cover - trivial
+        data[self.name] = self.value
 
 
 def test_pipeline_integration_runs_rules():
@@ -109,7 +110,7 @@ def test_pipeline_from_config(tmp_path):
     config_file.write_text(config_content)
 
     params = load_parameters("2023-2024")
-    pipeline = SimulationPipeline.from_config(str(config_file), params)
+    pipeline = SimulationPipeline.from_config(str(config_file), params.model_dump())
 
     assert len(pipeline.rules) == 2
     assert isinstance(pipeline.rules[0], IncomeTaxRule)

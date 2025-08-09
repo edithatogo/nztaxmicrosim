@@ -19,7 +19,7 @@ class ACCLevyRule(Rule):
     The calculation is performed by the `calculate_acc_levy` function.
     """
 
-    acc_levy_params: ACCLevyParams
+    acc_levy_params: ACCLevyParams | None
     name: str = "acc_levy"
     enabled: bool = True
 
@@ -163,9 +163,7 @@ class IETCRule(Rule):
                 taxable_income=row["familyinc"],
                 is_wff_recipient=row["FTCcalc"] > 0,
                 is_super_recipient=row["is_nz_super_recipient"],
-                is_benefit_recipient=row["is_jss_recipient"]
-                or row["is_sps_recipient"]
-                or row["is_slp_recipient"],
+                is_benefit_recipient=row["is_jss_recipient"] or row["is_sps_recipient"] or row["is_slp_recipient"],
             ),
             axis=1,
         )

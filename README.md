@@ -1,5 +1,8 @@
 # NZ Tax Microsimulation Model
 
+[![CI](https://github.com/edithatogo/nztaxmicrosim/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nztaxmicrosim/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A microsimulation model for New Zealand's tax and benefit system.
 
 This model is designed to be a flexible and extensible tool for researchers, policymakers, and the public to explore the impacts of different tax and benefit policies in New Zealand.
@@ -8,6 +11,8 @@ The filename of this document is capitalised as `README.md` so that GitHub
 renders it by default when viewing the repository.
 
 ## Key Features
+
+For a more detailed breakdown of all features, see [FEATURES.md](FEATURES.md).
 
 - **Comprehensive Rule Coverage:**
   - **Income Tax:** Full progressive income tax brackets.
@@ -34,35 +39,9 @@ renders it by default when viewing the repository.
 
 ### Feature Matrix
 
-This document compares the features of the NZ-Microsim library with the original SAS models it is based on, as well as two other popular open-source microsimulation platforms: PolicyEngine and OpenFisca.
+For a detailed comparison of this project with other microsimulation models, see the [Feature Comparison](docs/feature_comparison.md).
 
-| Feature | NZ-Microsim (This Repo) | Original SAS Models | PolicyEngine | OpenFisca |
-| --- | --- | --- | --- | --- |
-| **Core Focus** | New Zealand tax and transfer system | New Zealand tax and transfer system | Multi-country tax and benefit systems | Generic microsimulation framework ("Legislation as code") |
-| **Technology** | Python | SAS | Python | Python |
-| **Open Source** | Yes (Apache 2.0 License) | Yes (MIT License) | Yes (AGPL-3.0) | Yes (AGPL-3.0) |
-| **Core Engine** | Custom-built | Custom-built | PolicyEngine Core (fork of OpenFisca-Core) | OpenFisca-Core |
-| **Modularity** | Modular design with pluggable components | Macro-based (`famsim`) | Highly modular (core engine + country packages) | Highly modular (core engine + country packages) |
-| **Country Coverage** | New Zealand only | New Zealand only | US, UK, Canada | France, Spain, Senegal, and others |
-| **Web Interface** | No | No | Yes (React-based web app) | Yes (via country packages) |
-| **API** | No | No | Yes (REST API) | Yes (REST API) |
-| **Parameterisation** | JSON files per tax year | Hardcoded in macros, with some input parameters | YAML files | YAML files |
-| **Key Features** | - Income Tax<br>- Working for Families (WFF)<br>- FamilyBoost<br>- IETC<br>- RWT<br>- Superannuation<br>- Reporting & Sensitivity Analysis | - Income Tax<br>- Working for Families (WFF) | - Detailed tax and benefit calculations for each country<br>- Microdata generation<br>- Extensible with new policies | - Core calculus engine<br>- Domain-specific language for policy rules<br>- Handles complex dependencies between variables |
-| **Extensibility** | Designed to be extensible | Limited | Designed to be extensible through new country packages or policies | Designed to be extensible through new country packages or policies |
-| **Tax Year Coverage** | 2005-2025 | Not specified | Varies by country | Varies by country |
-| **Community** | Small, focused on this project | Internal to Inland Revenue | Active community | Active community |
-
-| Feature | Module | Release Status |
-| --- | --- | --- |
-| Income tax calculations | Income Tax | Core |
-| Working for Families | Working for Families | Core |
-| FamilyBoost | FamilyBoost | Core |
-| Paid Parental Leave | Paid Parental Leave | Optional |
-| Child Support | Child Support | Optional |
-| Policy rules for multiple tax years | Parameterised Policy Rules | Core |
-| Reporting and EVPI analysis | Reporting & Sensitivity | Core |
-| Dynamic simulation tools | Dynamic Simulation | Experimental |
-| Historical tax dataset discovery | Data.govt.nz API Script | Experimental |
+For a list of the current features and their release status, see the [Module Status](docs/module_status.md).
 
 
 ## Quick Start

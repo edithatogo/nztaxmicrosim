@@ -1,6 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
+  - family-names: "Mordaunt"
+    given-names: "Dylan A"
   - name: "NZ Microsimulation Model Contributors"
-title: "NZ Microsimulation Model"
+title: "NZ Tax Microsimulation Model"
 version: 0.1.0
+abstract: "A microsimulation model for New Zealand's tax and benefit system. This model is designed to be a flexible and extensible tool for researchers, policymakers, and the public to explore the impacts of different tax and benefit policies in New Zealand."

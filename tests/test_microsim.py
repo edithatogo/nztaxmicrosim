@@ -44,7 +44,7 @@ def test_load_parameters_historical_fallback():
     assert params is not None
     assert params.tax_brackets is not None
     assert params.tax_brackets.rates == [0.15, 0.21, 0.33, 0.39]
-    assert params.tax_brackets.thresholds == [9500, 38000, 60000]
+    assert params.tax_brackets.thresholds == [9500.0, 38000.0, 60000.0]
 
 
 def test_load_parameters_invalid_json():
@@ -65,7 +65,7 @@ def test_taxit():
     """
     # Rates and thresholds for the 2023 tax year
     rates = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds = [14000, 48000, 70000, 180000]
+    thresholds = [14000.0, 48000.0, 70000.0, 180000.0]
     params = TaxBracketParams(rates=rates, thresholds=thresholds)
 
     # Test case 1: Income within the first bracket
@@ -122,7 +122,7 @@ def test_netavg():
     """
     # Rates and thresholds for the 2023 tax year
     rates = [0.105, 0.175, 0.30, 0.33, 0.39]
-    thresholds = [14000, 48000, 70000, 180000]
+    thresholds = [14000.0, 48000.0, 70000.0, 180000.0]
     params = TaxBracketParams(rates=rates, thresholds=thresholds)
     eprt = 0.0146
 

@@ -5,6 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
+import yaml
+
+from .parameters import Parameters
 from .tax_calculator import TaxCalculator
 
 
@@ -33,7 +36,7 @@ class SimulationPipeline:
     given data dictionary. Rules can be enabled, disabled, or replaced.
     """
 
-    rules: list[Rule] = field(default_factory=list)
+            rules: list[Rule] = []
 
     @classmethod
     def from_config(cls, config_path: str, params: dict[str, Any]) -> "SimulationPipeline":
@@ -53,14 +56,15 @@ class SimulationPipeline:
         with open(config_path) as f:
             config = yaml.safe_load(f)
 
-        rules = []
+        rules: list[Rule] = []
+        validated_params = Parameters.model_validate(params)
         for rule_config in config["rules"]:
             rule_name = rule_config["name"]
             # Note: This is a simple factory. For more complex rules, you might need a more robust mechanism.
             if rule_name == "IncomeTaxRule":
-                rules.append(IncomeTaxRule(calculator=TaxCalculator(params=params)))
+                rules.append(IncomeTaxRule(calculator=TaxCalculator(params=validated_params)))
             elif rule_name == "IETCRule":
-                rules.append(IETCRule(calculator=TaxCalculator(params=params)))
+                rules.append(IETCRule(calculator=TaxCalculator(params=validated_params)))
             # Add other rules here as they are created
         return cls(rules)
 

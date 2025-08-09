@@ -99,13 +99,13 @@ def run_deterministic_analysis(
             {
                 "tax": population_df["familyinc"].apply(
                     tax_runner,
-                    args=(params["tax_brackets"]["rates"], params["tax_brackets"]["thresholds"]),
+                    args=(params,),
                 )
             }
         )
         wff_df = wff_runner(
             population_df.copy(),
-            params["wff"],
+            params,
             0.0,
             365,  # wagegwt  # daysinperiod
         )
@@ -215,11 +215,11 @@ def run_probabilistic_analysis(
             {
                 "tax": population_df["familyinc"].apply(
                     tax_runner,
-                    args=(params["tax_brackets"]["rates"], params["tax_brackets"]["thresholds"]),
+                    args=(params,),
                 )
             }
         )
-        wff_df = wff_runner(population_df.copy(), params["wff"], 0.0, 365)
+        wff_df = wff_runner(population_df.copy(), params, 0.0, 365)
 
         results = {}
         for name, func in output_metric_funcs.items():
