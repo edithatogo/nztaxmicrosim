@@ -120,16 +120,24 @@ def calculate_budget_impact(baseline_df: pd.DataFrame, reform_df: pd.DataFrame) 
 
 def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Generates a comprehensive microsimulation report using the defined report components.
+    Generate a comprehensive microsimulation report.
+
+    This function orchestrates the generation of a multi-component report
+    from simulated microsimulation data. It uses a `ReportGenerator` to
+    create various components like an executive summary, fiscal impact tables,
+    and distributional statistics.
+
+    The generated report is also saved as a markdown file.
 
     Args:
-        simulated_data (pd.DataFrame): The DataFrame containing the simulated population data
-                                       with all necessary income, tax, and benefit columns.
-        report_params (Dict[str, Any]): A dictionary of parameters for report generation,
-                                       e.g., poverty_line_relative.
+        simulated_data: A DataFrame containing the simulated population data,
+            including income, tax, and benefit columns.
+        report_params: A dictionary of parameters for report generation,
+            such as the poverty line definition.
 
     Returns:
-        Dict[str, Any]: A dictionary where keys are component titles and values are their generated content.
+        A dictionary where keys are the titles of the report components and
+        values are their generated content (e.g., DataFrames, plots).
     """
     # Ensure the necessary disposable income columns are present for reporting components
     # These calculations are now handled within the DistributionalStatisticsTable component
@@ -177,16 +185,22 @@ def plot_evppi(
     ylabel: str = "Parameters",
 ):
     """
-    Generates a bar chart of EVPPI results.
+    Generate a bar chart of EVPPI results.
+
+    The Expected Value of Perfect Partial Information (EVPPI) is a measure
+    of the expected value of learning the true value of a subset of uncertain
+    parameters. This plot helps to identify which parameters have the most
+    influence on the model's output.
 
     Args:
-        evppi_results (Dict[str, float]): A dictionary where keys are parameter
-                                          names and values are their EVPPI.
-        title (str, optional): The title of the plot. Defaults to "Expected Value of Perfect Partial Information".
-        output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
-        palette (str, optional): The color palette to use for the plot. Defaults to "viridis".
-        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
-        ylabel (str, optional): The label for the y-axis. Defaults to "Parameters".
+        evppi_results: A dictionary where keys are parameter names and
+            values are their EVPPI.
+        title: The title of the plot.
+        output_path: The path to save the plot to. If None, the plot is
+            displayed directly.
+        palette: The color palette to use for the plot.
+        xlabel: The label for the x-axis.
+        ylabel: The label for the y-axis.
     """
     if not evppi_results:
         print("No EVPPI results to plot.")
@@ -219,15 +233,20 @@ def plot_evppi_tornado(
     xlabel: str = "EVPPI",
 ):
     """
-    Generates a tornado plot of EVPPI results.
+    Generate a tornado plot of EVPPI results.
+
+    A tornado plot is a type of bar chart that is used to visualize the
+    sensitivity of a model's output to different input parameters. In this
+    case, it shows the EVPPI for each parameter, sorted from lowest to highest.
 
     Args:
-        evppi_results (Dict[str, float]): A dictionary where keys are parameter
-                                          names and values are their EVPPI.
-        title (str, optional): The title of the plot. Defaults to "Tornado Plot of EVPPI".
-        output_path (str, optional): The path to save the plot to. If None, the plot is shown. Defaults to None.
-        color (str, optional): The color of the bars. Defaults to "skyblue".
-        xlabel (str, optional): The label for the x-axis. Defaults to "EVPPI".
+        evppi_results: A dictionary where keys are parameter names and
+            values are their EVPPI.
+        title: The title of the plot.
+        output_path: The path to save the plot to. If None, the plot is
+            displayed directly.
+        color: The color of the bars.
+        xlabel: The label for the x-axis.
     """
     if not evppi_results:
         print("No EVPPI results to plot.")
