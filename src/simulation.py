@@ -14,19 +14,26 @@ def run_simulation(
     labour_response=None,
 ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
     """
-    Runs a microsimulation in either static or dynamic mode.
+    Run a microsimulation in either static or dynamic mode.
+
+    This function provides a unified interface for running both static and
+    dynamic simulations. In static mode, the simulation is run for a single
+    year. In dynamic mode, the simulation is run for a series of years, with
+    the output of one year being used as the input for the next.
 
     Args:
-        df (pd.DataFrame): The input population data.
-        mode (str): The simulation mode, either 'static' or 'dynamic'.
-        year (Union[str, List[str]]): A single year for static mode, or a list
+        df: The input population data.
+        mode: The simulation mode, either 'static' or 'dynamic'.
+        year: A single year (e.g., "2023-2024") for static mode, or a list
             of years for dynamic mode.
-        labour_response (function, optional): A function to model labour supply
-            changes in dynamic mode. Defaults to None.
+        labour_response: An optional function to model labour supply
+            changes in dynamic mode.
 
     Returns:
-        Union[pd.DataFrame, Dict[str, pd.DataFrame]]: A DataFrame for static
-            mode, or a dictionary of DataFrames for dynamic mode.
+        For static mode, a DataFrame containing the simulation results for the
+        specified year. For dynamic mode, a dictionary of DataFrames, where
+        each key is a year and the value is the simulation results for that
+        year.
     """
     if mode == "static":
         if not isinstance(year, str):
