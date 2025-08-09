@@ -197,7 +197,7 @@ def plot_evppi(
     params, values = zip(*sorted_evppi)
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(x=list(values), y=list(params), palette=palette)
+    sns.barplot(x=list(values), y=list(params), hue=list(params), palette=palette, legend=False)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
