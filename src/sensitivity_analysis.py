@@ -9,15 +9,18 @@ from src.microsim import load_parameters
 
 
 def _get_nested(d: Dict[str, Any], path: str) -> Any:
-    """
-    Gets a value from a nested dictionary or list using a dot-separated path.
+    """Get a value from a nested dictionary using a dot-separated path.
+
+    This function navigates through a nested dictionary `d` using a `path`
+    string (e.g., "key1.key2.0.key3") to retrieve a value. The path can
+    contain both dictionary keys and list indices.
 
     Args:
-        d (Dict[str, Any]): The dictionary or list to traverse.
-        path (str): The dot-separated path to the desired value (e.g., "key1.nested_key.0.final_key").
+        d: The nested dictionary or list to access.
+        path: A string of dot-separated keys and indices.
 
     Returns:
-        Any: The value found at the specified path.
+        The value at the specified path.
     """
     keys = path.split(".")
     for key in keys:
@@ -29,13 +32,16 @@ def _get_nested(d: Dict[str, Any], path: str) -> Any:
 
 
 def _set_nested(d: Dict[str, Any], path: str, value: Any) -> None:
-    """
-    Sets a value in a nested dictionary or list using a dot-separated path.
+    """Set a value in a nested dictionary using a dot-separated path.
+
+    This function navigates through a nested dictionary `d` using a `path`
+    string (e.g., "key1.key2.0.key3") to set a `value` at that location.
+    The path can contain both dictionary keys and list indices.
 
     Args:
-        d (Dict[str, Any]): The dictionary or list to modify.
-        path (str): The dot-separated path to the location where the value should be set.
-        value (Any): The value to set at the specified path.
+        d: The nested dictionary or list to modify.
+        path: A string of dot-separated keys and indices.
+        value: The value to set at the specified path.
     """
     keys = path.split(".")
     d_ref = d
