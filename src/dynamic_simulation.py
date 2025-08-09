@@ -26,23 +26,29 @@ def run_dynamic_simulation(
     years: Sequence[str],
     labour_response: LabourFunc | None = None,
 ) -> Dict[str, pd.DataFrame]:
-    """Iterate the static model over ``years``.
+    """
+    Run a dynamic simulation by iterating the static model over several years.
 
-    Parameters
-    ----------
-    df:
-        Input micro-data containing at least a ``taxable_income`` column.
-    years:
-        Policy years like ``"2023-2024"`` to simulate sequentially.
-    labour_response:
-        Optional callable applied each year to adjust ``df`` for labour
-        supply effects. It receives the DataFrame from the previous year
-        and that year's parameters and must return an updated DataFrame.
+    This function simulates the effects of policy changes over time by running
+    the microsimulation model sequentially for each year in the `years`
+    sequence. The output of one year's simulation can be used as the input
+    for the next, and an optional `labour_response` function can be used to
+    model changes in labour supply between years.
 
-    Returns
-    -------
-    dict
-        Mapping from year to the simulated DataFrame for that year.
+    Args:
+        df: The initial micro-data, containing at least a `taxable_income`
+            column.
+        years: A sequence of policy years (e.g., `["2023-2024", "2024-2025"]`)
+            to simulate.
+        labour_response: An optional function that adjusts the DataFrame for
+            labour supply effects. It is called for each year in the
+            simulation, and receives the DataFrame from the previous year and
+            the parameters for the current year. It must return an updated
+            DataFrame.
+
+    Returns:
+        A dictionary where the keys are the simulated years and the values are
+        the corresponding DataFrames with the simulation results.
     """
     results: Dict[str, pd.DataFrame] = {}
     current = df.copy()
