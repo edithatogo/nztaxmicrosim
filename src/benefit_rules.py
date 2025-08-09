@@ -3,23 +3,32 @@ from typing import Any
 
 from .benefits import (
     calculate_accommodation_supplement,
+    calculate_bstc,
+    calculate_ftc,
+    calculate_iwtc,
     calculate_jss,
+    calculate_mftc,
     calculate_slp,
     calculate_sps,
+    calculate_wep,
 )
 from .parameters import (
     AccommodationSupplementParams,
+    BSTCParams,
+    FTCParams,
+    IWTCParams,
     JSSParams,
+    MFTCParams,
     SLPParams,
     SPSParams,
+    WEPParams,
 )
 from .pipeline import Rule
 
 
 @dataclass
 class JSSRule(Rule):
-    """
-    A rule to calculate Jobseeker Support (JSS).
+    """A rule to calculate Jobseeker Support (JSS).
 
     JSS is a weekly payment for people who are not in full-time employment,
     are available for and looking for work, or are unable to work due to a
@@ -36,11 +45,17 @@ class JSSRule(Rule):
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the JSS entitlement for each individual in the DataFrame.
+        """Calculate JSS entitlement and add it to the DataFrame.
 
         This method applies the `calculate_jss` function to each row of the
-        DataFrame and stores the result in a new `jss_entitlement` column.
+        DataFrame in the `data` dictionary and stores the result in a new
+        `jss_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly', 'marital_status', and
+                'num_children' columns.
         """
         data["df"]["jss_entitlement"] = data["df"].apply(
             lambda row: calculate_jss(
@@ -56,8 +71,7 @@ class JSSRule(Rule):
 
 @dataclass
 class MFTCRule(Rule):
-    """
-    A rule to calculate the Minimum Family Tax Credit (MFTC).
+    """A rule to calculate the Minimum Family Tax Credit (MFTC).
 
     The MFTC is a payment for working families who would otherwise be better
     off on a benefit. It tops up their after-tax income to a guaranteed
@@ -69,19 +83,22 @@ class MFTCRule(Rule):
     The calculation is performed by the `calculate_mftc` function.
     """
 
-    mftc_params: "MFTCParams"
+    mftc_params: MFTCParams
     name: str = "mftc"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the MFTC entitlement for each family in the DataFrame.
+        """Calculate MFTC entitlement and add it to the DataFrame.
 
         This method applies the `calculate_mftc` function to each row of the
-        DataFrame and stores the result in a new `mftc_entitlement` column.
-        """
-        from .benefits import calculate_mftc
+        DataFrame in the `data` dictionary and stores the result in a new
+        `mftc_entitlement` column.
 
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain 'familyinc'
+                and 'tax_liability' columns.
+        """
         df = data["df"]
         df["mftc_entitlement"] = df.apply(
             lambda row: calculate_mftc(
@@ -95,8 +112,7 @@ class MFTCRule(Rule):
 
 @dataclass
 class IWTCRule(Rule):
-    """
-    A rule to calculate the In-Work Tax Credit (IWTC).
+    """A rule to calculate the In-Work Tax Credit (IWTC).
 
     The IWTC is a payment for working families with dependent children. It is
     designed to help make work pay for low to middle-income families.
@@ -107,19 +123,22 @@ class IWTCRule(Rule):
     The calculation is performed by the `calculate_iwtc` function.
     """
 
-    iwtc_params: "IWTCParams"
+    iwtc_params: IWTCParams
     name: str = "iwtc"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the IWTC entitlement for each family in the DataFrame.
+        """Calculate IWTC entitlement and add it to the DataFrame.
 
         This method applies the `calculate_iwtc` function to each row of the
-        DataFrame and stores the result in a new `iwtc_entitlement` column.
-        """
-        from .benefits import calculate_iwtc
+        DataFrame in the `data` dictionary and stores the result in a new
+        `iwtc_entitlement` column.
 
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain 'familyinc',
+                'num_children', and 'hours_worked' columns.
+        """
         df = data["df"]
         df["iwtc_entitlement"] = df.apply(
             lambda row: calculate_iwtc(
@@ -134,8 +153,7 @@ class IWTCRule(Rule):
 
 @dataclass
 class FTCRule(Rule):
-    """
-    A rule to calculate the Family Tax Credit (FTC).
+    """A rule to calculate the Family Tax Credit (FTC).
 
     The FTC is a payment for families with dependent children. It is designed
     to help with the costs of raising a family.
@@ -146,19 +164,22 @@ class FTCRule(Rule):
     The calculation is performed by the `calculate_ftc` function.
     """
 
-    ftc_params: "FTCParams"
+    ftc_params: FTCParams
     name: str = "ftc"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the FTC entitlement for each family in the DataFrame.
+        """Calculate FTC entitlement and add it to the DataFrame.
 
         This method applies the `calculate_ftc` function to each row of the
-        DataFrame and stores the result in a new `ftc_entitlement` column.
-        """
-        from .benefits import calculate_ftc
+        DataFrame in the `data` dictionary and stores the result in a new
+        `ftc_entitlement` column.
 
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain 'familyinc'
+                and 'num_children' columns.
+        """
         df = data["df"]
         df["ftc_entitlement"] = df.apply(
             lambda row: calculate_ftc(
@@ -172,8 +193,7 @@ class FTCRule(Rule):
 
 @dataclass
 class BSTCRule(Rule):
-    """
-    A rule to calculate the Best Start Tax Credit (BSTC).
+    """A rule to calculate the Best Start Tax Credit (BSTC).
 
     The BSTC is a payment for families with a new baby. It is designed to
     help with the costs of raising a child in their first few years.
@@ -184,19 +204,22 @@ class BSTCRule(Rule):
     The calculation is performed by the `calculate_bstc` function.
     """
 
-    bstc_params: "BSTCParams"
+    bstc_params: BSTCParams
     name: str = "bstc"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the BSTC entitlement for each family in the DataFrame.
+        """Calculate BSTC entitlement and add it to the DataFrame.
 
         This method applies the `calculate_bstc` function to each row of the
-        DataFrame and stores the result in a new `bstc_entitlement` column.
-        """
-        from .benefits import calculate_bstc
+        DataFrame in the `data` dictionary and stores the result in a new
+        `bstc_entitlement` column.
 
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain 'familyinc'
+                and 'ages_of_children' columns.
+        """
         df = data["df"]
         # Assume the first child's age is the relevant one for this calculation
         df["bstc_entitlement"] = df.apply(
@@ -209,15 +232,9 @@ class BSTCRule(Rule):
         )
 
 
-try:
-    from .parameters import WEPParams
-except ImportError:
-    WEPParams = None
-
 @dataclass
 class WEPRule(Rule):
-    """
-    A rule to calculate the Winter Energy Payment (WEP).
+    """A rule to calculate the Winter Energy Payment (WEP).
 
     The WEP is a payment to help with the cost of heating during the winter
     months. It is available to people receiving certain benefits or
@@ -229,21 +246,23 @@ class WEPRule(Rule):
     The calculation is performed by the `calculate_wep` function.
     """
 
-    wep_params: "WEPParams"
+    wep_params: WEPParams
     name: str = "wep"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the WEP entitlement for each individual in the DataFrame.
+        """Calculate WEP entitlement and add it to the DataFrame.
 
         This method applies the `calculate_wep` function to each row of the
-        DataFrame and stores the result in a new `wep_entitlement` column.
-        """
-        if not self.wep_params:
-            return
-        from .benefits import calculate_wep
+        DataFrame in the `data` dictionary and stores the result in a new
+        `wep_entitlement` column.
 
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain boolean
+                eligibility columns (e.g., 'is_jss_recipient'),
+                'marital_status', and 'num_children' columns.
+        """
         df = data["df"]
         df["wep_entitlement"] = df.apply(
             lambda row: calculate_wep(
@@ -262,8 +281,7 @@ class WEPRule(Rule):
 
 @dataclass
 class SPSRule(Rule):
-    """
-    A rule to calculate Sole Parent Support (SPS).
+    """A rule to calculate Sole Parent Support (SPS).
 
     SPS is a weekly payment for single parents with dependent children.
 
@@ -273,16 +291,21 @@ class SPSRule(Rule):
     The calculation is performed by the `calculate_sps` function.
     """
 
-sps_params: SPSParams
+    sps_params: SPSParams
     name: str = "sps"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the SPS entitlement for each individual in the DataFrame.
+        """Calculate SPS entitlement and add it to the DataFrame.
 
         This method applies the `calculate_sps` function to each row of the
-        DataFrame and stores the result in a new `sps_entitlement` column.
+        DataFrame in the `data` dictionary and stores the result in a new
+        `sps_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly' and 'num_children' columns.
         """
         data["df"]["sps_entitlement"] = data["df"].apply(
             lambda row: calculate_sps(
@@ -296,8 +319,7 @@ sps_params: SPSParams
 
 @dataclass
 class SLPRule(Rule):
-    """
-    A rule to calculate Supported Living Payment (SLP).
+    """A rule to calculate Supported Living Payment (SLP).
 
     SLP is a weekly payment for people who have, or are caring for someone
     with, a significant health condition, injury, or disability.
@@ -313,11 +335,17 @@ class SLPRule(Rule):
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the SLP entitlement for each individual in the DataFrame.
+        """Calculate SLP entitlement and add it to the DataFrame.
 
         This method applies the `calculate_slp` function to each row of the
-        DataFrame and stores the result in a new `slp_entitlement` column.
+        DataFrame in the `data` dictionary and stores the result in a new
+        `slp_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly', 'marital_status', and
+                'disability_status' columns.
         """
         data["df"]["slp_entitlement"] = data["df"].apply(
             lambda row: calculate_slp(
@@ -333,8 +361,7 @@ class SLPRule(Rule):
 
 @dataclass
 class AccommodationSupplementRule(Rule):
-    """
-    A rule to calculate the Accommodation Supplement.
+    """A rule to calculate the Accommodation Supplement.
 
     The Accommodation Supplement is a weekly payment that helps people with
     their rent, board, or mortgage payments.
@@ -351,12 +378,17 @@ class AccommodationSupplementRule(Rule):
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
-        """
-        Calculates the Accommodation Supplement entitlement for each household.
+        """Calculate Accommodation Supplement entitlement and add it to the DataFrame.
 
         This method applies the `calculate_accommodation_supplement` function
-        to each row of the DataFrame and stores the result in a new
-        `accommodation_supplement_entitlement` column.
+        to each row of the DataFrame in the `data` dictionary and stores the
+        result in a new `accommodation_supplement_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly', 'household_size',
+                'housing_costs', 'region', and 'num_children' columns.
         """
         data["df"]["accommodation_supplement_entitlement"] = data["df"].apply(
             lambda row: calculate_accommodation_supplement(
