@@ -26,8 +26,13 @@ jobs:
       - name: Build docs
         run: mkdocs build
       - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peter-evans/create-pull-request@v6
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "docs: update gh-pages"
+          title: "docs: update gh-pages"
+          body: "This PR updates the documentation on the gh-pages branch."
+          branch: "docs/gh-pages"
+          base: "gh-pages"
+          path: "./site"
       
