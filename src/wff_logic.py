@@ -5,14 +5,18 @@ from .parameters import WFFParams
 
 
 def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
-    """Gross up family income by wage growth.
+    """
+    Gross up family income by a wage growth factor.
+
+    This is done to project the family's income from the survey year to the
+    simulation year.
 
     Args:
-        df: DataFrame with a ``familyinc`` column.
-        wagegwt: Wage growth rate.
+        df: DataFrame with a `familyinc` column.
+        wagegwt: The wage growth rate to apply.
 
     Returns:
-        DataFrame with an added ``familyinc_grossed_up`` column.
+        A new DataFrame with an added `familyinc_grossed_up` column.
     """
     df = df.copy()
     df["familyinc_grossed_up"] = df["familyinc"] * (1 + wagegwt)
@@ -20,15 +24,20 @@ def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
 
 
 def calculate_abatement(df: pd.DataFrame, wff_params: WFFParams, daysinperiod: int) -> pd.DataFrame:
-    """Calculate WFF abatement amounts.
+    """
+    Calculate the abatement amounts for Working for Families (WFF) tax credits.
+
+    WFF tax credits are abated (reduced) based on the family's income. There
+    are two abatement thresholds and rates. The Best Start Tax Credit (BSTC)
+    has its own separate abatement calculation.
 
     Args:
         df: DataFrame containing grossed up income and kid day counts.
-        wff_params: Structured WFF parameters.
-        daysinperiod: Number of days in the period.
+        wff_params: The WFF parameters for the simulation year.
+        daysinperiod: The number of days in the simulation period.
 
     Returns:
-        DataFrame with ``abate_amt`` and ``BSTCabate_amt`` columns.
+        A new DataFrame with `abate_amt` and `BSTCabate_amt` columns.
     """
     df = df.copy()
     df["abate_amt"] = np.where(
@@ -60,14 +69,26 @@ def calculate_abatement(df: pd.DataFrame, wff_params: WFFParams, daysinperiod: i
 
 
 def calculate_max_entitlements(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
-    """Calculate maximum WFF entitlements before abatement.
+    """
+    Calculate the maximum WFF entitlements before abatement.
+
+    This function calculates the maximum possible entitlement for each of the
+    Working for Families (WFF) tax credits:
+
+    - Family Tax Credit (FTC)
+    - In-Work Tax Credit (IWTC)
+    - Best Start Tax Credit (BSTC)
+    - Minimum Family Tax Credit (MFTC)
+
+    The actual entitlement may be lower due to income abatement.
 
     Args:
         df: DataFrame with WFF weight and eligibility columns.
-        wff_params: Structured WFF parameters.
+        wff_params: The WFF parameters for the simulation year.
 
     Returns:
-        DataFrame with maximum entitlement columns.
+        A new DataFrame with columns for the maximum entitlement for each
+        WFF component.
     """
     df = df.copy()
     df["maxFTCent"] = np.where(
@@ -107,14 +128,22 @@ def calculate_max_entitlements(df: pd.DataFrame, wff_params: WFFParams) -> pd.Da
 
 
 def apply_care_logic(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
-    """Apply shared and unshared care logic to compute entitlements.
+    """
+    Apply shared and unshared care logic to compute WFF entitlements.
+
+    The amount of Working for Families (WFF) tax credits a family receives
+    can depend on whether the care of children is shared between parents.
+
+    This function calculates the final entitlement for each WFF component
+    after considering the care arrangements.
 
     Args:
         df: DataFrame containing maximum entitlement and abatement columns.
-        wff_params: Structured WFF parameters.
+        wff_params: The WFF parameters for the simulation year.
 
     Returns:
-        DataFrame with calculated FTC, IWTC, BSTC and MFTC amounts.
+        A new DataFrame with the final calculated FTC, IWTC, BSTC and MFTC
+        amounts.
     """
     df = df.copy()
     df["FTCcalc"] = 0.0
@@ -186,15 +215,22 @@ def apply_care_logic(df: pd.DataFrame, wff_params: WFFParams) -> pd.DataFrame:
 
 
 def apply_calibrations(df: pd.DataFrame) -> pd.DataFrame:
-    """Apply model calibrations to calculated entitlements.
+    """
+    Apply model calibrations to calculated WFF entitlements.
 
-    Currently sets IWTC to zero for self-employed individuals with no IWTC.
+    This function makes adjustments to the calculated entitlements to better
+    match real-world data.
+
+    Currently, this function sets the In-Work Tax Credit (IWTC) to zero for
+    self-employed individuals who are not otherwise entitled to it. This is
+    because the model's rules may not perfectly capture the eligibility
+    criteria for this group.
 
     Args:
         df: DataFrame with calculated entitlements.
 
     Returns:
-        DataFrame with calibrations applied.
+        A new DataFrame with the calibrations applied.
     """
     df = df.copy()
     df.loc[(df["iwtc"] == 0) & (df["selfempind"] == 1), "IWTCcalc"] = 0
