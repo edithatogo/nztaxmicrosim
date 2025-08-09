@@ -146,3 +146,4 @@ examples/synthetic_population/
 syspop.20250701
 syspop.20250702
 *.tmp
+docs-fix.patch
