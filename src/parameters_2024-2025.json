@@ -106,5 +106,10 @@
     "acc_levy": {
         "rate": 0.0153,
         "max_income": 139111
+    },
+    "pie": {
+        "rates": [0.105, 0.175, 0.28],
+        "taxable_income_thresholds": [15600, 53500],
+        "taxable_plus_pie_income_thresholds": [53500, 78100]
     }
 }

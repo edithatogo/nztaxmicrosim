@@ -1,9 +1,19 @@
 from __future__ import annotations
 
+import math
+
 from pydantic import BaseModel
 
-from .microsim import calcietc, load_parameters, simrwt, taxit
-from .parameters import Parameters, RWTParams, TaxBracketParams
+from .microsim import load_parameters, simrwt, taxit
+from .investment_tax import calculate_pie_tax
+from .parameters import (
+    FamilyBoostParams,
+    Parameters,
+    PIEParams,
+    RWTParams,
+    TaxBracketParams,
+)
+from .tax_credits import calcietc, eitc, family_boost_credit
 
 
 class TaxCalculator(BaseModel):
@@ -69,28 +79,125 @@ class TaxCalculator(BaseModel):
             ietc_params=self.params.ietc,
         )
 
-    def rwt(self, interest: float, rwt_params: RWTParams | None = None) -> float:
+    def rwt(self, interest: float, taxable_income: float) -> float:
         """
         Calculate Resident Withholding Tax (RWT) on interest income.
 
         RWT is a tax on interest earned from sources like bank accounts and
         investments. The tax rate depends on the individual's income tax
-        bracket.
-
-        The calculation is performed by the `simrwt` function.
+        bracket. This method determines the correct RWT rate based on the
+        provided taxable income and then calculates the RWT amount.
 
         Args:
-            interest: The amount of interest income.
-            rwt_params: Optional. The RWT parameters to use. If not
-                provided, the parameters from `self.params.rwt` will be
-                used.
+            interest: The amount of interest income subject to RWT.
+            taxable_income: The individual's total taxable income, used to
+                determine the RWT rate.
 
         Returns:
             The amount of RWT payable.
         """
-        if rwt_params is None:
-            rwt_params = self.params.rwt
-        return simrwt(interest, rwt_params)
+        tax_brackets = self.params.tax_brackets
+        rwt_rates = self.params.rwt
+
+        # Determine the marginal tax rate to find the corresponding RWT rate.
+        # The last rate in the list applies to all income above the last threshold.
+        rate = tax_brackets.rates[-1]
+        for i, threshold in enumerate(tax_brackets.thresholds):
+            if taxable_income <= threshold:
+                rate = tax_brackets.rates[i]
+                break
+
+        # Map the income tax rate to the corresponding RWT rate.
+        rwt_rate = 0.0
+        if math.isclose(rate, 0.105):
+            rwt_rate = rwt_rates.rwt_rate_10_5
+        elif math.isclose(rate, 0.175):
+            rwt_rate = rwt_rates.rwt_rate_17_5
+        elif math.isclose(rate, 0.30):
+            rwt_rate = rwt_rates.rwt_rate_30
+        elif math.isclose(rate, 0.33):
+            rwt_rate = rwt_rates.rwt_rate_33
+        elif math.isclose(rate, 0.39):
+            rwt_rate = rwt_rates.rwt_rate_39
+
+        return simrwt(interest, rwt_rate)
+
+    def family_boost_credit(self, family_income: float, childcare_costs: float) -> float:
+        """
+        Calculates the FamilyBoost childcare tax credit.
+
+        Args:
+            family_income: The total family income.
+            childcare_costs: The total childcare costs for the period.
+
+        Returns:
+            The calculated FamilyBoost credit amount.
+        """
+        return family_boost_credit(
+            family_income=family_income,
+            childcare_costs=childcare_costs,
+            family_boost_params=self.params.family_boost,
+        )
+
+    def eitc(
+        self,
+        is_credit_enabled: bool,
+        is_eligible: bool,
+        income: float,
+        min_income_threshold: float,
+        max_entitlement_income: float,
+        abatement_income_threshold: float,
+        earning_rate: float,
+        abatement_rate: float,
+    ) -> float:
+        """
+        Calculates the Earned Income Tax Credit (EITC).
+
+        Args:
+            is_credit_enabled: Flag to enable or disable the credit calculation.
+            is_eligible: Flag indicating if the individual is eligible for the credit.
+            income: The income amount to base the calculation on.
+            min_income_threshold: The income level at which the credit begins.
+            max_entitlement_income: The income level where the credit reaches its maximum.
+            abatement_income_threshold: The income level at which the credit begins to abate.
+            earning_rate: The rate at which the credit is earned during phase-in.
+            abatement_rate: The rate at which the credit is reduced during phase-out.
+
+        Returns:
+            The calculated EITC amount.
+        """
+        return eitc(
+            is_credit_enabled=is_credit_enabled,
+            is_eligible=is_eligible,
+            income=income,
+            min_income_threshold=min_income_threshold,
+            max_entitlement_income=max_entitlement_income,
+            abatement_income_threshold=abatement_income_threshold,
+            earning_rate=earning_rate,
+            abatement_rate=abatement_rate,
+        )
+
+    def pie_tax(self, pie_income: float, taxable_income: float) -> float:
+        """
+        Calculates tax on Portfolio Investment Entity (PIE) income.
+
+        Args:
+            pie_income: The income from the PIE investment.
+            taxable_income: The individual's total taxable income for the year,
+                used to determine the Prescribed Investor Rate (PIR).
+
+        Returns:
+            The calculated tax on the PIE income. Returns 0 if PIE parameters
+            are not available for the year.
+        """
+        if self.params.pie is None:
+            return 0.0
+
+        return calculate_pie_tax(
+            pie_income=pie_income,
+            taxable_income=taxable_income,
+            pie_params=self.params.pie,
+        )
 
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":
