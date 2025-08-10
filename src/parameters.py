@@ -88,6 +88,14 @@ class FamilyBoostParams(BaseModel):
     max_income: float = Field(default=0.0, description="The maximum income at which the credit is available.")
 
 
+class PIEParams(BaseModel):
+    """Parameters for Portfolio Investment Entity (PIE) tax."""
+
+    rates: list[float]
+    taxable_income_thresholds: list[float]
+    taxable_plus_pie_income_thresholds: list[float]
+
+
 class PPLParams(BaseModel):
     """Parameters for Paid Parental Leave (PPL)."""
 
@@ -222,6 +230,7 @@ class Parameters(BaseModel):
     iwtc: Optional[IWTCParams] = None
     mftc: Optional[MFTCParams] = None
     family_boost: FamilyBoostParams = Field(default_factory=FamilyBoostParams)
+    pie: Optional[PIEParams] = None
     ppl: PPLParams = Field(default_factory=PPLParams)
     child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
     kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
@@ -240,6 +249,7 @@ __all__ = [
     "JSSParams",
     "KiwisaverParams",
     "Parameters",
+    "PIEParams",
     "PPLParams",
     "RWTParams",
     "SLPParams",

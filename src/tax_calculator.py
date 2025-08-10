@@ -4,8 +4,15 @@ import math
 
 from pydantic import BaseModel
 
+from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
-from .parameters import FamilyBoostParams, Parameters, RWTParams, TaxBracketParams
+from .parameters import (
+    FamilyBoostParams,
+    Parameters,
+    PIEParams,
+    RWTParams,
+    TaxBracketParams,
+)
 from .tax_credits import calcietc, eitc, family_boost_credit
 
 
@@ -168,6 +175,28 @@ class TaxCalculator(BaseModel):
             abatement_income_threshold=abatement_income_threshold,
             earning_rate=earning_rate,
             abatement_rate=abatement_rate,
+        )
+
+    def pie_tax(self, pie_income: float, taxable_income: float) -> float:
+        """
+        Calculates tax on Portfolio Investment Entity (PIE) income.
+
+        Args:
+            pie_income: The income from the PIE investment.
+            taxable_income: The individual's total taxable income for the year,
+                used to determine the Prescribed Investor Rate (PIR).
+
+        Returns:
+            The calculated tax on the PIE income. Returns 0 if PIE parameters
+            are not available for the year.
+        """
+        if self.params.pie is None:
+            return 0.0
+
+        return calculate_pie_tax(
+            pie_income=pie_income,
+            taxable_income=taxable_income,
+            pie_params=self.params.pie,
         )
 
     @classmethod

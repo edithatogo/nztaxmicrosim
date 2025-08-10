@@ -58,14 +58,6 @@ def test_tax_calculator_family_boost() -> None:
     # Max credit per quarter is 975 (not in params). Let's use the params from the file.
     # params from 2024-2025.json: max_credit=975, income_threshold=140000, abatement_rate=0.25, max_income=180000
     # Credit = min(300 * 0.25, 975) = 75
-    # Abatement = (150000 - 140000) * 0.25 = 2500. This seems wrong.
-    # The family_boost_credit function seems to expect annual amounts.
-    # Let's assume parameters are annual. Max credit is 75*13 = 975.
-    # Let's assume childcare costs are also annual.
-    # Let's test the logic as implemented.
-    # The family_boost_credit function uses `family_boost_params` from `calc.params.family_boost`.
-    # For "2024-2025", these are: max_credit=975, income_threshold=140000, abatement_rate=0.25, max_income=180000
-    # Credit = min(300 * 0.25, 975) = 75
     # Abatement = (150000 - 140000) * 0.25 = 2500
     # Result = max(0, 75 - 2500) = 0.
     assert calc.family_boost_credit(family_income=150_000, childcare_costs=300) == 0.0
@@ -102,3 +94,17 @@ def test_tax_calculator_eitc() -> None:
     )
 
     assert result == expected
+
+
+def test_tax_calculator_pie_tax() -> None:
+    # Test with a year that has PIE params
+    calc_with_pie = TaxCalculator.from_year("2024-2025")
+    pie_income = 1000
+    taxable_income = 50000
+    # This should use the 17.5% rate
+    expected_tax = pie_income * 0.175
+    assert calc_with_pie.pie_tax(pie_income, taxable_income) == expected_tax
+
+    # Test with a year that does not have PIE params
+    calc_without_pie = TaxCalculator.from_year("2023-2024")
+    assert calc_without_pie.pie_tax(pie_income, taxable_income) == 0.0
