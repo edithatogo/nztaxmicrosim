@@ -4,13 +4,8 @@ import math
 
 from pydantic import BaseModel
 
-<<<<<<< HEAD
 from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
-=======
-from .microsim import load_parameters, simrwt, taxit
-from .investment_tax import calculate_pie_tax
->>>>>>> 534254760198f932d3d677da94076bf62c87c7fd
 from .parameters import (
     DonationCreditParams,
     FamilyBoostParams,
