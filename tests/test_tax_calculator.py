@@ -1,6 +1,6 @@
 from src.microsim import taxit
 from src.tax_calculator import TaxCalculator
-from src.tax_credits import calcietc, eitc, family_boost_credit
+from src.tax_credits import calcietc, eitc
 
 
 def test_tax_calculator_income_tax_and_ietc() -> None:

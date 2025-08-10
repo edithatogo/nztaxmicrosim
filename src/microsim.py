@@ -9,7 +9,6 @@ from pydantic import ValidationError
 from .historical_data import get_historical_parameters
 from .parameters import (
     Parameters,
-    RWTParams,
     TaxBracketParams,
 )
 
