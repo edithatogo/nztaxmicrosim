@@ -5,9 +5,10 @@ from typing import Any
 
 from .acc_levy import calculate_acc_levy
 from .parameters import ACCLevyParams, KiwisaverParams, StudentLoanParams
-from .pipeline import Rule
+from .pipeline import Rule, register_rule
 
 
+@register_rule
 @dataclass
 class ACCLevyRule(Rule):
     """A rule to calculate the ACC (Accident Compensation Corporation) levy.
@@ -47,6 +48,7 @@ class ACCLevyRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class KiwiSaverRule(Rule):
     """A rule to calculate KiwiSaver contributions.
@@ -86,6 +88,7 @@ class KiwiSaverRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class StudentLoanRule(Rule):
     """A rule to calculate student loan repayments.
@@ -126,6 +129,7 @@ class StudentLoanRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class IETCRule(Rule):
     """A rule to calculate the Independent Earner Tax Credit (IETC).
