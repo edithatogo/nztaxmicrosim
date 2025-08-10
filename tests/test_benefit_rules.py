@@ -4,6 +4,7 @@ import pytest
 from src.benefit_rules import (
     AccommodationSupplementRule,
     BSTCRule,
+    DisabilityAllowanceRule,
     FTCRule,
     IWTCRule,
     JSSRule,
@@ -27,6 +28,8 @@ def sample_dataframe():
         "household_size": [1, 4, 1],
         "housing_costs": [200, 500, 250],
         "region": ["Auckland", "Wellington", "Canterbury"],
+        "disability_costs": [50, 100, 20],
+        "family_situation": ["single_18_plus", "couple", "single_18_plus"],
     }
     return pd.DataFrame(data)
 
@@ -164,3 +167,18 @@ def test_mftc_rule(sample_dataframe):
     assert data["df"]["mftc_entitlement"][0] == 34320 - (30000 - 3000)
     assert data["df"]["mftc_entitlement"][1] == 0
     assert data["df"]["mftc_entitlement"][2] == 0
+
+
+def test_disability_allowance_rule(sample_dataframe):
+    """Test the DisabilityAllowanceRule."""
+    params = load_parameters("2024-2025")
+    rule = DisabilityAllowanceRule(disability_allowance_params=params.disability_allowance)
+    data = {"df": sample_dataframe.copy()}
+    rule(data)
+    assert "disability_allowance_entitlement" in data["df"].columns
+    # Test case 1: Eligible, costs below max
+    assert data["df"]["disability_allowance_entitlement"][0] == 50
+    # Test case 2: Eligible, costs above max
+    assert data["df"]["disability_allowance_entitlement"][1] == 80.35
+    # Test case 3: Eligible, costs below max
+    assert data["df"]["disability_allowance_entitlement"][2] == 20

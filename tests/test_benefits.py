@@ -2,6 +2,7 @@ from src.benefits import (
     _apply_abatement,
     calculate_accommodation_supplement,
     calculate_child_support,
+    calculate_disability_allowance,
     calculate_jss,
     calculate_ppl,
     calculate_slp,
@@ -10,6 +11,7 @@ from src.benefits import (
 from src.parameters import (
     AccommodationSupplementParams,
     ChildSupportParams,
+    DisabilityAllowanceParams,
     JSSParams,
     PPLParams,
     SLPParams,
@@ -47,7 +49,9 @@ as_params = AccommodationSupplementParams(
 )
 
 ppl_params = PPLParams(enabled=True, weekly_rate=600.0, max_weeks=26)
-child_support_params = ChildSupportParams(enabled=True, support_rate=0.18)
+child_support_params = ChildSupportParams(
+    enabled=True, support_rate=0.18, living_allowance=17518.28
+)
 
 
 def test_apply_abatement():
@@ -147,7 +151,53 @@ def test_calculate_ppl():
 def test_calculate_child_support():
     """Child support is a fixed share of liable income when enabled."""
 
-    assert calculate_child_support(50000, child_support_params) == 50000 * 0.18
+    # Test case 1: Income above living allowance
+    assert (
+        calculate_child_support(50000, child_support_params)
+        == (50000 - child_support_params.living_allowance) * 0.18
+    )
 
-    disabled = ChildSupportParams(enabled=False, support_rate=0.18)
+    # Test case 2: Income below living allowance
+    assert calculate_child_support(10000, child_support_params) == 0.0
+
+    # Test case 3: Disabled
+    disabled = ChildSupportParams(enabled=False, support_rate=0.18, living_allowance=17518.28)
     assert calculate_child_support(50000, disabled) == 0.0
+
+
+disability_allowance_params = DisabilityAllowanceParams(
+    max_payment=80.35,
+    income_thresholds={
+        "single_16_17": 675.60,
+        "single_18_plus": 843.78,
+        "couple": 1256.07,
+        "sole_parent_1_child": 942.23,
+        "sole_parent_2_plus_children": 992.74,
+    },
+)
+
+
+def test_calculate_disability_allowance():
+    # Test case 1: Eligible, costs below max
+    assert (
+        calculate_disability_allowance(500, 50, "single_18_plus", disability_allowance_params)
+        == 50
+    )
+
+    # Test case 2: Eligible, costs above max
+    assert (
+        calculate_disability_allowance(500, 100, "single_18_plus", disability_allowance_params)
+        == 80.35
+    )
+
+    # Test case 3: Ineligible, income too high
+    assert (
+        calculate_disability_allowance(900, 50, "single_18_plus", disability_allowance_params)
+        == 0
+    )
+
+    # Test case 4: Invalid family situation
+    assert (
+        calculate_disability_allowance(500, 50, "invalid_situation", disability_allowance_params)
+        == 0
+    )

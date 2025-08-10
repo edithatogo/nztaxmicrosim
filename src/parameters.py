@@ -88,6 +88,14 @@ class FamilyBoostParams(BaseModel):
     max_income: float = Field(default=0.0, description="The maximum income at which the credit is available.")
 
 
+class PIEParams(BaseModel):
+    """Parameters for Portfolio Investment Entity (PIE) tax."""
+
+    rates: list[float]
+    taxable_income_thresholds: list[float]
+    taxable_plus_pie_income_thresholds: list[float]
+
+
 class PPLParams(BaseModel):
     """Parameters for Paid Parental Leave (PPL)."""
 
@@ -96,11 +104,26 @@ class PPLParams(BaseModel):
     max_weeks: int = Field(default=0, description="The maximum number of weeks the payment is available.")
 
 
+class DonationCreditParams(BaseModel):
+    """Parameters for the donation tax credit."""
+
+    credit_rate: float
+    min_donation: float
+
+
+class DisabilityAllowanceParams(BaseModel):
+    """Parameters for the Disability Allowance."""
+
+    max_payment: float
+    income_thresholds: dict[str, float]
+
+
 class ChildSupportParams(BaseModel):
     """Parameters for Child Support payments."""
 
     enabled: bool = Field(default=False, description="Whether Child Support is enabled.")
     support_rate: float = Field(default=0.0, description="The rate at which child support is calculated.")
+    living_allowance: float = Field(default=0.0, description="The amount of income exempt from child support calculation.")
 
 
 class KiwisaverParams(BaseModel):
@@ -213,15 +236,18 @@ class Parameters(BaseModel):
     tax_brackets: TaxBracketParams
     ietc: IETCParams
     wff: WFFParams
-    jss: JSSParams
-    sps: SPSParams
-    slp: SLPParams
-    accommodation_supplement: AccommodationSupplementParams
+    jss: Optional[JSSParams] = None
+    sps: Optional[SPSParams] = None
+    slp: Optional[SLPParams] = None
+    accommodation_supplement: Optional[AccommodationSupplementParams] = None
+    disability_allowance: Optional[DisabilityAllowanceParams] = None
+    donation_credit: Optional[DonationCreditParams] = None
     bstc: Optional[BSTCParams] = None
     ftc: Optional[FTCParams] = None
     iwtc: Optional[IWTCParams] = None
     mftc: Optional[MFTCParams] = None
     family_boost: FamilyBoostParams = Field(default_factory=FamilyBoostParams)
+    pie: Optional[PIEParams] = None
     ppl: PPLParams = Field(default_factory=PPLParams)
     child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
     kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
@@ -235,11 +261,14 @@ __all__ = [
     "AccommodationSupplementParams",
     "ACCLevyParams",
     "ChildSupportParams",
+    "DisabilityAllowanceParams",
+    "DonationCreditParams",
     "FamilyBoostParams",
     "IETCParams",
     "JSSParams",
     "KiwisaverParams",
     "Parameters",
+    "PIEParams",
     "PPLParams",
     "RWTParams",
     "SLPParams",

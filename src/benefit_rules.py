@@ -8,6 +8,7 @@ from .benefits import (
     calculate_iwtc,
     calculate_jss,
     calculate_mftc,
+    calculate_disability_allowance,
     calculate_slp,
     calculate_sps,
     calculate_wep,
@@ -15,6 +16,7 @@ from .benefits import (
 from .parameters import (
     AccommodationSupplementParams,
     BSTCParams,
+    DisabilityAllowanceParams,
     FTCParams,
     IWTCParams,
     JSSParams,
@@ -64,6 +66,48 @@ class JSSRule(Rule):
                 is_partnered=row["marital_status"] == "Married",
                 num_dependent_children=row["num_children"],
                 jss_params=self.jss_params,
+            ),
+            axis=1,
+        )
+
+
+@dataclass
+class DisabilityAllowanceRule(Rule):
+    """A rule to calculate the Disability Allowance.
+
+    The Disability Allowance is a weekly payment for people who have regular,
+    ongoing costs because of a disability.
+
+    This rule calculates the Disability Allowance entitlement based on income,
+    disability-related costs, and family situation.
+
+    The calculation is performed by the `calculate_disability_allowance`
+    function.
+    """
+
+    disability_allowance_params: DisabilityAllowanceParams
+    name: str = "disability_allowance"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculate Disability Allowance entitlement and add it to the DataFrame.
+
+        This method applies the `calculate_disability_allowance` function to
+        each row of the DataFrame in the `data` dictionary and stores the
+        result in a new `disability_allowance_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly', 'disability_costs', and
+                'family_situation' columns.
+        """
+        data["df"]["disability_allowance_entitlement"] = data["df"].apply(
+            lambda row: calculate_disability_allowance(
+                weekly_income=row["total_individual_income_weekly"],
+                disability_costs=row["disability_costs"],
+                family_situation=row["family_situation"],
+                params=self.disability_allowance_params,
             ),
             axis=1,
         )

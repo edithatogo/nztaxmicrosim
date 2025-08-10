@@ -8,6 +8,7 @@ from .parameters import (
     IWTCParams,
     JSSParams,
     MFTCParams,
+    DisabilityAllowanceParams,
     PPLParams,
     SLPParams,
     SPSParams,
@@ -208,6 +209,11 @@ def calculate_ppl(weeks_taken: int, ppl_params: PPLParams) -> float:
 def calculate_child_support(liable_income: float, cs_params: ChildSupportParams) -> float:
     """Calculate child support payments based on liable income.
 
+    .. warning::
+        This is a simplified implementation and does not reflect the full
+        complexity of the official formula, which includes the other parent's
+        income, care arrangements, and other factors.
+
     Child support is a payment made by a parent who does not live with their
     child to the parent or caregiver who does. This function calculates the
     amount of child support payable based on the liable parent's income.
@@ -222,7 +228,8 @@ def calculate_child_support(liable_income: float, cs_params: ChildSupportParams)
     if not cs_params.enabled:
         return 0.0
 
-    return max(0.0, liable_income * cs_params.support_rate)
+    child_support_income = max(0.0, liable_income - cs_params.living_allowance)
+    return child_support_income * cs_params.support_rate
 
 
 def calculate_wep(
@@ -393,3 +400,31 @@ def calculate_mftc(
         return 0.0
 
     return guaranteed_income - net_income
+
+
+def calculate_disability_allowance(
+    weekly_income: float,
+    disability_costs: float,
+    family_situation: str,
+    params: DisabilityAllowanceParams,
+) -> float:
+    """Calculate the Disability Allowance entitlement.
+
+    The Disability Allowance is a weekly payment for people who have regular,
+    ongoing costs because of a disability.
+
+    Args:
+        weekly_income: The individual's or couple's weekly income before tax.
+        disability_costs: The weekly costs due to disability.
+        family_situation: The family situation of the person, which determines
+            the income threshold.
+        params: The parameters for the Disability Allowance.
+
+    Returns:
+        The weekly Disability Allowance entitlement.
+    """
+    income_threshold = params.income_thresholds.get(family_situation)
+    if income_threshold is None or weekly_income > income_threshold:
+        return 0.0
+
+    return min(disability_costs, params.max_payment)
