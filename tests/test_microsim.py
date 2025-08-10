@@ -216,5 +216,3 @@ def test_supstd():
     assert results["stdnet2"] == expected_stdnet[2]
     assert results["std3"] == expected_std[3]
     assert results["stdnet3"] == expected_stdnet[3]
-
-
