@@ -3,12 +3,21 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol, Type
 
 import yaml
 
 from .parameters import Parameters
 from .tax_calculator import TaxCalculator
+
+
+RULE_REGISTRY: dict[str, Type[Rule]] = {}
+
+
+def register_rule(cls: Type[Rule]) -> Type[Rule]:
+    """A class decorator to register a rule in the RULE_REGISTRY."""
+    RULE_REGISTRY[cls.__name__] = cls
+    return cls
 
 
 class Rule(Protocol):
@@ -37,16 +46,16 @@ class SimulationPipeline:
     rules: list[Rule] = field(default_factory=list)
 
     @classmethod
-    def from_config(cls, config_path: str, params: dict[str, Any]) -> "SimulationPipeline":
+    def from_config(cls, config_path: str, params_data: dict[str, Any]) -> "SimulationPipeline":
         """Create a SimulationPipeline from a YAML configuration file.
 
         The configuration file should specify a list of rules to be included
-        in the pipeline. This method provides a simple factory for creating
-        the pipeline from the configuration.
+        in the pipeline. This method uses the RULE_REGISTRY to find and
+        instantiate the rules.
 
         Args:
             config_path: The path to the YAML configuration file.
-            params: A dictionary of parameters to be used by the rules.
+            params_data: A dictionary of parameters to be used by the rules.
 
         Returns:
             A new `SimulationPipeline` instance.
@@ -55,15 +64,40 @@ class SimulationPipeline:
             config = yaml.safe_load(f)
 
         rules: list[Rule] = []
-        validated_params = Parameters.model_validate(params)
+        params = Parameters.model_validate(params_data)
+        calculator = TaxCalculator(params=params)
+
+        # Import all rule modules to ensure they are registered
+        from . import benefit_rules, tax_rules
+
         for rule_config in config["rules"]:
             rule_name = rule_config["name"]
-            # Note: This is a simple factory. For more complex rules, you might need a more robust mechanism.
-            if rule_name == "IncomeTaxRule":
-                rules.append(IncomeTaxRule(calculator=TaxCalculator(params=validated_params)))
-            elif rule_name == "IETCRule":
-                rules.append(IETCRule(calculator=TaxCalculator(params=validated_params)))
-            # Add other rules here as they are created
+            if rule_name not in RULE_REGISTRY:
+                raise ValueError(f"Unknown rule: {rule_name}")
+
+            rule_class = RULE_REGISTRY[rule_name]
+
+            # Prepare kwargs for the rule's constructor
+            kwargs = {}
+            # This is a simple DI mechanism. If a rule needs a specific
+            # parameter block (e.g., jss_params), it should declare it
+            # in its __init__. We then find it in the main params object.
+            from inspect import signature
+            sig = signature(rule_class)
+            for param_name in sig.parameters:
+                if param_name == "calculator":
+                    kwargs["calculator"] = calculator
+                elif hasattr(params, param_name):
+                    kwargs[param_name] = getattr(params, param_name)
+                elif hasattr(params, param_name.replace("_params", "")):
+                    kwargs[param_name] = getattr(params, param_name.replace("_params", ""))
+
+            # Add any params from the YAML config
+            if "params" in rule_config:
+                kwargs.update(rule_config["params"])
+
+            rules.append(rule_class(**kwargs))
+
         return cls(rules)
 
     def _find_rule_index(self, name: str) -> int | None:
@@ -129,6 +163,7 @@ class SimulationPipeline:
             self.rules[idx] = new_rule
 
 
+@register_rule
 @dataclass
 class IncomeTaxRule:
     """A rule to calculate income tax.
@@ -156,6 +191,7 @@ class IncomeTaxRule:
         df["tax_liability"] = df["familyinc"].apply(self.calculator.income_tax)
 
 
+@register_rule
 @dataclass
 class IETCRule:
     """A rule to calculate the Independent Earner Tax Credit (IETC).
