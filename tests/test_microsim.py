@@ -11,16 +11,14 @@ from pathlib import Path
 import pytest
 
 from src.microsim import (
-    calcietc,
     calctax,
-    eitc,
-    family_boost_credit,
+    calculate_net_weekly_income,
     load_parameters,
-    netavg,
     simrwt,
     supstd,
     taxit,
 )
+from src.tax_credits import calcietc, eitc, family_boost_credit
 from src.parameters import IETCParams, RWTParams, TaxBracketParams
 
 # Load parameters for testing
@@ -116,9 +114,9 @@ def test_calctax():
     assert calctax(60000, 6, params1, params2) == expected_tax
 
 
-def test_netavg():
+def test_calculate_net_weekly_income():
     """
-    Tests the netavg function for calculating net average income.
+    Tests the calculate_net_weekly_income function.
     """
     # Rates and thresholds for the 2023 tax year
     rates = [0.105, 0.175, 0.30, 0.33, 0.39]
@@ -131,7 +129,7 @@ def test_netavg():
     annearn = incvar * 52
     temptax = taxit(annearn, params)
     expected_net = int(100 * (annearn * (1 - eprt) - temptax) / 52) / 100
-    assert netavg(incvar, eprt, params) == expected_net
+    assert calculate_net_weekly_income(incvar, eprt, params) == expected_net
 
 
 def test_calcietc():
@@ -301,28 +299,24 @@ def test_eitc():
 
 
 def test_simrwt():
-    """Tests the simrwt function for Resident Withholding Tax simulation."""
-    params = RWTParams(rwt_rate_10_5=0.1, rwt_rate_17_5=0.2, rwt_rate_30=0.3, rwt_rate_33=0.4, rwt_rate_39=0.5)
-
-    # Test case 1
-    assert simrwt(1000, params) == min(
-        1000,
-        1000
-        * (
-            0.0
-            + 1.05 * params.rwt_rate_10_5
-            + 1.75 * params.rwt_rate_17_5
-            + 0.30 * params.rwt_rate_30
-            + 0.33 * params.rwt_rate_33
-            + 0.39 * params.rwt_rate_39
-        ),
-    )
+    """Tests the simrwt function for Resident Withholding Tax calculation."""
+    # Test case 1: Basic RWT calculation
+    assert simrwt(1000, 0.105) == 105
 
     # Test case 2: Zero interest
-    assert simrwt(0, params) == 0
+    assert simrwt(0, 0.105) == 0
 
     # Test case 3: Negative interest
-    assert simrwt(-1000, params) == 0
+    assert simrwt(-1000, 0.105) == 0
+
+    # Test case 4: Zero rate
+    assert simrwt(1000, 0) == 0
+
+    # Test case 5: Invalid rate
+    with pytest.raises(ValueError):
+        simrwt(1000, 1.1)
+    with pytest.raises(ValueError):
+        simrwt(1000, -0.1)
 
 
 def test_supstd():
@@ -348,10 +342,10 @@ def test_supstd():
 
     # Expected results
     expected_std22 = base_year_awe * 0.66 * 2
-    expected_stdnet22 = netavg(
-        expected_std22 / 2,
-        base_year_ep_rate,
-        tax_params_base,
+    expected_stdnet22 = calculate_net_weekly_income(
+        gross_weekly_income=expected_std22 / 2,
+        acc_earners_premium_rate=base_year_ep_rate,
+        tax_params=tax_params_base,
     )
 
     expected_std = []
@@ -359,7 +353,9 @@ def test_supstd():
     std_prev = expected_std22
     for i in range(4):
         std = max(awe[i] * fl[i] * 2, std_prev * cpi_factors[i])
-        stdnet = netavg(std / 2, ep[i], tax_params[i])
+        stdnet = calculate_net_weekly_income(
+            gross_weekly_income=std / 2, acc_earners_premium_rate=ep[i], tax_params=tax_params[i]
+        )
         expected_std.append(std)
         expected_stdnet.append(stdnet)
         std_prev = std

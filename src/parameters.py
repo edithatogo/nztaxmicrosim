@@ -213,10 +213,10 @@ class Parameters(BaseModel):
     tax_brackets: TaxBracketParams
     ietc: IETCParams
     wff: WFFParams
-    jss: JSSParams
-    sps: SPSParams
-    slp: SLPParams
-    accommodation_supplement: AccommodationSupplementParams
+    jss: Optional[JSSParams] = None
+    sps: Optional[SPSParams] = None
+    slp: Optional[SLPParams] = None
+    accommodation_supplement: Optional[AccommodationSupplementParams] = None
     bstc: Optional[BSTCParams] = None
     ftc: Optional[FTCParams] = None
     iwtc: Optional[IWTCParams] = None
