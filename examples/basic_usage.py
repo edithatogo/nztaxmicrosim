@@ -6,7 +6,8 @@ import pandas as pd
 # Add the project root to the Python path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.microsim import calcietc, family_boost_credit, load_parameters, taxit
+from src.microsim import load_parameters, taxit
+from src.tax_credits import calcietc, family_boost_credit
 from src.wff_microsim import famsim
 
 # --- 1. Load Parameters ---

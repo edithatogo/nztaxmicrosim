@@ -8,6 +8,7 @@ from .benefits import (
     calculate_iwtc,
     calculate_jss,
     calculate_mftc,
+    calculate_disability_allowance,
     calculate_slp,
     calculate_sps,
     calculate_wep,
@@ -15,6 +16,7 @@ from .benefits import (
 from .parameters import (
     AccommodationSupplementParams,
     BSTCParams,
+    DisabilityAllowanceParams,
     FTCParams,
     IWTCParams,
     JSSParams,
@@ -23,9 +25,10 @@ from .parameters import (
     SPSParams,
     WEPParams,
 )
-from .pipeline import Rule
+from .pipeline import Rule, register_rule
 
 
+@register_rule
 @dataclass
 class JSSRule(Rule):
     """A rule to calculate Jobseeker Support (JSS).
@@ -69,6 +72,50 @@ class JSSRule(Rule):
         )
 
 
+@register_rule
+@dataclass
+class DisabilityAllowanceRule(Rule):
+    """A rule to calculate the Disability Allowance.
+
+    The Disability Allowance is a weekly payment for people who have regular,
+    ongoing costs because of a disability.
+
+    This rule calculates the Disability Allowance entitlement based on income,
+    disability-related costs, and family situation.
+
+    The calculation is performed by the `calculate_disability_allowance`
+    function.
+    """
+
+    disability_allowance_params: DisabilityAllowanceParams
+    name: str = "disability_allowance"
+    enabled: bool = True
+
+    def __call__(self, data: dict[str, Any]) -> None:
+        """Calculate Disability Allowance entitlement and add it to the DataFrame.
+
+        This method applies the `calculate_disability_allowance` function to
+        each row of the DataFrame in the `data` dictionary and stores the
+        result in a new `disability_allowance_entitlement` column.
+
+        Args:
+            data: The data dictionary, expected to contain a 'df' key with
+                a pandas DataFrame. The DataFrame must contain
+                'total_individual_income_weekly', 'disability_costs', and
+                'family_situation' columns.
+        """
+        data["df"]["disability_allowance_entitlement"] = data["df"].apply(
+            lambda row: calculate_disability_allowance(
+                weekly_income=row["total_individual_income_weekly"],
+                disability_costs=row["disability_costs"],
+                family_situation=row["family_situation"],
+                params=self.disability_allowance_params,
+            ),
+            axis=1,
+        )
+
+
+@register_rule
 @dataclass
 class MFTCRule(Rule):
     """A rule to calculate the Minimum Family Tax Credit (MFTC).
@@ -110,6 +157,7 @@ class MFTCRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class IWTCRule(Rule):
     """A rule to calculate the In-Work Tax Credit (IWTC).
@@ -151,6 +199,7 @@ class IWTCRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class FTCRule(Rule):
     """A rule to calculate the Family Tax Credit (FTC).
@@ -191,6 +240,7 @@ class FTCRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class BSTCRule(Rule):
     """A rule to calculate the Best Start Tax Credit (BSTC).
@@ -232,6 +282,7 @@ class BSTCRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class WEPRule(Rule):
     """A rule to calculate the Winter Energy Payment (WEP).
@@ -279,6 +330,7 @@ class WEPRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class SPSRule(Rule):
     """A rule to calculate Sole Parent Support (SPS).
@@ -317,6 +369,7 @@ class SPSRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class SLPRule(Rule):
     """A rule to calculate Supported Living Payment (SLP).
@@ -359,6 +412,7 @@ class SLPRule(Rule):
         )
 
 
+@register_rule
 @dataclass
 class AccommodationSupplementRule(Rule):
     """A rule to calculate the Accommodation Supplement.

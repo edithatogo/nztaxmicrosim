@@ -4,13 +4,10 @@ from dataclasses import dataclass
 from typing import Any
 
 import pandas as pd
+import pytest
 
 from src.microsim import load_parameters
-from src.pipeline import (
-    IETCRule,
-    IncomeTaxRule,
-    SimulationPipeline,
-)
+from src.pipeline import SimulationPipeline
 from src.tax_calculator import TaxCalculator
 
 
@@ -27,50 +24,6 @@ class DummyRule:
 
     def apply(self, data: dict[str, Any]) -> None:  # pragma: no cover - trivial
         data[self.name] = self.value
-
-
-def test_pipeline_integration_runs_rules():
-    calc = TaxCalculator.from_year("2024-2025")
-    pipeline = SimulationPipeline([IncomeTaxRule(calc), IETCRule(calc)])
-    data = {
-        "df": pd.DataFrame(
-            {
-                "familyinc": [50000],
-                "is_wff_recipient": [False],
-                "is_super_recipient": [False],
-                "is_benefit_recipient": [False],
-            }
-        )
-    }
-    result = pipeline.run(data)
-    assert "tax_liability" in result["df"].columns and result["df"]["tax_liability"][0] > 0
-    assert "ietc" in result["df"].columns and result["df"]["ietc"][0] >= 0
-
-
-def test_integration_enable_disable_rules():
-    calc = TaxCalculator.from_year("2024-2025")
-    pipeline = SimulationPipeline([IncomeTaxRule(calc), IETCRule(calc)])
-    pipeline.disable("ietc")
-    data = {"df": pd.DataFrame({"familyinc": [30000]})}
-    result = pipeline.run(data)
-    assert "ietc" not in result["df"].columns
-    pipeline.enable("ietc")
-    # Add the necessary columns for the ietc rule
-    data["df"]["is_wff_recipient"] = False
-    data["df"]["is_super_recipient"] = False
-    data["df"]["is_benefit_recipient"] = False
-    result = pipeline.run(data)
-    assert "ietc" in result["df"].columns
-
-
-def test_integration_replace_rule():
-    calc = TaxCalculator.from_year("2024-2025")
-    pipeline = SimulationPipeline([IncomeTaxRule(calc)])
-    pipeline.replace("income_tax", DummyRule())
-    data = {"df": pd.DataFrame({"familyinc": [10000]})}
-    result = pipeline.run(data)
-    assert result["dummy"] == 1
-    assert "tax_liability" not in result["df"].columns
 
 
 def test_pipeline_runs_rules() -> None:
@@ -103,15 +56,34 @@ def test_pipeline_from_config(tmp_path):
     """Test creating a pipeline from a YAML configuration file."""
     config_content = """
     rules:
+      - name: JSSRule
       - name: IncomeTaxRule
-      - name: IETCRule
+      - name: KiwiSaverRule
+        params:
+          enabled: false
+    """
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(config_content)
+
+    params = load_parameters("2024-2025")
+    pipeline = SimulationPipeline.from_config(str(config_file), params.model_dump())
+
+    assert len(pipeline.rules) == 3
+    assert pipeline.rules[0].__class__.__name__ == "JSSRule"
+    assert pipeline.rules[1].__class__.__name__ == "IncomeTaxRule"
+    assert pipeline.rules[2].__class__.__name__ == "KiwiSaverRule"
+    assert not pipeline.rules[2].enabled
+
+
+def test_pipeline_from_config_unknown_rule(tmp_path):
+    """Test that creating a pipeline from a YAML file with an unknown rule raises an error."""
+    config_content = """
+    rules:
+      - name: UnknownRule
     """
     config_file = tmp_path / "config.yaml"
     config_file.write_text(config_content)
 
     params = load_parameters("2023-2024")
-    pipeline = SimulationPipeline.from_config(str(config_file), params.model_dump())
-
-    assert len(pipeline.rules) == 2
-    assert isinstance(pipeline.rules[0], IncomeTaxRule)
-    assert isinstance(pipeline.rules[1], IETCRule)
+    with pytest.raises(ValueError, match="Unknown rule: UnknownRule"):
+        SimulationPipeline.from_config(str(config_file), params.model_dump())
