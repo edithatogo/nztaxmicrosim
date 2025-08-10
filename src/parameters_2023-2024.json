@@ -114,5 +114,12 @@
   },
   "mftc": {
     "guaranteed_income": 34320
+    },
+    "rwt": {
+        "rwt_rate_10_5": 0.105,
+        "rwt_rate_17_5": 0.175,
+        "rwt_rate_30": 0.3,
+        "rwt_rate_33": 0.33,
+        "rwt_rate_39": 0.39
     }
 }
