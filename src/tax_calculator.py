@@ -4,9 +4,8 @@ import math
 
 from pydantic import BaseModel
 
+from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
-from .investment_tax import calculate_pie_tax
-from .investment_tax import calculate_pie_tax
 from .parameters import (
     DonationCreditParams,
     FamilyBoostParams,
