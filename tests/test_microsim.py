@@ -18,8 +18,8 @@ from src.microsim import (
     supstd,
     taxit,
 )
+from src.parameters import IETCParams, TaxBracketParams
 from src.tax_credits import calcietc, eitc, family_boost_credit
-from src.parameters import IETCParams, RWTParams, TaxBracketParams
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")

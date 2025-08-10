@@ -1,0 +1,71 @@
+{
+    "_source_references": {
+        "tax_brackets": {
+            "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1954'",
+            "reference_ids": [],
+            "notes": "NEEDS RESEARCH. The full bracket structure is unknown. The values here are approximations based on search results indicating a 15% starting rate (3 shillings in the pound) and a 76.5% top rate. The threshold is an assumption. Personal exemptions were increased in 1954, which is not modelled here."
+        },
+        "ietc": {
+            "source": "Placeholder",
+            "notes": "NEEDS RESEARCH. The structure of low-income tax relief in 1954 is unknown. Rebates were absorbed by higher personal exemptions."
+        },
+        "wff": {
+            "source": "Placeholder",
+            "notes": "NEEDS RESEARCH. WFF did not exist. The rules for historical family assistance programs are unknown."
+        },
+        "ppl": {
+            "source": "Placeholder",
+            "notes": "NEEDS RESEARCH. Paid Parental Leave scheme of 1954 is unknown."
+        },
+        "child_support": {
+            "source": "Placeholder",
+            "notes": "NEEDS RESEARCH. Child support rules for 1954 is unknown."
+        },
+        "acc_levy": {
+            "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1953'",
+            "notes": "This represents the 'Social Security charge' of 7.5%. The 1954 search did not mention a change. The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for this tax."
+        }
+    },
+    "tax_brackets": {
+        "rates": [
+            0.15,
+            0.765
+        ],
+        "thresholds": [
+            300
+        ]
+    },
+    "ietc": {
+        "thrin": 0,
+        "ent": 0,
+        "thrab": 0,
+        "abrate": 0
+    },
+    "wff": {
+        "ftc1": 0,
+        "ftc2": 0,
+        "iwtc1": 0,
+        "iwtc2": 0,
+        "bstc": 0,
+        "mftc": 0,
+        "abatethresh1": 0,
+        "abatethresh2": 0,
+        "abaterate1": 0,
+        "abaterate2": 0,
+        "bstcthresh": 0,
+        "bstcabate": 0
+    },
+    "ppl": {
+        "enabled": false,
+        "weekly_rate": 0,
+        "max_weeks": 0
+    },
+    "child_support": {
+        "enabled": false,
+        "support_rate": 0
+    },
+    "acc_levy": {
+        "rate": 0.075,
+        "max_income": 999999
+    }
+}
