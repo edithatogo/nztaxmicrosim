@@ -94,7 +94,8 @@
     },
     "child_support": {
         "enabled": false,
-        "support_rate": 0.18
+        "support_rate": 0.18,
+        "living_allowance": 17518.28
     },
     "kiwisaver": {
         "contribution_rate": 0.03
@@ -111,5 +112,19 @@
         "rates": [0.105, 0.175, 0.28],
         "taxable_income_thresholds": [15600, 53500],
         "taxable_plus_pie_income_thresholds": [53500, 78100]
+    },
+    "disability_allowance": {
+        "max_payment": 80.35,
+        "income_thresholds": {
+            "single_16_17": 675.60,
+            "single_18_plus": 843.78,
+            "couple": 1256.07,
+            "sole_parent_1_child": 942.23,
+            "sole_parent_2_plus_children": 992.74
+        }
+    },
+    "donation_credit": {
+        "credit_rate": 0.3333333333333333,
+        "min_donation": 5.0
     }
 }

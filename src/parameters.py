@@ -104,11 +104,26 @@ class PPLParams(BaseModel):
     max_weeks: int = Field(default=0, description="The maximum number of weeks the payment is available.")
 
 
+class DonationCreditParams(BaseModel):
+    """Parameters for the donation tax credit."""
+
+    credit_rate: float
+    min_donation: float
+
+
+class DisabilityAllowanceParams(BaseModel):
+    """Parameters for the Disability Allowance."""
+
+    max_payment: float
+    income_thresholds: dict[str, float]
+
+
 class ChildSupportParams(BaseModel):
     """Parameters for Child Support payments."""
 
     enabled: bool = Field(default=False, description="Whether Child Support is enabled.")
     support_rate: float = Field(default=0.0, description="The rate at which child support is calculated.")
+    living_allowance: float = Field(default=0.0, description="The amount of income exempt from child support calculation.")
 
 
 class KiwisaverParams(BaseModel):
@@ -225,6 +240,8 @@ class Parameters(BaseModel):
     sps: Optional[SPSParams] = None
     slp: Optional[SLPParams] = None
     accommodation_supplement: Optional[AccommodationSupplementParams] = None
+    disability_allowance: Optional[DisabilityAllowanceParams] = None
+    donation_credit: Optional[DonationCreditParams] = None
     bstc: Optional[BSTCParams] = None
     ftc: Optional[FTCParams] = None
     iwtc: Optional[IWTCParams] = None
@@ -244,6 +261,8 @@ __all__ = [
     "AccommodationSupplementParams",
     "ACCLevyParams",
     "ChildSupportParams",
+    "DisabilityAllowanceParams",
+    "DonationCreditParams",
     "FamilyBoostParams",
     "IETCParams",
     "JSSParams",

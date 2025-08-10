@@ -7,13 +7,14 @@ from pydantic import BaseModel
 from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
 from .parameters import (
+    DonationCreditParams,
     FamilyBoostParams,
     Parameters,
     PIEParams,
     RWTParams,
     TaxBracketParams,
 )
-from .tax_credits import calcietc, eitc, family_boost_credit
+from .tax_credits import calculate_donation_credit, calcietc, eitc, family_boost_credit
 
 
 class TaxCalculator(BaseModel):
@@ -197,6 +198,27 @@ class TaxCalculator(BaseModel):
             pie_income=pie_income,
             taxable_income=taxable_income,
             pie_params=self.params.pie,
+        )
+
+    def donation_credit(self, total_donations: float, taxable_income: float) -> float:
+        """
+        Calculates the tax credit for charitable donations.
+
+        Args:
+            total_donations: The total amount of donations made in the year.
+            taxable_income: The individual's total taxable income for the year.
+
+        Returns:
+            The calculated donation tax credit. Returns 0 if donation credit
+            parameters are not available for the year.
+        """
+        if self.params.donation_credit is None:
+            return 0.0
+
+        return calculate_donation_credit(
+            total_donations=total_donations,
+            taxable_income=taxable_income,
+            params=self.params.donation_credit,
         )
 
     @classmethod

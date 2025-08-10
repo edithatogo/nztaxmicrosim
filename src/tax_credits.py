@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from .parameters import FamilyBoostParams, IETCParams
+from .parameters import DonationCreditParams, FamilyBoostParams, IETCParams
 
 
 def _coerce_ietc(params: Mapping[str, Any] | IETCParams) -> IETCParams:
@@ -144,3 +144,26 @@ def family_boost_credit(
         credit = max(0.0, credit - abatement)
 
     return credit
+
+
+def calculate_donation_credit(
+    total_donations: float,
+    taxable_income: float,
+    params: DonationCreditParams,
+) -> float:
+    """
+    Calculates the tax credit for charitable donations.
+
+    Args:
+        total_donations: The total amount of donations made in the year.
+        taxable_income: The individual's total taxable income for the year.
+        params: The parameters for the donation tax credit.
+
+    Returns:
+        The calculated donation tax credit.
+    """
+    if total_donations < params.min_donation:
+        return 0.0
+
+    eligible_amount = min(total_donations, taxable_income)
+    return eligible_amount * params.credit_rate
