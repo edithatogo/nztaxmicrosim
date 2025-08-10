@@ -18,7 +18,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import IETCParams, TaxBracketParams
+from src.parameters import IETCParams, RWTParams, TaxBracketParams
 from src.tax_credits import calcietc, eitc, family_boost_credit
 
 # Load parameters for testing
