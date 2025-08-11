@@ -21,6 +21,8 @@ nav:
     - 'Development Log': 'development_log.md'
     - 'Security': 'SECURITY.md'
   - 'Model Documentation':
+    - 'Parameter Coverage': 'parameter_coverage.md'
+    - 'Inflation Adjustment': 'inflation_adjustment.md'
     - 'Data Dictionary': 'data_dictionary.md'
     - 'Feature Matrix': 'feature_matrix.md'
     - 'Policy Changes': 'policy_changes.md'

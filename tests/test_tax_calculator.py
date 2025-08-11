@@ -113,8 +113,4 @@ def test_tax_calculator_pie_tax() -> None:
 
     # Test with a year that does not have PIE params
     calc_without_pie = TaxCalculator.from_year("2023-2024")
-<<<<<<< HEAD
     assert calc_without_pie.pie_tax(pie_income, taxable_income) == 0.0
-=======
-    assert calc_without_pie.pie_tax(pie_income, taxable_income) == 0.0
->>>>>>> 534254760198f932d3d677da94076bf62c87c7fd
