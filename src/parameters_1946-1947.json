@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1946'",
-            "notes": "This represents the combined 'Social Security Charge' (7.5%) and 'National Security Tax' (2.5%). The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for these taxes."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -64,8 +64,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.10,
-        "max_income": 999999
-    }
+    "acc_levy": null
 }

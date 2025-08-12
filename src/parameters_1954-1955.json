@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1953'",
-            "notes": "This represents the 'Social Security charge' of 7.5%. The 1954 search did not mention a change. The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for this tax."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -64,8 +64,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.075,
-        "max_income": 999999
-    }
+    "acc_levy": null
 }

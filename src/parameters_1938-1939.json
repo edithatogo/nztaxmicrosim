@@ -23,11 +23,11 @@
         },
         "acc_levy": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The ACC levy rate and income cap for 1939 are unknown."
+            "notes": "ACC scheme did not exist in this year."
         },
         "social_security_levy": {
             "source": "nzae.org.nz",
-            "notes": "An employment promotion charge of 8 pence in the pound was levied on incomes for the 1938–39 fiscal year. This is equivalent to 3.33%."
+            "notes": "An employment promotion charge of 8 pence in the pound was levied on incomes for the 1938\u201339 fiscal year. This is equivalent to 3.33%."
         }
     },
     "tax_brackets": {
@@ -65,10 +65,7 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.0,
-        "max_income": 0
-    },
+    "acc_levy": null,
     "social_security_levy": {
         "rate": 0.0333
     }
