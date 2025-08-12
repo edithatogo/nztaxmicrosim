@@ -87,3 +87,38 @@ def test_missing_fertility_data_for_year(mock_get_fertility, sample_population):
 
     assert len(aged_df) == 3
     assert aged_df["age"].iloc[0] == 31
+<<<<<<< HEAD
+=======
+
+from unittest.mock import MagicMock
+
+def test_get_fertility_data_file_not_found(monkeypatch):
+    """Test that get_fertility_data returns an empty dict if the file is missing."""
+    # Create a mock Path object that will return False for exists()
+    mock_path = MagicMock()
+    mock_path.exists.return_value = False
+
+    # Patch the FERTILITY_DATA_FILE constant in the module with our mock object
+    monkeypatch.setattr("src.demographic_modelling.FERTILITY_DATA_FILE", mock_path)
+
+    from src.demographic_modelling import get_fertility_data
+    result = get_fertility_data()
+    assert result == {}
+
+def test_get_rate_for_age_edge_cases():
+    """Test the _get_rate_for_age helper for edge cases."""
+    from src.demographic_modelling import _get_rate_for_age
+
+    rates = {
+        "comment": "This is a test comment",
+        "20-29": 50.0,
+        "30-39": 100.0
+    }
+
+    # Test age outside any range
+    assert _get_rate_for_age(15, rates) == 0.0
+    assert _get_rate_for_age(50, rates) == 0.0
+
+    # Test that comment is ignored
+    assert _get_rate_for_age(25, rates) == 0.05 # 50.0 / 1000.0
+>>>>>>> ac28dcd (test: Improve test coverage for core modules)
