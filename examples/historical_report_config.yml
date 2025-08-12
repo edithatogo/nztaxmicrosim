@@ -1,0 +1,28 @@
+# Example Configuration for a Historical Report
+
+# The baseline year for all inflation adjustments (if any are applied).
+# Note: The historical reporting framework itself does not automatically apply
+# inflation adjustments; this would be a separate, preceding step.
+base_year_for_inflation: 2023
+
+# A list of years to include in the historical analysis.
+# The reporting script will look for simulation result files for each year.
+# For this example, we will generate dummy data for these years.
+years_to_include:
+  - 1990
+  - 2000
+  - 2010
+  - 2020
+
+# A list of reports to generate.
+# Each key corresponds to a specific HistoricalReportComponent class.
+reports_to_generate:
+  - HistoricalGiniChart
+  - HistoricalPovertyRateChart
+  - HistoricalEffectiveTaxRateChart
+  - HistoricalBenefitEntitlementsChart
+
+# Optional parameters for specific reports.
+report_parameters:
+  poverty_rates_over_time:
+    poverty_line_relative: 0.5 # 50% of median income
