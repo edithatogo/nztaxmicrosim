@@ -88,3 +88,70 @@ metrics_to_run = {
 - **`metrics`**: A dictionary mapping metric names (strings) to your metric functions.
 
 The function returns a pandas DataFrame where each row contains the results for one scenario, making it easy to compare the impacts of different policy choices.
+
+---
+
+## Phase 2: Advanced Policy Optimisation with Optuna
+
+Building on the parameter scanning tool, the advanced policy optimisation feature uses the `Optuna` library to intelligently search for optimal policy parameters. Instead of testing a pre-defined grid of scenarios, this tool explores a continuous search space to find parameter combinations that maximize or minimize a specific objective function.
+
+### How it Works
+
+The core of this feature is the `run_policy_optimisation` function. It wraps the simulation logic in an "objective function" that Optuna repeatedly calls with different parameter values. Optuna's samplers use the history of previous results to guide the search towards more promising areas of the parameter space.
+
+### How to Use
+
+The workflow is similar to the parameter scanner, but the configuration file is different.
+
+**Example Script:**
+An example is provided in `examples/run_policy_optimisation.py`.
+```bash
+python examples/run_policy_optimisation.py
+```
+
+### 1. The Optimisation Configuration File
+
+The study is defined in a YAML file. It has three main sections: `objective`, `n_trials`, and `search_space`.
+
+- **`objective`**: Defines the goal of the study.
+  - `name`: The metric to be optimized. This must correspond to a key in the `metrics` dictionary you provide.
+  - `direction`: Can be `"maximize"` or `"minimize"`.
+- **`n_trials`**: The total number of simulations the optimiser will run.
+- **`search_space`**: A list of parameters to vary. Each entry defines:
+  - `name`: A unique name for the parameter in the study.
+  - `path`: The dot-separated path to the parameter in the `Parameters` model.
+  - `type`: The type of value to search for (`float`, `int`, or `categorical`).
+  - The range of values (`low` and `high` for `float`/`int`, or `choices` for `categorical`).
+
+**Example: `examples/opt_config.yaml`**
+```yaml
+objective:
+  name: "total_tax_revenue"
+  direction: "maximize"
+
+n_trials: 50
+
+search_space:
+  - name: "top_tax_rate"
+    path: "tax_brackets.rates.4"
+    type: "float"
+    low: 0.38
+    high: 0.45
+  - name: "ietc_entitlement"
+    path: "ietc.ent"
+    type: "int"
+    low: 520
+    high: 700
+```
+
+### 2. Interpreting the Results
+
+The `run_policy_optimisation` function returns a completed Optuna `study` object. This object contains a wealth of information about the optimisation process. The example script shows how to access the most important results:
+
+- `study.best_trial`: The trial that resulted in the best objective value.
+- `study.best_params`: A dictionary of the parameter values that yielded the best result.
+- `study.best_value`: The best objective score achieved.
+
+You can also access the `user_attrs` of the best trial to see the values of all other metrics for that trial, which is useful for understanding trade-offs.
+
+For more advanced analysis, Optuna provides powerful visualization tools (e.g., `optuna.visualization.plot_optimization_history`) that can be used with the returned `study` object.

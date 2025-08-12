@@ -10,6 +10,7 @@ readme = "README.md"
 dependencies = [
     "pandas",
     "numpy",
+    "optuna",
     "pydantic",
     "matplotlib",
     "seaborn",
