@@ -9,15 +9,15 @@ This document outlines development priorities for the NZ Microsimulation Model, 
    - *Priority:* **High**
    - *Status:* **Done**
 
-2. **Expand Rule Coverage** *(In Progress)*
+2. **Expand Rule Coverage** ✅
    - *Milestone:* Implement additional personal tax, benefit, and levy rules.
    - *Tasks:*
      - Child Support payments ✅
      - Disability Allowance ✅
      - Taxation of investment income (e.g., PIE funds) ✅
-     - Tax credits for charitable donations
+     - Tax credits for charitable donations ✅
    - *Priority:* **High**
-   - *Status:* **In Progress**. The next feature is Tax credits for charitable donations.
+   - *Status:* **Done**.
 
 3. **Modular Simulation Pipeline** ✅
    - *Milestone:* Design plug-in architecture for tax and benefit rules.
@@ -72,4 +72,3 @@ This document outlines development priorities for the NZ Microsimulation Model, 
       - **Historical Reporting Framework:** Create dedicated reporting functions to generate standard outputs for historical comparisons, such as plots of effective tax rates or benefit entitlements by decile over time.
     - *Priority:* **Medium**
     - *Status:* **In Progress**. Foundational files exist.
-
