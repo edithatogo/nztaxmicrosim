@@ -221,6 +221,65 @@ class TaxCalculator(BaseModel):
             params=self.params.donation_credit,
         )
 
+    def _calculate_net_income(self, individual_data: dict) -> float:
+        """Helper function to calculate net income for a single individual."""
+        # This is a simplified calculation and assumes individual_data contains all necessary fields.
+        # A more robust implementation would handle missing keys gracefully.
+
+        income = individual_data.get("income", 0)
+
+        # Calculate taxes
+        tax = self.income_tax(income)
+        # In a real model, we would also include ACC levies etc.
+
+        # Calculate benefits
+        # This is highly simplified. A real calculation would need family context.
+        benefits = 0
+        if self.params.ietc:
+            benefits += self.ietc(
+                taxable_income=income,
+                is_wff_recipient=individual_data.get("is_wff_recipient", False),
+                is_super_recipient=individual_data.get("is_super_recipient", False),
+                is_benefit_recipient=individual_data.get("is_benefit_recipient", False),
+            )
+        # In a real model, we would add all other relevant benefits (WFF, etc.)
+
+        net_income = income - tax + benefits
+        return net_income
+
+    def calculate_emtr(self, individual_data: dict) -> float:
+        """
+        Calculates the Effective Marginal Tax Rate (EMTR) for an individual.
+
+        The EMTR is the proportion of an additional dollar of earnings that is
+        lost to taxes and reduced benefits. It is calculated by simulating the
+        individual's net income with and without a small increase in income.
+
+        Args:
+            individual_data: A dictionary representing a single person,
+                containing all necessary fields for tax and benefit calculations
+                (e.g., 'income', 'age', etc.).
+
+        Returns:
+            The Effective Marginal Tax Rate as a float (e.g., 0.3 for 30%).
+        """
+        # 1. Calculate net income at the original income level
+        net_income_original = self._calculate_net_income(individual_data)
+
+        # 2. Calculate net income at a slightly higher income level
+        data_plus_one = individual_data.copy()
+        data_plus_one["income"] = data_plus_one.get("income", 0) + 1
+        net_income_plus_one = self._calculate_net_income(data_plus_one)
+
+        # 3. Calculate the change in net income
+        change_in_net_income = net_income_plus_one - net_income_original
+
+        # 4. The EMTR is 1 minus the change in net income
+        # This represents the fraction of the extra dollar that was "lost".
+        emtr = 1 - change_in_net_income
+
+        return emtr
+
     @classmethod
     def from_year(cls, year: str) -> "TaxCalculator":
         """

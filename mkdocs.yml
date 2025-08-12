@@ -40,8 +40,9 @@ nav:
     - 'External': 'external/index.md'
     - 'Feature Comparison': 'feature_comparison.md'
     - 'Module Status': 'module_status.md'
-    - 'Feature Comparison': 'feature_comparison.md'
-    - 'Module Status': 'module_status.md'
+  - 'Modules':
+    - 'Behavioural Response': 'docs/modules/behavioural.md'
+    - 'Optimisation': 'docs/modules/optimisation.md'
   - 'API Reference': 'api_reference.md'
 repo_url: https://github.com/edithatogo/nztaxmicrosim
 repo_name: edithatogo/nztaxmicrosim

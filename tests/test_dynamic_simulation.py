@@ -56,19 +56,31 @@ def test_year_to_year_progression(sample_dataframe):
 def test_labour_response_applied(sample_dataframe):
     years = ["2022-2023", "2023-2024"]
 
-    def labour(df: pd.DataFrame, _params: Parameters) -> pd.DataFrame:
-        updated = df.copy()
+    # This mock function simulates a behavioural response by increasing income.
+    # It ignores the other parameters to keep the test simple and focused.
+    def mock_behavioural_func(df_before, df_after, emtr_calculator_before, emtr_calculator_after, elasticity_params):
+        updated = df_after.copy()
         updated["taxable_income"] *= 1.1
         return updated
 
-    results = run_dynamic_simulation(sample_dataframe, years, labour_response=labour)
+    results = run_dynamic_simulation(
+        sample_dataframe,
+        years,
+        use_behavioural_response=True,
+        # Provide dummy elasticity params as they are required by the function signature
+        elasticity_params={"dummy": 0.1},
+        behavioural_func=mock_behavioural_func
+    )
 
+    # In the first year, the income is increased by 10%
     params1 = load_parameters("2022-2023")
     income1 = sample_dataframe["taxable_income"].iloc[0] * 1.1
     expected1 = taxit(income1, params1.tax_brackets)
     assert results["2022-2023"]["tax_liability"].iloc[0] == expected1
 
+    # In the second year, the income from the end of the first year (already increased)
+    # is increased by another 10%
     params2 = load_parameters("2023-2024")
-    income2 = sample_dataframe["taxable_income"].iloc[0] * 1.1 * 1.1
+    income2 = income1 * 1.1
     expected2 = taxit(income2, params2.tax_brackets)
     assert results["2023-2024"]["tax_liability"].iloc[0] == expected2
