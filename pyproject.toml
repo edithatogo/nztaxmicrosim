@@ -10,14 +10,16 @@ readme = "README.md"
 dependencies = [
     "pandas",
     "numpy",
+    "optuna",
     "pydantic",
     "matplotlib",
     "seaborn",
     "joblib",
     "scipy",
-    "tabulate",
+    "tabulate>=0.9.0",
     "requests",
     "pyyaml",
+    "wbdata",
 ]
 
 [tool.pytest.ini_options]
