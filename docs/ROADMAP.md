@@ -73,5 +73,5 @@ This document outlines development priorities for the NZ Microsimulation Model, 
       - **Demographic Evolution:** Develop a module to simulate changes in the population's structure over time (e.g., age distribution, family size), allowing for more realistic long-term analysis. ✅
       - **Historical Reporting Framework:** Create dedicated reporting functions to generate standard outputs for historical comparisons, such as plots of effective tax rates or benefit entitlements by decile over time. ✅
     - *Priority:* **Medium**
+<<<<<<< HEAD
     - *Status:* **Done**.
-
