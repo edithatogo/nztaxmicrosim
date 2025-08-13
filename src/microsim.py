@@ -246,5 +246,3 @@ def supstd(
     results["stdnet3"] = net_super_values[3]
 
     return results
-
-

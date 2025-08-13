@@ -1,5 +1,7 @@
 import pandas as pd
+
 from src.demographic_modelling import age_population_forward
+
 
 def main():
     """
@@ -26,10 +28,7 @@ def main():
     # This will simulate births based on the fertility data for 1990
     # found in `src/data/fertility_rates.json`.
     try:
-        population_1991 = age_population_forward(
-            df=population_1990,
-            year=1990
-        )
+        population_1991 = age_population_forward(df=population_1990, year=1990)
 
         print("\nNew population (1991):")
         print(population_1991)

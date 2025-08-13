@@ -123,7 +123,10 @@ class ChildSupportParams(BaseModel):
 
     enabled: bool = Field(default=False, description="Whether Child Support is enabled.")
     support_rate: float = Field(default=0.0, description="The rate at which child support is calculated.")
-    living_allowance: float = Field(default=0.0, description="The amount of income exempt from child support calculation.")
+    living_allowance: float = Field(
+        default=0.0,
+        description="The amount of income exempt from child support calculation.",
+    )
 
 
 class KiwisaverParams(BaseModel):

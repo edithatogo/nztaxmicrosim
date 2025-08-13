@@ -49,9 +49,7 @@ as_params = AccommodationSupplementParams(
 )
 
 ppl_params = PPLParams(enabled=True, weekly_rate=600.0, max_weeks=26)
-child_support_params = ChildSupportParams(
-    enabled=True, support_rate=0.18, living_allowance=17518.28
-)
+child_support_params = ChildSupportParams(enabled=True, support_rate=0.18, living_allowance=17518.28)
 
 
 def test_apply_abatement():
@@ -153,8 +151,7 @@ def test_calculate_child_support():
 
     # Test case 1: Income above living allowance
     assert (
-        calculate_child_support(50000, child_support_params)
-        == (50000 - child_support_params.living_allowance) * 0.18
+        calculate_child_support(50000, child_support_params) == (50000 - child_support_params.living_allowance) * 0.18
     )
 
     # Test case 2: Income below living allowance
@@ -179,25 +176,13 @@ disability_allowance_params = DisabilityAllowanceParams(
 
 def test_calculate_disability_allowance():
     # Test case 1: Eligible, costs below max
-    assert (
-        calculate_disability_allowance(500, 50, "single_18_plus", disability_allowance_params)
-        == 50
-    )
+    assert calculate_disability_allowance(500, 50, "single_18_plus", disability_allowance_params) == 50
 
     # Test case 2: Eligible, costs above max
-    assert (
-        calculate_disability_allowance(500, 100, "single_18_plus", disability_allowance_params)
-        == 80.35
-    )
+    assert calculate_disability_allowance(500, 100, "single_18_plus", disability_allowance_params) == 80.35
 
     # Test case 3: Ineligible, income too high
-    assert (
-        calculate_disability_allowance(900, 50, "single_18_plus", disability_allowance_params)
-        == 0
-    )
+    assert calculate_disability_allowance(900, 50, "single_18_plus", disability_allowance_params) == 0
 
     # Test case 4: Invalid family situation
-    assert (
-        calculate_disability_allowance(500, 50, "invalid_situation", disability_allowance_params)
-        == 0
-    )
+    assert calculate_disability_allowance(500, 50, "invalid_situation", disability_allowance_params) == 0

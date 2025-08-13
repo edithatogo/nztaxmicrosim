@@ -1,7 +1,7 @@
 """Rules for tax calculations."""
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Union
 
 from .acc_levy import calculate_acc_levy
 from .parameters import ACCLevyParams, KiwisaverParams, StudentLoanParams
@@ -20,7 +20,7 @@ class ACCLevyRule(Rule):
     The calculation is performed by the `calculate_acc_levy` function.
     """
 
-    acc_levy_params: ACCLevyParams | None
+    acc_levy_params: Union[ACCLevyParams, None]
     name: str = "acc_levy"
     enabled: bool = True
 

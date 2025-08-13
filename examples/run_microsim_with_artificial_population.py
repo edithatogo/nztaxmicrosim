@@ -4,7 +4,8 @@ import sys
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from src.microsim import calcietc, load_parameters, taxit
+from src.microsim import load_parameters, taxit
+from src.tax_credits import calcietc
 from src.wff_microsim import famsim
 
 # --- 1. Create an Artificial Population ---

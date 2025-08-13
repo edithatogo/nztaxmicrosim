@@ -18,7 +18,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import RWTParams, TaxBracketParams
+from src.parameters import TaxBracketParams
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")

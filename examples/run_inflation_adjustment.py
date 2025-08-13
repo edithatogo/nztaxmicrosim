@@ -1,5 +1,7 @@
 import pandas as pd
+
 from src.inflation import adjust_for_inflation
+
 
 def main():
     """
