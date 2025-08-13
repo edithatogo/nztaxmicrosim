@@ -74,4 +74,3 @@ This document outlines development priorities for the NZ Microsimulation Model, 
       - **Historical Reporting Framework:** Create dedicated reporting functions to generate standard outputs for historical comparisons, such as plots of effective tax rates or benefit entitlements by decile over time. ✅
     - *Priority:* **Medium**
     - *Status:* **Done**.
-
