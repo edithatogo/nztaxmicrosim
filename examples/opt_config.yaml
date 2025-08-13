@@ -1,0 +1,38 @@
+# This is an example configuration file for the policy optimisation tool.
+# It defines the search space for parameters and the objective of the study.
+
+# 1. Define the objective
+objective:
+  # The name of the metric to optimize. This must match a key in the
+  # 'metrics' dictionary passed to the runner.
+  name: "total_tax_revenue"
+  # The direction of optimisation. Can be "maximize" or "minimize".
+  direction: "maximize"
+
+# 2. Define the number of trials for the optimiser to run.
+n_trials: 50
+
+# 3. Define the search space for the policy parameters.
+# The optimiser will intelligently search for the best combination of values
+# for these parameters within the defined ranges.
+search_space:
+  - name: "top_tax_rate"
+    # Dot-separated path to the parameter.
+    path: "tax_brackets.rates.4"
+    # Type of value to suggest. Can be "float", "int", or "categorical".
+    type: "float"
+    # Range for float/int suggestions.
+    low: 0.38
+    high: 0.45
+
+  - name: "ietc_entitlement"
+    path: "ietc.ent"
+    type: "int"
+    low: 520
+    high: 700
+
+  - name: "ietc_abatement_threshold"
+    path: "ietc.thrab"
+    type: "int"
+    low: 48000
+    high: 52000
