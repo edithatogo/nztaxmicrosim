@@ -75,7 +75,6 @@ def test_adjust_for_inflation_missing_year(mock_get_cpi, sample_data, mock_cpi_d
     with pytest.raises(ValueError, match="CPI data not available for target year: 1980"):
         adjust_for_inflation(sample_data, 2023, 1980, ["income"])
 
-<<<<<<< HEAD
 def test_adjust_for_inflation_zero_cpi(sample_data, mock_cpi_data):
     """Test that a ValueError is raised if the target year CPI is zero."""
     mock_cpi_data[1990] = 0.0
@@ -150,9 +149,4 @@ def test_get_cpi_data_api_failure(monkeypatch, tmp_path):
 
     # 3. Assert results
     assert cpi_data == {}
-=======
-# We don't test get_cpi_data directly hitting the API in a unit test,
-# but we could add an integration test for it if needed.
-# For now, we assume the wbdata library works as expected.
-# The mocking in the tests above validates the logic that USES the data.
->>>>>>> main
+

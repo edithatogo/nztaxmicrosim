@@ -177,8 +177,5 @@ def run_policy_optimisation(
     study = optuna.create_study(direction=opt_config["objective"]["direction"])
     study.optimize(objective, n_trials=opt_config.get("n_trials", 100))
 
-<<<<<<< HEAD
     return study
-=======
-    return study
->>>>>>> main
+
