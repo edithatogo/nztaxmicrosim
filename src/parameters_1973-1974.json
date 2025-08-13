@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The ACC levy rate and income cap for 1972 are unknown."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -61,8 +61,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.0,
-        "max_income": 0
-    }
+    "acc_levy": null
 }

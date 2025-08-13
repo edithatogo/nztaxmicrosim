@@ -23,13 +23,13 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1944'",
-            "notes": "This is a representation of the 'Social Security Tax' of 12.5%. The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for this tax."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
         "rates": [
             0.125,
-            0.90
+            0.9
         ],
         "thresholds": [
             300
@@ -64,8 +64,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.125,
-        "max_income": 999999
-    }
+    "acc_levy": null
 }

@@ -3,11 +3,11 @@
         "tax_brackets": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1957'",
             "reference_ids": [],
-            "notes": "The values here are an approximation of the 1957 tax system. The rates are the 1956 rates with a 25% rebate applied. This rebate was capped at £75, which is not modelled here. The top rate of 76.5% is from previous years and is assumed to be the maximum rate."
+            "notes": "The values here are an approximation of the 1957 tax system. The rates are the 1956 rates with a 25% rebate applied. This rebate was capped at \u00a375, which is not modelled here. The top rate of 76.5% is from previous years and is assumed to be the maximum rate."
         },
         "ietc": {
             "source": "Placeholder",
-            "notes": "The 25% tax rebate is modelled in the tax brackets. The £75 cap on the rebate is not modelled."
+            "notes": "The 25% tax rebate is modelled in the tax brackets. The \u00a375 cap on the rebate is not modelled."
         },
         "wff": {
             "source": "Placeholder",
@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1956'",
-            "notes": "This represents the 'Social Security Income Tax' of 7.5%. The 1957 search did not mention a change. The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for this tax."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -64,8 +64,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.075,
-        "max_income": 999999
-    }
+    "acc_levy": null
 }

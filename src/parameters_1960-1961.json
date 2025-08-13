@@ -2,7 +2,9 @@
     "_source_references": {
         "tax_brackets": {
             "source": "nz_personal_tax_rules.json: year 1960 entry",
-            "reference_ids": ["152018581057803-L18-L20"],
+            "reference_ids": [
+                "152018581057803-L18-L20"
+            ],
             "notes": "NEEDS RESEARCH. Source only provides the top marginal tax rate of 68%. The full bracket structure is unknown. The values here are placeholders and do not represent a valid tax system."
         },
         "ietc": {
@@ -23,7 +25,7 @@
         },
         "acc_levy": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The ACC levy rate and income cap for 1960 are unknown."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -61,8 +63,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.0,
-        "max_income": 0
-    }
+    "acc_levy": null
 }

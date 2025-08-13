@@ -3,11 +3,11 @@
         "tax_brackets": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1955'",
             "reference_ids": [],
-            "notes": "The values here are an approximation of the 1955 tax system. The system was a progressive structure with rates increasing by 3 pence for every £100. The rates here include a 20% rebate that was in effect for the 1955-56 tax year. This rebate was capped at £75, which is not modelled here. The top rate of 68% is from the placeholder file and is assumed to be the maximum rate."
+            "notes": "The values here are an approximation of the 1955 tax system. The system was a progressive structure with rates increasing by 3 pence for every \u00a3100. The rates here include a 20% rebate that was in effect for the 1955-56 tax year. This rebate was capped at \u00a375, which is not modelled here. The top rate of 68% is from the placeholder file and is assumed to be the maximum rate."
         },
         "ietc": {
             "source": "Placeholder",
-            "notes": "The 20% tax rebate is modelled in the tax brackets. The £75 cap on the rebate is not modelled."
+            "notes": "The 20% tax rebate is modelled in the tax brackets. The \u00a375 cap on the rebate is not modelled."
         },
         "wff": {
             "source": "Placeholder",
@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1955'",
-            "notes": "This represents the 'Social Security Charge' of 7.5%. The name 'acc_levy' is used due to the current data structure. There was no income cap mentioned for this tax."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -70,8 +70,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.075,
-        "max_income": 999999
-    }
+    "acc_levy": null
 }

@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1969'",
-            "notes": "The Social Security Income Tax was merged with the ordinary income tax in 1969. Therefore, the rate is set to 0."
+            "notes": "ACC scheme did not exist in this year."
         }
     },
     "tax_brackets": {
@@ -64,8 +64,5 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.0,
-        "max_income": 0
-    }
+    "acc_levy": null
 }

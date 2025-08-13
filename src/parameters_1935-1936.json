@@ -23,7 +23,7 @@
         },
         "acc_levy": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The ACC levy rate and income cap for 1935 are unknown."
+            "notes": "ACC scheme did not exist in this year."
         },
         "social_security_levy": {
             "source": "teara.govt.nz",
@@ -65,10 +65,7 @@
         "enabled": false,
         "support_rate": 0
     },
-    "acc_levy": {
-        "rate": 0.0,
-        "max_income": 0
-    },
+    "acc_levy": null,
     "social_security_levy": {
         "rate": 0.0333
     }

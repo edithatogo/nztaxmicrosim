@@ -185,8 +185,5 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     # 3. Check that all metrics were stored in user_attrs
     stored_metrics = mock_study_instance.trial.user_attrs["metrics"]
     assert stored_metrics["total_tax"] == 2000
-<<<<<<< HEAD
     assert stored_metrics["person_count"] == 1
-=======
-    assert stored_metrics["person_count"] == 1
->>>>>>> ac28dcd (test: Improve test coverage for core modules)
+
