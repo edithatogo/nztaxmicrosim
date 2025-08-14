@@ -277,7 +277,7 @@ class DistributionalStatisticsTable(ReportComponent):
             "slp_entitlement",
             "accommodation_supplement_entitlement",
         ]:
-            disposable_income += df[col]
+            disposable_income += df.get(col, 0)
         for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]:
             disposable_income += df.get(col, 0)
         if "tax_liability" in df.columns:
@@ -712,3 +712,153 @@ if __name__ == "__main__":
     if not os.path.exists("reports"):
         os.makedirs("reports")
     print("Dummy report components generated and saved to 'reports/' directory.")
+
+
+# --- Historical Reporting Components ---
+
+class HistoricalReportComponent(ReportComponent):
+    """
+    A base class for components that generate historical, multi-year reports.
+    """
+    def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> Any:
+        """
+        Generate content from a dictionary of DataFrames, keyed by year.
+        """
+        raise NotImplementedError("Generate method must be implemented by subclasses.")
+
+class HistoricalGiniChart(HistoricalReportComponent):
+    """A report component for visualizing the Gini coefficient over time."""
+
+    def __init__(self):
+        super().__init__(
+            title="Gini Coefficient Over Time",
+            description="Chart of the Gini coefficient of disposable income for each year."
+        )
+
+    def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
+        stats_helper = DistributionalStatisticsTable()
+        results = []
+        for year, df in data.items():
+            disposable_income = stats_helper._calculate_disposable_income(df)
+            gini = stats_helper._calculate_gini_coefficient(disposable_income)
+            results.append({"Year": year, "Gini Coefficient": gini})
+
+        time_series_df = pd.DataFrame(results)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(x="Year", y="Gini Coefficient", data=time_series_df, ax=ax, marker="o")
+        ax.set_title(self.title)
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Gini Coefficient")
+        return fig
+
+    def to_markdown(self, content: plt.Figure) -> str:
+        filepath = f"reports/{self.title.replace(' ', '_').lower()}.png"
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        content.savefig(filepath)
+        plt.close(content)
+        return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
+
+class HistoricalPovertyRateChart(HistoricalReportComponent):
+    """A report component for visualizing the poverty rate over time."""
+
+    def __init__(self):
+        super().__init__(
+            title="Poverty Rate Over Time",
+            description="Chart of the poverty rate (relative to 50% of median income) for each year."
+        )
+
+    def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
+        stats_helper = DistributionalStatisticsTable()
+        results = []
+        poverty_line_relative = params.get("poverty_line_relative", 0.5)
+
+        for year, df in data.items():
+            disposable_income = stats_helper._calculate_disposable_income(df)
+            median_income = disposable_income.median()
+            poverty_line = median_income * poverty_line_relative
+            poverty_rate = stats_helper._calculate_poverty_rate(disposable_income, poverty_line)
+            results.append({"Year": year, "Poverty Rate (%)": poverty_rate})
+
+        time_series_df = pd.DataFrame(results)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(x="Year", y="Poverty Rate (%)", data=time_series_df, ax=ax, marker="o")
+        ax.set_title(self.title)
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Poverty Rate (%)")
+        return fig
+
+    def to_markdown(self, content: plt.Figure) -> str:
+        filepath = f"reports/{self.title.replace(' ', '_').lower()}.png"
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        content.savefig(filepath)
+        plt.close(content)
+        return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
+
+class HistoricalEffectiveTaxRateChart(HistoricalReportComponent):
+    """A report component for visualizing the effective tax rate over time."""
+
+    def __init__(self):
+        super().__init__(
+            title="Effective Tax Rate Over Time",
+            description="Chart of the average effective tax rate (Total Tax / Total Income) for each year."
+        )
+
+    def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
+        fiscal_helper = FiscalImpactTable()
+        results = []
+
+        for year, df in data.items():
+            total_tax = fiscal_helper._calculate_total_tax_revenue(df)
+            # Use familyinc as a proxy for total income before tax/transfers
+            total_income = df["familyinc"].sum()
+            effective_rate = (total_tax / total_income) * 100 if total_income != 0 else 0
+            results.append({"Year": year, "Effective Tax Rate (%)": effective_rate})
+
+        time_series_df = pd.DataFrame(results)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(x="Year", y="Effective Tax Rate (%)", data=time_series_df, ax=ax, marker="o")
+        ax.set_title(self.title)
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Effective Tax Rate (%)")
+        return fig
+
+    def to_markdown(self, content: plt.Figure) -> str:
+        filepath = f"reports/{self.title.replace(' ', '_').lower()}.png"
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        content.savefig(filepath)
+        plt.close(content)
+        return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
+
+class HistoricalBenefitEntitlementsChart(HistoricalReportComponent):
+    """A report component for visualizing average benefit entitlements over time."""
+
+    def __init__(self):
+        super().__init__(
+            title="Average Benefit Entitlement Over Time",
+            description="Chart of the average total benefit entitlement per person for each year."
+        )
+
+    def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
+        fiscal_helper = FiscalImpactTable()
+        results = []
+
+        for year, df in data.items():
+            total_benefits = fiscal_helper._calculate_total_welfare_transfers(df)
+            num_people = len(df)
+            avg_benefit = total_benefits / num_people if num_people != 0 else 0
+            results.append({"Year": year, "Average Benefit per Person": avg_benefit})
+
+        time_series_df = pd.DataFrame(results)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(x="Year", y="Average Benefit per Person", data=time_series_df, ax=ax, marker="o")
+        ax.set_title(self.title)
+        ax.set_xlabel("Year")
+        ax.set_ylabel("Average Benefit per Person (NZD)")
+        return fig
+
+    def to_markdown(self, content: plt.Figure) -> str:
+        filepath = f"reports/{self.title.replace(' ', '_').lower()}.png"
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        content.savefig(filepath)
+        plt.close(content)
+        return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""

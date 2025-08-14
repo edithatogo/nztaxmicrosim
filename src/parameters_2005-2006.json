@@ -10,12 +10,7 @@
             60000
         ]
     },
-    "ietc": {
-        "thrin": 520,
-        "ent": 1040,
-        "thrab": 50000,
-        "abrate": 0.1
-    },
+    "ietc": null,
     "wff": {
         "ftc1": 2730,
         "ftc2": 2730,
