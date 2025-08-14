@@ -7,19 +7,19 @@
         },
         "ietc": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The structure of low-income tax relief in 1944 is unknown, though sources suggest the working class paid little to no income tax."
+            "notes": "Policy did not exist in this year (starts 2009)."
         },
         "wff": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. WFF did not exist. The rules for historical family assistance programs are unknown."
+            "notes": "Policy did not exist in this year (starts 2005)."
         },
         "ppl": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Paid Parental Leave scheme of 1944 is unknown."
+            "notes": "Policy did not exist in this year (starts 2002)."
         },
         "child_support": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Child support rules for 1944 is unknown."
+            "notes": "Policy did not exist in this year (starts 1991)."
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1944'",
@@ -35,34 +35,9 @@
             300
         ]
     },
-    "ietc": {
-        "thrin": 0,
-        "ent": 0,
-        "thrab": 0,
-        "abrate": 0
-    },
-    "wff": {
-        "ftc1": 0,
-        "ftc2": 0,
-        "iwtc1": 0,
-        "iwtc2": 0,
-        "bstc": 0,
-        "mftc": 0,
-        "abatethresh1": 0,
-        "abatethresh2": 0,
-        "abaterate1": 0,
-        "abaterate2": 0,
-        "bstcthresh": 0,
-        "bstcabate": 0
-    },
-    "ppl": {
-        "enabled": false,
-        "weekly_rate": 0,
-        "max_weeks": 0
-    },
-    "child_support": {
-        "enabled": false,
-        "support_rate": 0
-    },
+    "ietc": null,
+    "wff": null,
+    "ppl": null,
+    "child_support": null,
     "acc_levy": null
 }

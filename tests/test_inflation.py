@@ -149,4 +149,3 @@ def test_get_cpi_data_api_failure(monkeypatch, tmp_path):
 
     # 3. Assert results
     assert cpi_data == {}
-
