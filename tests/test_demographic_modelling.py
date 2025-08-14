@@ -119,4 +119,3 @@ def test_get_rate_for_age_edge_cases():
 
     # Test that comment is ignored
     assert _get_rate_for_age(25, rates) == 0.05 # 50.0 / 1000.0
-

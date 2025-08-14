@@ -7,19 +7,23 @@
         },
         "ietc": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1948'",
+<<<<<<< HEAD
             "notes": "This models the \u00a310 rebate for all taxpayers in 1948."
+=======
+            "notes": "Policy did not exist in this year (starts 2009)."
+>>>>>>> edithatogo/update-a-bunch-of-stuff-4
         },
         "wff": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. WFF did not exist. The rules for historical family assistance programs are unknown."
+            "notes": "Policy did not exist in this year (starts 2005)."
         },
         "ppl": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Paid Parental Leave scheme of 1948 is unknown."
+            "notes": "Policy did not exist in this year (starts 2002)."
         },
         "child_support": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Child support rules for 1948 is unknown."
+            "notes": "Policy did not exist in this year (starts 1991)."
         },
         "acc_levy": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1948'",
@@ -35,34 +39,16 @@
             300
         ]
     },
-    "ietc": {
-        "thrin": 0,
-        "ent": 10,
-        "thrab": 999999,
-        "abrate": 0
-    },
-    "wff": {
-        "ftc1": 0,
-        "ftc2": 0,
-        "iwtc1": 0,
-        "iwtc2": 0,
-        "bstc": 0,
-        "mftc": 0,
-        "abatethresh1": 0,
-        "abatethresh2": 0,
-        "abaterate1": 0,
-        "abaterate2": 0,
-        "bstcthresh": 0,
-        "bstcabate": 0
-    },
-    "ppl": {
-        "enabled": false,
-        "weekly_rate": 0,
-        "max_weeks": 0
-    },
-    "child_support": {
-        "enabled": false,
-        "support_rate": 0
-    },
+<<<<<<< HEAD
+    "ietc": null,
+    "wff": null,
+    "ppl": null,
+    "child_support": null,
+=======
+    "ietc": null,
+    "wff": null,
+    "ppl": null,
+    "child_support": null,
+>>>>>>> edithatogo/update-a-bunch-of-stuff-4
     "acc_levy": null
 }

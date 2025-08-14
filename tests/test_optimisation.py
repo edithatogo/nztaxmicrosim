@@ -186,4 +186,3 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     stored_metrics = mock_study_instance.trial.user_attrs["metrics"]
     assert stored_metrics["total_tax"] == 2000
     assert stored_metrics["person_count"] == 1
-

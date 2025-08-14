@@ -178,4 +178,3 @@ def run_policy_optimisation(
     study.optimize(objective, n_trials=opt_config.get("n_trials", 100))
 
     return study
-
