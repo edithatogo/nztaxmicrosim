@@ -57,6 +57,10 @@ disable_error_code = ["var-annotated"]
 
 [tool.coverage.run]
 source = ["src"]
+omit = ["*/shibokensupport/*", "signature_bootstrap.py"]
 
 [tool.setuptools.package-data]
 nztaxmicrosim = ["docs/*"]
+
+[tool.bandit]
+exclude = [".tox"]

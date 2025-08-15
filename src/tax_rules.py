@@ -33,7 +33,15 @@ class ACCLevyRule(Rule):
 @register_rule
 @dataclass
 class KiwiSaverRule(Rule):
-    """A rule to calculate KiwiSaver contributions."""
+    """A rule to calculate KiwiSaver contributions.
+
+    KiwiSaver is a voluntary savings scheme to help New Zealanders save for
+    their retirement. This rule calculates the employee's contribution based
+    on their income and a specified contribution rate.
+
+    The calculation is performed by the `calculate_kiwisaver_contribution`
+    function.
+    """
     name: str = "KiwiSaverRule"
     enabled: bool = True
 
@@ -56,7 +64,15 @@ class KiwiSaverRule(Rule):
 @register_rule
 @dataclass
 class StudentLoanRule(Rule):
-    """A rule to calculate student loan repayments."""
+    """A rule to calculate student loan repayments.
+
+    This rule calculates the amount of student loan repayment required based
+    on an individual's income. Repayments are only required if the income is
+    above a certain threshold.
+
+    The calculation is performed by the `calculate_student_loan_repayment`
+    function.
+    """
     name: str = "StudentLoanRule"
     enabled: bool = True
 
@@ -91,6 +107,7 @@ class IncomeTaxRule(Rule):
         df["tax_liability"] = df["familyinc"].apply(tax_calc.income_tax)
 
 
+<<<<<<< HEAD
 @register_rule
 @dataclass
 class IETCRule(Rule):

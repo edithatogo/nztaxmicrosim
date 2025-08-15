@@ -177,4 +177,8 @@ def run_policy_optimisation(
     study = optuna.create_study(direction=opt_config["objective"]["direction"])
     study.optimize(objective, n_trials=opt_config.get("n_trials", 100))
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> remotes/edithatogo/update-a-bunch-of-stuff-4-resolved
     return study
