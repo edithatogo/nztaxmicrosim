@@ -1,6 +1,6 @@
 from src.microsim import taxit
 from src.tax_calculator import TaxCalculator
-from src.tax_credits import calcietc, eitc, family_boost_credit
+from src.tax_credits import calcietc, eitc
 
 
 def test_tax_calculator_income_tax_and_ietc() -> None:
@@ -9,6 +9,7 @@ def test_tax_calculator_income_tax_and_ietc() -> None:
     expected_tax = taxit(income, calc.params.tax_brackets)
     assert calc.income_tax(income) == expected_tax
 
+    assert calc.params.ietc is not None
     expected_ietc = calcietc(
         taxable_income=30_000,
         is_wff_recipient=False,
@@ -122,7 +123,7 @@ def test_calculate_emtr():
 
     # Define a simple case: a single person, no benefits other than IETC
     individual_data = {
-        "income": 48000, # At the threshold for IETC abatement
+        "income": 48000,  # At the threshold for IETC abatement
         "is_wff_recipient": False,
         "is_super_recipient": False,
         "is_benefit_recipient": False,
