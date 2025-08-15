@@ -9,37 +9,60 @@ This script demonstrates how to:
 5. Print the results of the best trial found by Optuna.
 """
 
+<<<<<<< HEAD
 import os
 
 import pandas as pd
 import yaml
 
 from src.optimisation import run_policy_optimisation
+=======
+import pandas as pd
+import yaml
+from src.optimisation import run_policy_optimisation
+import os
+>>>>>>> origin/update-a-bunch-of-stuff-5
 
 # --- 1. Define Metric Functions ---
 # These functions take a simulation result DataFrame and return a single number.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/update-a-bunch-of-stuff-5
 def total_tax_revenue(df: pd.DataFrame) -> float:
     """Calculates the total income tax paid by the population."""
     return df["tax_liability"].sum()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/update-a-bunch-of-stuff-5
 def total_wff_paid(df: pd.DataFrame) -> float:
     """Calculates the total Working for Families credits paid."""
     wff_columns = ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]
     existing_cols = [col for col in wff_columns if col in df.columns]
     return df[existing_cols].sum().sum()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/update-a-bunch-of-stuff-5
 # --- 2. Main Execution ---
 
 if __name__ == "__main__":
     # Get the absolute path to the project root
+<<<<<<< HEAD
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
     # --- Load Population Data ---
     input_data_path = os.path.join(project_root, "puf.csv")
+=======
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+    # --- Load Population Data ---
+    input_data_path = os.path.join(project_root, 'puf.csv')
+>>>>>>> origin/update-a-bunch-of-stuff-5
     try:
         population_df = pd.read_csv(input_data_path)
     except FileNotFoundError:
@@ -47,6 +70,7 @@ if __name__ == "__main__":
         print("Please ensure the `puf.csv` file exists in the project root.")
         exit()
 
+<<<<<<< HEAD
     if "income" in population_df.columns and "taxable_income" not in population_df.columns:
         population_df["taxable_income"] = population_df["income"]
 
@@ -54,24 +78,51 @@ if __name__ == "__main__":
     config_path = os.path.join(os.path.dirname(__file__), "opt_config.yaml")
     try:
         with open(config_path, "r") as f:
+=======
+    if 'income' in population_df.columns and 'taxable_income' not in population_df.columns:
+        population_df['taxable_income'] = population_df['income']
+
+    # --- Load Optimisation Configuration ---
+    config_path = os.path.join(os.path.dirname(__file__), 'opt_config.yaml')
+    try:
+        with open(config_path, 'r') as f:
+>>>>>>> origin/update-a-bunch-of-stuff-5
             opt_config = yaml.safe_load(f)
     except FileNotFoundError:
         print(f"Error: Optimisation configuration file not found at {config_path}")
         exit()
 
     # --- Define Metrics ---
+<<<<<<< HEAD
     metrics_to_run = {"total_tax_revenue": total_tax_revenue, "total_wff_paid": total_wff_paid}
 
     # --- Run the Policy Optimisation ---
     print("Running policy optimisation study...")
     print("Base year: 2024-2025")
+=======
+    metrics_to_run = {
+        "total_tax_revenue": total_tax_revenue,
+        "total_wff_paid": total_wff_paid
+    }
+
+    # --- Run the Policy Optimisation ---
+    print("Running policy optimisation study...")
+    print(f"Base year: 2024-2025")
+>>>>>>> origin/update-a-bunch-of-stuff-5
     print(f"Objective: {opt_config['objective']['direction']} '{opt_config['objective']['name']}'")
     print(f"Number of trials: {opt_config.get('n_trials', 100)}\n")
 
     base_simulation_year = "2024-2025"
 
     study = run_policy_optimisation(
+<<<<<<< HEAD
         base_df=population_df, base_year=base_simulation_year, opt_config=opt_config, metrics=metrics_to_run
+=======
+        base_df=population_df,
+        base_year=base_simulation_year,
+        opt_config=opt_config,
+        metrics=metrics_to_run
+>>>>>>> origin/update-a-bunch-of-stuff-5
     )
 
     # --- Print Results ---

@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Protocol, Type
+from typing import Any, Callable, Protocol, Type
 
 import yaml
 
 from .parameters import Parameters
 from .tax_calculator import TaxCalculator
+
 
 RULE_REGISTRY: dict[str, Type[Rule]] = {}
 
@@ -45,16 +46,17 @@ class SimulationPipeline:
     rules: list[Rule] = field(default_factory=list)
 
     @classmethod
-    def from_config(cls, config_path: str, params_data: dict[str, Any]) -> "SimulationPipeline":
+    def from_config(cls, config_path: str) -> "SimulationPipeline":
         """Create a SimulationPipeline from a YAML configuration file.
 
         The configuration file should specify a list of rules to be included
         in the pipeline. This method uses the RULE_REGISTRY to find and
-        instantiate the rules.
+        instantiate the rules. The rules are instantiated without parameters;
+        they are expected to receive them from the `data` dictionary during
+        the `run` phase.
 
         Args:
             config_path: The path to the YAML configuration file.
-            params_data: A dictionary of parameters to be used by the rules.
 
         Returns:
             A new `SimulationPipeline` instance.
@@ -63,39 +65,29 @@ class SimulationPipeline:
             config = yaml.safe_load(f)
 
         rules: list[Rule] = []
-        params = Parameters.model_validate(params_data)
-        calculator = TaxCalculator(params=params)
 
         # Import all rule modules to ensure they are registered
+        from . import benefit_rules, tax_rules, wff_rules
 
         for rule_config in config["rules"]:
-            rule_name = rule_config["name"]
+            rule_name = rule_config.get("name") or rule_config.get("rule")
             if rule_name not in RULE_REGISTRY:
-                raise ValueError(f"Unknown rule: {rule_name}")
+                # Fallback for old format
+                if '.' in rule_name:
+                    module_path, class_name = rule_name.rsplit('.', 1)
+                    try:
+                        module = importlib.import_module(module_path)
+                        rule_class = getattr(module, class_name)
+                    except (ImportError, AttributeError):
+                        raise ValueError(f"Unknown rule: {rule_name}")
+                else:
+                    raise ValueError(f"Unknown rule: {rule_name}")
+            else:
+                rule_class = RULE_REGISTRY[rule_name]
 
-            rule_class = RULE_REGISTRY[rule_name]
-
-            # Prepare kwargs for the rule's constructor
-            kwargs = {}
-            # This is a simple DI mechanism. If a rule needs a specific
-            # parameter block (e.g., jss_params), it should declare it
-            # in its __init__. We then find it in the main params object.
-            from inspect import signature
-
-            sig = signature(rule_class)
-            for param_name in sig.parameters:
-                if param_name == "calculator":
-                    kwargs["calculator"] = calculator
-                elif hasattr(params, param_name):
-                    kwargs[param_name] = getattr(params, param_name)
-                elif hasattr(params, param_name.replace("_params", "")):
-                    kwargs[param_name] = getattr(params, param_name.replace("_params", ""))
-
-            # Add any params from the YAML config
-            if "params" in rule_config:
-                kwargs.update(rule_config["params"])
-
-            rules.append(rule_class(**kwargs))
+            # Rules are instantiated without arguments here.
+            # They will get their data from the context dict passed to run().
+            rules.append(rule_class())
 
         return cls(rules)
 
@@ -162,65 +154,7 @@ class SimulationPipeline:
             self.rules[idx] = new_rule
 
 
-@register_rule
-@dataclass
-class IncomeTaxRule:
-    """A rule to calculate income tax.
-
-    This rule uses the `TaxCalculator` to calculate the income tax for each
-    individual in the DataFrame based on their `familyinc`.
-    """
-
-    calculator: TaxCalculator
-    name: str = "income_tax"
-    enabled: bool = True
-
-    def __call__(self, data: dict[str, Any]) -> None:
-        """Calculate income tax and add it to the DataFrame.
-
-        This method applies the `income_tax` method of the `TaxCalculator`
-        to the `familyinc` column of the DataFrame in the `data` dictionary
-        and stores the result in a new `tax_liability` column.
-
-        Args:
-            data: The data dictionary, expected to contain a 'df' key with
-                a pandas DataFrame.
-        """
-        df = data["df"]
-        df["tax_liability"] = df["familyinc"].apply(self.calculator.income_tax)
-
-
-@register_rule
-@dataclass
-class IETCRule:
-    """A rule to calculate the Independent Earner Tax Credit (IETC).
-
-    This rule uses the `TaxCalculator` to calculate the IETC for each
-    individual in the DataFrame based on their income and benefit status.
-    """
-
-    calculator: TaxCalculator
-    name: str = "ietc"
-    enabled: bool = True
-
-    def __call__(self, data: dict[str, Any]) -> None:
-        """Calculate the IETC and add it to the DataFrame.
-
-        This method applies the `ietc` method of the `TaxCalculator` to each
-        row of the DataFrame in the `data` dictionary and stores the result
-        in a new `ietc` column.
-
-        Args:
-            data: The data dictionary, expected to contain a 'df' key with
-                a pandas DataFrame.
-        """
-        df = data["df"]
-        df["ietc"] = df.apply(
-            lambda row: self.calculator.ietc(
-                taxable_income=row["familyinc"],
-                is_wff_recipient=row.get("is_wff_recipient", False),
-                is_super_recipient=row.get("is_super_recipient", False),
-                is_benefit_recipient=row.get("is_benefit_recipient", False),
-            ),
-            axis=1,
-        )
+# This file is now much simpler.
+# The Rule Protocol and the SimulationPipeline class remain.
+# The rule definitions have been moved to their respective modules.
+# The from_config factory is simplified to only handle instantiation.

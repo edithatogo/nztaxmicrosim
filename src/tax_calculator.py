@@ -7,10 +7,14 @@ from pydantic import BaseModel
 from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
 from .parameters import (
+    DonationCreditParams,
+    FamilyBoostParams,
     Parameters,
+    PIEParams,
+    RWTParams,
     TaxBracketParams,
 )
-from .tax_credits import calcietc, calculate_donation_credit, eitc, family_boost_credit
+from .tax_credits import calculate_donation_credit, calcietc, eitc, family_boost_credit
 
 
 class TaxCalculator(BaseModel):
@@ -230,7 +234,7 @@ class TaxCalculator(BaseModel):
 
         # Calculate benefits
         # This is highly simplified. A real calculation would need family context.
-        benefits = 0.0
+        benefits = 0
         if self.params.ietc:
             benefits += self.ietc(
                 taxable_income=income,

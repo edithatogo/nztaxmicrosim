@@ -1,8 +1,13 @@
 import pandas as pd
+<<<<<<< HEAD
 
 from src.demographic_modelling import age_population_forward
 
 
+=======
+from src.demographic_modelling import age_population_forward
+
+>>>>>>> origin/update-a-bunch-of-stuff-5
 def main():
     """
     An example script to demonstrate the use of the demographic modelling module.
@@ -28,7 +33,14 @@ def main():
     # This will simulate births based on the fertility data for 1990
     # found in `src/data/fertility_rates.json`.
     try:
+<<<<<<< HEAD
         population_1991 = age_population_forward(df=population_1990, year=1990)
+=======
+        population_1991 = age_population_forward(
+            df=population_1990,
+            year=1990
+        )
+>>>>>>> origin/update-a-bunch-of-stuff-5
 
         print("\nNew population (1991):")
         print(population_1991)

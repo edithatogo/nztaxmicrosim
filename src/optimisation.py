@@ -7,6 +7,7 @@ results against a set of user-defined metrics. This is the first phase
 of the "Policy Optimisation Module" described in the project roadmap.
 """
 
+<<<<<<< HEAD
 import copy
 from typing import Any, Callable, Dict, Mapping
 
@@ -16,6 +17,14 @@ import pandas as pd
 from .dynamic_simulation import _run_static_simulation
 from .microsim import load_parameters
 
+=======
+from typing import Callable, Dict, List, Any
+import pandas as pd
+from .microsim import load_parameters
+from .dynamic_simulation import _run_static_simulation
+import copy
+import optuna
+>>>>>>> origin/update-a-bunch-of-stuff-5
 
 def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     """
@@ -25,7 +34,11 @@ def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     Example:
         _set_nested_attr(params, "tax_brackets.rates.4", 0.45)
     """
+<<<<<<< HEAD
     parts = attr_path.split(".")
+=======
+    parts = attr_path.split('.')
+>>>>>>> origin/update-a-bunch-of-stuff-5
     for i, part in enumerate(parts[:-1]):
         if part.isdigit():
             obj = obj[int(part)]
@@ -38,12 +51,19 @@ def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     else:
         setattr(obj, last_part, value)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/update-a-bunch-of-stuff-5
 def run_parameter_scan(
     base_df: pd.DataFrame,
     base_year: str,
     scan_config: Dict[str, Any],
+<<<<<<< HEAD
     metrics: Mapping[str, Callable[[pd.DataFrame], float]],
+=======
+    metrics: Dict[str, Callable[[pd.DataFrame], float]]
+>>>>>>> origin/update-a-bunch-of-stuff-5
 ) -> pd.DataFrame:
     """
     Runs a parameter scan simulation.
@@ -125,7 +145,11 @@ def run_policy_optimisation(
     base_df: pd.DataFrame,
     base_year: str,
     opt_config: Dict[str, Any],
+<<<<<<< HEAD
     metrics: Mapping[str, Callable[[pd.DataFrame], float]],
+=======
+    metrics: Dict[str, Callable[[pd.DataFrame], float]]
+>>>>>>> origin/update-a-bunch-of-stuff-5
 ) -> optuna.study.Study:
     """
     Runs a policy optimisation using Optuna.

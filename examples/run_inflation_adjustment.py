@@ -1,8 +1,13 @@
 import pandas as pd
+<<<<<<< HEAD
 
 from src.inflation import adjust_for_inflation
 
 
+=======
+from src.inflation import adjust_for_inflation
+
+>>>>>>> origin/update-a-bunch-of-stuff-5
 def main():
     """
     An example script to demonstrate the use of the inflation adjustment module.

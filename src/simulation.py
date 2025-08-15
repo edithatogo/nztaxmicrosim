@@ -1,12 +1,14 @@
 """Provides a unified interface for running static and dynamic simulations."""
 
-from typing import Callable, Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 import pandas as pd
 
-from .behavioural import labour_supply_response as default_labour_supply_response
 from .dynamic_simulation import run_dynamic_simulation
 
+
+from .behavioural import labour_supply_response as default_labour_supply_response
+from typing import Callable, Optional, Dict
 
 def run_simulation(
     df: pd.DataFrame,
@@ -39,30 +41,24 @@ def run_simulation(
         each key is a year and the value is the simulation results for that
         year.
     """
+    simulation_kwargs = {
+        "use_behavioural_response": use_behavioural_response,
+        "elasticity_params": elasticity_params,
+        "behavioural_func": behavioural_func,
+    }
+
     if mode == "static":
         if not isinstance(year, str):
             raise ValueError("A single year must be provided for static mode.")
 
-        results = run_dynamic_simulation(
-            df,
-            [year],
-            use_behavioural_response=use_behavioural_response,
-            elasticity_params=elasticity_params,
-            behavioural_func=behavioural_func,
-        )
+        results = run_dynamic_simulation(df, [year], **simulation_kwargs)
         return results[year]
 
     elif mode == "dynamic":
         if not isinstance(year, list):
             raise ValueError("A list of years must be provided for dynamic mode.")
 
-        return run_dynamic_simulation(
-            df,
-            year,
-            use_behavioural_response=use_behavioural_response,
-            elasticity_params=elasticity_params,
-            behavioural_func=behavioural_func,
-        )
+        return run_dynamic_simulation(df, year, **simulation_kwargs)
 
     else:
         raise ValueError(f"Invalid mode: {mode}. Must be 'static' or 'dynamic'.")

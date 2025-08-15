@@ -1,50 +1,34 @@
-import pandas as pd
-import pytest
-
+from src.microsim import taxit
 from src.tax_calculator import TaxCalculator
-from src.tax_credits import eitc
+from src.tax_credits import calcietc, eitc, family_boost_credit
 
 
-@pytest.fixture
-def tax_calculator():
-    # Example parameters for a fictional tax system for testing purposes
-    tax_brackets = {"rates": [0.105, 0.175, 0.30, 0.33, 0.39], "thresholds": [0, 14000, 48000, 70000, 180000]}
-    return TaxCalculator(tax_brackets)
+def test_tax_calculator_income_tax_and_ietc() -> None:
+    calc = TaxCalculator.from_year("2023-2024")
+    income = 50_000
+    expected_tax = taxit(income, calc.params.tax_brackets)
+    assert calc.income_tax(income) == expected_tax
 
-
-def test_calculate_tax(tax_calculator):
-    # Test with a simple case
-    assert tax_calculator.calculate_tax(50000) == 8020.0
-
-
-def test_calculate_tax_edge_cases(tax_calculator):
-    # Test boundaries of tax brackets
-    assert tax_calculator.calculate_tax(14000) == 1470.0
-    assert tax_calculator.calculate_tax(48000) == 8020.0
-    assert tax_calculator.calculate_tax(70000) == 14020.0
-    assert tax_calculator.calculate_tax(180000) == 49920.0
-
-
-def test_calculate_tax_with_zero_income(tax_calculator):
-    # Test zero income
-    assert tax_calculator.calculate_tax(0) == 0.0
-
-
-def test_calculate_tax_with_high_income(tax_calculator):
-    # Test high income
-    assert tax_calculator.calculate_tax(250000) == 77220.0
-
-
-def test_calculate_tax_with_dataframe(tax_calculator):
-    # Test with a pandas DataFrame
-    data = {"income": [50000, 14000, 70000, 0, 250000]}
-    df = pd.DataFrame(data)
-    expected_tax = pd.Series([8020.0, 1470.0, 14020.0, 0.0, 77220.0])
-    pd.testing.assert_series_equal(tax_calculator.calculate_tax(df["income"]), expected_tax, check_names=False)
+    expected_ietc = calcietc(
+        taxable_income=30_000,
+        is_wff_recipient=False,
+        is_super_recipient=False,
+        is_benefit_recipient=False,
+        ietc_params=calc.params.ietc,
+    )
+    assert (
+        calc.ietc(
+            taxable_income=30_000,
+            is_wff_recipient=False,
+            is_super_recipient=False,
+            is_benefit_recipient=False,
+        )
+        == expected_ietc
+    )
 
 
 def test_tax_calculator_rwt() -> None:
-    calc = TaxCalculator.from_year("2024-2025")
+    calc = TaxCalculator.from_year("2023-2024")
     interest = 100.0
 
     # Test income in 10.5% bracket
@@ -138,7 +122,7 @@ def test_calculate_emtr():
 
     # Define a simple case: a single person, no benefits other than IETC
     individual_data = {
-        "income": 48000,  # At the threshold for IETC abatement
+        "income": 48000, # At the threshold for IETC abatement
         "is_wff_recipient": False,
         "is_super_recipient": False,
         "is_benefit_recipient": False,

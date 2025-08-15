@@ -52,25 +52,41 @@ def test_replace_rule() -> None:
 
 def test_pipeline_from_config(tmp_path):
     """Test creating a pipeline from a YAML configuration file."""
+    # This test now uses the real rule names.
     config_content = """
     rules:
       - name: JSSRule
       - name: IncomeTaxRule
       - name: KiwiSaverRule
-        params:
-          enabled: false
     """
     config_file = tmp_path / "config.yaml"
     config_file.write_text(config_content)
 
-    params = load_parameters("2024-2025")
-    pipeline = SimulationPipeline.from_config(str(config_file), params.model_dump())
+    pipeline = SimulationPipeline.from_config(str(config_file))
 
     assert len(pipeline.rules) == 3
     assert pipeline.rules[0].__class__.__name__ == "JSSRule"
     assert pipeline.rules[1].__class__.__name__ == "IncomeTaxRule"
     assert pipeline.rules[2].__class__.__name__ == "KiwiSaverRule"
-    assert not pipeline.rules[2].enabled
+
+    # Test running the pipeline with the necessary context
+    params = load_parameters("2024-2025")
+    tax_calc = TaxCalculator(params=params)
+    data = {
+        "df": pd.DataFrame({
+            "familyinc": [50000], "marital_status": ["Single"], "num_children": [0],
+            "total_individual_income_weekly": [50000 / 52]
+        }),
+        "params": params,
+        "tax_calc": tax_calc,
+    }
+
+    # We can't easily mock the __call__ methods now because they are part of a Protocol
+    # so we'll just run the pipeline and check that it doesn't crash and produces output.
+    result_data = pipeline.run(data)
+    assert "jss_entitlement" in result_data["df"].columns
+    assert "tax_liability" in result_data["df"].columns
+    assert "kiwisaver_contribution" in result_data["df"].columns
 
 
 def test_pipeline_from_config_unknown_rule(tmp_path):
@@ -82,6 +98,5 @@ def test_pipeline_from_config_unknown_rule(tmp_path):
     config_file = tmp_path / "config.yaml"
     config_file.write_text(config_content)
 
-    params = load_parameters("2023-2024")
     with pytest.raises(ValueError, match="Unknown rule: UnknownRule"):
-        SimulationPipeline.from_config(str(config_file), params.model_dump())
+        SimulationPipeline.from_config(str(config_file))

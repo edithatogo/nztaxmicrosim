@@ -82,58 +82,27 @@ def main() -> None:
 
     # Set the parameters for a specific year
     year = "2023-2024"
-    tax_calc = TaxCalculator.from_year(year)
-    params = tax_calc.params
+    from .microsim import load_parameters
+    params = load_parameters(year)
+    tax_calc = TaxCalculator(params=params)
 
     # Calculate total individual income (weekly for benefits)
     df["total_individual_income_weekly"] = (
         df["employment_income"] + df["self_employment_income"] + df["investment_income"]
     ) / 52
 
-    from .benefit_rules import (
-        AccommodationSupplementRule,
-        JSSRule,
-        SLPRule,
-        SPSRule,
-    )
-    from .pipeline import IncomeTaxRule, Rule, SimulationPipeline
-    from .tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule
-    from .wff_rules import (
-        ApplyCalibrationsRule,
-        ApplyCareLogicRule,
-        CalculateAbatementRule,
-        CalculateFinalEntitlementsRule,
-        CalculateMaxEntitlementsRule,
-        GrossUpIncomeRule,
-    )
+    from .pipeline import SimulationPipeline
 
-    pipeline_rules: list[Rule] = []
-    if params.jss:
-        pipeline_rules.append(JSSRule(jss_params=params.jss))
-    if params.sps:
-        pipeline_rules.append(SPSRule(sps_params=params.sps))
-    if params.slp:
-        pipeline_rules.append(SLPRule(slp_params=params.slp))
-    if params.accommodation_supplement:
-        pipeline_rules.append(AccommodationSupplementRule(as_params=params.accommodation_supplement))
-    pipeline_rules.extend(
-        [
-            IncomeTaxRule(tax_calc),
-            ACCLevyRule(acc_levy_params=params.acc_levy),
-            KiwiSaverRule(kiwisaver_params=params.kiwisaver),
-            StudentLoanRule(student_loan_params=params.student_loan),
-            GrossUpIncomeRule(),
-            CalculateMaxEntitlementsRule(),
-            ApplyCareLogicRule(),
-            CalculateAbatementRule(),
-            CalculateFinalEntitlementsRule(),
-            ApplyCalibrationsRule(),
-        ]
-    )
+    # Create the pipeline from the configuration file
+    pipeline = SimulationPipeline.from_config("conf/pipeline.yml")
 
-    pipeline = SimulationPipeline(pipeline_rules)
-
-    result_data = pipeline.run({"df": df.copy()})
+    # The pipeline needs access to the dataframe, params, and calculator
+    data_context = {
+        "df": df.copy(),
+        "params": params,
+        "tax_calc": tax_calc
+    }
+    result_data = pipeline.run(data_context)
     result = result_data["df"]
 
     # Calculate disposable income and AHC and add to result DataFrame

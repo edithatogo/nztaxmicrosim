@@ -3,11 +3,11 @@
         "tax_brackets": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1964'",
             "reference_ids": [],
-            "notes": "The values here are an approximation of the 1964 tax system. The rates are the 1954 rates with a 10% rebate applied. This rebate was capped at £100, which is not modelled here. The top rate of 76.5% is from previous years and is assumed to be the maximum rate."
+            "notes": "The values here are an approximation of the 1964 tax system. The rates are the 1954 rates with a 10% rebate applied. This rebate was capped at \u00a3100, which is not modelled here. The top rate of 76.5% is from previous years and is assumed to be the maximum rate."
         },
         "ietc": {
             "source": "Placeholder",
-            "notes": "The 10% tax rebate is modelled in the tax brackets. The £100 cap on the rebate is not modelled."
+            "notes": "Policy did not exist in this year (starts 2009)."
         },
         "wff": {
             "source": "Placeholder",
