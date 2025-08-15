@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from .benefits import (
@@ -34,10 +34,11 @@ class JSSRule(Rule):
     """A rule to calculate Jobseeker Support (JSS)."""
     name: str = "JSSRule"
     enabled: bool = True
+    jss_params: JSSParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate JSS entitlement and add it to the DataFrame."""
-        jss_params = data["params"].jss
+        jss_params = self.jss_params or data["params"].jss
         if not jss_params:
             return
         data["df"]["jss_entitlement"] = data["df"].apply(
@@ -58,10 +59,11 @@ class DisabilityAllowanceRule(Rule):
     """A rule to calculate the Disability Allowance."""
     name: str = "DisabilityAllowanceRule"
     enabled: bool = True
+    disability_allowance_params: DisabilityAllowanceParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate Disability Allowance entitlement and add it to the DataFrame."""
-        disability_allowance_params = data["params"].disability_allowance
+        disability_allowance_params = self.disability_allowance_params or data["params"].disability_allowance
         if not disability_allowance_params:
             return
         data["df"]["disability_allowance_entitlement"] = data["df"].apply(
@@ -80,10 +82,11 @@ class MFTCRule(Rule):
     """A rule to calculate the Minimum Family Tax Credit (MFTC)."""
     name: str = "MFTCRule"
     enabled: bool = True
+    mftc_params: MFTCParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate MFTC entitlement and add it to the DataFrame."""
-        mftc_params = data["params"].mftc
+        mftc_params = self.mftc_params or data["params"].mftc
         if not mftc_params:
             return
         df = data["df"]
@@ -103,10 +106,11 @@ class IWTCRule(Rule):
     """A rule to calculate the In-Work Tax Credit (IWTC)."""
     name: str = "IWTCRule"
     enabled: bool = True
+    iwtc_params: IWTCParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate IWTC entitlement and add it to the DataFrame."""
-        iwtc_params = data["params"].iwtc
+        iwtc_params = self.iwtc_params or data["params"].iwtc
         if not iwtc_params:
             return
         df = data["df"]
@@ -127,10 +131,11 @@ class FTCRule(Rule):
     """A rule to calculate the Family Tax Credit (FTC)."""
     name: str = "FTCRule"
     enabled: bool = True
+    ftc_params: FTCParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate FTC entitlement and add it to the DataFrame."""
-        ftc_params = data["params"].ftc
+        ftc_params = self.ftc_params or data["params"].ftc
         if not ftc_params:
             return
         df = data["df"]
@@ -150,10 +155,11 @@ class BSTCRule(Rule):
     """A rule to calculate the Best Start Tax Credit (BSTC)."""
     name: str = "BSTCRule"
     enabled: bool = True
+    bstc_params: BSTCParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate BSTC entitlement and add it to the DataFrame."""
-        bstc_params = data["params"].bstc
+        bstc_params = self.bstc_params or data["params"].bstc
         if not bstc_params:
             return
         df = data["df"]
@@ -174,10 +180,11 @@ class WEPRule(Rule):
     """A rule to calculate the Winter Energy Payment (WEP)."""
     name: str = "WEPRule"
     enabled: bool = True
+    wep_params: WEPParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate WEP entitlement and add it to the DataFrame."""
-        wep_params = data["params"].wep
+        wep_params = self.wep_params or data["params"].wep
         if not wep_params:
             return
         df = data["df"]
@@ -202,10 +209,11 @@ class SPSRule(Rule):
     """A rule to calculate Sole Parent Support (SPS)."""
     name: str = "SPSRule"
     enabled: bool = True
+    sps_params: SPSParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate SPS entitlement and add it to the DataFrame."""
-        sps_params = data["params"].sps
+        sps_params = self.sps_params or data["params"].sps
         if not sps_params:
             return
         data["df"]["sps_entitlement"] = data["df"].apply(
@@ -224,10 +232,11 @@ class SLPRule(Rule):
     """A rule to calculate Supported Living Payment (SLP)."""
     name: str = "SLPRule"
     enabled: bool = True
+    slp_params: SLPParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate SLP entitlement and add it to the DataFrame."""
-        slp_params = data["params"].slp
+        slp_params = self.slp_params or data["params"].slp
         if not slp_params:
             return
         data["df"]["slp_entitlement"] = data["df"].apply(
@@ -248,10 +257,11 @@ class AccommodationSupplementRule(Rule):
     """A rule to calculate the Accommodation Supplement."""
     name: str = "AccommodationSupplementRule"
     enabled: bool = True
+    as_params: AccommodationSupplementParams | None = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate Accommodation Supplement entitlement and add it to the DataFrame."""
-        as_params = data["params"].accommodation_supplement
+        as_params = self.as_params or data["params"].accommodation_supplement
         if not as_params:
             return
         data["df"]["accommodation_supplement_entitlement"] = data["df"].apply(

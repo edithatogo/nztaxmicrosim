@@ -51,9 +51,7 @@ class SimulationPipeline:
 
         The configuration file should specify a list of rules to be included
         in the pipeline. This method uses the RULE_REGISTRY to find and
-        instantiate the rules. The rules are instantiated without parameters;
-        they are expected to receive them from the `data` dictionary during
-        the `run` phase.
+        instantiate the rules.
 
         Args:
             config_path: The path to the YAML configuration file.
@@ -71,6 +69,8 @@ class SimulationPipeline:
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")
+            params = rule_config.get("params", {})
+
             if rule_name not in RULE_REGISTRY:
                 # Fallback for old format
                 if '.' in rule_name:
@@ -85,9 +85,7 @@ class SimulationPipeline:
             else:
                 rule_class = RULE_REGISTRY[rule_name]
 
-            # Rules are instantiated without arguments here.
-            # They will get their data from the context dict passed to run().
-            rules.append(rule_class())
+            rules.append(rule_class(**params))
 
         return cls(rules)
 

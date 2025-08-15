@@ -3,10 +3,12 @@
 from dataclasses import dataclass
 from typing import Any
 
+import pandas as pd
 import pytest
 
 from src.microsim import load_parameters
 from src.pipeline import SimulationPipeline
+from src.tax_calculator import TaxCalculator
 
 
 @dataclass
@@ -87,6 +89,30 @@ def test_pipeline_from_config(tmp_path):
     assert "jss_entitlement" in result_data["df"].columns
     assert "tax_liability" in result_data["df"].columns
     assert "kiwisaver_contribution" in result_data["df"].columns
+
+
+def test_pipeline_from_config_with_params(tmp_path):
+    """Test creating a pipeline from a YAML configuration file with rule parameters."""
+    config_content = """
+    rules:
+      - name: DummyRule
+        params:
+          value: 10
+    """
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(config_content)
+
+    # Temporarily register DummyRule for this test
+    from src import pipeline
+    pipeline.RULE_REGISTRY['DummyRule'] = DummyRule
+
+    pipeline_instance = SimulationPipeline.from_config(str(config_file))
+    assert len(pipeline_instance.rules) == 1
+    assert isinstance(pipeline_instance.rules[0], DummyRule)
+    assert pipeline_instance.rules[0].value == 10
+
+    # Clean up the registry
+    del pipeline.RULE_REGISTRY['DummyRule']
 
 
 def test_pipeline_from_config_unknown_rule(tmp_path):

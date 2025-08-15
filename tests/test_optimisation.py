@@ -1,31 +1,16 @@
-<<<<<<< HEAD
-import pandas as pd
-import pytest
-
-from src.microsim import load_parameters
-from src.optimisation import run_parameter_scan, run_policy_optimisation
-
-=======
 import pytest
 import pandas as pd
 from src.optimisation import run_parameter_scan, run_policy_optimisation
 from src.parameters import Parameters
 from src.microsim import load_parameters
->>>>>>> origin/update-a-bunch-of-stuff-5
+
 
 @pytest.fixture
 def sample_df():
     """A sample DataFrame for testing."""
     return pd.DataFrame({"taxable_income": [50000]})
 
-<<<<<<< HEAD
 
-@pytest.fixture
-def sample_metrics():
-    """Sample metric functions."""
-    return {"total_tax": lambda df: df["tax_liability"].sum(), "person_count": lambda df: len(df)}
-
-=======
 @pytest.fixture
 def sample_metrics():
     """Sample metric functions."""
@@ -33,21 +18,13 @@ def sample_metrics():
         "total_tax": lambda df: df["tax_liability"].sum(),
         "person_count": lambda df: len(df)
     }
->>>>>>> origin/update-a-bunch-of-stuff-5
+
 
 @pytest.fixture
 def valid_scan_config():
     """A valid scan configuration for testing."""
     return {
         "scenarios": [
-<<<<<<< HEAD
-            {"id": "base_case", "parameters": {}},
-            {"id": "scenario_1", "parameters": {"tax_brackets.rates": [0.10, 0.20, 0.30, 0.40, 0.50], "ietc.ent": 600}},
-        ]
-    }
-
-
-=======
             {
                 "id": "base_case",
                 "parameters": {}
@@ -62,7 +39,6 @@ def valid_scan_config():
         ]
     }
 
->>>>>>> origin/update-a-bunch-of-stuff-5
 def test_run_parameter_scan_happy_path(sample_df, valid_scan_config, sample_metrics, monkeypatch):
     """Test that the parameter scan runs successfully with a valid config."""
 
@@ -84,10 +60,7 @@ def test_run_parameter_scan_happy_path(sample_df, valid_scan_config, sample_metr
     assert results["total_tax"].tolist() == [1000, 1000]
     assert results["person_count"].tolist() == [1, 1]
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def test_parameter_modification(sample_df, valid_scan_config, sample_metrics, monkeypatch):
     """Test that parameters are correctly modified for each scenario."""
 
@@ -133,25 +106,11 @@ def test_invalid_config_raises_errors(sample_df, sample_metrics):
         config = {"scenarios": [{"id": "s1", "parameters": {"non_existent.param": 1}}]}
         run_parameter_scan(sample_df, "2023-2024", config, sample_metrics)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 @pytest.fixture
 def valid_opt_config():
     """A valid optimisation configuration for testing."""
     return {
-<<<<<<< HEAD
-        "objective": {"name": "total_tax", "direction": "maximize"},
-        "n_trials": 1,  # Run only one trial for testing
-        "search_space": [
-            {"name": "top_tax_rate", "path": "tax_brackets.rates.4", "type": "float", "low": 0.4, "high": 0.5},
-            {"name": "ietc_entitlement", "path": "ietc.ent", "type": "int", "low": 500, "high": 700},
-        ],
-    }
-
-
-=======
         "objective": {
             "name": "total_tax",
             "direction": "maximize"
@@ -175,7 +134,6 @@ def valid_opt_config():
         ]
     }
 
->>>>>>> origin/update-a-bunch-of-stuff-5
 def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, monkeypatch):
     """Test the main logic of the policy optimisation runner."""
 
@@ -183,20 +141,10 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     class MockTrial:
         def __init__(self):
             self.user_attrs = {}
-<<<<<<< HEAD
-
-        def suggest_float(self, name, low, high):
-            return 0.45  # Return a fixed value for predictability
-
-        def suggest_int(self, name, low, high):
-            return 650
-
-=======
         def suggest_float(self, name, low, high):
             return 0.45  # Return a fixed value for predictability
         def suggest_int(self, name, low, high):
             return 650
->>>>>>> origin/update-a-bunch-of-stuff-5
         def set_user_attr(self, key, value):
             self.user_attrs[key] = value
 
@@ -222,21 +170,13 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
 
     # Mock the simulation to check that parameters are applied correctly
     modified_params_storage = []
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
     def mock_simulation(df, params):
         modified_params_storage.append(params)
         return pd.DataFrame({"tax_liability": [2000]})
 
     monkeypatch.setattr("src.optimisation._run_static_simulation", mock_simulation)
 
-<<<<<<< HEAD
-    _ = run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
-=======
     study = run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
->>>>>>> origin/update-a-bunch-of-stuff-5
 
     # 1. Check that the objective function returned the correct value
     assert mock_study_instance.objective_result == 2000

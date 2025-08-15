@@ -1,16 +1,9 @@
 import pandas as pd
 import pytest
-<<<<<<< HEAD
-
-from src.behavioural import labour_supply_response
-from src.parameters import TaxBracketParams
-from src.tax_calculator import TaxCalculator
-
-=======
 from src.tax_calculator import TaxCalculator
 from src.behavioural import labour_supply_response
 from src.parameters import Parameters, TaxBracketParams
->>>>>>> origin/update-a-bunch-of-stuff-5
+
 
 @pytest.fixture
 def sample_population():
@@ -24,10 +17,7 @@ def sample_population():
     }
     return pd.DataFrame(data)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 @pytest.fixture
 def tax_calculators():
     """Provides two TaxCalculator instances for a reform scenario."""
@@ -41,22 +31,15 @@ def tax_calculators():
     # We need to create a new Parameters object for the 'after' scenario
     # to avoid modifying the cached parameters.
     params_after = calc_after.params.copy(deep=True)
-<<<<<<< HEAD
-    params_after.tax_brackets = TaxBracketParams(rates=[0.10, 0.15, 0.25, 0.30], thresholds=[14000, 48000, 70000])
-=======
     params_after.tax_brackets = TaxBracketParams(
         rates=[0.10, 0.15, 0.25, 0.30],
         thresholds=[14000, 48000, 70000]
     )
->>>>>>> origin/update-a-bunch-of-stuff-5
     calc_after.params = params_after
 
     return calc_before, calc_after
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def test_labour_supply_response(sample_population, tax_calculators):
     """Test the labour_supply_response function."""
     calc_before, calc_after = tax_calculators
@@ -74,10 +57,6 @@ def test_labour_supply_response(sample_population, tax_calculators):
     df_before = sample_population
     df_after_no_behaviour = sample_population.copy()
 
-<<<<<<< HEAD
-    df_behavioural = labour_supply_response(
-        df_before, df_after_no_behaviour, calc_before, calc_after, elasticity_params
-=======
 
     df_behavioural = labour_supply_response(
         df_before,
@@ -85,7 +64,6 @@ def test_labour_supply_response(sample_population, tax_calculators):
         calc_before,
         calc_after,
         elasticity_params
->>>>>>> origin/update-a-bunch-of-stuff-5
     )
 
     # Check that income has increased for all individuals
@@ -93,16 +71,7 @@ def test_labour_supply_response(sample_population, tax_calculators):
 
     # Check that the secondary earner (person 1) had a larger percentage increase
     # than the primary earner (person 2) in the same family.
-<<<<<<< HEAD
-    pct_change_person1 = (
-        df_behavioural.loc[0, "income"] - df_after_no_behaviour.loc[0, "income"]
-    ) / df_after_no_behaviour.loc[0, "income"]
-    pct_change_person2 = (
-        df_behavioural.loc[1, "income"] - df_after_no_behaviour.loc[1, "income"]
-    ) / df_after_no_behaviour.loc[1, "income"]
-=======
     pct_change_person1 = (df_behavioural.loc[0, "income"] - df_after_no_behaviour.loc[0, "income"]) / df_after_no_behaviour.loc[0, "income"]
     pct_change_person2 = (df_behavioural.loc[1, "income"] - df_after_no_behaviour.loc[1, "income"]) / df_after_no_behaviour.loc[1, "income"]
->>>>>>> origin/update-a-bunch-of-stuff-5
 
     assert pct_change_person1 > pct_change_person2

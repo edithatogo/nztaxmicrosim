@@ -2,29 +2,17 @@
 This module provides functionality for adjusting monetary values for inflation.
 """
 
-<<<<<<< HEAD
-import json
-import os
-from pathlib import Path
-
-import pandas as pd
-import wbdata
-=======
 import pandas as pd
 import wbdata
 import json
 from pathlib import Path
 import os
->>>>>>> origin/update-a-bunch-of-stuff-5
 
 # Define a cache file for the CPI data
 CACHE_DIR = Path(__file__).parent / ".cache"
 CPI_CACHE_FILE = CACHE_DIR / "cpi_data.json"
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def get_cpi_data() -> dict[int, float]:
     """
     Fetches Consumer Price Index (CPI) data from the World Bank, caching it locally.
@@ -45,13 +33,9 @@ def get_cpi_data() -> dict[int, float]:
     print("Fetching CPI data from World Bank API...")
     try:
         # Fetch CPI data for New Zealand. The indicator for CPI is 'FP.CPI.TOTL'.
-<<<<<<< HEAD
-        cpi_df = wbdata.get_dataframe({"FP.CPI.TOTL": "cpi"}, country="NZL", data_date=None)
-=======
         cpi_df = wbdata.get_dataframe(
             {"FP.CPI.TOTL": "cpi"}, country="NZL", data_date=None
         )
->>>>>>> origin/update-a-bunch-of-stuff-5
         # The DataFrame has a multi-index. We want to map year to CPI.
         cpi_df.reset_index(inplace=True)
         cpi_df["date"] = pd.to_numeric(cpi_df["date"])
@@ -69,10 +53,7 @@ def get_cpi_data() -> dict[int, float]:
         print(f"Error fetching data from World Bank API: {e}")
         return {}
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def adjust_for_inflation(
     data: pd.DataFrame,
     base_year: int,
