@@ -61,7 +61,7 @@ class KiwiSaverRule(Rule):
     function.
     """
 
-    kiwisaver_params: KiwisaverParams
+    kiwisaver_params: KiwisaverParams | None
     name: str = "kiwisaver"
     enabled: bool = True
 
@@ -77,6 +77,8 @@ class KiwiSaverRule(Rule):
                 a pandas DataFrame. The DataFrame must contain a 'familyinc'
                 column.
         """
+        if not self.kiwisaver_params:
+            return
         from .payroll_deductions import calculate_kiwisaver_contribution
 
         df = data["df"]
@@ -101,7 +103,7 @@ class StudentLoanRule(Rule):
     function.
     """
 
-    student_loan_params: StudentLoanParams
+    student_loan_params: StudentLoanParams | None
     name: str = "student_loan"
     enabled: bool = True
 
@@ -117,6 +119,8 @@ class StudentLoanRule(Rule):
                 a pandas DataFrame. The DataFrame must contain a 'familyinc'
                 column.
         """
+        if not self.student_loan_params:
+            return
         from .payroll_deductions import calculate_student_loan_repayment
 
         df = data["df"]
@@ -158,6 +162,8 @@ class IETCRule(Rule):
                 parameters. The DataFrame must contain 'familyinc' and
                 benefit recipient columns (e.g., 'is_jss_recipient').
         """
+        if not data["params"].ietc:
+            return
         from .tax_calculator import TaxCalculator
 
         df = data["df"]

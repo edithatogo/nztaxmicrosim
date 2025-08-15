@@ -78,8 +78,77 @@ def test_adjust_for_inflation_missing_year(mock_get_cpi, sample_data, mock_cpi_d
     with pytest.raises(ValueError, match="CPI data not available for target year: 1980"):
         adjust_for_inflation(sample_data, 2023, 1980, ["income"])
 
+def test_adjust_for_inflation_zero_cpi(sample_data, mock_cpi_data):
+    """Test that a ValueError is raised if the target year CPI is zero."""
+    mock_cpi_data[1990] = 0.0
+    with patch("src.inflation.get_cpi_data", return_value=mock_cpi_data):
+        with pytest.raises(ValueError, match="CPI for target year 1990 is zero"):
+            adjust_for_inflation(sample_data, 2023, 1990, ["income"])
 
-# We don't test get_cpi_data directly hitting the API in a unit test,
-# but we could add an integration test for it if needed.
-# For now, we assume the wbdata library works as expected.
-# The mocking in the tests above validates the logic that USES the data.
+def test_adjust_for_inflation_empty_cpi(sample_data):
+    """Test that the function returns the original dataframe if CPI data is empty."""
+    with patch("src.inflation.get_cpi_data", return_value={}):
+        adjusted_df = adjust_for_inflation(sample_data, 2023, 1990, ["income"])
+        pd.testing.assert_frame_equal(adjusted_df, sample_data)
+
+def test_get_cpi_data_from_api(monkeypatch, tmp_path):
+    """Test fetching CPI data from the API and creating a cache file."""
+    # 1. Setup mocks
+    # Mock the wbdata API call
+    mock_api_df = pd.DataFrame({
+        'cpi': [98.5, 99.2],
+    }, index=pd.MultiIndex.from_tuples([('New Zealand', '2021'), ('New Zealand', '2022')], names=['country', 'date']))
+
+    mock_get_dataframe = lambda *args, **kwargs: mock_api_df
+    monkeypatch.setattr("src.inflation.wbdata.get_dataframe", mock_get_dataframe)
+
+    # Use a temporary directory for the cache
+    monkeypatch.setattr("src.inflation.CPI_CACHE_FILE", tmp_path / "cpi_data.json")
+    cache_file = tmp_path / "cpi_data.json"
+
+    # 2. Run the function
+    # Ensure no cache exists initially
+    assert not cache_file.exists()
+    cpi_data = get_cpi_data()
+
+    # 3. Assert results
+    assert cpi_data == {2021: 98.5, 2022: 99.2}
+    assert cache_file.exists()
+    with open(cache_file, "r") as f:
+        assert '{"2021": 98.5, "2022": 99.2}' in f.read()
+
+def test_get_cpi_data_from_cache(monkeypatch, tmp_path):
+    """Test reading CPI data from an existing cache file."""
+    # 1. Setup mocks
+    # This mock will fail the test if the API is called
+    def mock_api_call_fail(*args, **kwargs):
+        pytest.fail("API should not be called when cache exists.")
+    monkeypatch.setattr("src.inflation.wbdata.get_dataframe", mock_api_call_fail)
+
+    # Use a temporary directory and create a dummy cache file
+    cache_file = tmp_path / "cpi_data.json"
+    with open(cache_file, "w") as f:
+        f.write('{"2020": 95.1, "2021": 98.5}')
+    monkeypatch.setattr("src.inflation.CPI_CACHE_FILE", cache_file)
+
+    # 2. Run the function
+    cpi_data = get_cpi_data()
+
+    # 3. Assert results
+    assert cpi_data == {2020: 95.1, 2021: 98.5}
+
+def test_get_cpi_data_api_failure(monkeypatch, tmp_path):
+    """Test that an empty dict is returned if the API call fails."""
+    # 1. Setup mocks
+    def mock_api_call_fail(*args, **kwargs):
+        raise ConnectionError("API is down")
+    monkeypatch.setattr("src.inflation.wbdata.get_dataframe", mock_api_call_fail)
+
+    # Use a temporary directory for the cache
+    monkeypatch.setattr("src.inflation.CPI_CACHE_FILE", tmp_path / "cpi_data.json")
+
+    # 2. Run the function
+    cpi_data = get_cpi_data()
+
+    # 3. Assert results
+    assert cpi_data == {}

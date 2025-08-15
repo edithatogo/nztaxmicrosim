@@ -2,24 +2,27 @@
     "_source_references": {
         "tax_brackets": {
             "source": "nz_personal_tax_rules.json: year 1990 entry",
-            "reference_ids": ["152018581057803-L24-L26", "152018581057803-L24-L27"],
+            "reference_ids": [
+                "152018581057803-L24-L26",
+                "152018581057803-L24-L27"
+            ],
             "notes": "Values are taken directly from the source file."
         },
         "ietc": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. The structure of low-income tax relief in 1990 is unknown. Set to zero as a placeholder."
+            "notes": "Policy did not exist in this year (starts 2009)."
         },
         "wff": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. WFF did not exist. The historical equivalent was the Family Support Tax Credit. Its rules (rates, thresholds, abatements) need to be researched and a new section may be required in the model to handle it. Set to zero as a placeholder."
+            "notes": "Policy did not exist in this year (starts 2005)."
         },
         "ppl": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Paid Parental Leave scheme of 1990 is unknown. Disabled as a placeholder."
+            "notes": "Policy did not exist in this year (starts 2002)."
         },
         "child_support": {
             "source": "Placeholder",
-            "notes": "NEEDS RESEARCH. Child support rules for 1990 are unknown. Disabled as a placeholder."
+            "notes": "Policy did not exist in this year (starts 1991)."
         },
         "acc_levy": {
             "source": "Placeholder",
@@ -35,35 +38,10 @@
             30875
         ]
     },
-    "ietc": {
-        "thrin": 0,
-        "ent": 0,
-        "thrab": 0,
-        "abrate": 0
-    },
-    "wff": {
-        "ftc1": 0,
-        "ftc2": 0,
-        "iwtc1": 0,
-        "iwtc2": 0,
-        "bstc": 0,
-        "mftc": 0,
-        "abatethresh1": 0,
-        "abatethresh2": 0,
-        "abaterate1": 0,
-        "abaterate2": 0,
-        "bstcthresh": 0,
-        "bstcabate": 0
-    },
-    "ppl": {
-        "enabled": false,
-        "weekly_rate": 0,
-        "max_weeks": 0
-    },
-    "child_support": {
-        "enabled": false,
-        "support_rate": 0
-    },
+    "ietc": null,
+    "wff": null,
+    "ppl": null,
+    "child_support": null,
     "acc_levy": {
         "rate": 0.0153,
         "max_income": 139111

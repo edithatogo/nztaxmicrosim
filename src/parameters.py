@@ -237,8 +237,8 @@ class Parameters(BaseModel):
     """
 
     tax_brackets: TaxBracketParams
-    ietc: IETCParams
-    wff: WFFParams
+    ietc: Optional[IETCParams] = None
+    wff: Optional[WFFParams] = None
     jss: Optional[JSSParams] = None
     sps: Optional[SPSParams] = None
     slp: Optional[SLPParams] = None
@@ -249,13 +249,14 @@ class Parameters(BaseModel):
     ftc: Optional[FTCParams] = None
     iwtc: Optional[IWTCParams] = None
     mftc: Optional[MFTCParams] = None
-    family_boost: FamilyBoostParams = Field(default_factory=FamilyBoostParams)
+    family_boost: Optional[FamilyBoostParams] = Field(default_factory=FamilyBoostParams)
     pie: Optional[PIEParams] = None
-    ppl: PPLParams = Field(default_factory=PPLParams)
-    child_support: ChildSupportParams = Field(default_factory=ChildSupportParams)
-    kiwisaver: KiwisaverParams = Field(default_factory=KiwisaverParams)
-    student_loan: StudentLoanParams = Field(default_factory=StudentLoanParams)
-    rwt: RWTParams = Field(default_factory=RWTParams)
+    ppl: Optional[PPLParams] = Field(default_factory=PPLParams)
+    child_support: Optional[ChildSupportParams] = Field(default_factory=ChildSupportParams)
+    kiwisaver: Optional[KiwisaverParams] = Field(default_factory=KiwisaverParams)
+    student_loan: Optional[StudentLoanParams] = Field(default_factory=StudentLoanParams)
+    rwt: Optional[RWTParams] = Field(default_factory=RWTParams)
+
     acc_levy: Optional[ACCLevyParams] = None
     wep: Optional[WEPParams] = None
 
