@@ -113,8 +113,43 @@ def test_tax_calculator_pie_tax() -> None:
 
     # Test with a year that does not have PIE params
     calc_without_pie = TaxCalculator.from_year("2023-2024")
-<<<<<<< HEAD
     assert calc_without_pie.pie_tax(pie_income, taxable_income) == 0.0
-=======
-    assert calc_without_pie.pie_tax(pie_income, taxable_income) == 0.0
->>>>>>> 534254760198f932d3d677da94076bf62c87c7fd
+
+
+def test_calculate_emtr():
+    """Test the calculate_emtr method."""
+    calc = TaxCalculator.from_year("2023-2024")
+
+    # Define a simple case: a single person, no benefits other than IETC
+    individual_data = {
+        "income": 48000, # At the threshold for IETC abatement
+        "is_wff_recipient": False,
+        "is_super_recipient": False,
+        "is_benefit_recipient": False,
+    }
+
+    # Manual calculation for this specific case:
+    # At 48000, tax is 7560. IETC is 520. Net income = 48000 - 7560 + 520 = 41000.
+    # At 48001, tax is 7560.30. IETC is 519.87. Net income = 48001 - 7560.30 + 519.87 = 40999.57
+    # Change in net income = 40999.57 - 41000 = -0.43
+    # EMTR = 1 - (-0.43) is wrong.
+    # EMTR = 1 - (change_in_net_income / change_in_gross_income)
+    # EMTR = 1 - (net_income_plus_one - net_income_original) / 1
+    # Let's re-calculate net income based on the _calculate_net_income function
+
+    # At 48000:
+    # tax = 7560
+    # ietc = 520
+    # net = 48000 - 7560 + 520 = 40960
+
+    # At 48001:
+    # tax = 7560.3
+    # ietc = 520 - 0.13 = 519.87
+    # net = 48001 - 7560.3 + 519.87 = 40960.57
+
+    # change in net income = 0.57
+    # EMTR = 1 - 0.57 = 0.43
+    # This is the 30% tax rate plus the 13% IETC abatement rate.
+
+    emtr = calc.calculate_emtr(individual_data)
+    assert abs(emtr - 0.43) < 0.001

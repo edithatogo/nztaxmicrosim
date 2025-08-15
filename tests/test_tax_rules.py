@@ -1,25 +1,18 @@
 """Tests for the tax rules."""
 
 import pandas as pd
-
 from src.microsim import load_parameters
-from src.parameters import (
-    ACCLevyParams,
-    KiwisaverParams,
-    StudentLoanParams,
-)
-from src.tax_rules import ACCLevyRule, IETCRule, KiwiSaverRule, StudentLoanRule
+from src.tax_calculator import TaxCalculator
+from src.tax_rules import ACCLevyRule, IETCRule, KiwiSaverRule, StudentLoanRule, IncomeTaxRule
 
 
 def test_acc_levy_rule():
     """Test the ACCLevyRule."""
-    rule = ACCLevyRule(acc_levy_params=ACCLevyParams(rate=0.0153, max_income=139111))
+    rule = ACCLevyRule()
+    params = load_parameters("2023-2024")
     data = {
-        "df": pd.DataFrame(
-            {
-                "familyinc": [50000, 150000],
-            }
-        )
+        "df": pd.DataFrame({"familyinc": [50000, 150000]}),
+        "params": params,
     }
     rule(data)
     assert "acc_levy" in data["df"].columns
@@ -29,13 +22,11 @@ def test_acc_levy_rule():
 
 def test_kiwisaver_rule():
     """Test the KiwiSaverRule."""
-    rule = KiwiSaverRule(kiwisaver_params=KiwisaverParams(contribution_rate=0.03))
+    rule = KiwiSaverRule()
+    params = load_parameters("2023-2024")
     data = {
-        "df": pd.DataFrame(
-            {
-                "familyinc": [50000, 150000],
-            }
-        )
+        "df": pd.DataFrame({"familyinc": [50000, 150000]}),
+        "params": params,
     }
     rule(data)
     assert "kiwisaver_contribution" in data["df"].columns
@@ -45,23 +36,23 @@ def test_kiwisaver_rule():
 
 def test_student_loan_rule():
     """Test the StudentLoanRule."""
-    rule = StudentLoanRule(student_loan_params=StudentLoanParams(repayment_threshold=20000, repayment_rate=0.12))
+    rule = StudentLoanRule()
+    params = load_parameters("2023-2024")
     data = {
-        "df": pd.DataFrame(
-            {
-                "familyinc": [50000, 150000],
-            }
-        )
+        "df": pd.DataFrame({"familyinc": [50000, 150000]}),
+        "params": params,
     }
     rule(data)
     assert "student_loan_repayment" in data["df"].columns
-    assert data["df"]["student_loan_repayment"][0] == (50000 - 20000) * 0.12
-    assert data["df"]["student_loan_repayment"][1] == (150000 - 20000) * 0.12
+    assert data["df"]["student_loan_repayment"][0] == (50000 - 22828) * 0.12
+    assert data["df"]["student_loan_repayment"][1] == (150000 - 22828) * 0.12
 
 
 def test_ietc_rule():
     """Test the IETCRule."""
     rule = IETCRule()
+    params = load_parameters("2023-2024")
+    tax_calc = TaxCalculator(params=params)
     data = {
         "df": pd.DataFrame(
             {
@@ -73,7 +64,8 @@ def test_ietc_rule():
                 "is_slp_recipient": [False, False, False],
             }
         ),
-        "params": load_parameters("2023-2024"),
+        "params": params,
+        "tax_calc": tax_calc,
     }
     rule(data)
     df = data["df"]
@@ -81,3 +73,18 @@ def test_ietc_rule():
     assert df["ietc"][0] == 0
     assert df["ietc"][1] == 520
     assert df["ietc"][2] == 0
+
+def test_income_tax_rule():
+    """Test the IncomeTaxRule."""
+    rule = IncomeTaxRule()
+    params = load_parameters("2023-2024")
+    tax_calc = TaxCalculator(params=params)
+    data = {
+        "df": pd.DataFrame({"familyinc": [50000, 150000]}),
+        "params": params,
+        "tax_calc": tax_calc,
+    }
+    rule(data)
+    assert "tax_liability" in data["df"].columns
+    assert data["df"]["tax_liability"][0] == 8020.0
+    assert data["df"]["tax_liability"][1] == 40420.0
