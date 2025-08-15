@@ -7,6 +7,8 @@ ensuring their correctness and adherence to the original SAS model logic.
 
 import inspect
 from pathlib import Path
+import sqlite3
+import json
 
 import pytest
 
@@ -18,42 +20,70 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import TaxBracketParams
-
-# Load parameters for testing
-params_2022_23 = load_parameters("2022-2023")
-params_2024_25 = load_parameters("2024-2025")
+from src.parameters import RWTParams, TaxBracketParams, Parameters
 
 
-def test_load_parameters_missing_file():
-    """load_parameters should raise FileNotFoundError for missing files."""
-    params = load_parameters("1900-1901")
-    assert params is not None
-    assert params.tax_brackets is not None
-    assert params.tax_brackets.rates == [0.05]
-    assert params.tax_brackets.thresholds == []
+@pytest.fixture
+def test_db(tmp_path, monkeypatch):
+    """Creates a temporary SQLite database with test parameter data."""
+    db_path = tmp_path / "test_parameters.db"
+
+    # Monkeypatch the database path in the source module
+    monkeypatch.setattr("src.microsim.DB_PATH", str(db_path))
+
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE policy_parameters (
+        year INTEGER,
+        policy_key TEXT,
+        parameters TEXT,
+        PRIMARY KEY (year, policy_key)
+    )
+    """)
+
+    # Insert data for year 2020
+    params_2020 = {
+        "tax_brackets": {"rates": [0.1, 0.2], "thresholds": [10000]},
+        "ietc": None, # Policy doesn't exist
+        "wff": {"ftc1": 100, "ftc2": 50, "iwtc1": 30, "iwtc2": 10, "bstc": 20, "mftc": 500, "abatethresh1": 10000, "abatethresh2": 20000, "abaterate1": 0.1, "abaterate2": 0.2, "bstcthresh": 5000, "bstcabate": 0.1}
+    }
+    for key, value in params_2020.items():
+        cursor.execute(
+            "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
+            (2020, key, json.dumps(value) if value is not None else None)
+        )
+
+    # Insert data for year 2021 (with invalid JSON for one key)
+    cursor.execute(
+        "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
+        (2021, "tax_brackets", '{"rates": "not-a-list", "thresholds": []}')
+    )
+
+    conn.commit()
+    conn.close()
+
+    return db_path
 
 
-def test_load_parameters_historical_fallback():
-    """load_parameters should fall back to historical data if a file is missing."""
-    # This year does not have a dedicated file, but is in the historical data
-    params = load_parameters("2000-2001")
-    assert params is not None
-    assert params.tax_brackets is not None
-    assert params.tax_brackets.rates == [0.15, 0.21, 0.33, 0.39]
-    assert params.tax_brackets.thresholds == [9500.0, 38000.0, 60000.0]
+def test_load_parameters_from_db(test_db):
+    """Test that parameters are correctly loaded from the SQLite database."""
+    params = load_parameters("2020")
+    assert isinstance(params, Parameters)
+    assert params.tax_brackets.rates == [0.1, 0.2]
+    assert params.ietc is None
+    assert params.wff.ftc1 == 100
 
+def test_load_parameters_year_not_found(test_db):
+    """Test that a ValueError is raised for a year not in the database."""
+    with pytest.raises(ValueError, match="No parameters found for year 1999"):
+        load_parameters("1999")
 
-def test_load_parameters_invalid_json():
-    """Invalid JSON should raise a ValueError during validation."""
-    module_dir = Path(inspect.getfile(load_parameters)).parent
-    invalid_path = module_dir / "parameters_invalid.json"
-    invalid_path.write_text('{"tax_brackets": {"rates": "not a list", "thresholds": []}}')
-    try:
-        with pytest.raises(ValueError):
-            load_parameters("invalid")
-    finally:
-        invalid_path.unlink()
+def test_load_parameters_invalid_json_in_db(test_db):
+    """Test that a validation error is raised for malformed JSON in the db."""
+    with pytest.raises(ValueError, match="Parameter validation for year 2021 failed"):
+        load_parameters("2021")
 
 
 def test_taxit():
@@ -159,7 +189,7 @@ def test_supstd():
     # Base year parameters
     base_year_awe = 1462.81
     base_year_ep_rate = 0.0153
-    tax_params_base = params_2022_23.tax_brackets
+    tax_params_base = load_parameters("2022").tax_brackets
 
     # Simulation year parameters
     cpi_factors = [1.05, 1.04, 1.03, 1.02]
@@ -167,10 +197,10 @@ def test_supstd():
     ep = [0.016, 0.016, 0.016, 0.016]
     fl = [0.66, 0.66, 0.66, 0.66]
     tax_params = [
-        params_2022_23.tax_brackets,
-        params_2022_23.tax_brackets,
-        params_2022_23.tax_brackets,
-        params_2022_23.tax_brackets,
+        load_parameters("2022").tax_brackets,
+        load_parameters("2023").tax_brackets,
+        load_parameters("2024").tax_brackets,
+            load_parameters("2024").tax_brackets,  # Use 2024 again as 2025 is not in db
     ]
 
     # Expected results

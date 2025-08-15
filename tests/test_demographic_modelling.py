@@ -91,6 +91,13 @@ def test_missing_fertility_data_for_year(mock_get_fertility, sample_population):
 
     assert len(aged_df) == 3
     assert aged_df["age"].iloc[0] == 31
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> remotes/edithatogo/update-a-bunch-of-stuff-4-resolved
+>>>>>>> update-a-bunch-of-stuff-5
 
 from unittest.mock import MagicMock
 
@@ -122,4 +129,5 @@ def test_get_rate_for_age_edge_cases():
     assert _get_rate_for_age(50, rates) == 0.0
 
     # Test that comment is ignored
+<<<<<<< HEAD
     assert _get_rate_for_age(25, rates) == 0.05 # 50.0 / 1000.0

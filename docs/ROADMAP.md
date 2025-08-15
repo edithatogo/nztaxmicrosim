@@ -82,12 +82,12 @@ This section outlines potential future work focused on improving the core archit
 11. **Configuration-Driven Pipelines**
     - *Description:* Refactor the simulation execution logic to be driven by configuration files instead of hardcoded Python scripts. This would involve integrating a library like Kedro to define the sequence of rules and their parameters in YAML, making the model more flexible and easier to modify for non-developers.
     - *Priority:* **Medium**
-    - *Status:* **In Progress**
+    - *Status:* **Done**
 
 12. **Parameter Database**
     - *Description:* Migrate the historical policy parameters from individual JSON files to a structured database (e.g., SQLite). This would improve data integrity, make historical data easier to manage and query, and allow for robust validation of policy start and end dates at the data layer.
     - *Priority:* **Medium**
-    - *Status:* **Not Started**
+    - *Status:* **Done**
 
 13. **Web API**
     - *Description:* Expose the simulation engine via a lightweight web API using a framework like FastAPI. This would make the model accessible to a wider range of tools and programming languages (R, Julia, etc.) without requiring language-specific wrappers.
@@ -102,4 +102,3 @@ This section outlines potential future work focused on improving the core archit
       - **Performance Regression Testing:** Add a CI job that runs the profiler and fails if a pull request introduces a significant performance regression to core functions.
     - *Priority:* **Low**
     - *Status:* **Not Started**
-
