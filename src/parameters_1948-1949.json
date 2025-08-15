@@ -7,7 +7,11 @@
         },
         "ietc": {
             "source": "Gemini Web Search, 2025-08-10, 'New Zealand income tax rates 1948'",
+<<<<<<< HEAD
+            "notes": "This models the \u00a310 rebate for all taxpayers in 1948."
+=======
             "notes": "Policy did not exist in this year (starts 2009)."
+>>>>>>> edithatogo/update-a-bunch-of-stuff-4
         },
         "wff": {
             "source": "Placeholder",
@@ -35,9 +39,16 @@
             300
         ]
     },
+<<<<<<< HEAD
     "ietc": null,
     "wff": null,
     "ppl": null,
     "child_support": null,
+=======
+    "ietc": null,
+    "wff": null,
+    "ppl": null,
+    "child_support": null,
+>>>>>>> edithatogo/update-a-bunch-of-stuff-4
     "acc_levy": null
 }

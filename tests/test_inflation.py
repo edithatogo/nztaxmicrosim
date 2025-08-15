@@ -75,7 +75,6 @@ def test_adjust_for_inflation_missing_year(mock_get_cpi, sample_data, mock_cpi_d
     with pytest.raises(ValueError, match="CPI data not available for target year: 1980"):
         adjust_for_inflation(sample_data, 2023, 1980, ["income"])
 
-<<<<<<< HEAD
 def test_adjust_for_inflation_zero_cpi(sample_data, mock_cpi_data):
     """Test that a ValueError is raised if the target year CPI is zero."""
     mock_cpi_data[1990] = 0.0
@@ -150,4 +149,3 @@ def test_get_cpi_data_api_failure(monkeypatch, tmp_path):
 
     # 3. Assert results
     assert cpi_data == {}
-

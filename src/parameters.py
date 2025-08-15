@@ -246,13 +246,14 @@ class Parameters(BaseModel):
     ftc: Optional[FTCParams] = None
     iwtc: Optional[IWTCParams] = None
     mftc: Optional[MFTCParams] = None
-    family_boost: Optional[FamilyBoostParams] = None
+    family_boost: Optional[FamilyBoostParams] = Field(default_factory=FamilyBoostParams)
     pie: Optional[PIEParams] = None
-    ppl: Optional[PPLParams] = None
-    child_support: Optional[ChildSupportParams] = None
-    kiwisaver: Optional[KiwisaverParams] = None
-    student_loan: Optional[StudentLoanParams] = None
-    rwt: Optional[RWTParams] = None
+    ppl: Optional[PPLParams] = Field(default_factory=PPLParams)
+    child_support: Optional[ChildSupportParams] = Field(default_factory=ChildSupportParams)
+    kiwisaver: Optional[KiwisaverParams] = Field(default_factory=KiwisaverParams)
+    student_loan: Optional[StudentLoanParams] = Field(default_factory=StudentLoanParams)
+    rwt: Optional[RWTParams] = Field(default_factory=RWTParams)
+
     acc_levy: Optional[ACCLevyParams] = None
     wep: Optional[WEPParams] = None
 

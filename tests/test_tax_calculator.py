@@ -163,5 +163,4 @@ def test_calculate_emtr():
     # This is the 30% tax rate plus the 13% IETC abatement rate.
 
     emtr = calc.calculate_emtr(individual_data)
-<<<<<<< HEAD
     assert abs(emtr - 0.43) < 0.001
