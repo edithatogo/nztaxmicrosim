@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Callable, Protocol, Type
+from typing import Any, Protocol, Type
 
 import yaml
 
 from .parameters import Parameters
 from .tax_calculator import TaxCalculator
-
 
 RULE_REGISTRY: dict[str, Type[Rule]] = {}
 
@@ -68,7 +67,6 @@ class SimulationPipeline:
         calculator = TaxCalculator(params=params)
 
         # Import all rule modules to ensure they are registered
-        from . import benefit_rules, tax_rules
 
         for rule_config in config["rules"]:
             rule_name = rule_config["name"]
@@ -83,6 +81,7 @@ class SimulationPipeline:
             # parameter block (e.g., jss_params), it should declare it
             # in its __init__. We then find it in the main params object.
             from inspect import signature
+
             sig = signature(rule_class)
             for param_name in sig.parameters:
                 if param_name == "calculator":

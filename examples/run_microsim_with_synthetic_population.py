@@ -7,12 +7,11 @@ import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "syspop")))
-from syspop.python.input import new_zealand
-from syspop.start import create as syspop_create
-
 from src.microsim import load_parameters
 from src.validation import validate_input_data
 from src.wff_microsim import famsim
+from syspop.python.input import new_zealand
+from syspop.start import create as syspop_create
 
 # --- 0. Argument Parsing ---
 parser = argparse.ArgumentParser(description="Run the microsimulation with a synthetic population.")

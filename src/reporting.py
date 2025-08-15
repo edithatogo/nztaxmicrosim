@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -298,7 +298,7 @@ def generate_microsim_report(simulated_data: pd.DataFrame, report_params: Dict[s
 def plot_evppi(
     evppi_results: Dict[str, float],
     title: str = "Expected Value of Perfect Partial Information",
-    output_path: str | None = None,
+    output_path: Union[str, None] = None,
     palette: str = "viridis",
     xlabel: str = "EVPPI",
     ylabel: str = "Parameters",
@@ -347,7 +347,7 @@ def plot_evppi(
 def plot_evppi_tornado(
     evppi_results: Dict[str, float],
     title: str = "Tornado Plot of EVPPI",
-    output_path: str | None = None,
+    output_path: Union[str, None] = None,
     color: str = "skyblue",
     xlabel: str = "EVPPI",
 ):

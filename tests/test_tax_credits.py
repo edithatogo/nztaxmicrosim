@@ -2,18 +2,17 @@ from __future__ import annotations
 
 import pytest
 
+from src.microsim import load_parameters
+from src.parameters import (
+    DonationCreditParams,
+    IETCParams,
+)
 from src.tax_credits import (
-    calculate_donation_credit,
     calcietc,
+    calculate_donation_credit,
     eitc,
     family_boost_credit,
 )
-from src.parameters import (
-    DonationCreditParams,
-    FamilyBoostParams,
-    IETCParams,
-)
-from src.microsim import load_parameters
 
 # Load parameters for testing
 params_2022_23 = load_parameters("2022-2023")
@@ -306,7 +305,7 @@ def test_calcietc_new():
 def donation_credit_params() -> DonationCreditParams:
     """Returns a default set of donation credit parameters for testing."""
     return DonationCreditParams(
-        credit_rate=1/3,
+        credit_rate=1 / 3,
         min_donation=5.0,
     )
 
@@ -317,10 +316,10 @@ def test_calculate_donation_credit(donation_credit_params: DonationCreditParams)
     assert calculate_donation_credit(4.99, 50000, donation_credit_params) == 0.0
 
     # Test case 2: Donation above minimum
-    assert calculate_donation_credit(100, 50000, donation_credit_params) == 100 * (1/3)
+    assert calculate_donation_credit(100, 50000, donation_credit_params) == 100 * (1 / 3)
 
     # Test case 3: Donation exceeds taxable income
-    assert calculate_donation_credit(60000, 50000, donation_credit_params) == 50000 * (1/3)
+    assert calculate_donation_credit(60000, 50000, donation_credit_params) == 50000 * (1 / 3)
 
     # Test case 4: Zero donation
     assert calculate_donation_credit(0, 50000, donation_credit_params) == 0.0

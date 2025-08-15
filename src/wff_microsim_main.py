@@ -96,7 +96,7 @@ def main() -> None:
         SLPRule,
         SPSRule,
     )
-    from .pipeline import IncomeTaxRule, SimulationPipeline
+    from .pipeline import IncomeTaxRule, Rule, SimulationPipeline
     from .tax_rules import ACCLevyRule, KiwiSaverRule, StudentLoanRule
     from .wff_rules import (
         ApplyCalibrationsRule,
@@ -107,12 +107,17 @@ def main() -> None:
         GrossUpIncomeRule,
     )
 
-    pipeline = SimulationPipeline(
+    pipeline_rules: list[Rule] = []
+    if params.jss:
+        pipeline_rules.append(JSSRule(jss_params=params.jss))
+    if params.sps:
+        pipeline_rules.append(SPSRule(sps_params=params.sps))
+    if params.slp:
+        pipeline_rules.append(SLPRule(slp_params=params.slp))
+    if params.accommodation_supplement:
+        pipeline_rules.append(AccommodationSupplementRule(as_params=params.accommodation_supplement))
+    pipeline_rules.extend(
         [
-            JSSRule(jss_params=params.jss),
-            SPSRule(sps_params=params.sps),
-            SLPRule(slp_params=params.slp),
-            AccommodationSupplementRule(as_params=params.accommodation_supplement),
             IncomeTaxRule(tax_calc),
             ACCLevyRule(acc_levy_params=params.acc_levy),
             KiwiSaverRule(kiwisaver_params=params.kiwisaver),
@@ -125,6 +130,8 @@ def main() -> None:
             ApplyCalibrationsRule(),
         ]
     )
+
+    pipeline = SimulationPipeline(pipeline_rules)
 
     result_data = pipeline.run({"df": df.copy()})
     result = result_data["df"]

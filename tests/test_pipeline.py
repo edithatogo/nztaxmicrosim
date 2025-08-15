@@ -3,12 +3,10 @@
 from dataclasses import dataclass
 from typing import Any
 
-import pandas as pd
 import pytest
 
 from src.microsim import load_parameters
 from src.pipeline import SimulationPipeline
-from src.tax_calculator import TaxCalculator
 
 
 @dataclass
