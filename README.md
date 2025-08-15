@@ -1,6 +1,9 @@
 # NZ Personal Tax Microsimulation Model
 
 [![CI](https://github.com/edithatogo/nztaxmicrosim/actions/workflows/ci.yml/badge.svg)](https://github.com/edithatogo/nztaxmicrosim/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/edithatogo/nztaxmicrosim/graph/badge.svg?token=YOUR_TOKEN_HERE)](https://codecov.io/gh/edithatogo/nztaxmicrosim)
+[![PyPI version](https://badge.fury.io/py/nztaxmicrosim.svg)](https://badge.fury.io/py/nztaxmicrosim)
+[![Python versions](https://img.shields.io/pypi/pyversions/nztaxmicrosim.svg)](https://pypi.org/project/nztaxmicrosim)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 A microsimulation model for New Zealand's tax and benefit system.

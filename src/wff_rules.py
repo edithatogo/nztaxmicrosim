@@ -4,8 +4,10 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
+from .pipeline import register_rule
 
 
+@register_rule
 @dataclass
 class GrossUpIncomeRule:
     """Rule to gross up income for WFF calculation."""
@@ -20,11 +22,12 @@ class GrossUpIncomeRule:
         df["wff_income"] = df["familyinc"] * 1.0  # Example
 
 
+@register_rule
 @dataclass
 class CalculateMaxEntitlementsRule:
     """Rule to calculate maximum WFF entitlements."""
 
-    name: str = "calculate_max_entitlements"
+    name: str = "CalculateMaxEntitlementsRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
@@ -37,25 +40,27 @@ class CalculateMaxEntitlementsRule:
         df["max_mftc"] = 2000
 
 
+@register_rule
 @dataclass
 class ApplyCareLogicRule:
     """Rule to apply shared care logic."""
 
-    name: str = "apply_care_logic"
+    name: str = "ApplyCareLogicRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Adjusts entitlements based on shared care arrangements."""
         df = data["df"]
         # Placeholder for logic
-        df.loc[df["sharedcare"] == 1, "max_ftc"] *= 0.5
+        df.loc[df.get("sharedcare", 0) == 1, "max_ftc"] *= 0.5
 
 
+@register_rule
 @dataclass
 class CalculateAbatementRule:
     """Rule to calculate the abatement of WFF entitlements."""
 
-    name: str = "calculate_abatement"
+    name: str = "CalculateAbatementRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
@@ -63,14 +68,15 @@ class CalculateAbatementRule:
         df = data["df"]
         abatement_threshold = 42700
         abatement_rate = 0.27
-        df["abatement"] = np.maximum(0, (df["wff_income"] - abatement_threshold) * abatement_rate)
+        df["abatement"] = np.maximum(0, (df.get("wff_income", df["familyinc"]) - abatement_threshold) * abatement_rate)
 
 
+@register_rule
 @dataclass
 class ApplyCalibrationsRule:
     """Rule to apply calibrations to WFF results."""
 
-    name: str = "apply_calibrations"
+    name: str = "ApplyCalibrationsRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
@@ -81,6 +87,7 @@ class ApplyCalibrationsRule:
         df["final_wff_entitlement"] = df.get("final_wff_entitlement", 0) * calibration_factor
 
 
+@register_rule
 @dataclass
 class CalculateFinalEntitlementsRule:
     """Rule to calculate the final WFF entitlements."""
