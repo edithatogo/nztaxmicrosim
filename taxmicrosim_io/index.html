@@ -1,0 +1,2349 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../reporting_plan/">
+      
+      
+        <link rel="next" href="../taxmicrosim_report_components/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Tax Microsim I/O - NZ Tax Microsimulation Model</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config",""),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#microsimulation-of-new-zealands-personal-tax-welfare-system-inputs-calculations-and-outputs" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NZ Tax Microsimulation Model" class="md-header__button md-logo" aria-label="NZ Tax Microsimulation Model" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NZ Tax Microsimulation Model
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Tax Microsim I/O
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/edithatogo/nztaxmicrosim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nztaxmicrosim
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NZ Tax Microsimulation Model" class="md-nav__button md-logo" aria-label="NZ Tax Microsimulation Model" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NZ Tax Microsimulation Model
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/edithatogo/nztaxmicrosim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nztaxmicrosim
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CITATION.cff" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Citing this work
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Project Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development_log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Log
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SECURITY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Model Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Model Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameter_coverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parameter Coverage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inflation_adjustment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Inflation Adjustment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demographic_modelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demographic Modelling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historical_reporting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Historical Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/behavioural/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Behavioural Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_dictionary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feature Matrix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Changes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/optimisation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Optimisation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historic_tax_search_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Historic Tax Search Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nz_microsim_paper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NZ Microsim Paper
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../personal_tax_history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../personal_tax_history_1970-25_narrative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History 1970-25 Narrative
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../personal_tax_history_1970-25_table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History 1970-25 Table
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reporting_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reporting Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Tax Microsim I/O
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tax Microsim I/O
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-data-and-key-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Data and Key Variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-calculations-and-simulated-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Calculations and Simulated Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs-and-analysis-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outputs and Analysis Capabilities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-existing-tools-and-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with Existing Tools and Models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taxmicrosim_report_components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tax Microsim Report Components
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wff_microsim_model_metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WFF Microsim Model Metadata
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    External
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feature Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module Status
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api_reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-data-and-key-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Data and Key Variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#policy-calculations-and-simulated-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Calculations and Simulated Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs-and-analysis-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outputs and Analysis Capabilities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-with-existing-tools-and-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison with Existing Tools and Models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="microsimulation-of-new-zealands-personal-tax-welfare-system-inputs-calculations-and-outputs">Microsimulation of New Zealand’s Personal Tax &amp; Welfare System: Inputs, Calculations, and Outputs</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A <strong>microsimulation model</strong> of New Zealand’s personal taxation and welfare system is a tool that applies detailed tax and benefit rules to micro-level data on individuals and households. Such a model can simulate how policy changes (e.g. tax rate adjustments or welfare reforms) would affect each person in a representative sample, and then aggregate the results to assess impacts on government budgets and on household incomes. New Zealand’s Treasury uses a microsimulation model called <strong>TAWA</strong> (Tax and Welfare Analysis) for this purpose, and similar open-source frameworks exist (e.g. OpenFisca and PolicyEngine). These models are <strong>static</strong> (non-behavioral), meaning they hold population characteristics and behaviors fixed while applying policy rules for a given year. The outputs are highly relevant for <strong>child poverty analysis</strong> and <strong>budget impact assessment</strong>: policymakers and researchers can estimate how policy tweaks might lift children out of poverty or change government spending and revenue. This report outlines the comprehensive set of <strong>inputs</strong>, <strong>policy calculations</strong>, and <strong>outputs</strong> relevant to a New Zealand tax–benefit microsimulation, drawing on existing tools and best practices. Tables, figures, and appendices are provided to summarize key information.</p>
+<h2 id="input-data-and-key-variables">Input Data and Key Variables</h2>
+<p>A robust microsimulation requires rich micro-level input data covering <em>all individuals</em> (the entire population in private households) and all factors that affect their tax liabilities or benefit entitlements. In New Zealand, the <strong>Household Economic Survey (HES)</strong> is commonly used as a base dataset, often augmented with administrative records for accuracy. The project also includes the <code>syspop</code> tool for generating realistic synthetic populations. The <strong>target population</strong> is usually residents in private dwellings (excluding institutions like prisons or rest homes) so that household and family income can be measured. Key input variables for each person or household include:</p>
+<ul>
+<li><strong>Demographics and Family Structure:</strong> Age, sex, and other personal characteristics (ethnicity, disability status, etc.), as well as identifiers for family and household membership. Family/household structure is crucial since tax and welfare programs often depend on whether a person has a partner or dependent children. For example, a <em>dependent child</em> is defined (for benefit and tax credit purposes) as an unmarried person under 18 (or under 19 in school) who isn’t financially independent. These definitions inform eligibility for family tax credits and certain benefits.</li>
+<li><strong>Income Sources:</strong> All forms of <strong>taxable income</strong> at the individual (and sometimes family) level. This includes wages and salaries from employment, self-employment or business income, and investment income (interest, dividends, rental income). Detailed income information is needed because different income types may be taxed differently or affect benefit entitlements. In practice, administrative tax data can be linked to the survey to get accurate incomes for each person. Non-taxable income (e.g. some scholarships or allowances) may also be recorded if relevant to means-tests.</li>
+<li><strong>Government Transfers Received:</strong> Indicators for whether the individual (or their family) is currently receiving any <strong>social benefits or tax credits</strong>. For example, flags for receiving a main welfare benefit like Jobseeker Support (unemployment benefit), Sole Parent Support, Supported Living Payment (disability benefit), or the universal NZ Superannuation pension. Similarly, flags for receipt of <em>Working for Families</em> tax credits or other support programs can be included. These flags help initialize the model and calibrate it: the model can use them to ensure the correct baseline take-up of programs, and to validate that simulated entitlements match actual receipt under current policy. They also allow identifying the subset of the population affected by changes to each program.</li>
+<li><strong>Housing Costs:</strong> Housing expenditures (rent, mortgage payments, rates) are important for calculating <strong>after-housing-cost</strong> income measures and determining eligibility for housing subsidies. The input data should capture each household’s housing costs. For example, the <em>Accommodation Supplement</em> (a means-tested housing subsidy) depends on rent or mortgage payments and region. Including housing costs enables the model to compute after-housing-cost poverty rates and to simulate housing benefits.</li>
+<li><strong>Other Characteristics:</strong> Additional variables can improve the model’s accuracy. These might include <em>labor force status</em> (employed/unemployed), <em>hours of work</em> or earnings period (to identify full-time vs part-time, if needed for certain credits), <em>student status</em> (since students may qualify for allowances), and <em>disability indicators</em> (affecting eligibility for certain supports). Geographic location can matter if policies have regional components (e.g. different Accommodation Supplement maxima by region). If analyzing retirement policies, an indicator of age 65+ is obviously crucial (for NZ Super). In some models, <strong>wealth</strong> or <strong>expenditure</strong> data may be included to extend analysis (e.g. to assess GST or wealth tax impacts), though these are not standard inputs for basic tax-benefit simulation.</li>
+</ul>
+<p><strong>Table 1</strong> below summarizes key input variables for a NZ tax–welfare microsimulation model, with their typical sources:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Input Variable</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Source Data</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Individual demographics</strong></td>
+<td>Age, sex, ethnicity, disability status, etc.</td>
+<td>HES survey (personal questionnaire)</td>
+</tr>
+<tr>
+<td><strong>Household &amp; family IDs</strong></td>
+<td>Identifiers linking individuals into households and nuclear families. Used to apply family-based rules (e.g. joint income tests, child benefits).</td>
+<td>HES survey (household roster)</td>
+</tr>
+<tr>
+<td><strong>Dependent child flag</strong></td>
+<td>Indicates if person is a dependent child (under age threshold and not financially independent). Used for child-related benefits/tax credits.</td>
+<td>Derived from age, relationship, income</td>
+</tr>
+<tr>
+<td><strong>Earnings (wage/salary)</strong></td>
+<td>Employment income, by pay period (weekly/annual).</td>
+<td>Admin data (IRD PAYE records via IDI)</td>
+</tr>
+<tr>
+<td><strong>Self-employment income</strong></td>
+<td>Business or farm income (taxable profit).</td>
+<td>Admin data (IRD tax returns)</td>
+</tr>
+<tr>
+<td><strong>Investment income</strong></td>
+<td>Interest, dividends, rental income (annual).</td>
+<td>Admin data (IRD tax returns)</td>
+</tr>
+<tr>
+<td><strong>Benefit receipt indicators</strong></td>
+<td>Flags for receiving core welfare benefits (e.g. JSS, SPS, SLP) and other transfers (e.g. NZ Super) during the year. Used to validate and simulate take-up.</td>
+<td>Admin data (MSD payment records)</td>
+</tr>
+<tr>
+<td><strong>Housing costs</strong></td>
+<td>Weekly rent, mortgage, and local rates paid by the household. Used for housing subsidies and poverty after housing costs.</td>
+<td>HES survey (expenditure module)</td>
+</tr>
+<tr>
+<td><strong>Survey weights</strong></td>
+<td>Weight for each sample household/person, to scale up to population totals. Adjusted so base-year simulation matches known aggregates (population by age, total benefit recipients, etc.).</td>
+<td>HES (calibrated, possibly adjusted via re-weighting)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data preparation:</strong> The base microdata is often <strong>calibrated and projected</strong> to the desired analysis year. Calibration means adjusting sample weights so that the weighted totals align with external benchmarks (e.g. known population counts, labor force totals, or benefit recipient numbers). Projection involves updating incomes and other variables for inflation and expected growth. For instance, wages might be inflated using an earnings index, prices by CPI, rents by a housing price index, etc., to represent a future year’s conditions. In New Zealand’s TAWA model, a set of inflators (for earnings, CPI, interest rates, rents, etc.) are applied to bring the survey data from its original year to the policy year of interest. This allows the model to be run for any year’s policy settings (past or future) without needing new survey data each time. Crucially, <strong>no behavioral changes</strong> are assumed in a static model: individuals’ employment status and other behaviors remain as observed, only their incomes are scaled for growth. The demographic composition also stays constant aside from weight adjustments – the model does not simulate people aging or migrating over time (except via reweighting if desired).</p>
+<h2 id="policy-calculations-and-simulated-components">Policy Calculations and Simulated Components</h2>
+<p>Once the input dataset is prepared for a given year, the microsimulation applies <strong>all relevant tax and transfer policy rules</strong> to each individual (or family). The model includes dedicated parameter files for years 2005-2025, and can fall back on historical data for years from 1890 to 2028. In this stage, the model essentially “recalculates” everyone’s tax bills and benefit entitlements under the specified policy settings. For a comprehensive New Zealand model, <strong>everything that affects individuals’ disposable income</strong> should be included. The main policy components and calculations are outlined below:</p>
+<ul>
+<li>
+<p><strong>Income Tax Calculation:</strong> For each individual with taxable income, the model computes <strong>personal income tax</strong> owed using the progressive tax rates in effect for the year. New Zealand has a multi-bracket tax schedule (e.g. 10.5%, 17.5%, 30%, 33%, and 39% at various income thresholds in recent years). The model applies these rates to the person’s annual taxable income to get gross tax liability. It also applies any tax credits or offsets that reduce tax:</p>
+</li>
+<li>
+<p><em>Tax Credits:</em> An example is the <strong>Independent Earner Tax Credit (IETC)</strong>, which historically provided up to NZ\$520 per year for middle-income earners with no other support. If the simulation year includes IETC (it existed until 2018), the model checks eligibility (income range, not receiving benefits) and subtracts the credit from tax owed. Similarly, tax credits for charitable donations or payroll giving could be incorporated if data on donations were available (often not in survey data, so this may be omitted or treated as an aggregate adjustment).</p>
+</li>
+<li><em>ACC Levy:</em> Uniquely, New Zealand imposes an <strong>Accident Compensation Corporation (ACC) levy</strong> on earnings to fund accident insurance. This is effectively a flat percentage charge on employment income up to a certain cap. The model includes the ACC earner’s levy as an additional “tax” on wages/salary and self-employed income, since it directly reduces take-home pay.</li>
+<li>
+<p><em>Other levies or rebates:</em> In some years there might be specific levies (for example, an earthquake levy or similar) or tax rebates for certain expenditures, but these are rare. The key point is the model should replicate the full income tax code as it applies to individuals.</p>
+</li>
+<li>
+<p><strong>Social Security Contributions:</strong> Unlike many countries, NZ does not have separate social security taxes for pensions or unemployment – those are funded from general taxation. Thus, apart from the ACC levy and income tax, there are no payroll taxes on individuals to simulate. (KiwiSaver retirement savings are voluntary and not a tax, so those are outside the scope unless one specifically models their effect on take-home pay.)</p>
+</li>
+<li>
+<p><strong>Family Tax Credits (Working for Families):</strong> New Zealand’s system of <strong>refundable tax credits for families with children</strong>, known as <strong>Working for Families (WfF)</strong>, is a crucial part of the personal tax/benefit system. The model must determine each family’s eligibility for WfF tax credits and calculate the amounts. As of recent policy, there are four main components:</p>
+</li>
+<li>
+<p><strong>Family Tax Credit (FTC):</strong> the primary child benefit paid to eligible families based on the number and age of children. It is phased out (abated) above a certain family income threshold. The model needs to sum each family’s <strong>total family income</strong> (often net of any exempt amounts) and apply the taper rate to calculate how much FTC they receive.</p>
+</li>
+<li><strong>In-Work Tax Credit (IWTC):</strong> an extra payment for families that have some minimum earnings from work and are not receiving a main welfare benefit. The model checks if the adults in the family meet the work criteria (e.g. a certain number of hours of work per week in older rules, though recently the hours test was removed) and are off benefit; if eligible, a fixed amount per week is added.</li>
+<li><strong>Best Start Tax Credit:</strong> a payment for families with a child under a certain age (currently under 3 years old). This is a universal payment in the child’s first year (i.e. not income-tested for babies) and income-tested for the second and third year. The model identifies children in the age range and applies the income abatement if applicable.</li>
+<li><strong>Minimum Family Tax Credit (MFTC):</strong> this guarantees a minimum after-tax income for working families who work a certain number of hours. In practice, it tops up income to a prescribed level. The model will calculate a family’s net income and, if they qualify (meeting work hours and income below the threshold), assign a top-up so that their annual after-tax income reaches the minimum. This effectively creates an implicit 100% marginal tax rate beyond the threshold (any extra dollar earned reduces the credit).</li>
+</ul>
+<p>All these credits depend on <em>family income</em> and number of children, so the model must aggregate incomes of spouses/partners and consider the presence of dependent children. The <strong>abatement schedule</strong> (the rate at which credits reduce as income rises) needs to be correctly applied – this is often handled by utility functions in the code that apply taper formulas. In a simulation, one can alter parameters like the credit amounts, income thresholds, or abatement rates to model policy reforms (e.g. increasing the Family Tax Credit or changing the income threshold). These are straightforward parameter changes handled by the model’s rules engine.</p>
+<ul>
+<li>
+<p><strong>Main Welfare Benefits:</strong> The model also simulates <em>welfare benefit</em> entitlements for those not in full-time work, which in New Zealand’s means-tested, flat-rate benefit system include:</p>
+</li>
+<li>
+<p><strong>Jobseeker Support (JSS):</strong> the unemployment or low-income benefit for working-age adults. The model determines eligibility primarily by income and assets (though assets tests and other conditions may not be fully captured in survey data). Typically, JSS has different rates for singles vs couples, and abates as earnings increase beyond a certain disregard. The microsimulation will calculate each person’s theoretical JSS entitlement based on their income and family situation, and whether they meet non-income criteria (e.g. not working full-time, available for work). If using administrative flags, the model can identify who was receiving JSS and ensure consistency.</p>
+</li>
+<li><strong>Sole Parent Support (SPS):</strong> a benefit for single parents with young children. The model checks for single adults with dependent children, and if income is below thresholds, assigns the base rate for SPS. Income from employment will reduce SPS according to its abatement regime.</li>
+<li><strong>Supported Living Payment (SLP):</strong> a benefit for individuals with severe health conditions or disabilities (or carers of such individuals). Eligibility for SLP may not be fully inferable from survey data (since it depends on health status and incapacity for work), but the model can use the <strong>disability status</strong> variable as a proxy. SLP has higher payment rates and different income disregards.</li>
+<li><strong>Youth Payment/Young Parent Payment:</strong> smaller programs for teens/young adults (16–19) in hardship. These are niche and often <em>not explicitly modeled</em> if data on that age group’s eligibility is sparse. TAWA, for instance, does not model these “non-standard” payments and instead reads actual receipt from data for baseline alignment.</li>
+<li><strong>Supplementary Benefits:</strong> Many recipients of main benefits also get supplements. The model should simulate <strong>Accommodation Supplement (AS)</strong> for low-income individuals (whether on a benefit or low wages) who pay rent or a mortgage. AS entitlement depends on housing cost, location (there are geographic maximums), family size, and income after other benefits. Simulating AS requires using the housing cost inputs and applying the formula (which typically pays 70% of housing costs above a small threshold, up to a cap). Another common supplement is the <strong>Disability Allowance</strong>, which pays for additional costs for those with health/disability needs; this is hard to simulate because it depends on actual expenses (e.g. medical bills) – often such supplementary grants are <em>not included</em> in a static model due to data limitations.</li>
+<li><strong>Winter Energy Payment (WEP):</strong> a universal top-up paid during winter months to beneficiaries and superannuitants to help with heating costs. The model can include WEP by adding the appropriate amount for those who meet the criteria (essentially anyone on a main benefit or NZ Super in winter gets it). This is a straightforward rule triggered by benefit receipt status and time of year.</li>
+<li>
+<p>The <strong>abatement of benefits</strong> as income rises is a critical calculation. Each benefit has an income test (for example, JSS might allow a small amount of weekly earnings before reducing payments at a certain cents-in-the-dollar rate). The model uses <em>utility functions</em> to apply these abatement schedules and compute the reduced entitlement based on any earned income. If a person’s earnings are high enough, their benefit entitlement goes to zero (they “exit” benefit); the model should reflect that by not paying the benefit if income exceeds cutoff. In the base dataset, if someone is recorded as a recipient, typically their income was low enough; but under a policy change scenario, the model might newly enroll or disenroll individuals depending on changes in rules (e.g. if the income threshold for a benefit is raised, some additional people might qualify in the simulation).</p>
+</li>
+<li>
+<p><strong>Universal Benefits:</strong> The prime example is <strong>NZ Superannuation</strong>, the public pension paid to all residents over 65. NZ Super is not means-tested (apart from some deductions if the person has certain overseas pensions). The model simply needs to assign the correct NZ Super amount to everyone above the eligibility age. Since it’s universal, changes to NZ Super (like a rate increase or changing eligibility age) are simulated by toggling those parameters. Another near-universal program for children was the <strong>Best Start</strong> credit (first year of a child’s life, as mentioned above) – universal in year one, income-tested after that.</p>
+</li>
+<li>
+<p><strong>Other Tax/Transfer Items:</strong> A truly “everything” model might also incorporate:</p>
+</li>
+<li>
+<p><strong>Paid Parental Leave (PPL):</strong> a government payment for new parents who were working, for up to 26 weeks. PPL could be included by identifying eligible new parents and simulating the payment. However, since it’s time-limited and the HES survey may not capture recent newborns well (sample size issues), PPL is often not explicitly modeled or is left as an exogenous scenario (it primarily affects short-term income, not annual income much if averaged).</p>
+</li>
+<li><strong>Child Support Payments:</strong> If analyzing child poverty, one might consider child support received from non-custodial parents. In NZ, child support is administered by IRD. Historically, if the custodial parent was on benefit, the government retained the child support (it did not increase the household income). A recent reform considered “passing on” child support to beneficiary families. A microsimulation can estimate the impact of such a reform if data on child support amounts is available. This is advanced usage and comes with uncertainty since not all necessary data (like liable parent income) may be in the base dataset.</li>
+<li><strong>Indirect Taxes:</strong> Although not part of direct cash income, <strong>GST (Goods and Services Tax)</strong> and other indirect taxes affect households’ cost of living. A static microsimulation can be extended to estimate indirect tax burdens by using expenditure data. For instance, one Treasury study combined household expenditure patterns with the model’s income data to compute how much GST each household pays, in order to analyze <strong>fiscal incidence</strong> (the distribution of total tax burden, direct + indirect). Generally, core microsimulation models <em>exclude indirect taxes</em> by default (focusing on direct taxes/transfers), but it’s a valuable extension for comprehensive analysis.</li>
+<li><strong>In-kind benefits and public services:</strong> These are outside the scope of cash microsimulation, but results can be enriched by attaching a value for services like education and health per household (as was done in the fiscal incidence study). However, the model itself usually does not simulate these; they are added analytically on top of disposable income to get a “final income” concept.</li>
+</ul>
+<p><strong>Policy parameters and code:</strong> The microsimulation model is built to be flexible: most numeric parameters (tax rates, thresholds, benefit amounts, etc.) are stored in a database or code configuration so that they can be easily changed for different years or reform scenarios. For example, to simulate a policy reform, one might input a new tax rate or a higher benefit level as a parameter change. The model will then apply the new rules and compare outcomes to the baseline. Structural changes (like introducing a completely new benefit or a new tax) may require writing new code functions (e.g. if a <strong>universal basic income</strong> were added, a new transfer function would be coded).</p>
+<p>Behind the scenes, the model organizes the calculations in a logical sequence. In TAWA’s implementation, there are categories of functions: <strong>income calculations</strong> (to sum up or categorize income components needed for tests), <strong>transfer eligibility calculations</strong>, and <strong>tax calculations</strong>, plus helper functions for things like applying abatement formulas. The code automatically determines an order of execution (for instance, one must calculate a family’s total income <strong>before</strong> applying the means-test for a family tax credit). This ensures all interdependencies (like one benefit affecting income for another) are respected.</p>
+<p><strong>Limitations:</strong> Despite aiming to include “everything,” some policies are difficult to model due to data constraints. TAWA, for instance, does <em>not</em> currently simulate <strong>Temporary Additional Support (TAS)</strong> – a discretionary top-up for people in hardship – or <strong>Childcare Assistance subsidies</strong> (which help with childcare fees). These require detailed expense information and short-term circumstances not captured well in surveys. Such omissions mean the model will not directly show the impact of changes in those programs (though analysts might adjust for them separately). Additionally, any behavioral responses (like people working more when a tax rate is cut, or take-up rates changing if a benefit becomes more generous) are not captured in a static model. If needed, those must be analyzed with separate behavioral or dynamic models, or by scenario assumptions.</p>
+<h2 id="outputs-and-analysis-capabilities">Outputs and Analysis Capabilities</h2>
+<p>After applying the tax and welfare calculations for each individual/household, the microsimulation model produces a wealth of <strong>output data</strong>. This individual-level output can then be aggregated and analyzed to answer policy questions. For a comprehensive New Zealand tax-benefit model, the following outputs are particularly useful:</p>
+<ul>
+<li>
+<p><strong>Fiscal Impact Metrics:</strong> These refer to the government budget implications of policies. The model can compute the <strong>total income tax revenue</strong> collected under current vs. proposed policies, as well as the <strong>total cost of each benefit or tax credit program</strong>. By comparing a reform scenario to a baseline, we obtain the <strong>net fiscal cost (or saving)</strong> of the reform. For example, if income tax thresholds are lowered, the model might show a decrease in revenue of X million dollars; if benefit levels are increased, an increase in expenditure of Y million. Typically, results would be broken down by category – e.g. “Income tax revenue changes by bracket”, “Spending on Jobseeker Support increases by \$Z million”, etc. A standard summary is the <strong>fiscal cost of each reform component relative to current law</strong>. This is vital for government budget planning, ensuring that any policy package meets fiscal targets. The microsimulation’s fiscal estimates can also be fed into macroeconomic models or long-term fiscal projections to see system-wide effects.</p>
+</li>
+<li>
+<p><strong>Distributional Impact:</strong> A core strength of microsimulation is showing <strong>who gains or loses</strong> from a policy change across the income distribution. Outputs often include <em>distributional tables or charts</em> that illustrate how different income groups are affected. A common approach is to divide the population into deciles or quintiles by some income measure (usually household disposable income, equivalised for household size), and then compute the average change in disposable income for each group. The model can identify <strong>“winners” and “losers”</strong> – for example, how many households in each decile have an increase in net income vs. a decrease, and the average dollar change. In TAWA’s standard outputs, a <em>winners/losers analysis</em> is produced showing the distribution of gains and losses by income band. For households, Treasury uses <strong>HEDI (household equivalised disposable income)</strong> as the ranking variable. This accounts for taxes and transfers and adjusts for household size, enabling apples-to-apples comparison of income levels between, say, a single person and a family of five. Using HEDI, the model might report something like “Under Policy X, 60% of households in the lowest decile gain an average of \$20 per week, while 10% lose an average of \$5, etc.”. For family-based analyses, one might group by <strong>family taxable income</strong> instead (for instance, to see outcomes by working family income brackets).</p>
+</li>
+<li>
+<p><strong>Poverty and Inequality Measures:</strong> Policymakers are often keenly interested in how tax/benefit changes affect <strong>poverty rates</strong>, especially for children. The microsimulation can calculate standard poverty indicators on both baseline and reform scenarios. In New Zealand, official child poverty measures are defined in the <strong>Child Poverty Reduction Act</strong> and include thresholds like “below 50% of median income”. The model outputs can report, for example, the percentage of children (and adults) in households under 50% of median income <strong>before housing costs (BHC)</strong> and <strong>after housing costs (AHC)</strong>. Specifically, Treasury focuses on the <strong>fixed-line AHC-50</strong> measure (50% of 2018 median, after housing costs) and the <strong>moving-line BHC-50</strong> measure (50% of contemporary median, before housing costs) when evaluating policies. Using housing cost data, the model computes AHC incomes and can determine how many children are below the threshold in each scenario. A reform like a benefit increase would typically reduce the child poverty rate, and the model can quantify by how many percentage points. Outputs can also include other poverty depth or severity metrics if needed (e.g. poverty gap, or the AHC-40 “severe poverty” rate), although the primary focus is usually on the headline rates. In addition to poverty, <strong>inequality indices</strong> such as the Gini coefficient or income share ratios can be calculated from the simulation’s income distribution. For example, one could report the Gini of disposable income before and after a tax reform to see if inequality narrows or widens. These are not always in standard output templates but are easily derived from the micro-data results.</p>
+</li>
+<li>
+<p><strong>Work Incentive Indicators:</strong> Although a static model holds behavior fixed, it can still provide insight into financial incentives by calculating <strong>effective tax rates</strong>. For instance, the model can compute each working individual’s <strong>marginal effective tax rate (METR)</strong> – the share of a small income increase that is lost to taxes or benefit abatement. Similarly, <strong>participation tax rates</strong> (the percentage of gross income lost when moving from unemployment into work) can be derived for various household types. PolicyEngine’s household analysis tool demonstrates this by showing how a reform changes marginal tax rates for a given household scenario. In a New Zealand context, a microsimulation could identify that, say, a single parent moving off a benefit into work faces a high effective marginal tax rate due to both income tax and the withdrawal of SPS and WfF credits. While these incentive measures are more granular than aggregate outputs, they are very useful for policy design (e.g. to flag if a reform creates very high METRs for certain income ranges).</p>
+</li>
+<li>
+<p><strong>Custom Analyses and Subgroup Results:</strong> Because the model simulates <em>all individuals</em>, results can be disaggregated by various characteristics. Analysts often look at outcomes by <strong>family type</strong> (single, couple with kids, etc.), by region, by gender, by ethnicity, or other dimensions to understand equity impacts. For example, one could output the average income change for Māori versus non-Māori, or the fiscal cost breakdown by region – as long as the input data contains those identifiers. The TAWA model is used to produce <strong>child poverty projections</strong> by simulating future years; it can break down which types of families those children in poverty belong to (e.g. large families, single-parent families, etc.), providing insight into where policy might target. Another example of custom analysis is identifying the characteristics of children in different poverty “categories” (combinations of income poverty and material hardship) to inform policy. The flexible nature of microsimulation outputs means that beyond the standard tables, users can query the micro-data for almost any distributional question (subject to sample size limits). All outputs derived from the model are typically <strong>weighted to population level</strong> and may be subject to statistical reliability checks or confidentiality rules (Treasury, for instance, applies cell suppression or rounding to protect individuals in published results).</p>
+</li>
+</ul>
+<p><strong>Reporting formats:</strong> Results can be presented in tables, charts, and interactive dashboards. For instance, a PolicyEngine interface might show a <strong>budget impact bar chart</strong> and a <strong>poverty rate change</strong> summary side by side. A typical report will include a table of fiscal impacts, a graph of the distribution of gains (often a “winners and losers” bar chart by income decile), and a table showing key poverty metrics before and after the reform. In our appendices, we provide examples of how such outputs might be structured for clarity.</p>
+<p>Finally, <strong>validation</strong> of outputs is crucial. The model’s baseline outputs should be cross-checked against external data – e.g. the total income tax from the simulation vs. actual IRD collections, the number of beneficiaries simulated vs. administrative counts, poverty rates vs. Stats NZ official figures. Any gaps inform improvements (for example, if poverty is off because not all material hardship is captured, one knows to interpret accordingly). TAWA’s development has involved benchmarking its results to ensure credibility. Assuming the model is well-calibrated, it becomes a reliable laboratory to test <em>“what if” scenarios</em>, which is exactly its value to policymakers and researchers interested in both <strong>fiscal</strong> and <strong>social</strong> outcomes.</p>
+<h2 id="comparison-with-existing-tools-and-models">Comparison with Existing Tools and Models</h2>
+<p>It’s helpful to compare the structure we’ve outlined with other tax-benefit microsimulation tools:</p>
+<ul>
+<li><strong>Treasury’s TAWA Model:</strong> As described, TAWA is the official NZ Government microsimulation for personal taxes and transfers. It uses HES data linked to administrative records and produces analysis for budget measures and child poverty tracking. The inputs, calculations, and outputs we have detailed align closely with TAWA’s design. TAWA’s methodology report confirms the inclusion of all major benefits, tax credits, and taxes in New Zealand’s system. It’s used internally for policy advice and to project the future trajectory of poverty under current settings.</li>
+<li><strong>OpenFisca:</strong> OpenFisca is an open-source engine that allows coding a country’s legislation (“rules as code”). An OpenFisca model for Aotearoa New Zealand has been prototyped, encoding things like the Income Tax Act and Social Security Act parameters. In essence, an OpenFisca-based NZ model would require the same inputs (micro-data on individuals) and could compute the same outputs, but it’s more geared towards providing an API or calculator. For example, it can enable a web tool where a user inputs their household situation and the engine returns their entitlements and tax under various scenarios – effectively turning law into software. While OpenFisca in NZ is not yet as comprehensive as TAWA, it demonstrates the feasibility of an open, collaborative microsimulation model.</li>
+<li><strong>PolicyEngine:</strong> PolicyEngine (for the UK and US) is a user-facing application built on microsimulation principles. It lets users tweak policy parameters through a GUI and then see results like the budget effect, poverty change, inequality change, and even impacts on a custom household. A NZ PolicyEngine would present similar outputs. From the UK example, we saw that the tool explicitly provides <strong>“the effect on the budget, poverty impacts, distributional impacts and more”</strong> for a reform. It also allows drilling down to <em>example households</em> to see detailed net income calculations and marginal tax rate charts. This underscores that the outputs we enumerated (fiscal, poverty, distribution, etc.) are not unique to TAWA but are standard in modern microsimulation analysis. PolicyEngine’s development team even forked the OpenFisca engine to better support such rich output and interactivity. For our purposes, the lesson is that any comprehensive NZ model should be able to produce at least the same set of indicators – and perhaps be extended with a user-friendly interface for broader use.</li>
+<li><strong>OECD Tax-Benefit Model (TaxBEN):</strong> This is a comparative static microsimulation that the OECD uses to analyze work incentives across countries. It differs in that it uses hypothetical families (“vignettes”) rather than the actual population. However, it covers the main policy rules for each country. According to OECD, TaxBEN includes “the main taxes on employment income, social contributions, and the main cash benefit programs (unemployment benefits, family and childcare benefits, guaranteed minimum-income benefits, housing benefits, and in-work benefits)”. It deliberately excludes things like indirect taxes (GST/VAT), wealth taxes, and in-kind benefits. Our described model similarly focuses on <strong>cash transfers and direct taxes</strong> affecting disposable income, aligning with TaxBEN’s scope. The difference is that we run on a full micro-data distribution, which enables the distributional output (TaxBEN instead typically outputs effective tax rates for example families at various earnings levels). TaxBEN’s documentation can be a useful resource to double-check policy details and ensure no major program is omitted.</li>
+</ul>
+<p>In summary, the inputs, calculations, and outputs we have outlined for a New Zealand static microsimulation model are well-aligned with both domestic practice (Treasury’s TAWA) and international tools. <strong>All individuals</strong> in the population are represented, <strong>all taxes and benefits that affect household incomes</strong> are simulated (with noted exceptions where data is lacking), and the <strong>analytical outputs</strong> range from government fiscal costs to detailed poverty and distributional analyses. By capturing “everything” in one integrated model, one can answer a wide array of policy questions – from <em>“How much will this tax cut cost and who benefits most?”</em> to <em>“How many children will be lifted out of poverty if we increase family support payments?”</em> – using a consistent evidence base.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>Developing a comprehensive microsimulation of New Zealand’s personal tax and welfare system involves gathering extensive microdata inputs, faithfully encoding the myriad policy rules, and generating outputs that illuminate both <strong>fiscal</strong> and <strong>social</strong> outcomes. The effort is rewarded by the rich analysis such a model affords. It becomes possible to examine policy trade-offs in detail: for instance, evaluating a child poverty reduction package by seeing the direct effect on poverty statistics, the cost to the budget, and the distribution of gains across society. Both government analysts and outside researchers (such as those focused on child wellbeing) can use the model to test policy ideas in a virtual environment before implementing them in the real world.</p>
+<p>Looking ahead, maintaining the model’s accuracy will require regular updates to reflect policy changes (tax rate adjustments, benefit increases, etc.) and improvements in data (for example, better capturing under-represented groups or linking new data sources for things like material hardship). The static microsimulation can also serve as a foundation for more dynamic analyses – for example, feeding results into a labor supply model to predict behavioral responses, or integrating with a long-term population projection to simulate policy impacts over decades. However, even in its static form, a well-designed microsimulation model is an indispensable tool for <strong>evidence-based policy development</strong>, allowing “what-if” exploration in a way that is transparent and rigorously quantifiable. In the context of New Zealand, where reducing child poverty and ensuring fiscal sustainability are both high priorities, such a model provides the detailed insight needed to craft effective and efficient policies.</p>
+<p><em>The following appendices provide additional detail on the policy components and sample outputs discussed above.</em></p>
+<h1 id="appendix-a-key-new-zealand-tax-and-welfare-programs-in-microsimulation">Appendix A: Key New Zealand Tax and Welfare Programs in Microsimulation</h1>
+<p>To ensure clarity, here is a list of the major tax and transfer programs that are currently implemented in the New Zealand microsimulation model:</p>
+<ul>
+<li><strong>Personal Income Tax:</strong> Progressive rate tax on individual taxable income.</li>
+<li><strong>ACC Earner’s Levy:</strong> A flat levy on earnings to fund accident insurance.</li>
+<li><strong>Independent Earner Tax Credit (IETC):</strong> A tax credit for individuals with modest incomes.</li>
+<li><strong>Working for Families Tax Credits:</strong><ul>
+<li><em>Family Tax Credit (FTC):</em> Provides a base level of support per child.</li>
+<li><em>In-Work Tax Credit (IWTC):</em> Additional support for working families.</li>
+<li><em>Best Start:</em> Support for families with infants and toddlers.</li>
+<li><em>Minimum Family Tax Credit (MFTC):</em> Ensures a minimum after-tax income for working families.</li>
+</ul>
+</li>
+<li><strong>Main Benefits (Income Support):</strong><ul>
+<li><em>Jobseeker Support:</em> For unemployed or low-income jobseekers.</li>
+<li><em>Sole Parent Support:</em> For single parents with young children.</li>
+<li><em>Supported Living Payment:</em> For people with serious disabilities/illness.</li>
+</ul>
+</li>
+<li><strong>New Zealand Superannuation:</strong> Universal pension for ages 65+.</li>
+<li><strong>Supplementary Benefits:</strong><ul>
+<li><em>Accommodation Supplement (AS):</em> Helps low-income households with housing costs.</li>
+<li><em>Winter Energy Payment:</em> Extra payment during winter to those on main benefits or NZ Super.</li>
+</ul>
+</li>
+<li><strong>Other:</strong><ul>
+<li><em>KiwiSaver:</em> Deductions for the national superannuation scheme.</li>
+<li><em>Student Loans:</em> Repayments for tertiary education loans.</li>
+</ul>
+</li>
+</ul>
+<p>Each of the above programs has parameters (rates, thresholds, eligibility rules) that can vary by year. A flexible microsimulation model stores these parameters and can simulate any year or any policy reform by plugging in new values. The outputs related to each program could include: how many people receive it and the total cost (for benefits/credits), or total revenue collected (for taxes/levies), as well as the change in those figures under scenario changes.</p>
+<h1 id="appendix-b-example-output-summary-formats">Appendix B: Example Output Summary Formats</h1>
+<p>When communicating microsimulation results, clarity in tables and figures is key. Below are illustrative examples of how results might be presented (note: these are <strong>formats</strong> only – no actual data is shown here):</p>
+<p><strong>Table A1. Fiscal Cost of Policy Changes (Annual)</strong> – This table would list each proposed policy change and its impact on key budget items, as modeled. All amounts are in NZ\$ millions per year, relative to the current law baseline.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Policy Reform</strong></th>
+<th style="text-align: right;"><strong>Income Tax Revenue</strong></th>
+<th style="text-align: right;"><strong>Benefit Expenditure</strong></th>
+<th style="text-align: right;"><strong>Tax Credit Expenditure</strong></th>
+<th style="text-align: right;"><strong>Net Fiscal Impact</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Increase bottom tax rate from 10.5% to 12%</td>
+<td style="text-align: right;">+\$500 (gain)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;"><strong>+\$500</strong> (surplus increase)</td>
+</tr>
+<tr>
+<td>Raise Jobseeker Support by \$20/week</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">+\$300 (cost)</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;"><strong>–\$300</strong> (higher spend)</td>
+</tr>
+<tr>
+<td>Boost Family Tax Credit by 10%</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">+\$200 (cost)</td>
+<td style="text-align: right;"><strong>–\$200</strong></td>
+</tr>
+<tr>
+<td><strong>Combined package (above three)</strong></td>
+<td style="text-align: right;">+\$500</td>
+<td style="text-align: right;">+\$300</td>
+<td style="text-align: right;">+\$200</td>
+<td style="text-align: right;"><strong>\$0</strong> (net neutral)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Interpretation:</em> The tax increase raises revenue (+\$500m), while higher benefit and tax credit payments cost \$300m and \$200m respectively, netting out to roughly zero fiscal impact for the combined reform. Such a table helps budget analysts see if a package of changes is self-funding or requires additional financing.</p>
+<p><strong>Figure A1. Distributional Impact by Household Income Decile</strong> – A bar chart could illustrate the average change in annual disposable income per household, for each income decile, under a policy reform. Positive values indicate a gain (tax cut or benefit increase), negative a loss. Each bar might be annotated with the percentage of households in that decile that are net winners. For example, deciles 1–3 (low income) might show a significant average gain due to a benefit increase, middle deciles little change, and the top decile a slight loss if a new tax on high incomes is introduced. This visual immediately shows who benefits most. <em>(In an interactive setting like PolicyEngine, one can hover on each decile to see detailed stats.)</em></p>
+<p><strong>Table A2. Poverty Outcomes Before vs. After Reform</strong> – This table would show key poverty rates and counts under the status quo and the reform scenario:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Poverty Measure (Children)</strong></th>
+<th style="text-align: right;"><strong>Baseline Rate</strong></th>
+<th style="text-align: right;"><strong>Reform Rate</strong></th>
+<th style="text-align: right;"><strong>Change (points)</strong></th>
+<th style="text-align: right;"><strong>Baseline # of Children</strong></th>
+<th style="text-align: right;"><strong>Change in #</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BHC 50% (relative, before housing)</strong></td>
+<td style="text-align: right;">15.0%</td>
+<td style="text-align: right;">13.0%</td>
+<td style="text-align: right;">–2.0 ppt</td>
+<td style="text-align: right;">170,000</td>
+<td style="text-align: right;">–23,000</td>
+</tr>
+<tr>
+<td><strong>AHC 50% (fixed-line 2018, after housing)</strong></td>
+<td style="text-align: right;">18.0%</td>
+<td style="text-align: right;">15.5%</td>
+<td style="text-align: right;">–2.5 ppt</td>
+<td style="text-align: right;">204,000</td>
+<td style="text-align: right;">–28,000</td>
+</tr>
+<tr>
+<td><strong>Material hardship (deprivation index ≤6)</strong></td>
+<td style="text-align: right;">11.3%</td>
+<td style="text-align: right;">10.0%</td>
+<td style="text-align: right;">–1.3 ppt</td>
+<td style="text-align: right;">128,000</td>
+<td style="text-align: right;">–15,000</td>
+</tr>
+</tbody>
+</table>
+<p><em>(ppt = percentage points. Child population \~950,000 for context.)</em></p>
+<p>This shows, for instance, that the reform (perhaps a package increasing family incomes) is projected to reduce the after-housing-cost 50% poverty rate for children from 18.0% to 15.5%, lifting about 28,000 children above that threshold. Such tables often accompany government reporting on child poverty targets. The inclusion of material hardship (if available) gives another lens on wellbeing beyond income poverty, though hardship measures may not change in lockstep with income changes.</p>
+<p><strong>Figure A2. Winners and Losers Distribution</strong> – A chart can also display the share of households that gain or lose by certain amounts. For example, a histogram: X% of households have an income change between +\$10 and +\$20 per week, Y% gain more than \$50, Z% lose between \$5 and \$10, etc. This kind of chart highlights that, say, “most families with children gain modestly, while a small fraction of high earners pay more tax”. It complements the decile average view by showing the spread of impacts within each decile or population.</p>
+<p>In all output tables/figures, <strong>notes and definitions</strong> should clarify the income concept (equivalised or not, weekly vs annual), the population scope (all individuals, or just certain households), and any important assumptions (e.g. full take-up of benefits is assumed, behavioral changes not included, etc.). All these ensure the results are interpreted correctly by policymakers and other stakeholders.</p>
+<p>Overall, the microsimulation’s rich set of outputs allows for transparent and detailed evaluation of policy proposals, helping to strike a balance between fiscal constraints and social objectives like reducing poverty. The combination of technical accuracy and clear presentation (as shown in these examples) is key to making the analysis useful for decision-makers.</p>
+<p><strong>References:</strong> (All source references are preserved in-line above in the format 【source†lines】, per the requirements of the task. They include official Treasury documentation of the TAWA model, an OECD policy description, and examples from PolicyEngine’s documentation, among others.)</p>
+<h1 id="appendix-c-comprehensive-microsimulation-variable-framework-for-nz-taxwelfare-model">Appendix C: Comprehensive Microsimulation Variable Framework for NZ Tax–Welfare Model</h1>
+<h2 id="demographic-household-characteristics">Demographic &amp; Household Characteristics</h2>
+<p>These inputs describe personal and family attributes that influence tax and benefit eligibility. They form the core demographic variables in the microsimulation model.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age</td>
+<td>Input</td>
+<td>Individual’s age (in years), used for age-based eligibility (e.g. pension at 65+) and analysis by age group.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>UN</strong> (population age structure), <strong>OECD</strong> (age-based stats)</td>
+</tr>
+<tr>
+<td>Gender</td>
+<td>Input</td>
+<td>Sex of individual (male/female); used for gender-based analysis (e.g. gender pay gap) and demographic grouping.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>UN</strong> (SDG5 gender equity), <strong>OECD</strong> (gender indicators)</td>
+</tr>
+<tr>
+<td>Marital Status</td>
+<td>Input</td>
+<td>Legal marital/partnership status (single, married/de facto, etc.), affects benefit type (e.g. single vs partnered rates) and household assessment.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>UN</strong> (demographic data), <strong>OECD</strong> (household composition)</td>
+</tr>
+<tr>
+<td>Family/Household Type</td>
+<td>Input</td>
+<td>Family composition classification (e.g. single adult, couple, couple with children, sole parent) for tax and welfare unit definitions.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>OECD</strong> (uses family types in analyses)</td>
+</tr>
+<tr>
+<td>Household Size</td>
+<td>Input</td>
+<td>Number of people in household, used for equivalisation of income and benefit entitlements (larger households have different needs).</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>OECD/Eurostat</strong> (equivalised income scales)</td>
+</tr>
+<tr>
+<td>Number of Dependent Children</td>
+<td>Input</td>
+<td>Count of children in the family/household, used to determine child-related transfers (e.g. family tax credits) and poverty measures for children.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>UNICEF</strong> (child poverty measures), <strong>OECD</strong> (child well-being)</td>
+</tr>
+<tr>
+<td>Ages of Children</td>
+<td>Input</td>
+<td>Ages of each child, since certain benefits or tax credits depend on child age (e.g. preschool vs school-age rates). Also used in child poverty reporting.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>UN</strong> (child development indicators)</td>
+</tr>
+<tr>
+<td>Region/Location</td>
+<td>Input</td>
+<td>Geographic location or region, used if policy varies by region (e.g. housing subsidies with regional caps) or for regional analysis of outcomes.</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>OECD</strong> (regional well-being), <strong>UN</strong> (urban/rural SDGs)</td>
+</tr>
+<tr>
+<td>Ethnicity</td>
+<td>Input</td>
+<td>Ethnic group of individual/household (as identified in data); not affecting taxes directly but used for distributional analysis and equity reporting.</td>
+<td>Demographics</td>
+<td>Extension</td>
+<td><strong>UN</strong> (inequality across ethnic groups), <strong>OECD</strong> (equity)</td>
+</tr>
+<tr>
+<td>Disability Status</td>
+<td>Input</td>
+<td>Indicator if individual has a disability or ill health limiting work capacity; used to determine eligibility for disability supports (e.g. Supported Living Payment).</td>
+<td>Demographics</td>
+<td>Core</td>
+<td><strong>WHO</strong> (disability prevalence), <strong>UN</strong> (CRPD* compliance)</td>
+</tr>
+<tr>
+<td>Immigration/Residency Status</td>
+<td>Input</td>
+<td>Citizenship or residency duration in NZ, since some benefits require residency periods. Primarily for policy eligibility (extension if linking immigration data).</td>
+<td>Demographics</td>
+<td>Extension</td>
+<td><strong>UN</strong> (migration statistics), <strong>OECD</strong> (migrant outcomes)</td>
+</tr>
+</tbody>
+</table>
+<p><small>*CRPD: Convention on the Rights of Persons with Disabilities</small></p>
+<h2 id="income-and-employment-variables">Income and Employment Variables</h2>
+<p>These variables capture market incomes and work status, which are fundamental inputs to simulate taxes and means-tested transfers. They constitute the “market income” of individuals and households.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Employment Income (Wages/Salary)</td>
+<td>Input</td>
+<td>Gross earnings from wages and salaries (before taxes). Key input for tax calculation and social contributions.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (average wages), <strong>ILO</strong> (employment stats)</td>
+</tr>
+<tr>
+<td>Self-Employment Income</td>
+<td>Input</td>
+<td>Income from self-employment or business (after expenses). Included in taxable income and affects benefit means tests.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (self-employment data)</td>
+</tr>
+<tr>
+<td>Investment Income</td>
+<td>Input</td>
+<td>Income from investments (interest, dividends, etc.). Forms part of total income and taxable income.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (household capital income share)</td>
+</tr>
+<tr>
+<td>Rental/Property Income</td>
+<td>Input</td>
+<td>Net income from rental properties or land. Included in total taxable income; may affect accommodation support eligibility.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (income composition), <strong>IMF</strong> (property income in analysis)</td>
+</tr>
+<tr>
+<td>Private Pensions/Annuities</td>
+<td>Input</td>
+<td>Income from private retirement pensions or annuities. Treated as income in tax and possibly reduces entitlement to means-tested benefits.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (pension income statistics)</td>
+</tr>
+<tr>
+<td>Other Private Transfers</td>
+<td>Input</td>
+<td>Other income sources (alimony, remittances, etc.). Typically part of gross income for means-tests if captured.</td>
+<td>Income (Market)</td>
+<td>Extension</td>
+<td><strong>World Bank</strong> (remittances data)</td>
+</tr>
+<tr>
+<td>Total Market Income</td>
+<td>Calculation</td>
+<td>Sum of all private income sources (earnings, self-empl., investments, etc.) – i.e. <strong>market income</strong> before any government intervention.</td>
+<td>Income (Market)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (uses “market income” for inequality decomposition)</td>
+</tr>
+<tr>
+<td>Gross Income (Incl. Transfers)</td>
+<td>Calculation</td>
+<td>Market income plus received cash transfers (e.g. benefits) – i.e. <strong>gross income</strong> before taxes. Represents pre-tax disposable resources.</td>
+<td>Income (Gross)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (income distribution definitions)</td>
+</tr>
+<tr>
+<td>Taxable Income</td>
+<td>Calculation</td>
+<td>Assessable income for tax after any allowable deductions (if applicable). In NZ, generally equal to gross income (most transfers taxable or counted separately).</td>
+<td>Income (Tax)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (taxable income concepts)</td>
+</tr>
+<tr>
+<td>Employment Status</td>
+<td>Input</td>
+<td>Labor force status (employed, unemployed, inactive). Used for simulating unemployment benefits and for reporting (e.g. unemployment rate).</td>
+<td>Employment</td>
+<td>Core</td>
+<td><strong>ILO</strong> (unemployment rate), <strong>OECD</strong> (employment rate)</td>
+</tr>
+<tr>
+<td>Hours Worked</td>
+<td>Input</td>
+<td>Work hours per week or employment intensity (full-time/part-time). Relevant for policies with work hour requirements (e.g. in-work tax credits require ≥20 hours/week for sole parents).</td>
+<td>Employment</td>
+<td>Core</td>
+<td><strong>OECD</strong> (hours worked statistics)</td>
+</tr>
+<tr>
+<td>Occupation/Industry</td>
+<td>Input</td>
+<td>Job type or sector (if available). Not directly affecting tax/benefit in NZ’s system, but could be used for analysis (e.g. sectoral impact or linking to industry-specific programs).</td>
+<td>Employment</td>
+<td>Extension</td>
+<td><strong>ILO</strong> (employment by industry), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Minimum Wage Level</td>
+<td>Parameter</td>
+<td>Policy parameter: statutory minimum wage. Not an individual’s variable, but influences simulations (e.g. setting a floor for wages or simulating policy scenarios).</td>
+<td>Employment</td>
+<td>Core (policy)</td>
+<td><strong>ILO</strong> (minimum wage database), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Social Insurance Contributions</td>
+<td>Calculation</td>
+<td>Mandatory payroll levies related to employment (e.g. ACC levy in NZ for injury insurance). Calculated as a percentage of earnings; reduces net income.</td>
+<td>Employment/Income</td>
+<td>Core</td>
+<td><strong>ILO</strong> (social security data), <strong>OECD</strong> (tax wedge)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="taxation-variables">Taxation Variables</h2>
+<p>These are outputs of tax calculations or related measures, crucial for evaluating fiscal impact and individual net incomes. They reflect the personal income tax system and other relevant taxes in the model.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Income Tax Liability</td>
+<td>Output</td>
+<td>Total personal income tax owed by the individual/household for the year, based on taxable income and tax brackets. Core outcome of the tax model.</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (tax revenue, tax rate comparisons)</td>
+</tr>
+<tr>
+<td>Effective Tax Rate</td>
+<td>Calculation</td>
+<td>Average tax rate (tax liability as a percentage of gross income). Useful for comparing tax burdens across income levels.</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (tax progressivity studies)</td>
+</tr>
+<tr>
+<td>Marginal Tax Rate (statutory)</td>
+<td>Calculation</td>
+<td>The statutory marginal income tax rate applicable to the last dollar of income (based on tax bracket).</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (tax rate structure), <strong>IMF</strong> (fiscal analysis)</td>
+</tr>
+<tr>
+<td>Effective Marginal Tax Rate (EMTR)</td>
+<td>Calculation</td>
+<td><strong>Combined</strong> marginal rate considering income tax plus benefit abatement/withdrawal. Indicates the incentive/disincentive to earn extra income (higher EMTR = weaker incentive).</td>
+<td>Taxes &amp; Transfers</td>
+<td>Core (for analysis)</td>
+<td><strong>OECD</strong> (work incentive indicators), <strong>World Bank</strong> (marginal tax-benefit rates)</td>
+</tr>
+<tr>
+<td>Tax Credits (Personal)</td>
+<td>Output</td>
+<td>Any tax credits reducing liability (e.g. Independent Earner Tax Credit for low-income workers). Simulated as part of tax calculation; effectively negative tax for eligible individuals.</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (tax-benefit systems comparisons)</td>
+</tr>
+<tr>
+<td>ACC Levy (NZ specific)</td>
+<td>Output (Calc)</td>
+<td>Accident Compensation Corporation levy – a compulsory employment insurance premium calculated on earnings. Added to tax burden; affects net income.</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>N/A</strong> (NZ-specific; analogous to social insurance in OECD metrics)</td>
+</tr>
+<tr>
+<td>Total Direct Tax</td>
+<td>Calculation</td>
+<td>Sum of income tax liability plus any other direct taxes (and levies) on the individual. Represents total direct fiscal contribution.</td>
+<td>Taxes (Direct)</td>
+<td>Core</td>
+<td><strong>IMF</strong> (tax revenue analysis), <strong>World Bank</strong></td>
+</tr>
+<tr>
+<td>GST Paid (Consumption Tax)</td>
+<td>Output (Calc)</td>
+<td>Estimated <strong>Goods and Services Tax</strong> paid by the household based on their consumption expenditure. Calculated by applying GST rate (15%) to taxable spending. Allows analysis of indirect tax incidence.</td>
+<td>Taxes (Indirect)</td>
+<td>Extension (if expenditure data used)</td>
+<td><strong>OECD</strong> (tax incidence studies), <strong>UN</strong> (SDG 10.4 inequality, tax incidence)</td>
+</tr>
+<tr>
+<td>Other Indirect Taxes</td>
+<td>Output (Calc)</td>
+<td>Estimated burden of other indirect taxes (e.g. excise duties on alcohol, tobacco, fuel) based on expenditure patterns. An extension to gauge full tax incidence on households.</td>
+<td>Taxes (Indirect)</td>
+<td>Extension</td>
+<td><strong>WHO</strong> (tobacco/alcohol tax impact), <strong>OECD</strong> (consumption tax incidence)</td>
+</tr>
+<tr>
+<td>Total Tax (Direct + Indirect)</td>
+<td>Calculation</td>
+<td>Combined total of direct and indirect taxes paid. Useful for computing overall tax burden and effective tax rates inclusive of consumption taxes.</td>
+<td>Taxes (Overall)</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (tax-to-income ratios), <strong>IMF</strong> (fiscal burden)</td>
+</tr>
+<tr>
+<td>Tax Wedge (on Earnings)</td>
+<td>Output (Calc)</td>
+<td>Percentage of labor cost taken by income tax and payroll levies minus cash benefits received (often computed for reference scenarios). Indicates the difference between employer cost and employee net income.</td>
+<td>Taxes &amp; Transfers</td>
+<td>Extension (analysis)</td>
+<td><strong>OECD</strong> (Tax Wedge indicator), <strong>ILO</strong></td>
+</tr>
+<tr>
+<td>Fiscal Cost of Tax Policy</td>
+<td>Output</td>
+<td>Aggregate fiscal impact of a tax policy change (change in total revenue). Computed across the population to evaluate policy proposals.</td>
+<td>Taxes (Aggregate)</td>
+<td>Core</td>
+<td><strong>IMF</strong> (revenue projections), <strong>OECD</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="welfare-transfer-variables">Welfare Transfer Variables</h2>
+<p>These are the benefit and transfer programs simulated. They represent cash (and some in-kind) support provided by the welfare system, calculated based on the inputs. Standard microsimulation outputs include total benefit entitlements and changes in these under policy scenarios.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New Zealand Superannuation</td>
+<td>Output (Calc)</td>
+<td>Universal pension for seniors (65+). Calculated based on age (and residency). Taxable income but core transfer for older adults.</td>
+<td>Cash Benefit (Pension)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (pension replacement rates), <strong>UN</strong> (SDG1 elderly poverty)</td>
+</tr>
+<tr>
+<td>Jobseeker Support (Unemployment Benefit)</td>
+<td>Output (Calc)</td>
+<td>Means-tested income support for unemployed (working-age). Simulated based on income (and assets) below thresholds. Different rates for single/couple.</td>
+<td>Cash Benefit (Unemployment)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (unemployment benefit net replacement rates), <strong>ILO</strong></td>
+</tr>
+<tr>
+<td>Sole Parent Support</td>
+<td>Output (Calc)</td>
+<td>Income support for single parents with young children. Entitlement based on having a dependent child and low income; simulates targeted welfare for sole-parent households.</td>
+<td>Cash Benefit (Family)</td>
+<td>Core</td>
+<td><strong>UNICEF</strong> (single parent support), <strong>OECD</strong> (family benefits)</td>
+</tr>
+<tr>
+<td>Supported Living Payment</td>
+<td>Output (Calc)</td>
+<td>Disability or caregiver benefit for those unable to work due to serious illness/disability or caring for someone with high needs. Eligibility depends on disability status and income means-test.</td>
+<td>Cash Benefit (Disability)</td>
+<td>Core</td>
+<td><strong>WHO</strong> (disability support policies), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Working for Families Tax Credits – Family Tax Credit</td>
+<td>Output (Calc)</td>
+<td><strong>Family Tax Credit</strong>: payment per child, based on number and age of children. Means-tested on family income. Core part of NZ’s child/family support package.</td>
+<td>Cash Transfer (Family)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (child benefit comparisons), <strong>UNICEF</strong></td>
+</tr>
+<tr>
+<td>Working for Families Tax Credits – In-Work Tax Credit</td>
+<td>Output (Calc)</td>
+<td><strong>In-Work Tax Credit</strong>: support for low-income working families (requires minimum hours of work and having children). Not paid if on main welfare benefits. Encourages work participation.</td>
+<td>Cash Transfer (Family)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (in-work benefit studies)</td>
+</tr>
+<tr>
+<td>Working for Families – Best Start Tax Credit</td>
+<td>Output (Calc)</td>
+<td>Payment for families with a baby/young child (eligible for children in early years). Universal in the first year of a child’s life, then income-tested. Supports child well-being in infancy.</td>
+<td>Cash Transfer (Family)</td>
+<td>Core</td>
+<td><strong>UNICEF</strong> (early childhood support)</td>
+</tr>
+<tr>
+<td>Accommodation Supplement</td>
+<td>Output (Calc)</td>
+<td>Means-tested support for housing costs (rent, board, mortgage) for low-income households. Amount varies by region (housing cost zone) and family size, with caps. Calculated using household income, assets, and actual housing costs.</td>
+<td>Cash Benefit (Housing)</td>
+<td>Core</td>
+<td><strong>OECD</strong> (housing affordability measures), <strong>UN</strong> (adequate housing indicator)</td>
+</tr>
+<tr>
+<td>Income-Related Rent Subsidy</td>
+<td>Output (Calc)</td>
+<td>In-kind housing support: for public housing tenants who pay income-proportional rent (e.g. 25% of income). The “subsidy” is the difference between market rent and capped rent. Included as an effective transfer (though non-cash).</td>
+<td>In-kind Benefit (Housing)</td>
+<td>Extension</td>
+<td><strong>UN-Habitat</strong> (affordable housing), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Disability Allowance</td>
+<td>Output (Calc)</td>
+<td>Supplement for additional costs of disability (e.g. medical bills), paid to low-income individuals with ongoing health/disability-related expenses. Modeled as a small weekly payment if eligible.</td>
+<td>Cash Benefit (Supplement)</td>
+<td>Extension (small scale)</td>
+<td><strong>WHO</strong> (disability support), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Childcare Subsidy</td>
+<td>Output (Calc)</td>
+<td>Means-tested subsidy for childcare costs for low-income working/studying parents. Calculated based on income, number of children in care, and hours of childcare. Enables labor force participation.</td>
+<td>Cash Benefit (Childcare)</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (childcare support), <strong>UN</strong> (ECE access)</td>
+</tr>
+<tr>
+<td>Student Allowances</td>
+<td>Output (Calc)</td>
+<td>Grants for eligible tertiary students to support living costs (often means-tested against parental income for young students). Modeled for students meeting criteria (age, course, parental income).</td>
+<td>Cash Benefit (Education)</td>
+<td>Extension</td>
+<td><strong>UNESCO</strong> (education access), <strong>OECD</strong></td>
+</tr>
+<tr>
+<td>Emergency/Hardship Assistance</td>
+<td>Output (Calc)</td>
+<td>Temporary additional support for those in severe hardship (e.g. Temporary Additional Support). Typically short-term and highly targeted; can be modeled as needed for income shortfalls.</td>
+<td>Cash Benefit (Hardship)</td>
+<td>Extension</td>
+<td><strong>World Bank</strong> (social safety nets), <strong>UN</strong></td>
+</tr>
+<tr>
+<td>Total Welfare Transfers</td>
+<td>Calculation</td>
+<td>Sum of all cash transfer entitlements for the individual or household. Represents total benefit income. Used to compute net income and fiscal cost.</td>
+<td>Aggregate Transfer</td>
+<td>Core</td>
+<td><strong>OECD</strong> (social expenditure), <strong>IMF</strong> (fiscal cost)</td>
+</tr>
+<tr>
+<td>Take-up Rate (simulated)</td>
+<td>Calculation</td>
+<td>Proportion of eligible individuals actually receiving a benefit (if modeling non-take-up). Could be applied to adjust outputs for more realistic estimates (e.g. not everyone claims all entitlements).</td>
+<td>n/a (model assumption)</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (benefit take-up studies), <strong>World Bank</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="post-tax-income-and-poverty-measures">Post-Tax Income and Poverty Measures</h2>
+<p>These outputs result from applying taxes and transfers to the input data. They reflect disposable income and living standards, and are critical for distributional analysis and policy evaluation. Many are core indicators used by international organizations for comparing well-being across countries.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Disposable Income (after taxes &amp; transfers)</td>
+<td>Output</td>
+<td><strong>Disposable household income</strong> after adding all cash transfers and subtracting income taxes (and mandatory levies). This is the net income available for spending or saving. It is the primary outcome of the microsimulation and the main measure of material well-being. Equivalised (per adult equivalent) for poverty/inequality analysis.</td>
+<td>Income Distribution</td>
+<td>Core</td>
+<td><strong>OECD</strong> (uses disposable income as main well-being indicator), <strong>IMF</strong> (inequality analysis)</td>
+</tr>
+<tr>
+<td>Disposable Income (after housing costs)</td>
+<td>Output</td>
+<td>Disposable income <strong>after housing costs (AHC)</strong> – i.e. deducting rent or mortgage payments from disposable income. Used for poverty measures that account for housing affordability (important in NZ context).</td>
+<td>Income Distribution</td>
+<td>Extension (analysis)</td>
+<td><strong>NZ Stats</strong> (AHC poverty in NZ measures), <strong>UN</strong> (adequate housing in SDGs)</td>
+</tr>
+<tr>
+<td>Poverty Line (Relative)</td>
+<td>Calculation</td>
+<td>Poverty threshold defined as a percentage of median disposable income. Common lines are 50% or 60% of median (Before or After housing costs). These thresholds are used to determine poverty status.</td>
+<td>Poverty Threshold</td>
+<td>Core</td>
+<td><strong>OECD/EU</strong> (relative poverty = 50% median; EU uses 60%), <strong>UN</strong> (SDG1.2 national poverty)</td>
+</tr>
+<tr>
+<td>Poverty Rate (Headcount) – 50% median</td>
+<td>Output</td>
+<td>Percentage of individuals/households with equivalised disposable income below the relative poverty line (50% of median). Can be calculated before or after housing costs. This headcount is a standard poverty indicator. Often broken down by population group (children, elderly, etc.).</td>
+<td>Poverty Measure</td>
+<td>Core</td>
+<td><strong>OECD</strong> (reports relative poverty rate), <strong>UN</strong> (SDG1.2.1 national poverty headcount)</td>
+</tr>
+<tr>
+<td>Child Poverty Rate</td>
+<td>Output</td>
+<td>Poverty headcount among children (e.g. under 18) using specified measures (NZ uses multiple: e.g. &lt;50% median AHC, etc.). The model can report number of children in poverty under various definitions. This is a key policy target in NZ and an international concern.</td>
+<td>Poverty Measure</td>
+<td>Core</td>
+<td><strong>UNICEF</strong> (child poverty), <strong>UN</strong> (SDG1.2 focuses on children), <strong>OECD</strong> (child poverty league tables)</td>
+</tr>
+<tr>
+<td>Poverty Gap</td>
+<td>Output</td>
+<td>Average shortfall of the incomes of those below the poverty line from the poverty threshold (expressed as a percentage of the threshold or in dollars). Indicates poverty depth, not just incidence.</td>
+<td>Poverty Measure</td>
+<td>Core</td>
+<td><strong>World Bank</strong> (poverty gap index), <strong>OECD</strong> (reports on poverty depth)</td>
+</tr>
+<tr>
+<td>Material Hardship/Deprivation Rate</td>
+<td>Output</td>
+<td>Proportion of population in material hardship – e.g. lacking multiple essential items (a non-monetary poverty indicator). In NZ, a material deprivation index is used alongside income poverty. The model can incorporate this if survey data on deprivation is available.</td>
+<td>Poverty/Social</td>
+<td>Extension</td>
+<td><strong>EU</strong> (Material deprivation index), <strong>UNICEF</strong> (child deprivation)</td>
+</tr>
+<tr>
+<td>Gini Coefficient (Income)</td>
+<td>Output</td>
+<td>Summary inequality index for income distribution (0 = perfect equality, 1 = maximum inequality). Calculated for equivalised disposable income (and sometimes for market income to show redistributive effect). Key output to gauge inequality.</td>
+<td>Inequality Measure</td>
+<td>Core</td>
+<td><strong>World Bank</strong> (WDI Gini Index), <strong>OECD</strong> (income inequality reports), <strong>IMF</strong> (uses Gini in inequality research)</td>
+</tr>
+<tr>
+<td>Income Share Ratios</td>
+<td>Output</td>
+<td>Inequality measures based on income shares: e.g. <strong>Top 10% share</strong>, <strong>Palma ratio</strong> (income of top 10% vs bottom 40%), <strong>P90/P10 ratio</strong> (90th percentile vs 10th). These provide intuitive benchmarks of inequality.</td>
+<td>Inequality Measure</td>
+<td>Extension</td>
+<td><strong>World Bank</strong> (top 10% share in analyses), <strong>OECD</strong> (palma, percentile ratios)</td>
+</tr>
+<tr>
+<td>Redistribution Effect (Tax &amp; Transfer)</td>
+<td>Calculation</td>
+<td>Reduction in inequality due to taxes and transfers. For example, difference between Gini of market income and Gini of disposable income. Indicates the progressivity/redistributive impact of the fiscal system.</td>
+<td>Inequality Measure</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (reports redistributive impact of taxes), <strong>IMF</strong> (fiscal redistribution)</td>
+</tr>
+<tr>
+<td>Fiscal Incidence by Decile</td>
+<td>Output</td>
+<td>Distribution of taxes paid and transfers received by income decile. Shows how each income group fares in terms of net benefits (can identify progressivity). Often presented as average tax rates or net benefit by decile.</td>
+<td>Inequality/Incidence</td>
+<td>Core</td>
+<td><strong>OECD</strong> (incidence analysis), <strong>World Bank</strong> (benefit incidence)</td>
+</tr>
+<tr>
+<td>Winners and Losers (policy change)</td>
+<td>Output</td>
+<td>When comparing a reform to status quo, counts of households who gain (“winners”) or lose (“losers”), often by how much and by income level. Helps illustrate the distributional impact of policy changes.</td>
+<td>Distribution Change</td>
+<td>Core</td>
+<td><strong>OECD</strong> (policy impact studies), <strong>IMF</strong> (distributional impact)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="social-and-well-being-indicators-multidimensional-extensions">Social and Well-Being Indicators (Multidimensional Extensions)</h2>
+<p>A comprehensive model may incorporate or interface with broader social indicators beyond income. These variables, while not traditional tax–benefit inputs, can be linked to the microsimulation (via extended data or assumptions) to assess multidimensional well-being outcomes. They are typically used in international reporting on quality of life.</p>
+<table>
+<thead>
+<tr>
+<th>Variable Name</th>
+<th>Category (Input/Calc/Output)</th>
+<th>Description</th>
+<th>Variable Group</th>
+<th>Core / Extension</th>
+<th>International Usage / Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Educational Attainment</td>
+<td>Input</td>
+<td>Highest education level achieved by individual (e.g. secondary, tertiary). Used to stratify results by education or simulate scenarios (e.g. impacts by skill level). Higher educational attainment correlates with income and well-being.</td>
+<td>Education</td>
+<td>Extension</td>
+<td><strong>UNESCO</strong> (education stats), <strong>OECD</strong> (education level in workforce)</td>
+</tr>
+<tr>
+<td>School/Training Enrollment</td>
+<td>Input</td>
+<td>Indicator if currently in education or training (especially for youth). Could be used to model eligibility for student allowances or for analyzing youth not in employment/education (NEET rate).</td>
+<td>Education</td>
+<td>Extension</td>
+<td><strong>UN</strong> (SDG4 education enrollment), <strong>OECD</strong> (NEET youth indicator)</td>
+</tr>
+<tr>
+<td>Health Status</td>
+<td>Input</td>
+<td>Self-reported health or presence of chronic conditions. Could be linked to use of health services or ability to work. Not directly in tax–benefit, but relevant for well-being analysis and for modeling health-related benefits.</td>
+<td>Health</td>
+<td>Extension</td>
+<td><strong>WHO</strong> (health surveys), <strong>OECD</strong> (self-reported health in BLI)</td>
+</tr>
+<tr>
+<td>Life Expectancy (at birth)</td>
+<td>Output (Aggregate)</td>
+<td>Average number of years a newborn is expected to live. <em>Not a micro-level output</em> but a national outcome indicator influenced by socioeconomic conditions. A comprehensive report might connect income simulations to changes in life expectancy or health outcomes over time.</td>
+<td>Health</td>
+<td>Extension (Indicator)</td>
+<td><strong>WHO</strong> (life expectancy indicator), <strong>UN</strong> (HDI component)</td>
+</tr>
+<tr>
+<td>Access to Healthcare</td>
+<td>Input/Output</td>
+<td>An indicator of whether individuals can obtain needed healthcare (e.g. no financial barriers, wait times). Could be proxied in microsimulation by out-of-pocket health costs or insurance coverage if applicable. Important for a broader welfare assessment.</td>
+<td>Health</td>
+<td>Extension</td>
+<td><strong>WHO</strong> (Universal Health Coverage index), <strong>OECD</strong> (health access)</td>
+</tr>
+<tr>
+<td>Housing Tenure</td>
+<td>Input</td>
+<td>Housing status: renter, owner, or public housing tenant. Affects eligibility for housing subsidies (e.g. only renters get Accommodation Supplement) and is used in housing affordability analysis.</td>
+<td>Housing</td>
+<td>Core</td>
+<td><strong>OECD</strong> (housing tenure statistics)</td>
+</tr>
+<tr>
+<td>Housing Cost</td>
+<td>Input</td>
+<td>Weekly housing expenditure (rent or mortgage interest, etc.). Used to calculate housing subsidies and to derive after-housing-cost income. Key for analyzing housing stress.</td>
+<td>Housing</td>
+<td>Core</td>
+<td><strong>OECD</strong> (housing cost over income), <strong>UN</strong> (adequate housing SDG)</td>
+</tr>
+<tr>
+<td>Housing Quality</td>
+<td>Input/Output</td>
+<td>Measures of dwelling quality (e.g. overcrowding – persons per room, damp/mold, insulation). Not part of tax/transfer calculation, but can be reported to show living conditions of households. Overcrowding is an important social indicator.</td>
+<td>Housing</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (overcrowding rate), <strong>UN-Habitat</strong> (housing quality)</td>
+</tr>
+<tr>
+<td>Environmental Exposure</td>
+<td>Input/Output</td>
+<td>Indicators of environmental quality affecting the household, such as air pollution exposure (average PM2.5 concentration in area) or access to clean water. These can be linked by region to each household. <strong>Air pollution (PM2.5)</strong> is a notable example – high exposure is a health risk. While not determined by the household, including it provides a fuller picture of well-being disparities.</td>
+<td>Environment</td>
+<td>Extension</td>
+<td><strong>WHO</strong> (air quality SDG 11.6.2), <strong>OECD</strong> (environmental well-being)</td>
+</tr>
+<tr>
+<td>Carbon Footprint</td>
+<td>Output (Calc)</td>
+<td>Estimated household CO₂ emissions or energy use (based on expenditure on fuel, electricity, transport). Allows analysis of environmental impact by income group (e.g. for carbon tax incidence). Derived by mapping spending to emissions factors.</td>
+<td>Environment</td>
+<td>Extension</td>
+<td><strong>UN</strong> (Paris Agreement reporting), <strong>World Bank</strong> (environmental indicators)</td>
+</tr>
+<tr>
+<td>Subjective Well-being (Life Satisfaction)</td>
+<td>Output (Survey)</td>
+<td>Self-reported life satisfaction or happiness score (usually from survey scale 0–10). Not influenced by tax directly, but a high-level outcome measure. A forward-looking microsimulation report might include this to connect income changes with well-being.</td>
+<td>Well-being</td>
+<td>Extension</td>
+<td><strong>OECD</strong> (Better Life Index – life satisfaction), <strong>UN</strong> (World Happiness Report)</td>
+</tr>
+<tr>
+<td>Multidimensional Poverty Index (MPI)</td>
+<td>Output</td>
+<td>A composite indicator of poverty that captures deprivations in education, health, and living standards in one index. While typically computed at national level, a comprehensive model can contribute by providing the income-related components or by identifying households below thresholds in multiple domains. Useful for international comparisons of <strong>poverty in all its dimensions</strong>.</td>
+<td>Poverty/Well-being</td>
+<td>Extension (Indicator)</td>
+<td><strong>UNDP</strong> (Global MPI), <strong>World Bank/UN</strong> (multi-dimensional poverty analysis)</td>
+</tr>
+<tr>
+<td>Human Development Index (HDI) Components</td>
+<td>Output</td>
+<td>Key components of the HDI: <strong>Income per capita</strong>, <strong>Education</strong> (mean years of schooling), and <strong>Health</strong> (life expectancy). The model can provide GNI or income per capita (from aggregate incomes) and potentially facilitate analysis of policies on these components. HDI itself is an aggregate index, but included for context in comprehensive reporting.</td>
+<td>Well-being (Composite)</td>
+<td>Extension (Indicator)</td>
+<td><strong>UN</strong> (UNDP HDI), <strong>World Bank</strong> (development indicators)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> New Zealand Treasury’s TAWA microsimulation model methodology and outputs; OECD definitions of income and poverty measures; international well-being indicator frameworks (OECD Better Life Index, UN SDGs, World Bank indicators) for extended variables. This table provides a landscape of variables from core microsimulation inputs and outputs (tax liabilities, transfers, disposable income, poverty rates) to broader social indicators (education, health, housing, environment) that a comprehensive model might include or connect to for policy analysis and reporting. All variables are labeled as core to the tax–benefit simulation or as extensions/indicators, and tagged with relevant international institutions that utilize or define those measures in their global comparisons and reports.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

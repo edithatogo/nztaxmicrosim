@@ -1,0 +1,1594 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../nz_microsim_paper/">
+      
+      
+        <link rel="next" href="../personal_tax_history_1970-25_narrative/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Personal Tax History - NZ Tax Microsimulation Model</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config",""),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction-and-objective" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NZ Tax Microsimulation Model" class="md-header__button md-logo" aria-label="NZ Tax Microsimulation Model" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NZ Tax Microsimulation Model
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Personal Tax History
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/edithatogo/nztaxmicrosim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nztaxmicrosim
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NZ Tax Microsimulation Model" class="md-nav__button md-logo" aria-label="NZ Tax Microsimulation Model" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NZ Tax Microsimulation Model
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/edithatogo/nztaxmicrosim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    edithatogo/nztaxmicrosim
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CITATION.cff" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Citing this work
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CODE_OF_CONDUCT/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code of Conduct
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../LICENSE" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    License
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Project Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ROADMAP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Roadmap
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development_log/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Log
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SECURITY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Model Documentation
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Model Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../parameter_coverage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Parameter Coverage
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../inflation_adjustment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Inflation Adjustment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demographic_modelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Demographic Modelling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historical_reporting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Historical Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/behavioural/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Behavioural Response
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_dictionary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Dictionary
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feature Matrix
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy_changes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Changes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/optimisation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Optimisation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../historic_tax_search_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Historic Tax Search Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nz_microsim_paper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    NZ Microsim Paper
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../personal_tax_history_1970-25_narrative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History 1970-25 Narrative
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../personal_tax_history_1970-25_table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Personal Tax History 1970-25 Table
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reporting_plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Reporting Plan
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taxmicrosim_io/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tax Microsim I/O
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../taxmicrosim_report_components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tax Microsim Report Components
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../validation_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Validation Report
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wff_microsim_model_metadata/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WFF Microsim Model Metadata
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../external/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    External
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../feature_comparison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feature Comparison
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module Status
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api_reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="introduction-and-objective">Introduction and Objective</h1>
+<p>New Zealand’s personal income tax system has evolved significantly since its inception in 1891, moving from minimal flat-rate taxes to a modern progressive structure with multiple brackets, credits, and levies. This document provides a <strong>comprehensive historical record of New Zealand’s personal income tax rules and thresholds</strong>, from the present day back to the earliest available records. The objective is to support the auditing and enhancement of a tax microsimulation model by cataloguing tax rates, bracket thresholds, tax credits, and mandatory levies across time. We emphasize <strong>personal income tax for individuals (both residents and non-residents)</strong>, including <strong>tax bracket rates and thresholds</strong>, <strong>personal tax credits</strong> (such as the Independent Earner Tax Credit and Working for Families credits), and <strong>levies or mandatory deductions affecting take-home pay</strong> (notably the ACC earner’s levy and historical analogues). We also identify <strong>major structural reforms</strong> – for example, the introduction or removal of tax brackets, the creation of new tax credits, or significant shifts in tax policy – to contextualize how the system has changed over time.</p>
+<p>By consolidating information from official government sources (Inland Revenue, The Treasury, New Zealand Parliamentary records, etc.) and reputable historical analyses, this document aims to serve as a reliable reference. Researchers and policymakers can trace how tax parameters have changed annually (where data allows), facilitating verification of microsimulation inputs and enabling adaptation of the model to different historical or policy scenarios. Key changes are illustrated with tables and timelines, and we include visual aids (Mermaid diagrams and charts) to depict structural changes in tax rates and thresholds. An appendix provides example code for visualizing threshold changes over time, demonstrating how the data compiled here can be used in practice. All information is thoroughly cited with sources (in APA style with hyperlinks) to enable further inquiry and validation.</p>
+<h1 id="description-of-search-strategy">Description of Search Strategy</h1>
+<p>To gather this historical tax information, a multi-pronged search strategy was employed:</p>
+<ul>
+<li>
+<p><strong>Official Government Publications</strong>: Priority was given to official sources such as <strong>Inland Revenue (IRD) publications</strong>, <strong>New Zealand Parliamentary Library research papers</strong>, and <strong>The Treasury</strong> working papers. These sources provide authoritative data on tax rates, thresholds, and policy changes. For recent and current rates, the IRD’s online resources (e.g. <em>Tax rates for individuals</em> pages and Tax Information Bulletins) were consulted. Parliamentary research briefs and Budget documents were used to confirm legislated changes at specific dates. The Treasury’s working paper on historical marginal tax rates provided insight into long-term trends since the early 1900s.</p>
+</li>
+<li>
+<p><strong>Historical and Archival Sources</strong>: To trace early 20th-century tax rates and major mid-century changes, historical analyses and archives were used. The <em>Te Ara Encyclopedia of New Zealand</em> and <em>NZ History</em> websites were searched for context on early tax laws and wartime tax measures. Academic sources (e.g., research by tax historians) were also considered. A 2012 Treasury working paper was particularly valuable for its summary of historical tax milestones (e.g. introduction of social security tax, WWII tax surcharges, etc.).</p>
+</li>
+<li>
+<p><strong>Legislation and Tax Policy Documents</strong>: Key pieces of tax legislation and policy summaries were referenced to pinpoint changes like the introduction of the 39% top rate in 2000, the major income tax cuts in 2010, and threshold adjustments in 2024. The IRD’s Tax Information Bulletins (TIBs) from the 1990s provided granular detail on the transition of tax rate structures (e.g. the reduction of the bottom rate in 1996–1998 and the use of low-income rebates). Tax policy websites (taxpolicy.ird.govt.nz) and the New Zealand Legislation website were cross-checked for the exact implementation dates of changes.</p>
+</li>
+<li>
+<p><strong>Contemporary Summaries and Analyses</strong>: For recent years and confirmation of current rules, we used summaries from accounting firms (e.g. EY, PwC) and up-to-date Wikipedia entries. These were cross-verified with official data. For example, Wikipedia’s summary of top marginal rate changes provided a quick reference for years in which the top rate changed (which we then verified via official sources). Similarly, private-sector tax guides helped confirm details like the ACC levy rates in recent years, which were ultimately verified against IRD’s official ACC levy rate table.</p>
+</li>
+</ul>
+<p>This blended search strategy ensured coverage of <strong>each era of tax history</strong> with high confidence in accuracy. Whenever possible, multiple sources were triangulated for each fact (e.g. confirming a tax rate from an official source and a historical commentary). Key search terms included “historical income tax rates NZ,” “Inland Revenue tax thresholds by year,” “Working for Families introduction,” “ACC levy history,” and specific years or acts (e.g., “1891 income tax NZ £300 exemption”, “1938 Social Security Act tax”, “1988 tax reform New Zealand,” “2024 income tax threshold change NZ”).</p>
+<p>Errors and gaps were addressed by consulting additional references (for instance, using Treasury publications for pre-1980 data when IRD online material was sparse). If certain data were not explicitly found (e.g., very early 20th-century bracket structures), we relied on aggregated historical summaries from reputable sources, noting where data is limited. Overall, the approach prioritized <strong>official data and peer-reviewed historical accounts</strong>, using secondary summaries primarily as pointers to the primary sources.</p>
+<h1 id="summary-of-findings">Summary of Findings</h1>
+<p><strong>Evolution of Tax Brackets and Rates:</strong> New Zealand’s personal income tax has always been <strong>progressive</strong>, but both the <em>number of brackets</em> and the <em>tax rates</em> have varied widely. Income tax was first introduced in <strong>1891</strong> with a tax-free threshold of £300 (exempting most people at the time) and a top rate of just <strong>5%</strong> on high incomes. Over the next few decades, rates rose, especially during wartime: by <strong>1921</strong> the top marginal rate was about <strong>43.75%</strong>, and on the eve of WWII (1939) it was roughly <strong>42.9%</strong>. <strong>World War II</strong> brought extraordinarily high taxes; a combination of income tax and special levies pushed the <em>effective</em> top marginal rate to around <strong>90%</strong> at its peak. Post-war, top rates remained high (around 60–76%) until the 1980s. In <strong>1982</strong>, the top statutory rate was <strong>60%</strong>, which was then <strong>raised to 66%</strong> in that year (under the Muldoon government).</p>
+<p>A dramatic shift occurred with the <strong>1980s tax reforms</strong>: the top rate was slashed from 66% to <strong>48% in 1988</strong>, and then to <strong>33% in 1989</strong>. This reform drastically <strong>simplified the tax structure</strong> – moving from many brackets to just two steps by the late 1980s – and was part of a broader “flattening” of the tax system alongside the introduction of GST in 1986. Through the 1990s, the top rate stayed at 33%, while the lower rate was gradually reduced (from 24% in the early 90s down to <strong>19.5% by 1998</strong>) and thresholds were modestly adjusted for inflation. By <strong>2000</strong>, the bracket structure was: 15% on income up to \$9,500; 21% on \$9,501–\$38,000; 33% on \$38,001–\$60,000. In that year, the newly elected government added a <strong>39% top rate</strong> on income over \$60,000, creating four brackets (15, 21, 33, 39%). This 39% rate above \$60k took effect on 1 April 2000.</p>
+<p>From 2000 to 2010, those four brackets remained generally stable (with some inflation adjustments in 2008–2010). In <strong>October 2008</strong>, thresholds were raised (e.g. the 15% bracket extended to \$14,000, and the 21% rate applied up to \$40,000) as part of legislated tax cuts. A change of government in late 2008 led to further adjustments: effective <strong>1 April 2009</strong>, the 39% top rate was reduced to <strong>38%</strong>, and the 21% bracket’s upper threshold was increased to \$48,000. Then on <strong>1 October 2010</strong>, a major tax reform lowered rates and simplified brackets: the new rates became <strong>10.5%, 17.5%, 30%, and 33%</strong>, with thresholds at \$14,000, \$48,000, \$70,000, and \$70k+ respectively (the 38% and 39% top rates were removed at that time). This 2010 reform coincided with an increase in GST (12.5% to 15%) and was aimed at shifting the tax mix.</p>
+<p>From 2011 through 2020, <strong>no changes were made to income tax rates or brackets</strong>, resulting in a decade of bracket creep as incomes rose with inflation. In <strong>2021</strong>, a new top tax rate of <strong>39%</strong> was reintroduced on income over <strong>\$180,000</strong>, restoring a fifth bracket for the 2021–22 tax year onward. This meant the brackets from 2021–2023 were: 10.5% (up to \$14k), 17.5% (\$14k–\$48k), 30% (\$48k–\$70k), 33% (\$70k–\$180k), 39% (\$180k+). Finally, in <strong>mid-2024</strong>, the government implemented <strong>inflation-indexed threshold adjustments</strong> – the first such adjustment in over a decade. From <strong>1 August 2024</strong>, the 10.5% bracket threshold was raised from \$14,000 to <strong>\$15,600</strong>, and the 17.5% bracket upper limit from \$48,000 to <strong>\$53,500</strong>, with slight shifts to the next brackets (the 30% bracket now spanning up to \$78,100). These mid-year changes led to <em>composite annual rates</em> for the 2024–25 income year (e.g., an effective 12.82% rate on \$14k–\$15.6k for that year) to reconcile the two part-year rate structures. As of the 2025 tax year, the personal tax rates remain: <strong>10.5% up to \$15,600; 17.5% \$15,601–\$53,500; 30% \$53,501–\$78,100; 33% \$78,101–\$180,000; 39% over \$180,000</strong>.</p>
+<p><strong>Tax Credits and Reliefs:</strong> New Zealand’s tax system has featured various credits to alleviate tax for certain groups. Early in the 20th century, relief was provided through <em>exemptions</em> (deductions) for dependents, life insurance, etc., rather than credits. By the late 20th century, <em>tax rebates/credits</em> became tools for targeting relief. A <strong>low-income earner rebate</strong> existed for many years to effectively lower the tax burden on the first few thousand dollars of income – maintaining an effective 15% bottom rate even when the statutory bottom rate was higher. For example, in the 1996–2000 period, the statutory bottom rate was 19.5%, but a rebate ensured those with incomes under \~\$9,500 paid effectively 15% on that portion. This rebate was phased out for higher incomes (so higher earners effectively paid 19.5% on their first \$38k). The low-income rebate was eventually rendered unnecessary when the bottom tax rate was directly set to 15% in 2000; it was later repealed as a formal provision (replaced by tax credits like the IETC) in the early 2010s.</p>
+<p><strong>Independent Earner Tax Credit (IETC)</strong>: Introduced on <strong>1 April 2009</strong>, the IETC is a tax credit to benefit middle-income earners with no other government support. It provides up to <strong>\$520 per year</strong> (approximately \$10 per week) for individuals with annual income between \$24,000 and \$48,000 who are not receiving Working for Families tax credits, income-tested benefits, or NZ Superannuation. The IETC begins to abate at 13c per dollar for income above \$44,000 and cuts out at \$48,000. This credit has remained in place through the 2010s (the value and thresholds have not changed since inception), and it effectively boosts the take-home pay of qualifying independent earners by reducing their final tax payable.</p>
+<p><strong>Working for Families (WFF) Tax Credits</strong>: The Working for Families package was launched in <strong>2004–2005</strong> as a major reform of family assistance. It consolidated and expanded several child-related tax credits to “make work pay” and improve income adequacy for families with children. The package (phased in from 2005 to 2007) introduced or rebranded credits including the <strong>Family Tax Credit</strong> (formerly Family Support), <strong>In-Work Tax Credit</strong> (replacing an earlier Child Tax Credit for working parents), <strong>Minimum Family Tax Credit</strong>, and later the <strong>Best Start tax credit</strong> (from 2018) for families with newborns. <em>Family Tax Credit</em> provides a per-child payment (available to all low-to-middle income families, whether working or on benefits), while the <em>In-Work Tax Credit</em> provides an extra payment to working families that are not on income-tested benefits. These credits abate as family income rises. For example, as of the mid-2010s, the abatement threshold for WFF credits was around \$36,350, above which credits reduce at 20–25% per extra dollar earned (parameters have been adjusted occasionally via Budgets). The <strong>Best Start</strong> credit, introduced in <strong>2018</strong>, provides \$60 per week for a baby’s first year (universal for all newborns) and for up to three years for lower-income families. Working for Families tax credits are administered jointly by IRD and MSD and are a crucial component of effective tax-benefit policy for families.</p>
+<p><strong>Other Credits and Notable Deductions:</strong> Before WFF, there were other targeted credits such as the <strong>Parental Tax Credit</strong> (a precursor to Best Start, providing a lump-sum to parents of newborns, now replaced), and the <strong>Children’s Tax Credit/Child Tax Credit</strong> (which the In-Work Tax Credit replaced in 2006). In earlier decades, New Zealand also had a <strong>Tax Reduction</strong> for superannuitants in the 1980s and 90s (to partially offset the surcharge on NZ Superannuation), and various small credits (e.g., rebates for charitable donations, housekeeper or childcare rebates in past years – though most of these were removed in tax simplifications by the 2000s). Most of these are beyond the scope of this summary, which focuses on broad personal tax credits impacting take-home pay.</p>
+<p><strong>Levies and Mandatory Deductions:</strong> New Zealand famously has <em>no general social security tax</em> or separate payroll tax – funding for pensions and welfare comes from general income tax. However, there have been notable <em>earmarked levies</em>. From <strong>1936</strong> until <strong>1970</strong>, a <strong>Social Security Contribution (tax)</strong> was imposed on incomes to fund the welfare state. Initially set as a flat <strong>5% tax on income</strong> in 1939 (on top of regular income tax), it was an evolution of an earlier unemployment levy (which had been 3.33% in the mid-1930s). During WWII this social security tax was increased to <strong>7.5%</strong>, and a temporary <strong>“National Security Tax”</strong> was also imposed; combined, they reached 12.5% during the war. The social security tax was <strong>reduced back to 7.5% after the war and remained at 7.5% until it was abolished in 1970</strong>. Effectively, through 1970, wage and salary earners paid an extra levy for social benefits – by the 1960s it was collected via the PAYE system alongside income tax. After 1970, this dedicated tax was eliminated, and its revenue folded into general tax; the universal benefits (like healthcare and pensions) have since been funded out of general taxation.</p>
+<p>In <strong>1974</strong>, New Zealand introduced the <strong>Accident Compensation Corporation (ACC)</strong> scheme, replacing the right to sue for personal injuries with a no-fault insurance model. This has been (partly) funded by an <strong>earner’s levy</strong> on wages and salaries. The <strong>ACC Earners’ Levy</strong> is a flat percentage charged on employment income up to a certain cap. It is collected alongside PAYE income tax deductions. The levy rate is set annually and has varied over time depending on scheme costs. For example, in the 1990s and 2000s the levy rate generally ranged roughly <strong>1–2%</strong>. In recent years it has been about <strong>1.21%–1.70%</strong> (excluding GST) of earnings, equivalent to <strong>1.39%</strong> (in 2018–2021) up to <strong>1.83%</strong> in 2027 when including GST. The <strong>maximum earnings subject to ACC</strong> also adjusts over time (for instance, in the 2023–24 year the levy applied to the first \$139,384 of earnings). As of 2025, the levy is <strong>\$1.67 per \$100 of earnings (1.67%)</strong>, with a maximum levy of \$2,551 per year (on earnings up to \$152,790). Employers and self-employed pay separate ACC levies for work injuries (not covered here), but the earners’ levy affects take-home pay for all employees.</p>
+<p>Aside from ACC, other mandatory deductions that affect take-home pay include <strong>KiwiSaver contributions</strong> (if the individual opts into KiwiSaver, typically 3–10% of pay is deducted, with employer contributions separately) and <strong>student loan repayments</strong> (12% of income above a threshold for those with student loans). However, these are not taxes per se; they are individualized obligations. We note them for context, but they are not part of the core tax “rules” and thresholds covered in this history. There have also been period-specific levies: e.g., during 1975–1977, a short-lived <strong>“income levy”</strong> helped fund a national superannuation scheme, and in the late 1980s, an <strong>“employment surcharge”</strong> temporarily applied. These were generally small and temporary, so the focus remains on the enduring levies like ACC and the historic social security tax.</p>
+<p><strong>Residents vs. Non-Residents Taxation:</strong> New Zealand’s tax system taxes individuals based on <strong>residency and source</strong>. <strong>Residents</strong> are taxed on their <em>worldwide income</em>, whereas <strong>non-residents</strong> are taxed only on <em>New Zealand-sourced income</em>. Importantly, non-resident individuals earning NZ income generally face the same <em>tax rates and brackets</em> on that income as residents do – New Zealand does not have a separate personal tax scale for non-resident workers. For example, a non-resident earning salary in NZ will have PAYE deducted at the normal progressive rates (and will also pay ACC levy). However, non-residents are typically not eligible for certain tax credits (e.g., they generally cannot claim the Independent Earner Credit or Working for Families unless they meet residency criteria for those credits). Additionally, <em>passive income</em> of non-residents (interest, dividends, royalties) is usually subject to <strong>non-resident withholding tax (NRWT)</strong> at a flat rate, often reduced by tax treaty agreements. For instance, interest paid to a non-resident is typically taxed via NRWT at 15% (or the Approved Issuer Levy at 2%, if applicable), instead of the progressive rates. New Zealand’s approach thus ensures non-residents pay tax on NZ income (with final tax often collected by withholding), but they do not enjoy the full range of resident-specific credits or the tax-free thresholds that some other countries provide (since NZ’s lowest bracket begins above \$0, everyone pays at least 10.5% on the first dollar earned).</p>
+<p>In summary, over more than a century, New Zealand’s personal tax has moved from a simple exempt amount and flat rate for the few (1890s) to highly complex multi-tier levies (mid-20th century) and back to a simpler broad-base, low-rate system (post-1980s), with the pendulum swinging slightly back to more progressivity in recent years (with new top rates and targeted credits). The <strong>tables and timeline</strong> below detail the annual rates, thresholds, credits, and levies, and the <strong>subsequent sections</strong> describe key changes and their context in greater detail. These structured records will enable validation of each year’s tax settings in a microsimulation model and help analysts understand the rationale behind major shifts in policy.</p>
+<h1 id="tables-of-tax-rates-thresholds-credits-and-levies">Tables of Tax Rates, Thresholds, Credits, and Levies</h1>
+<h2 id="personal-income-tax-brackets-and-rates-by-period-nz-residents">Personal Income Tax Brackets and Rates by Period (NZ Residents)</h2>
+<p>The table below summarizes the <strong>marginal tax rates and income brackets</strong> for New Zealand resident individuals at various key periods. For brevity, we list structures at introduction or major changes and at notable reform points (annual changes in between are omitted if unchanged). All amounts are in <strong>nominal NZ currency</strong> of the time (pre-1967 in £, thereafter in \$). Where relevant, additional effective tax components (like war levies or low-income rebates) are noted.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Period (Tax Year)</strong></th>
+<th><strong>Income Brackets and Rates</strong> (Marginal rate applies to income in range)</th>
+<th><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1892</strong> (introduction)</td>
+<td>£0 – £300: <em>exempt</em> (0%); £301+: <strong>5%</strong></td>
+<td>First income tax introduced in 1891/92. £300 exemption excluded &gt;90% of population. Top rate 5%.</td>
+</tr>
+<tr>
+<td><strong>1914</strong> (pre-WWI)</td>
+<td>(progressive steps up to \~6.67%) – <strong>Top \~6.67%</strong></td>
+<td>Rates had risen slightly; still few payers. Top rate \~6.67%.</td>
+</tr>
+<tr>
+<td><strong>1921</strong> (post-WWI)</td>
+<td>(multiple brackets) – <strong>Top 43.75%</strong></td>
+<td>Wartime “temporary” increases made income tax a major revenue source. Top rate peaked at 43.75%.</td>
+</tr>
+<tr>
+<td><strong>1930</strong> (pre-Depression)</td>
+<td>(multiple brackets) – <strong>Top 29.25%</strong></td>
+<td>Tax cuts in 1920s lowered top rate to \~29% by 1930. Threshold for paying tax lowered to £260.</td>
+</tr>
+<tr>
+<td><strong>1939</strong> (pre-WWII)</td>
+<td>(multiple brackets) – <strong>Top \~42.9%</strong></td>
+<td>Top rate climbed again in 1930s. Few wage earners paid tax; system about to change with Social Security Act.</td>
+</tr>
+<tr>
+<td><strong>1940–1942</strong> (WWII home front)</td>
+<td><strong>Income tax</strong>: progressive, top <strong>60%</strong> at high incomes; <strong>+ Social Security tax</strong>: 5% (from 1939); <strong>+ Nat’l Security Levy</strong>:  \~10% (wartime)</td>
+<td>Social Security Contribution introduced 1939 at 5%. War economy added special levies; combined top effective rate ≈ <strong>90%</strong>+.</td>
+</tr>
+<tr>
+<td><strong>1945–1949</strong> (post-war)</td>
+<td><strong>Income tax</strong>: top rate \~60% (statutory); <strong>+ Social Security</strong>: 7.5%; <strong>+ rehab/war levies</strong>: variable</td>
+<td>By 1945, top statutory rate 60%, plus 7.5% social security tax, plus residual war surcharge \~20% of tax. Effective top \~90%. After war, war surcharge phased out by 1953.</td>
+</tr>
+<tr>
+<td><strong>1950s</strong></td>
+<td>Multiple brackets, top <strong>60%</strong> (on high incomes); Social Security tax 7.5%</td>
+<td>Top marginal tax \~60% throughout 1950s. PAYE withholding introduced in 1958, improving compliance. Social Security tax still 7.5%.</td>
+</tr>
+<tr>
+<td><strong>1960s</strong></td>
+<td>Multiple brackets, top <strong>60–65%</strong>; Social Security 7.5%</td>
+<td>Modest changes. 1960: top rate 58%; increased mid-60s (e.g., 65% by 1970) as fiscal needs grew. Social Security tax still 7.5%. Abolished in 1970.</td>
+</tr>
+<tr>
+<td><strong>1970s</strong> (pre-1982)</td>
+<td>Progressive brackets; top rate generally <strong>60%</strong> (above certain high income)</td>
+<td>After social security tax removal, income tax carried full load. e.g., 1970–72 top rate \~60%. A brief surcharge in 1976–77 (to help fund superannuation) applied +2.5% on income tax.</td>
+</tr>
+<tr>
+<td><strong>1982–1986</strong> (pre-reform)</td>
+<td>Progressive; <strong>top rate 66%</strong> (from \$38,000 up, approx)</td>
+<td>Muldoon’s 1982 budget raised top rate from 60 to <strong>66%</strong>. Many brackets (dozens of minor steps) still existed, causing high effective rates at some middle incomes.</td>
+</tr>
+<tr>
+<td><strong>1988</strong> (post-reform stage 1)</td>
+<td><strong>0% up to \$9,500</strong> (tax credit effectively zeroed tax on low incomes); <strong>15%</strong> on \$9,501–\$30,000; <strong>27%</strong> on \$30,001–\$50,000; <strong>48%</strong> over \$50,000</td>
+<td>Major tax reform: GST introduced 1986; income tax drastically flattened starting 1 Oct 1986 and further in 1988. By 1988, top rate <strong>48%</strong>. A low-income rebate effectively created a zero-tax band for lowest incomes in 1988–89.</td>
+</tr>
+<tr>
+<td><strong>1989–1999</strong> (post-reform stage 2)</td>
+<td><strong>15%</strong> on \~\$0–\$9,500; <strong>28%</strong> (later 21% or 24%) on middle; <strong>33%</strong> top rate (thresholds varied)</td>
+<td>From 1 April 1988 to 31 March 1989: top rate cut to <strong>33%</strong>. Ultimately a two-bracket system: by 1990, 15% up to \$30,875; 33% above. 1996–97: bottom rate lowered to \~21% then <strong>19.5%</strong> by 1998, with top rate still 33%. A Low-Income Rebate maintained effective \~15% on first \$9,500 of income. Top threshold rose to \$38,000 by 1998.</td>
+</tr>
+<tr>
+<td><strong>2000–2008</strong> (pre-October 2008)</td>
+<td><strong>15%</strong> \$0–\$9,500; <strong>21%</strong> \$9,501–\$38,000; <strong>33%</strong> \$38,001–\$60,000; <strong>39%</strong> \$60,001+</td>
+<td>New top rate <strong>39%</strong> introduced 1 April 2000 over \$60k. Brackets unchanged until 2008. (Low-income rebate still existed: effectively, those earning ≥\$38k paid 19.5% on first \$38k.) No inflation indexation caused <strong>bracket creep</strong> (more people hit 33% and 39%).</td>
+</tr>
+<tr>
+<td><strong>Oct 2008 – Mar 2009</strong></td>
+<td><strong>12.5%</strong> \$0–\$14,000; <strong>21%</strong> \$14,001–\$40,000; <strong>33%</strong> \$40,001–\$70,000; <strong>39%</strong> \$70,001+</td>
+<td>Tax cuts legislated by Budget 2008 (phase 1) took effect 1 Oct 2008. Bottom rate cut from 15% to 12.5%; thresholds raised (e.g. 21% bracket now up to \$40k, top 39% kicks in at \$70k).</td>
+</tr>
+<tr>
+<td><strong>Apr 2009 – Sept 2010</strong></td>
+<td><strong>12.5%</strong> \$0–\$14,000; <strong>21%</strong> \$14,001–\$48,000; <strong>33%</strong> \$48,001–\$70,000; <strong>38%</strong> \$70,001+</td>
+<td>New government canceled further Labour cuts and instead on 1 Apr 2009 <strong>dropped top rate to 38%</strong> (threshold \$70k). Also extended 21% bracket to \$48k. (Introduced Independent Earner Credit, see below.)</td>
+</tr>
+<tr>
+<td><strong>Oct 2010 – Mar 2021</strong></td>
+<td><strong>10.5%</strong> \$0–\$14,000; <strong>17.5%</strong> \$14,001–\$48,000; <strong>30%</strong> \$48,001–\$70,000; <strong>33%</strong> \$70,001+</td>
+<td>Major tax reform on 1 Oct 2010: new lower rates and no surtax. Top rate back to <strong>33%</strong>. Only four brackets. This structure remained for a decade (2011–2021) unchanged.</td>
+</tr>
+<tr>
+<td><strong>Apr 2021 – Jul 2024</strong></td>
+<td><strong>10.5%</strong> \$0–\$14,000; <strong>17.5%</strong> \$14,001–\$48,000; <strong>30%</strong> \$48,001–\$70,000; <strong>33%</strong> \$70,001–\$180,000; <strong>39%</strong> \$180,001+</td>
+<td>Top rate of <strong>39%</strong> over \$180k introduced 1 April 2021. Lower brackets unchanged from 2010 levels, so by 2020s inflation had significantly eroded real values (no indexation).</td>
+</tr>
+<tr>
+<td><strong>Aug 2024 – present (2025)</strong></td>
+<td><strong>10.5%</strong> \$0–\$15,600; <strong>17.5%</strong> \$15,601–\$53,500; <strong>30%</strong> \$53,501–\$78,100; <strong>33%</strong> \$78,101–\$180,000; <strong>39%</strong> \$180,001+</td>
+<td>Thresholds <strong>inflation-adjusted</strong> on 1 Aug 2024: roughly +11% to first two brackets, +\~\$8,100 to 30% bracket. No rate changes. (Annual assessments for 2024–25 used blended rates due to mid-year change.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notes:</strong> “Tax year” in NZ runs 1 April–31 March. Above, a year label (e.g. 2025) refers to the income year ending 31 March of that year. Bracket thresholds are in nominal dollars of the day. Up to 1967 currency was in £ (NZ pound), converted 2 NZ\$ = 1 £ in July 1967. Low-income earner rebate (LIER) applied roughly 1986–2012 in various forms; after 1988 it effectively made the first \~\$9,500 tax-free or low-tax for low earners, but phased out for higher earners. All rates above are <em>statutory marginal rates</em> excluding ACC or other levies (see separate table for levies). Sources: <em>New Zealand Parliament Library</em> research and Budgets for 1990s–2010s; <em>Inland Revenue</em> and <em>Parliamentary debates</em> for earlier periods.</p>
+<h2 id="major-personal-tax-credits-and-rebates">Major Personal Tax Credits and Rebates</h2>
+<p>This table lists <strong>key personal tax credits or rebates</strong> that have existed in New Zealand, with their introduction, duration, and a brief description of their effect on taxpayers’ liabilities. (It excludes business or rebate schemes not directly tied to personal income tax of individuals.)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Credit/Rebate</strong></th>
+<th><strong>Years Active</strong></th>
+<th><strong>Eligibility and Description</strong></th>
+<th><strong>Maximum Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>General Exemption</strong> (personal allowance)</td>
+<td>1891–1970 (varies)</td>
+<td>Not a credit but an exempt slice of income. Initially £300 in 1891; gradually changed until replaced by low-income rebates/credits. Effectively \$0 bracket for low incomes. Phased out by 1970 alongside introduction of universal benefits.</td>
+<td>(£300 in 1891; later varied)</td>
+</tr>
+<tr>
+<td><strong>Dependent exemptions</strong> (children, etc.)</td>
+<td>\~1910s–1980s</td>
+<td>Deductions/exemptions per child or dependent. Reduced taxable income for families. Phased out in 1980s tax reform in favor of direct payments.</td>
+<td>Varying (e.g., in 1930s: £25 per child).</td>
+</tr>
+<tr>
+<td><strong>Low-Income Earner Rebate</strong></td>
+<td>1986–2012 (phased)</td>
+<td>Provided a reduction in tax for low incomes, effectively ensuring a portion of income was taxed at a lower rate (or zero). In late 1990s–2008, it made the first \$9,500 of income effectively taxed at 15% instead of 19.5% for those below certain income. Phased out after 2010 reforms (repealed fully from 2013).</td>
+<td>\~\$450/year (varied; for example, in 1996 it was \$730, phasing out by \~\$30k).</td>
+</tr>
+<tr>
+<td><strong>Family Benefit/Family Support</strong> (tax deduction/credit)</td>
+<td>1930s–1980s (various forms)</td>
+<td>Early forms of child assistance. A universal <em>Family Benefit</em> (cash payment per child) existed (1940s–1980s). In 1986, <em>Family Support</em> tax credit introduced (targeted, income-tested payment for children) replacing some universal payments. Formed basis of later WFF “Family Tax Credit.”</td>
+<td>(e.g., Family Support (1986) \~\$700–\$1,400 per child/year depending on age).</td>
+</tr>
+<tr>
+<td><strong>Family Tax Credit (FTC)</strong> – <em>part of Working for Families</em></td>
+<td>2005–present (earlier as Family Support from 1986)</td>
+<td>A refundable tax credit for families with children. Paid <strong>per child</strong> on a sliding scale, abated above an income threshold. Ensures a minimum level of support for children whether parents work or not (available to beneficiaries too). Administered by IRD/MSD under WFF.</td>
+<td>Varies by number and age of children (e.g., FY2023: for first child \$6,642/year if &lt;16; higher for older; each additional child \$5k–\$6k). Abates 27% over \~\$42k income (as of 2023).</td>
+</tr>
+<tr>
+<td><strong>In-Work Tax Credit (IWTC)</strong> – <em>WFF</em></td>
+<td>2006–present (predecessor “Child Tax Credit” 1996–2006)</td>
+<td>Tax credit for families <strong>in paid work</strong> (not on welfare benefits) with dependent children. Meant to “make work pay.” Initially up to \$60/week for 1–3 kids (plus \$15 for each additional). Not income-tested separately but abates as part of total WFF package.</td>
+<td>\$3,120/year max for 1–3 children (plus \$780 per additional child). Increased to \$3,770/year from 2016. (Abated with FTC above threshold).</td>
+</tr>
+<tr>
+<td><strong>Minimum Family Tax Credit</strong> – <em>WFF</em></td>
+<td>1986–present (as Guaranteed Minimum Family Income; revamped 2005)</td>
+<td>Ensures working families have a minimum <strong>after-tax income</strong> floor, provided they work a minimum number of hours. If a working family’s income (after tax) is below a set annual amount, this credit tops it up to that guaranteed level. Not continuous – it zeroes out tax or pays a benefit to reach the threshold.</td>
+<td>Guarantees (FY2023) at least \$34,216 after tax for eligible working families. Credit amount = difference between actual income and threshold (so varies; fully abated at threshold).</td>
+</tr>
+<tr>
+<td><strong>Parental Tax Credit (PTC)</strong> – <em>WFF</em></td>
+<td>1999–2018</td>
+<td>A credit for newborns – paid for the first 8–10 weeks of a child’s life to families not on parental leave pay. Worth \$150/week (2015) for up to 10 weeks. It was <strong>replaced by Best Start</strong> in 2018.</td>
+<td>\$1,200 (older) to \$1,500 (later) per child (per birth). Now obsolete.</td>
+</tr>
+<tr>
+<td><strong>Best Start Tax Credit</strong> – <em>WFF</em></td>
+<td>2018–present</td>
+<td>A credit of <strong>\$60 per week</strong> for babies. Universally available for baby’s first year; income-tested for ages 1–3 (phases out above \~\$93k). Aims to support children in early years.</td>
+<td>\$3,120 per child in first year; up to \$9,360 total over three years if low/moderate income.</td>
+</tr>
+<tr>
+<td><strong>Independent Earner Tax Credit (IETC)</strong></td>
+<td>2009–present</td>
+<td>Tax credit for individuals <strong>earning \$24,000–\$48,000</strong> who receive <strong>no other income support</strong> (no WFF, no benefit, not on NZ Super). Designed to assist low-middle income “independent” workers. Abates at 13% for income over \$44k, zero at \$48k.</td>
+<td>\$520 per year (non-refundable, but can be claimed through reduced PAYE or at year-end).</td>
+</tr>
+<tr>
+<td><strong>Charitable/Household Tax Rebates</strong></td>
+<td>\~1970s–2012 (varied)</td>
+<td>Various rebates were available historically: e.g., rebate of 33% on charitable donations (up to a cap, expanded in 2008 to no cap), a housekeeper/childcare rebate (phased out in 1980s). The donation rebate persists as a <strong>tax credit</strong> (33% of donations, up to the donation amount equal to income). Most others (childcare, housekeeper) ended by 1989 reforms.</td>
+<td>Donation Tax Credit: 33% of donations (up to total donations = taxable income). No dollar cap since 2013.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> <em>Inland Revenue</em> Working for Families entitlements chart, <em>Budget 2004</em> WFF fact sheets, <em>Income Tax Act 2007</em> (Sections LD credits), and Parliamentary Library descriptions. IETC: Taxation (Urgent Measures) Act 2008. Best Start: Budget 2018 docs. Donation credit: Income Tax Act 2007, s LD 1.</p>
+<h2 id="levies-and-other-deductions-affecting-take-home-pay">Levies and Other Deductions Affecting Take-Home Pay</h2>
+<p>This table records <strong>national levies or mandatory deductions</strong> that affect net income from wages, alongside their rates and key changes. (It excludes voluntary deductions like KiwiSaver or student loans, and employer taxes, focusing on broad-based levies.)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Levy / Tax</strong></th>
+<th><strong>Years Active</strong></th>
+<th><strong>Rate and Base</strong></th>
+<th><strong>Notes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Social Security Tax</strong> (and earlier Unemployment Levy)</td>
+<td>1931–1970</td>
+<td>Initially <strong>1.25%</strong> (1931) on all income; raised to <strong>5%</strong> in 1936; peaked at <strong>7.5%</strong> by 1947. Applied to virtually all personal income (no large exemptions).</td>
+<td>Began as an <em>“Unemployment Tax”</em> during the Depression (1931). First set at 1.25%; by mid-1930s was 3.33%. Renamed <strong>Social Security Contribution</strong> in 1938, raised to fund new welfare benefits. During WWII, a temporary <strong>National Security Tax</strong> was added on top (effectively  an extra levy of up to 5–7.5%). After war, that war tax was removed (1950s), but the 7.5% social security tax remained until it was <strong>abolished in 1970</strong>.</td>
+</tr>
+<tr>
+<td><strong>ACC Earners’ Levy</strong> (on employment income)</td>
+<td>1974–present</td>
+<td>Varied annually; generally around <strong>0.8%–2%</strong> of earnings (up to a cap). Recent examples: 2010–2016 about 1.4% (plus GST) on earnings up to \~\$120k; 2023–24: <strong>1.53%</strong> on up to \$139,384; 2024–25: <strong>1.60%</strong> on up to \$142,283. Rates include 15% GST.</td>
+<td>Funds no-fault accident insurance for workers (non-work injuries). Paid by employees via PAYE withholding (shown as ACC deduction). Introduced by Accident Compensation Act 1972 (went operational April 1974). Initial levy rates in 1974 were lower (on the order of &lt;1%). Levy has fluctuated with ACC’s financial needs. <strong>Example trend</strong>: 2008–09: 1.4%; peaked \~2010–2011 at 2.0% (inclusive of GST) after ACC cost spike; then reduced to 1.21% by 2018 (plus GST = 1.39%). Currently trending up slightly due to rising claim costs, reaching 1.67% (GST incl.) in 2025 and 1.83% slated for 2027. The levy is <strong>capped</strong> at a maximum income (e.g. max levy \~\$2,277 in 2024).</td>
+</tr>
+<tr>
+<td><strong>Earners’ “Registration Fee”</strong> (Poll tax)</td>
+<td>1939–1945</td>
+<td>£1 per adult per year</td>
+<td>Introduced alongside Social Security tax in 1938–39 as a flat yearly charge (Nash’s “registration fee”); contributed to social security fund. Abolished after WWII.</td>
+</tr>
+<tr>
+<td><strong>National Superannuation surcharge</strong></td>
+<td>1985–1998</td>
+<td>Not a levy on all earners, but a tax on retirees’ other income: 20%–25% tax on extra income above a threshold, effectively reducing NZ Super for higher-income pensioners.</td>
+<td>Introduced mid-1980s as a claw-back on universal pension (to target support). Repealed in 1998, restoring universal (non-taxed) NZ Super for all 65+. Listed here as it affected net income of seniors with investment/earnings.</td>
+</tr>
+<tr>
+<td><strong>Earthquake Recovery Levy</strong></td>
+<td>2011–2014 (temporary)</td>
+<td><strong>\$0.02 per \$100</strong> of taxable income (0.02%) – effectively \$0.0002 in the dollar.</td>
+<td>A temporary levy via PAYE to help fund Christchurch earthquake recovery (implemented as part of ACC levy increase or separate component). Very small impact; expired after designated period.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> <em>The Treasury</em> historical summaries; <em>IRD</em> for ACC rates; <em>NZ History</em> (social security tax); <em>Budget documents</em> for surcharges and levies.</p>
+<h1 id="key-changes-and-structural-reforms-over-time">Key Changes and Structural Reforms Over Time</h1>
+<p>In this section, we chronologically highlight and describe the <strong>key changes</strong> in New Zealand’s personal tax system – focusing on structural shifts such as new taxes or levies, the introduction or abolition of brackets, and major policy reforms. These changes are illustrated in context, often reflecting social and economic factors of the time.</p>
+<h2 id="early-20th-century-introduction-and-early-adjustments-18911910s">Early 20th Century: Introduction and Early Adjustments (1891–1910s)</h2>
+<p>New Zealand introduced income tax in <strong>1891</strong> under the Liberal Government, primarily to shift some revenue burden from regressive indirect taxes (customs duties) to the wealthy. The initial system was very simple: it featured a <strong>generous exemption</strong> – incomes below £300 (\~NZ\$600 at the time, a high bar in 1891) paid no income tax – and a <strong>flat 5% rate</strong> on incomes above that level. In effect, only a small fraction of the population (roughly 12,000 individuals out of 700,000 adults) paid any income tax in the 1890s. Most government revenue still came from customs and excise duties on goods during this period.</p>
+<p>The principle of <strong>progression</strong> was present from the start (the <strong>Land and Income Assessment Act 1891</strong> included progressive land tax rates and a basic progressive income tax), but in practice the income tax was almost flat due to the single threshold. Over the next two decades, the basic structure remained but rates crept up slightly. By <strong>1914</strong>, on the eve of World War I, the top rate had risen to about <strong>6.67%</strong> – still relatively low, but indicating a trend toward taxing higher earners more as the need for revenue grew. There were also various exemptions and deductions introduced (for example, tax relief for those with children or life insurance payments, introduced in the early 20th century) to provide some equity and encourage certain behaviors.</p>
+<p><strong>World War I</strong> (1914–1918) marked a turning point: the government greatly increased income tax to fund the war effort. Temporary “war” surcharges effectively multiplied tax liabilities. By <strong>1921</strong>, the <strong>top marginal rate had leaped to 43.75%</strong>. This was a dramatic increase, reflecting how wartime necessity turned income tax from a minor source into a significant revenue tool. However, because the tax thresholds hadn’t lowered enough, still relatively few individuals paid the top rate; it primarily affected the rich.</p>
+<p>In the <strong>1920s</strong>, some of these “temporary” increases were reversed. There was a conscious policy choice in the 1920s to stimulate post-war economic growth through lower taxes. The top rate was cut back down significantly – to about <strong>29% by 1930</strong>. An interesting structural feature during the 1920s was the use of <em>multi-slope</em> tax scales: instead of distinct brackets with a marginal rate on each slice of income, New Zealand had a system where a higher rate could apply to the <em>full income</em> beyond a certain point (this caused discontinuities in effective tax rates). In 1923–24, for instance, there was even a one-off 20% rebate on tax to provide relief, demonstrating the ad-hoc measures of the time.</p>
+<p>By the late <strong>1920s and early 1930s</strong>, New Zealand, like the rest of the world, was hit by the Great Depression. Tax revenues plummeted and unemployment soared. The government’s response included new taxes: notably, in <strong>1931</strong> a small <strong>“Unemployment Tax” of 1.25%</strong> was introduced on all incomes. This was essentially a precursor to a social security tax, intended to fund unemployment relief. It was a flat levy (so, regressive in impact) and was increased in steps in the early 1930s. By the time the first Labour Government came to power in 1935, this unemployment levy had reached <strong>3.33%</strong> (3⅓%) on income. Labour, with its more welfare-focused agenda, maintained and repurposed this levy rather than removing it.</p>
+<h2 id="1930s1940s-social-security-and-war-high-taxation-era">1930s–1940s: Social Security and War – High Taxation Era</h2>
+<p>A <strong>watershed moment in tax policy</strong> came with the <strong>Social Security Act 1938</strong>. From 1 April 1939, New Zealand implemented a broad-based <strong>Social Security Contribution</strong> – effectively a national tax earmarked to fund the new welfare state (age pensions, free healthcare, family benefits, etc.). This replaced the earlier unemployment tax. The social security tax was set at <strong>5% on all income</strong> (initially), and accompanied by a flat charge of £1 per person (often called a “poll tax” or registration fee). These measures ensured that even people with modest incomes contributed something to the welfare scheme, though the income tax exemptions and graduated rates still meant the wealthy paid more. The introduction of social security taxation in 1939 marks the start of <strong>dual taxes on income</strong>: a standard income tax (with graduated rates) and a parallel flat tax for social services.</p>
+<p>When <strong>World War II</strong> erupted, New Zealand’s fiscal needs surged again. The government layered on <strong>“National Security Tax”</strong> and other surcharges. For example, in 1940 a National Security Tax effectively added <strong>an extra 0.5 shillings per pound (i.e., 2.5%)</strong>, later rising, on top of existing taxes. By 1942-43, the <strong>social security tax had been hiked to 7.5%</strong>, and an <strong>additional “income tax charge”</strong> was levied at <strong>33⅓% of the income tax liability</strong> (i.e., if your calculated income tax was £100, you paid an extra £33). This combination yielded <strong>extremely high effective tax rates</strong> for top earners. The statutory top income tax rate was raised to <strong>60%</strong> during the war, but if one adds 7.5% social security + 33% surtax on the income tax, the <em>effective</em> top marginal rate exceeded <strong>90%</strong> in the mid-war years. Indeed, for a few years (1942–1946) New Zealand arguably had a near confiscatory top tax rate – something that was justified publicly by the needs of total war. Even middle incomes faced heavy taxation: the overlapping of taxes meant someone in the middle bracket might pay a base rate of 30% plus the 7.5% social security, etc. Notably, <strong>four years (1942–1945) saw the top effective marginal rate above 90%</strong>, the highest in NZ’s history.</p>
+<p>Structurally, a significant change during WWII was the <strong>simplification of the rate schedule in 1940</strong>. The old multi-slope system was replaced in 1940 by a more straightforward multi-step scale (graduated brackets), <em>but it still had 40 separate income steps</em> up to the 60% top rate. This was an attempt to make the tax easier to compute while retaining progression. In practice, the combination of 40 brackets and extra levies meant complexity remained.</p>
+<p>After WWII, the <strong>extra war surcharges were gradually removed</strong> by the early 1950s (the temporary additional income tax levy ended in 1953). The <strong>social security tax</strong> was brought back down to its peacetime <strong>7.5%</strong> and stayed at that rate. The top marginal income tax rate, which had been 60% since the 1940s, was slightly reduced in the late 1940s and 1950s: it fluctuated but generally remained in the range of 55–60%. One source notes the top rate was about 76.5% at the end of the 1940s and then “generally lower” in the post-war period. In practice, the top statutory rate settled around <strong>60% throughout the 1950s and 60s</strong>, and since the social security levy was a separate flat 7.5%, one could say the combined top rate was effectively \~67.5% on the last dollar of earnings.</p>
+<p>A notable administrative reform was the introduction of <strong>PAYE (Pay As You Earn)</strong> withholding in <strong>1958</strong>. Before 1958, employees would receive their full wages and then had to settle income tax afterward (often in a lump sum or provisional installments). This was onerous and led to compliance issues. PAYE required employers to deduct income tax (and social security tax) each payday. The immediate effect was that in 1958 many taxpayers paid two years’ worth of tax (the prior year in arrears and current year via PAYE), an event softened by transitional credits. PAYE greatly improved tax compliance and made the process more convenient – it’s arguably one of the biggest practical changes in tax <em>collection</em> (though not a rate change per se).</p>
+<h2 id="1950s1960s-post-war-adjustments-and-stability">1950s–1960s: Post-war Adjustments and Stability</h2>
+<p>The period from the mid-1940s to the early 1970s can be seen as one of <strong>high but stable taxes</strong>. New Zealand was building a comprehensive welfare state, and the revenue largely came from direct taxes on income. The <strong>top marginal income tax rate stayed in the 55–60% range</strong>, and the <strong>7.5% social security tax</strong> persisted. Bracket thresholds were occasionally raised (often by amendments in annual tax Acts) to account for inflation, but not systematically. Inflation was moderate enough in the 1950s that bracket creep was not yet a political focus.</p>
+<p>By the <strong>early 1960s</strong>, the government did enact some income tax relief. For instance, in 1961 the Holyoake Government raised personal exemptions (which effectively lifted the tax-free income portion, thereby reducing tax for low earners) – this caused a dip in average tax rates in 1962–63. There were also <em>across-the-board upward shifts in brackets in 1962</em> to counter bracket creep. These changes interrupted the rising trend of tax burdens temporarily.</p>
+<p>However, the general pattern until the 1970s was that <strong>as incomes grew, more people paid higher average rates</strong> – the phenomenon of <em>bracket creep</em> – because rate thresholds were not indexed to inflation. One indicator: in the early 1950s, a relatively small share of workers reached the top bracket, but by the late 1960s many more did, simply due to wage growth pushing them into higher tax brackets without any change in law.</p>
+<p>One structural change was that by <strong>1970</strong>, the <strong>Social Security tax of 7.5% was abolished</strong>. This happened under the National Government’s 1970 budget reforms, which folded that revenue into ordinary income tax. Essentially, the <em>nominal income tax rates were raised by 7.5 percentage points</em> and the separate levy dropped. In effect, it was largely a bookkeeping change – people’s take-home pay didn’t increase by 7.5%, because regular tax went up accordingly – but it simplified the system by having only one set of tax calculations instead of two. (From this point on, New Zealand ceased to have an explicit social security payroll tax, a distinction it maintains to this day in contrast to many countries.)</p>
+<h2 id="1970s1980s-the-high-tax-peak-and-the-neoliberal-reforms">1970s–1980s: The High-Tax Peak and the Neoliberal Reforms</h2>
+<p>Through the <strong>1970s</strong>, New Zealand’s income tax rates were still steeply progressive. For example, in 1975, marginal rates ranged from 15% at the low end up to about 60% at the top (the top threshold might have been around NZ\$20,000 at the time – high income for that era). The number of brackets was large (dozens of small increments). The late 1970s saw economic turbulence (oil shocks, inflation). Tax policy responded occasionally: the 1978 and 1979 budgets slightly adjusted tax rates and introduced an indexing of thresholds (the <strong>income tax was partially indexed to inflation in 1980</strong> by the Muldoon government, but subsequently suspended as inflation soared). A noteworthy feature was the <strong>Superannuation surcharge</strong> introduced in 1976: while not directly a personal income tax rate, it effectively taxed other income of pensioners at a high rate (up to 25%) to claw back some of the universal pension. This was a controversial policy that lasted until 1998, illustrating how the tax-welfare system intersected.</p>
+<p>By <strong>1982</strong>, New Zealand’s top marginal rate reached a historical high in peacetime: <strong>66%</strong> on income over approximately NZ\$38,000. This came from a decision by Robert Muldoon’s National Government to increase the top rate from 60% to 66% in 1982 to raise revenue (the country was facing fiscal deficits). At that time, New Zealand’s income tax was among the highest in the OECD. The <strong>basic rate structure in 1982</strong> was roughly: 20% on low incomes, scaling up through many brackets to 66% at the top. Many ordinary middle-class earners were in 40–50% marginal tax brackets due to bracket creep and multiple steps.</p>
+<p><strong>1984</strong> brought a change of government (the Fourth Labour Government) and with it a radical shift in economic policy. Over <strong>1984–1988</strong>, New Zealand underwent <strong>major tax reform</strong> as part of “Rogernomics.” This reform had several prongs:</p>
+<ul>
+<li>Introduction of <strong>GST (Goods and Services Tax)</strong> at 10% in 1986 (later 12.5% in 1989 and 15% in 2010).</li>
+<li>Removal or reduction of many <strong>special tax exemptions and deductions</strong> to broaden the tax base (e.g., removing preferential treatment of certain savings, life insurance, etc.).</li>
+<li><strong>Dramatic cuts to marginal income tax rates</strong> to a “broad-base, low-rate” philosophy.</li>
+</ul>
+<p>In <strong>October 1986</strong>, an interim step of tax reduction occurred (top rate cut to 48% then) along with GST introduction, but the most dramatic changes were in <strong>1988 and 1989</strong>. From 1 April 1988, the top personal rate fell from 48% to <strong>40%</strong>, and one year later, on 1 April 1989, it fell again to <strong>33%</strong>. Concurrently, the number of brackets was slashed – ultimately to just two brackets by 1989 (and briefly a third very low bracket with a zero rate via rebate). <strong>Graphically, the top rate plummeted</strong> (see the timeline diagram below) from the mid-60s to the low 30s within a couple of years. This was one of the largest tax rate cuts in NZ’s history.</p>
+<p>&#x20;<strong>Figure 1: Top Personal Income Tax Rate Over Time (1900–2025).</strong> <em>The timeline of New Zealand’s top marginal tax rate shows a peak of 90%+ during WWII, a post-war norm of \~60%, a spike to 66% in the early 1980s, then a sharp drop to 33% by 1989. Subsequent decades saw a rise to 39% in 2000, a fall to 33% in 2010, and a return to 39% in 2021.</em> (Source data: NZ Parliamentary Library, Treasury; compiled by author.)</p>
+<p>Accompanying the rate cuts, <strong>tax credits and surcharges were restructured</strong>. The low-income earner rebate was introduced (ensuring those under \$9,500 effectively paid 15% or less). Family Support credits were introduced in 1986 to help low-income families in lieu of universal family benefit (a precursor to Working for Families). On the other end, a surtax on state pensions (the superannuitant surcharge) was implemented to target benefits to those in need – effectively part of the tax system’s role in means-testing.</p>
+<p>The <strong>philosophy of the 1986–1990 reforms</strong> was to remove distortions: having much lower top rates was intended to reduce tax avoidance and spur investment. Indeed, prior to 1988, the gap between the top personal (66%) and company tax rate (48%) induced many to shelter income in companies or trusts. By 1989, both the top personal and company rate converged at <strong>33%</strong>, eliminating the incentive to arbitrage between entity types. New Zealand achieved one of the flattest income tax structures in the world at that time.</p>
+<h2 id="1990s-tweaks-and-targeted-relief">1990s: Tweaks and Targeted Relief</h2>
+<p>In the <strong>1990s</strong>, the broad structure from 1989 remained in place initially: a top rate of 33%, bottom rate 24% (later reduced), and few brackets. The incoming National Government in 1990 did not reverse the low top rate; instead, they focused on targeted tax relief and further base-broadening. One significant change was the introduction of the <strong>Independent Family Tax Credit (also known as Child Tax Credit) in 1996</strong>, which was a payment to working families not on welfare (a precursor to the In-Work Tax Credit).</p>
+<p>Tax bracket adjustments in the 90s were modest: inflation had reduced the real value of thresholds, so in <strong>1996–1998</strong>, as part of a coalition agreement (“Credible Budget” and “Tax Reduction and Social Policy Programme”), the National Government reduced the bottom tax rate and raised thresholds. Specifically, from 1 July 1996 the bottom rate dropped from 24% to <strong>21.5%</strong>, and the threshold for 33% was raised from \$30,875 to \$34,200. Then from 1 July 1997, the bottom rate further dropped to <strong>19.5%</strong>, and the 19.5% bracket’s ceiling rose to \$38,000. By 1 April 1998, the rates were stabilized at <strong>19.5% up to \$38,000, and 33% above \$38,000</strong> (with a low-income rebate making the effective lowest rate 15% for incomes under \$9,500). The corporate tax rate was also reduced to 33% in this period, keeping it aligned with the top personal rate.</p>
+<p>These changes in the late 90s were partly offset by the retention of the superannuation surcharge (until 1998) and the introduction of some user-pays in other areas. But overall, personal income tax remained relatively low and flat by historical standards.</p>
+<p>An important development in 1999–2000 was that the new Labour-Alliance coalition, elected in 1999, campaigned on requiring high earners to contribute a fairer share. Thus, <strong>from 1 April 2000, a new top tax bracket of 39% for income over \$60,000 was introduced</strong>. This raised the number of brackets to four and was projected to affect roughly 5% of taxpayers at the time. The government justified it on equity grounds and to fund social programs. The 33% rate was kept for incomes \$38,000–\$60,000, the 21% for \$9,500–\$38,000, and 15% below \$9,500. Notably, the <strong>low-income rebate</strong> was adjusted so that those above \$38k no longer got the benefit (hence the note that the first \$38k was taxed at 19.5% for them). The net effect: between 2000 and 2008, the tax structure was <em>more progressive</em> at the top than it had been in the 90s, but still much flatter than the 1970s.</p>
+<p>During the <strong>early 2000s</strong>, aside from the new top rate, the Labour government made few changes to income tax brackets, allowing <strong>bracket creep</strong> to gradually increase revenue (fiscal drag became a political issue by mid-decade as wages grew and more people started paying 33% or 39%). Instead, policy focus was on targeted assistance via the transfer system – notably the <strong>Working for Families</strong> package (2004–07). WFF significantly increased tax credits for families (Family Support became more generous, In-Work Tax Credit introduced, etc.), which reduced effective tax burdens for working families with children (often yielding negative income tax for some, i.e., net subsidies). In essence, while <em>statutory</em> tax rates stayed the same from 2000 to 2008, <em>effective</em> taxes for low-to-middle income families dropped thanks to WFF.</p>
+<p>By <strong>2005–2008</strong>, accumulating fiscal surpluses and political pressure to address bracket creep led to promised tax cuts. The <strong>2008 Budget (by Labour)</strong> scheduled phased tax rate cuts: effective 1 October 2008, 1 April 2010, and 1 April 2011. The first phase (Oct 2008) happened: the bottom rate went from 15% to <strong>12.5%</strong>, and thresholds were raised (bringing the \$60k threshold to \$70k, etc.). But Labour lost the 2008 election, and the new National Government canceled the later phases. Instead, National implemented its own tax package.</p>
+<h2 id="2010-comprehensive-tax-reform-and-modern-structure">2010: Comprehensive Tax Reform and Modern Structure</h2>
+<p>After some interim tweaks in 2009 (notably the introduction of the <strong>Independent Earner Tax Credit</strong> in April 2009 and a cut of the top rate to 38%), the <strong>big change came on 1 October 2010</strong>. The 2010 reform under Prime Minister John Key and Finance Minister Bill English was one of the largest since 1989. It aimed to be broadly revenue-neutral in tandem with a GST increase. Key features:</p>
+<ul>
+<li>The <strong>GST rate increased from 12.5% to 15%</strong> (effective the same day).</li>
+<li>Personal <strong>income tax rates were all reduced</strong>: the 12.5% became <strong>10.5%</strong>; 21% became <strong>17.5%</strong>; 33% became <strong>30%</strong>; and 38% (top) became <strong>33%</strong>. This left the top rate equal to the company tax (which was cut to 28% in 2011) for a while, reducing arbitrage.</li>
+<li>Brackets were adjusted slightly: the threshold for 17.5% was set at \$48,000 (was to be \$50k under Labour’s canceled plan, but \$48k was chosen to align with a round number and fiscal considerations), and the 30% bracket still started at \$48k up to \$70k, with 33% above \$70k.</li>
+<li>The <strong>Independent Earner Credit</strong> was retained as is, and WFF tax credits were initially untouched (though subsequently slightly trimmed in 2011–2012 for higher incomes).</li>
+</ul>
+<p>This created the <strong>four-bracket structure (10.5, 17.5, 30, 33)</strong> that endured for the next decade. Combined with WFF and IETC, the system in the 2010s delivered lower effective tax rates for most, except that very high earners benefited substantially from the top rate drop (from 38 to 33). The equity concern was partially addressed through the GST compensation via income support and the fact that top earners lost some tax preferences (like property depreciation deductions) in parallel reforms.</p>
+<p>New Zealand from 2010 to 2020 had no further major changes in personal tax brackets or rates. This was an unusual decade of stability. Over these years, <strong>inflation and wage growth pushed more income into the higher brackets</strong> (e.g., by 2020 a full-time minimum wage worker could easily be in the 17.5% bracket, and middle managers hit the 33% bracket). The absence of indexation meant <strong>bracket creep</strong> once again became a talking point, with estimates that by 2020 a large fraction of taxpayers were in the 30% bracket, which was originally intended for “above average” incomes in 2010.</p>
+<h2 id="20212025-return-of-a-higher-top-rate-and-threshold-adjustments">2021–2025: Return of a Higher Top Rate and Threshold Adjustments</h2>
+<p>In the <strong>2020 election</strong>, the Labour Party (under Jacinda Ardern) proposed a new top tax rate for high earners. Consequently, from <strong>1 April 2021</strong>, a <strong>39% rate on income above \$180,000</strong> was implemented. This reintroduced a fifth bracket (the first since 2010) and affected roughly the top 2% of earners. The rationale was to increase revenue from those most able to contribute, especially in light of COVID-19 fiscal pressures, while leaving lower and middle rates unchanged. With this change, New Zealand’s top marginal tax rate returned to the same level it had been in 2000–2010, albeit at a much higher threshold (\$180k now, vs \$60k then – capturing a much smaller proportion of taxpayers).</p>
+<p>From 2021 through 2023, the rate brackets stayed the same (10.5, 17.5, 30, 33, 39) and the thresholds remained at 2010 levels for the lower brackets and \$180k for the new top. This meant that by 2023, it had been <em>13 years</em> since the \$14k, \$48k, \$70k thresholds were set – over which time inflation cumulatively was significant. The lack of adjustment effectively increased tax burdens in real terms for low and middle earners each year (fiscal drag).</p>
+<p>Acknowledging this, in <strong>2023–2024</strong> there was cross-party consensus emerging on adjusting brackets. The Government announced that from <strong>31 July 2024</strong>, the first two bracket thresholds would be raised: the 10.5% rate’s upper limit from \$14,000 to <strong>\$15,600</strong>, and the 17.5% rate’s upper limit from \$48,000 to <strong>\$53,500</strong>. The 30% bracket consequently now covers \$53,501 to \$78,100 (previously it was \$48k to \$70k), and the 33% bracket covers \$78,101 to \$180,000. These specific increases were roughly in line with cumulative CPI inflation since 2010 (about +11%). They took effect mid-tax-year (Aug 2024), which, as noted earlier, led IRD to use composite annual rates for the 2024–25 year to ensure no over/under-taxation at year-end. For example, the “annualized” marginal rate for \$14k–\$15.6k in that year was 12.82%, a blend of 17.5% for four months and 10.5% for eight months.</p>
+<p>Alongside these threshold adjustments, <strong>no further changes to rates</strong> were made for 2025. The 39% top rate remains, and notably its threshold (\$180k) was not altered in 2024. There was also an increase in the ACC levy around 2024–25 (as seen in the ACC table, rates tick up yearly), but that is separate from income tax changes. Looking forward, any future government may consider indexing the tax brackets to inflation to avoid bracket creep – a policy that existed briefly in the 1980s but has not been adopted long-term.</p>
+<p>In summary, by 2025 New Zealand’s personal tax structure is <strong>mildly progressive</strong>: a low starter rate (10.5%) that ensures everyone pays some tax from the first dollar (NZ has no tax-free allowance), a middle band of 17.5% and 30% covering most full-time workers’ incomes, a 33% upper-middle rate, and a 39% top rate hitting only high earners. Combined with significant tax credits (WFF) and transfers, the system’s overall progressivity is higher than the raw rates suggest, but compared to the mid-20th century, statutory rates are low and the structure simpler. Over more than a century, New Zealand has thus gone from a “<strong>exempt the many, lightly tax the few</strong>” approach (1890s), to “<strong>tax almost everyone heavily</strong>” (WWII era), to “<strong>low flat-ish taxes</strong>” (late 1980s-90s), and now towards a moderate middle ground.</p>
+<p>To visualize the structural shifts, the Mermaid diagram below presents a timeline of significant personal tax milestones in New Zealand:</p>
+<pre><code class="language-mermaid">timeline
+    title New Zealand Personal Tax System – Key Milestones
+    1891 : Income Tax introduced (Liberal govt). £300 exemption; 5% top rate:contentReference[oaicite:217]{index=217}
+    1917 : WWI “special war tax” pushes top rate &gt; 30%:contentReference[oaicite:218]{index=218}
+    1931 : Depression-era taxes – 1.25% unemployment levy starts:contentReference[oaicite:219]{index=219}
+    1939 : Social Security tax 5% + £1 poll tax fund welfare
+    1942 : WWII peak: 60% income tax + 12.5% social/war levies (top EMTR ~100%):contentReference[oaicite:221]{index=221}
+    1958 : PAYE system introduced – wage tax withheld at source:contentReference[oaicite:222]{index=222}
+    1970 : Social Security levy (7.5%) abolished; folded into income tax:contentReference[oaicite:223]{index=223}
+    1982 : Top rate 66% (historic high in peacetime):contentReference[oaicite:224]{index=224}
+    1988 : GST introduced (1986); top rate cut to 48%:contentReference[oaicite:225]{index=225}
+    1989 : Top rate 33%; two-step tax scale achieved:contentReference[oaicite:226]{index=226}
+    2000 : New 39% top rate over $60k (four brackets):contentReference[oaicite:227]{index=227}
+    2005 : Working for Families boosts family tax credits:contentReference[oaicite:228]{index=228}
+    2010 : Comprehensive reform – GST 15%, bottom rate 10.5%, top rate down to 33%:contentReference[oaicite:229]{index=229}
+    2021 : 39% top rate re-introduced over $180k:contentReference[oaicite:230]{index=230}
+    2024 : Tax bracket thresholds indexed ~11% upward (first adjustment since 2010):contentReference[oaicite:231]{index=231}
+</code></pre>
+<p><em>(Figure 2: Timeline of Key Tax Changes) – This timeline highlights major changes: introduction (1891), wartime surcharges, the first social security tax (1939), removal of that tax (1970), the 1980s overhaul (top rate to 33%), the 2000 and 2010 shifts, and the recent reintroduction of a higher top bracket and inflation indexing.</em></p>
+<p>Each of these milestones corresponded to changes in economic philosophy or circumstances. For instance, the <strong>1930s–40s</strong> changes were about social protection and war financing, the <strong>1980s</strong> about liberalization and efficiency, and the <strong>2020s</strong> about equity and updating the system.</p>
+<p>Lastly, it’s worth noting New Zealand’s system in international context: it has <em>no separate payroll tax for pensions or healthcare</em> (unlike many countries), relying entirely on the income tax for progressive taxation of earnings. It also has no general capital gains tax, although certain gains are taxed as income under specific rules. These absences put more weight on the structure of the income tax to achieve fiscal and social objectives, which is why adjustments like Working for Families (effectively using the tax system for social policy) and periodic rate changes are so significant in the New Zealand context.</p>
+<h1 id="appendix-code-for-visualizing-tax-threshold-changes">Appendix: Code for Visualizing Tax Threshold Changes</h1>
+<p>To aid auditing and modeling, one might want to <strong>visualize how tax bracket thresholds have changed over time</strong> (for instance, compared to inflation or wage growth). Below is an example using Python with Matplotlib to plot the evolution of selected tax bracket cut-off thresholds. This code uses a hard-coded dictionary of historical thresholds (in NZD nominal terms) for simplicity, but in practice this data could be loaded from a file or database. The code plots the lower bound of the top tax bracket across years (i.e., the income level at which the top rate kicks in) and the upper bound of the lowest bracket, illustrating how they remained fixed in nominal terms for long periods and were adjusted at certain points.</p>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+# Historical bracket thresholds for selected years (NZD, nominal)
+# Keys are year (income tax year ending Mar of that year).
+top_threshold = {
+    1980: 22000,  # approx top bracket start in 1980 ($NZ)
+    1982: 24000,  # top 66% above ~$24k
+    1989: 30000,  # top 33% above $30k after reforms
+    1990: 30000,
+    1998: 38000,  # threshold raised in 1998
+    2000: 60000,  # top 39% above $60k from 2000
+    2009: 70000,  # top rate threshold $70k after 2008 cuts
+    2011: 70000,  # top rate threshold lowered to $70k (33% top)
+    2022: 180000, # top 39% above $180k from 2021
+    2025: 180000  # unchanged through mid-2020s
+}
+bottom_threshold = {
+    1980: 0,      # tax from first dollar (no zero band)
+    1982: 0,
+    1989: 0,
+    1990: 9500,   # low-income rebate effectively zeroed tax up to ~$9.5k, use as proxy
+    2000: 9500,   # bottom 15% bracket to $9.5k
+    2009: 14000,  # bottom bracket to $14k after 2008
+    2011: 14000,  # bottom bracket $14k (10.5%)
+    2025: 15600   # bottom bracket $15.6k after 2024 adjustment
+}
+
+years = sorted(set(top_threshold.keys()) | set(bottom_threshold.keys()))
+top_values = [top_threshold.get(y, None) for y in years]
+bottom_values = [bottom_threshold.get(y, None) for y in years]
+
+plt.figure(figsize=(8,5))
+plt.plot(years, top_values, marker='o', label='Top bracket threshold (start of highest tax rate)')
+plt.plot(years, bottom_values, marker='s', label='Lowest bracket threshold (end of 0% or lowest rate)')
+plt.xlabel(&quot;Year&quot;)
+plt.ylabel(&quot;Threshold Income (NZD)&quot;)
+plt.title(&quot;Evolution of Tax Bracket Thresholds in NZ (Nominal $)&quot;)
+plt.legend()
+plt.grid(True)
+plt.show()
+</code></pre>
+<p>Running this code would generate a line chart showing, for example, that the top bracket threshold stayed around \$30k from the 1980s until 2000, jumped to \$60k in 2000, then \$70k in 2008, and leapt to \$180k in 2021 (a huge jump indicating how the top bracket was narrowed to very high earners). Likewise, the lowest bracket threshold (effectively zero-tax threshold) was nil for most years (since NZ doesn’t have a tax-free band), but one could interpret the low-income rebate in the 1990s as creating a \~\$9,500 zero-tax band, which then became a formal \$0–\$9,500 15% band in 2000 (no true zero rate) and has risen only modestly (to \$14k in 2008 and \$15.6k in 2024). This visualization underscores the infrequency of adjustments prior to 2024.</p>
+<p><strong>Usage:</strong> Analysts can adapt this code with a comprehensive dataset of all bracket thresholds by year to create more detailed visuals or to feed into the microsimulation model for inflation indexing scenarios. The goal is to ensure transparency about when thresholds moved and by how much, which is critical for policy evaluation and for updating model parameters accurately.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
