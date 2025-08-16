@@ -1,0 +1,25 @@
+# This is an example configuration file for the parameter scanning tool.
+# It defines a list of scenarios to be simulated and evaluated.
+
+scenarios:
+  - id: "baseline"
+    description: "The current policy settings for 2024-2025."
+    parameters:
+      # No overrides, use the default parameters for the base year.
+      {}
+
+  - id: "higher_top_tax_rate"
+    description: "Increase the top tax rate from 39% to 42%."
+    parameters:
+      tax_brackets.rates: [0.105, 0.175, 0.30, 0.33, 0.42]
+
+  - id: "increase_ietc"
+    description: "Increase the Independent Earner Tax Credit entitlement by 20%."
+    parameters:
+      ietc.ent: 624 # Original is 520
+
+  - id: "combo_higher_tax_and_ietc"
+    description: "A combination of the higher top tax rate and increased IETC."
+    parameters:
+      tax_brackets.rates: [0.105, 0.175, 0.30, 0.33, 0.42]
+      ietc.ent: 624

@@ -7,11 +7,16 @@ import pandas as pd
 from .dynamic_simulation import run_dynamic_simulation
 
 
+from .behavioural import labour_supply_response as default_labour_supply_response
+from typing import Callable, Optional, Dict
+
 def run_simulation(
     df: pd.DataFrame,
     mode: str,
     year: Union[str, List[str]],
-    labour_response=None,
+    use_behavioural_response: bool = False,
+    elasticity_params: Optional[Dict] = None,
+    behavioural_func: Callable = default_labour_supply_response,
 ) -> Union[pd.DataFrame, Dict[str, pd.DataFrame]]:
     """
     Run a microsimulation in either static or dynamic mode.
@@ -26,8 +31,9 @@ def run_simulation(
         mode: The simulation mode, either 'static' or 'dynamic'.
         year: A single year (e.g., "2023-2024") for static mode, or a list
             of years for dynamic mode.
-        labour_response: An optional function to model labour supply
-            changes in dynamic mode.
+        use_behavioural_response: If True, simulates labour supply response.
+        elasticity_params: A dictionary of elasticity parameters.
+        behavioural_func: The function to use for the behavioural response.
 
     Returns:
         For static mode, a DataFrame containing the simulation results for the
@@ -35,18 +41,24 @@ def run_simulation(
         each key is a year and the value is the simulation results for that
         year.
     """
+    simulation_kwargs = {
+        "use_behavioural_response": use_behavioural_response,
+        "elasticity_params": elasticity_params,
+        "behavioural_func": behavioural_func,
+    }
+
     if mode == "static":
         if not isinstance(year, str):
             raise ValueError("A single year must be provided for static mode.")
 
-        results = run_dynamic_simulation(df, [year], labour_response)
+        results = run_dynamic_simulation(df, [year], **simulation_kwargs)
         return results[year]
 
     elif mode == "dynamic":
         if not isinstance(year, list):
             raise ValueError("A list of years must be provided for dynamic mode.")
 
-        return run_dynamic_simulation(df, year, labour_response)
+        return run_dynamic_simulation(df, year, **simulation_kwargs)
 
     else:
         raise ValueError(f"Invalid mode: {mode}. Must be 'static' or 'dynamic'.")
