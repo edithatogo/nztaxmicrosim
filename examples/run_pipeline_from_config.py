@@ -20,12 +20,14 @@ tax_calc = TaxCalculator(params=params)
 
 # --- 2. Create a Sample DataFrame ---
 data = {
-    "df": pd.DataFrame({
-        "familyinc": [50000, 100000, 150000],
-        "marital_status": ["Single", "Married", "Single"],
-        "num_children": [0, 2, 1],
-        "total_individual_income_weekly": [50000 / 52, 100000 / 52, 150000 / 52]
-    }),
+    "df": pd.DataFrame(
+        {
+            "familyinc": [50000, 100000, 150000],
+            "marital_status": ["Single", "Married", "Single"],
+            "num_children": [0, 2, 1],
+            "total_individual_income_weekly": [50000 / 52, 100000 / 52, 150000 / 52],
+        }
+    ),
     "params": params,
     "tax_calc": tax_calc,
 }

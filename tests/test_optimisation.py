@@ -1,8 +1,8 @@
-import pytest
 import pandas as pd
-from src.optimisation import run_parameter_scan, run_policy_optimisation
-from src.parameters import Parameters
+import pytest
+
 from src.microsim import load_parameters
+from src.optimisation import run_parameter_scan, run_policy_optimisation
 
 
 @pytest.fixture
@@ -14,10 +14,7 @@ def sample_df():
 @pytest.fixture
 def sample_metrics():
     """Sample metric functions."""
-    return {
-        "total_tax": lambda df: df["tax_liability"].sum(),
-        "person_count": lambda df: len(df)
-    }
+    return {"total_tax": lambda df: df["tax_liability"].sum(), "person_count": lambda df: len(df)}
 
 
 @pytest.fixture
@@ -25,19 +22,11 @@ def valid_scan_config():
     """A valid scan configuration for testing."""
     return {
         "scenarios": [
-            {
-                "id": "base_case",
-                "parameters": {}
-            },
-            {
-                "id": "scenario_1",
-                "parameters": {
-                    "tax_brackets.rates": [0.10, 0.20, 0.30, 0.40, 0.50],
-                    "ietc.ent": 600
-                }
-            }
+            {"id": "base_case", "parameters": {}},
+            {"id": "scenario_1", "parameters": {"tax_brackets.rates": [0.10, 0.20, 0.30, 0.40, 0.50], "ietc.ent": 600}},
         ]
     }
+
 
 def test_run_parameter_scan_happy_path(sample_df, valid_scan_config, sample_metrics, monkeypatch):
     """Test that the parameter scan runs successfully with a valid config."""
@@ -111,28 +100,14 @@ def test_invalid_config_raises_errors(sample_df, sample_metrics):
 def valid_opt_config():
     """A valid optimisation configuration for testing."""
     return {
-        "objective": {
-            "name": "total_tax",
-            "direction": "maximize"
-        },
-        "n_trials": 1, # Run only one trial for testing
+        "objective": {"name": "total_tax", "direction": "maximize"},
+        "n_trials": 1,  # Run only one trial for testing
         "search_space": [
-            {
-                "name": "top_tax_rate",
-                "path": "tax_brackets.rates.4",
-                "type": "float",
-                "low": 0.4,
-                "high": 0.5
-            },
-            {
-                "name": "ietc_entitlement",
-                "path": "ietc.ent",
-                "type": "int",
-                "low": 500,
-                "high": 700
-            }
-        ]
+            {"name": "top_tax_rate", "path": "tax_brackets.rates.4", "type": "float", "low": 0.4, "high": 0.5},
+            {"name": "ietc_entitlement", "path": "ietc.ent", "type": "int", "low": 500, "high": 700},
+        ],
     }
+
 
 def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, monkeypatch):
     """Test the main logic of the policy optimisation runner."""
@@ -141,10 +116,13 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     class MockTrial:
         def __init__(self):
             self.user_attrs = {}
+
         def suggest_float(self, name, low, high):
             return 0.45  # Return a fixed value for predictability
+
         def suggest_int(self, name, low, high):
             return 650
+
         def set_user_attr(self, key, value):
             self.user_attrs[key] = value
 
@@ -170,13 +148,14 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
 
     # Mock the simulation to check that parameters are applied correctly
     modified_params_storage = []
+
     def mock_simulation(df, params):
         modified_params_storage.append(params)
         return pd.DataFrame({"tax_liability": [2000]})
 
     monkeypatch.setattr("src.optimisation._run_static_simulation", mock_simulation)
 
-    study = run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
+    run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
 
     # 1. Check that the objective function returned the correct value
     assert mock_study_instance.objective_result == 2000
@@ -188,7 +167,4 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     assert modified_params.ietc.ent == 650
 
     # 3. Check that all metrics were stored in user_attrs
-    stored_metrics = mock_study_instance.trial.user_attrs["metrics"]
-    assert stored_metrics["total_tax"] == 2000
-<<<<<<< HEAD
-    assert stored_metrics["person_count"] == 1
+    assert mock_study_instance.trial.user_attrs["metrics"]["person_count"] == 1

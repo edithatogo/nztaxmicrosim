@@ -2,10 +2,7 @@
 
 import json
 import os
-import re
 from typing import Any, Dict, List
-
-from .parameters import Parameters
 
 
 def load_historical_data() -> List[Dict[str, Any]]:

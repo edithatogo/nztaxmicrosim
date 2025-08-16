@@ -152,6 +152,10 @@ for param_file in args.param_files:
     params = load_parameters(year)
     wff_params = params.wff
 
+    if wff_params is None:
+        print(f"WFF parameters not found for year {year}. Skipping.")
+        continue
+
     # Define the parameters for the famsim function
     wagegwt = 0.03
     daysinperiod = 365

@@ -14,8 +14,7 @@ rules:
   - name: StudentLoanRule
   - name: IETCRule
   - name: GrossUpIncomeRule
-  - name: CalculateMaxEntitlementsRule
-  - name: ApplyCareLogicRule
-  - name: CalculateAbatementRule
-  - name: CalculateFinalEntitlementsRule
-  - name: ApplyCalibrationsRule
+  - name: AbatementRule
+  - name: MaxEntitlementsRule
+  - name: CareLogicRule
+  - name: CalibrationRule

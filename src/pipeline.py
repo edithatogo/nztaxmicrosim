@@ -2,14 +2,11 @@
 
 from __future__ import annotations
 
+import importlib
 from dataclasses import dataclass, field
-from typing import Any, Callable, Protocol, Type
+from typing import Any, Protocol, Type
 
 import yaml
-
-from .parameters import Parameters
-from .tax_calculator import TaxCalculator
-
 
 RULE_REGISTRY: dict[str, Type[Rule]] = {}
 
@@ -65,7 +62,6 @@ class SimulationPipeline:
         rules: list[Rule] = []
 
         # Import all rule modules to ensure they are registered
-        from . import benefit_rules, tax_rules, wff_rules
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")
@@ -73,8 +69,8 @@ class SimulationPipeline:
 
             if rule_name not in RULE_REGISTRY:
                 # Fallback for old format
-                if '.' in rule_name:
-                    module_path, class_name = rule_name.rsplit('.', 1)
+                if "." in rule_name:
+                    module_path, class_name = rule_name.rsplit(".", 1)
                     try:
                         module = importlib.import_module(module_path)
                         rule_class = getattr(module, class_name)

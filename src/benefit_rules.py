@@ -1,14 +1,14 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 from .benefits import (
     calculate_accommodation_supplement,
     calculate_bstc,
+    calculate_disability_allowance,
     calculate_ftc,
     calculate_iwtc,
     calculate_jss,
     calculate_mftc,
-    calculate_disability_allowance,
     calculate_slp,
     calculate_sps,
     calculate_wep,
@@ -32,6 +32,7 @@ from .pipeline import Rule, register_rule
 @dataclass
 class JSSRule(Rule):
     """A rule to calculate Jobseeker Support (JSS)."""
+
     name: str = "JSSRule"
     enabled: bool = True
     jss_params: JSSParams | None = None
@@ -57,6 +58,7 @@ class JSSRule(Rule):
 @dataclass
 class DisabilityAllowanceRule(Rule):
     """A rule to calculate the Disability Allowance."""
+
     name: str = "DisabilityAllowanceRule"
     enabled: bool = True
     disability_allowance_params: DisabilityAllowanceParams | None = None
@@ -80,6 +82,7 @@ class DisabilityAllowanceRule(Rule):
 @dataclass
 class MFTCRule(Rule):
     """A rule to calculate the Minimum Family Tax Credit (MFTC)."""
+
     name: str = "MFTCRule"
     enabled: bool = True
     mftc_params: MFTCParams | None = None
@@ -104,6 +107,7 @@ class MFTCRule(Rule):
 @dataclass
 class IWTCRule(Rule):
     """A rule to calculate the In-Work Tax Credit (IWTC)."""
+
     name: str = "IWTCRule"
     enabled: bool = True
     iwtc_params: IWTCParams | None = None
@@ -129,6 +133,7 @@ class IWTCRule(Rule):
 @dataclass
 class FTCRule(Rule):
     """A rule to calculate the Family Tax Credit (FTC)."""
+
     name: str = "FTCRule"
     enabled: bool = True
     ftc_params: FTCParams | None = None
@@ -153,6 +158,7 @@ class FTCRule(Rule):
 @dataclass
 class BSTCRule(Rule):
     """A rule to calculate the Best Start Tax Credit (BSTC)."""
+
     name: str = "BSTCRule"
     enabled: bool = True
     bstc_params: BSTCParams | None = None
@@ -167,7 +173,9 @@ class BSTCRule(Rule):
         df["bstc_entitlement"] = df.apply(
             lambda row: calculate_bstc(
                 family_income=row["familyinc"],
-                child_age=row["ages_of_children"][0] if row.get("ages_of_children") and len(row["ages_of_children"]) > 0 else 99,
+                child_age=row["ages_of_children"][0]
+                if row.get("ages_of_children") and len(row["ages_of_children"]) > 0
+                else 99,
                 bstc_params=bstc_params,
             ),
             axis=1,
@@ -178,6 +186,7 @@ class BSTCRule(Rule):
 @dataclass
 class WEPRule(Rule):
     """A rule to calculate the Winter Energy Payment (WEP)."""
+
     name: str = "WEPRule"
     enabled: bool = True
     wep_params: WEPParams | None = None
@@ -207,6 +216,7 @@ class WEPRule(Rule):
 @dataclass
 class SPSRule(Rule):
     """A rule to calculate Sole Parent Support (SPS)."""
+
     name: str = "SPSRule"
     enabled: bool = True
     sps_params: SPSParams | None = None
@@ -230,6 +240,7 @@ class SPSRule(Rule):
 @dataclass
 class SLPRule(Rule):
     """A rule to calculate Supported Living Payment (SLP)."""
+
     name: str = "SLPRule"
     enabled: bool = True
     slp_params: SLPParams | None = None
@@ -255,6 +266,7 @@ class SLPRule(Rule):
 @dataclass
 class AccommodationSupplementRule(Rule):
     """A rule to calculate the Accommodation Supplement."""
+
     name: str = "AccommodationSupplementRule"
     enabled: bool = True
     as_params: AccommodationSupplementParams | None = None

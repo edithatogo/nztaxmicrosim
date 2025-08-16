@@ -1,10 +1,9 @@
 """Rules for tax calculations."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 from .acc_levy import calculate_acc_levy
-from .parameters import ACCLevyParams, KiwisaverParams, StudentLoanParams
 from .pipeline import Rule, register_rule
 
 
@@ -12,6 +11,7 @@ from .pipeline import Rule, register_rule
 @dataclass
 class ACCLevyRule(Rule):
     """A rule to calculate the ACC (Accident Compensation Corporation) levy."""
+
     name: str = "ACCLevyRule"
     enabled: bool = True
     rate: float | None = None
@@ -30,6 +30,8 @@ class ACCLevyRule(Rule):
             max_income = acc_levy_params.max_income
 
         df = data["df"]
+        if rate is None or max_income is None:
+            return
         df["acc_levy"] = df["familyinc"].apply(
             lambda income: calculate_acc_levy(
                 income=income,
@@ -43,6 +45,7 @@ class ACCLevyRule(Rule):
 @dataclass
 class KiwiSaverRule(Rule):
     """A rule to calculate KiwiSaver contributions."""
+
     name: str = "KiwiSaverRule"
     enabled: bool = True
     contribution_rate: float | None = None
@@ -56,7 +59,7 @@ class KiwiSaverRule(Rule):
             if not kiwisaver_params:
                 return
             rate = kiwisaver_params.contribution_rate
-        
+
         from .payroll_deductions import calculate_kiwisaver_contribution
 
         df = data["df"]
@@ -72,6 +75,7 @@ class KiwiSaverRule(Rule):
 @dataclass
 class StudentLoanRule(Rule):
     """A rule to calculate student loan repayments."""
+
     name: str = "StudentLoanRule"
     enabled: bool = True
     repayment_threshold: float | None = None
@@ -92,6 +96,8 @@ class StudentLoanRule(Rule):
         from .payroll_deductions import calculate_student_loan_repayment
 
         df = data["df"]
+        if repayment_threshold is None or repayment_rate is None:
+            return
         df["student_loan_repayment"] = df["familyinc"].apply(
             lambda income: calculate_student_loan_repayment(
                 income=income,
@@ -105,6 +111,7 @@ class StudentLoanRule(Rule):
 @dataclass
 class IncomeTaxRule(Rule):
     """A rule to calculate income tax."""
+
     name: str = "IncomeTaxRule"
     enabled: bool = True
 
@@ -119,6 +126,7 @@ class IncomeTaxRule(Rule):
 @dataclass
 class IETCRule(Rule):
     """A rule to calculate the Independent Earner Tax Credit (IETC)."""
+
     name: str = "IETCRule"
     enabled: bool = True
 
@@ -135,9 +143,9 @@ class IETCRule(Rule):
                 is_wff_recipient=row.get("FTCcalc", 0) > 0,
                 is_super_recipient=row.get("is_nz_super_recipient", False),
                 is_benefit_recipient=(
-                    row.get("is_jss_recipient", False) or
-                    row.get("is_sps_recipient", False) or
-                    row.get("is_slp_recipient", False)
+                    row.get("is_jss_recipient", False)
+                    or row.get("is_sps_recipient", False)
+                    or row.get("is_slp_recipient", False)
                 ),
             ),
             axis=1,

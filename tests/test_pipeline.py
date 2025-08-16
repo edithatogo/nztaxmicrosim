@@ -75,10 +75,14 @@ def test_pipeline_from_config(tmp_path):
     params = load_parameters("2024-2025")
     tax_calc = TaxCalculator(params=params)
     data = {
-        "df": pd.DataFrame({
-            "familyinc": [50000], "marital_status": ["Single"], "num_children": [0],
-            "total_individual_income_weekly": [50000 / 52]
-        }),
+        "df": pd.DataFrame(
+            {
+                "familyinc": [50000],
+                "marital_status": ["Single"],
+                "num_children": [0],
+                "total_individual_income_weekly": [50000 / 52],
+            }
+        ),
         "params": params,
         "tax_calc": tax_calc,
     }
@@ -104,7 +108,8 @@ def test_pipeline_from_config_with_params(tmp_path):
 
     # Temporarily register DummyRule for this test
     from src import pipeline
-    pipeline.RULE_REGISTRY['DummyRule'] = DummyRule
+
+    pipeline.RULE_REGISTRY["DummyRule"] = DummyRule
 
     pipeline_instance = SimulationPipeline.from_config(str(config_file))
     assert len(pipeline_instance.rules) == 1
@@ -112,7 +117,7 @@ def test_pipeline_from_config_with_params(tmp_path):
     assert pipeline_instance.rules[0].value == 10
 
     # Clean up the registry
-    del pipeline.RULE_REGISTRY['DummyRule']
+    del pipeline.RULE_REGISTRY["DummyRule"]
 
 
 def test_pipeline_from_config_unknown_rule(tmp_path):

@@ -1,22 +1,13 @@
 import json
-<<<<<<< HEAD
 import re
 from pathlib import Path
 
-=======
-import os
-from pathlib import Path
-import re
->>>>>>> origin/update-a-bunch-of-stuff-5
 
 def get_parameter_files(src_dir: Path) -> list[Path]:
     """Finds all parameter files in the src directory."""
     return sorted(src_dir.glob("parameters_*.json"))
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def get_all_rules(param_files: list[Path]) -> list[str]:
     """Gets a unique, sorted list of all rules from all parameter files."""
     all_rules = set()
@@ -31,10 +22,7 @@ def get_all_rules(param_files: list[Path]) -> list[str]:
         all_rules.remove("description")
     return sorted(list(all_rules))
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def generate_coverage_matrix(param_data: dict, all_rules: list[str]) -> str:
     """Generates a Markdown table for rule coverage."""
     header = "| Year | " + " | ".join(f"`{rule}`" for rule in all_rules) + " |"
@@ -49,10 +37,7 @@ def generate_coverage_matrix(param_data: dict, all_rules: list[str]) -> str:
 
     return "\n".join([header, separator] + rows)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 def generate_detailed_tables(param_data: dict) -> str:
     """Generates detailed Markdown tables for each year's parameters."""
     detailed_docs = []
@@ -90,11 +75,7 @@ def generate_docs():
     year_pattern = re.compile(r"parameters_(\d{4}-\d{4})\.json")
 
     for file in param_files:
-<<<<<<< HEAD
         print(f"Processing file: {file.name}")  # Added for debugging
-=======
-        print(f"Processing file: {file.name}") # Added for debugging
->>>>>>> origin/update-a-bunch-of-stuff-5
         match = year_pattern.search(file.name)
         if match:
             year = match.group(1)
@@ -108,14 +89,10 @@ def generate_docs():
 
     # Generate the content
     title = "# Parameter Coverage\n\n"
-<<<<<<< HEAD
     intro = (
         "This page automatically documents the coverage of policy rules across "
         "different years, based on the available parameter files.\n\n"
     )
-=======
-    intro = "This page automatically documents the coverage of policy rules across different years, based on the available parameter files.\n\n"
->>>>>>> origin/update-a-bunch-of-stuff-5
 
     matrix_title = "## Rule Coverage Matrix\n\n"
     matrix = generate_coverage_matrix(param_data, all_rules)
@@ -134,9 +111,6 @@ def generate_docs():
 
     print(f"Documentation generated successfully at {output_file}")
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/update-a-bunch-of-stuff-5
 if __name__ == "__main__":
     generate_docs()

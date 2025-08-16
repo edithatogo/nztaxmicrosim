@@ -1,6 +1,8 @@
+from unittest.mock import MagicMock, patch
+
 import pandas as pd
 import pytest
-from unittest.mock import patch
+
 from src.demographic_modelling import age_population_forward
 
 
@@ -27,17 +29,11 @@ def mock_fertility_data():
             "25-29": 0.0,
             "30-34": 1000.0,  # 100% chance for a 30-year-old
             "35-39": 0.0,
-            "40-44": 0.0
+            "40-44": 0.0,
         },
-        "1991": {
-             "15-19": 0.0,
-            "20-24": 0.0,
-            "25-29": 0.0,
-            "30-34": 0.0,
-            "35-39": 0.0,
-            "40-44": 0.0
-        }
+        "1991": {"15-19": 0.0, "20-24": 0.0, "25-29": 0.0, "30-34": 0.0, "35-39": 0.0, "40-44": 0.0},
     }
+
 
 @patch("src.demographic_modelling.get_fertility_data")
 def test_age_increment(mock_get_fertility, sample_population, mock_fertility_data):
@@ -45,11 +41,11 @@ def test_age_increment(mock_get_fertility, sample_population, mock_fertility_dat
     mock_get_fertility.return_value = mock_fertility_data
 
     original_ages = sample_population["age"].copy()
-    aged_df = age_population_forward(sample_population, 1991) # Use a year with 0 fertility
+    aged_df = age_population_forward(sample_population, 1991)  # Use a year with 0 fertility
 
     expected_ages = original_ages + 1
     # We only check the original population, not the babies
-    pd.testing.assert_series_equal(aged_df["age"].iloc[:len(original_ages)], expected_ages, check_names=False)
+    pd.testing.assert_series_equal(aged_df["age"].iloc[: len(original_ages)], expected_ages, check_names=False)
 
 
 @patch("src.demographic_modelling.get_fertility_data")
@@ -66,8 +62,9 @@ def test_birth_simulation_guaranteed(mock_get_fertility, sample_population, mock
     # Check the details of the new baby
     baby = aged_df.iloc[-1]
     assert baby["age"] == 0
-    assert baby["family_id"] == 1 # Should be the family of the 30-year-old mother
+    assert baby["family_id"] == 1  # Should be the family of the 30-year-old mother
     assert baby["income"] == 0
+
 
 @patch("src.demographic_modelling.get_fertility_data")
 def test_birth_simulation_zero(mock_get_fertility, sample_population, mock_fertility_data):
@@ -84,22 +81,14 @@ def test_birth_simulation_zero(mock_get_fertility, sample_population, mock_ferti
 @patch("src.demographic_modelling.get_fertility_data")
 def test_missing_fertility_data_for_year(mock_get_fertility, sample_population):
     """Test that the function runs without error if the year is missing from data."""
-    mock_get_fertility.return_value = {"2000": {"30-34": 50.0}} # Data for a different year
+    mock_get_fertility.return_value = {"2000": {"30-34": 50.0}}  # Data for a different year
 
     # Should run without error and just age the population.
     aged_df = age_population_forward(sample_population, 1995)
 
     assert len(aged_df) == 3
     assert aged_df["age"].iloc[0] == 31
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> remotes/edithatogo/update-a-bunch-of-stuff-4-resolved
->>>>>>> update-a-bunch-of-stuff-5
 
-from unittest.mock import MagicMock
 
 def test_get_fertility_data_file_not_found(monkeypatch):
     """Test that get_fertility_data returns an empty dict if the file is missing."""
@@ -111,23 +100,20 @@ def test_get_fertility_data_file_not_found(monkeypatch):
     monkeypatch.setattr("src.demographic_modelling.FERTILITY_DATA_FILE", mock_path)
 
     from src.demographic_modelling import get_fertility_data
+
     result = get_fertility_data()
     assert result == {}
+
 
 def test_get_rate_for_age_edge_cases():
     """Test the _get_rate_for_age helper for edge cases."""
     from src.demographic_modelling import _get_rate_for_age
 
-    rates = {
-        "comment": "This is a test comment",
-        "20-29": 50.0,
-        "30-39": 100.0
-    }
+    rates = {"comment": "This is a test comment", "20-29": 50.0, "30-39": 100.0}
 
     # Test age outside any range
     assert _get_rate_for_age(15, rates) == 0.0
     assert _get_rate_for_age(50, rates) == 0.0
 
     # Test that comment is ignored
-<<<<<<< HEAD
-    assert _get_rate_for_age(25, rates) == 0.05 # 50.0 / 1000.0
+    assert _get_rate_for_age(25, rates) == 0.05  # 50.0 / 1000.0

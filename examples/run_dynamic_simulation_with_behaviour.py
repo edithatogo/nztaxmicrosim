@@ -1,14 +1,8 @@
 import pandas as pd
-<<<<<<< HEAD
 
 from src.dynamic_simulation import run_dynamic_simulation
 from src.parameters import Parameters, TaxBracketParams
 
-=======
-from src.dynamic_simulation import run_dynamic_simulation
-from src.parameters import Parameters, TaxBracketParams
-from src.tax_calculator import TaxCalculator
->>>>>>> origin/update-a-bunch-of-stuff-5
 
 def main():
     """
@@ -25,24 +19,13 @@ def main():
 
     # Let's create a hypothetical reform in 2024: a simpler, lower tax system
     # This will create a large change in EMTRs and thus a large behavioural response.
-<<<<<<< HEAD
     params_2024.tax_brackets = TaxBracketParams(rates=[0.10, 0.20, 0.30], thresholds=[20000, 60000])
-=======
-    params_2024.tax_brackets = TaxBracketParams(
-        rates=[0.10, 0.20, 0.30],
-        thresholds=[20000, 60000]
-    )
->>>>>>> origin/update-a-bunch-of-stuff-5
 
     # In a real simulation, you would save these reform parameters to a new JSON
     # and modify `load_parameters` to load them. For this example, we will
     # patch the `load_parameters` function to return our modified params.
 
-<<<<<<< HEAD
     original_load_parameters = pd.read_json  # A bit of a hack to save the original function
-=======
-    original_load_parameters = pd.read_json # A bit of a hack to save the original function
->>>>>>> origin/update-a-bunch-of-stuff-5
 
     def mock_load_parameters(year):
         if year == "2023-2024":
@@ -75,24 +58,13 @@ def main():
     print("\n--- Running Simulation with Behavioural Response ---")
 
     # We need to patch `microsim.load_parameters` and `dynamic_simulation.load_parameters`
-<<<<<<< HEAD
     from src import dynamic_simulation, microsim
 
-=======
-    from src import microsim, dynamic_simulation
->>>>>>> origin/update-a-bunch-of-stuff-5
     microsim.load_parameters = mock_load_parameters
     dynamic_simulation.load_parameters = mock_load_parameters
 
     results = run_dynamic_simulation(
-<<<<<<< HEAD
         df=population_start, years=years, use_behavioural_response=True, elasticity_params=elasticity_params
-=======
-        df=population_start,
-        years=years,
-        use_behavioural_response=True,
-        elasticity_params=elasticity_params
->>>>>>> origin/update-a-bunch-of-stuff-5
     )
 
     print("\nResults:")
