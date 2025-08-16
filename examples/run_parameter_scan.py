@@ -10,6 +10,7 @@ This script demonstrates how to:
 """
 
 import os
+from typing import Any, Callable
 
 import pandas as pd
 import yaml
@@ -64,7 +65,10 @@ if __name__ == "__main__":
         exit()
 
     # --- Define Metrics ---
-    metrics_to_run = {"Total Tax Revenue": total_tax_revenue, "Total WFF Paid": total_wff_paid}
+    metrics_to_run: dict[str, Callable[[Any], float]] = {
+        "Total Tax Revenue": total_tax_revenue,
+        "Total WFF Paid": total_wff_paid,
+    }
 
     # --- Run the Parameter Scan ---
     print("Running parameter scan...")

@@ -15,6 +15,7 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "joblib",
+    "kedro",
     "scipy",
     "tabulate>=0.9.0",
     "requests",

@@ -54,30 +54,38 @@ For a list of the current features and their release status, see the [Module Sta
 Install the core dependencies:
 
 ```bash
-make install
+pip install .
 ```
 
 For development work:
 
 ```bash
-pip install -e .
+make install-dev-deps
 ```
 
 ### Running an Example
 
-Load policy parameters and compute income tax using the convenience class:
-
-```python
-from src.tax_calculator import TaxCalculator
-
-calc = TaxCalculator.from_year("2024-2025")
-tax = calc.income_tax(50_000)
-```
-
-Or execute the example script:
+To run the basic usage example:
 
 ```bash
 make run-example
+```
+
+This will execute the `examples/basic_usage.py` script and write the output to `basic_usage_output.txt`.
+
+Here is a simplified example of how to use the library:
+
+```python
+from src.microsim import load_parameters, taxit
+
+# Load parameters for a specific tax year
+params = load_parameters("2024-2025")
+
+# Calculate income tax for an individual
+income = 50000
+tax = taxit(income, params.tax_brackets)
+
+print(f"Income tax for an income of ${income}: ${tax:.2f}")
 ```
 
 ## Project Structure
@@ -86,6 +94,10 @@ make run-example
 - `examples/` – scripts demonstrating how to use the model
 - `docs/` – detailed documentation, licences and contribution guides
 - `tests/` – unit tests
+- `syspop/` – synthetic population generator
+- `scripts/` – utility scripts
+- `conf/` and `config/` – configuration files
+- `reports/` – output from reporting scripts
 - `Makefile` – common development tasks
 - `pyproject.toml` – dependency and tooling configuration
 
@@ -151,8 +163,17 @@ If you use this software in your research, cite the project as described in
 
 ## Roadmap
 
-1. Achieve parity with the original SAS models for income tax and Working for
-   Families.
-2. Add behavioural responses, advanced sensitivity analysis and integrations
-   with other social policy models.
-3. Ongoing maintenance, documentation and feature improvements.
+The project is in a mature state, with most of the core features completed. The current focus is on improving the model's flexibility, optimization capabilities, and architecture.
+
+### In Progress
+
+- **Policy Optimisation Module:** Integrating an optimization library (e.g., Optuna) to intelligently search for optimal policy parameters.
+- **Configuration-Driven Pipelines:** Refactoring the simulation to be driven by configuration files (e.g., YAML) to make it more flexible.
+
+### Future Plans
+
+- **Parameter Database:** Migrating policy parameters from JSON files to a structured database (e.g., SQLite).
+- **Web API:** Exposing the simulation engine via a web API to make it more accessible to other tools and languages.
+- **Enhanced CI/CD:** Improving the CI/CD pipeline with dynamic badges, automated data audits, and performance regression testing.
+
+For more details, see the full [Roadmap](docs/ROADMAP.md).

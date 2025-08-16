@@ -8,7 +8,7 @@ of the "Policy Optimisation Module" described in the project roadmap.
 """
 
 import copy
-from typing import Any, Callable, Dict, Mapping
+from typing import Any, Callable, Dict
 
 import optuna
 import pandas as pd
@@ -43,7 +43,7 @@ def run_parameter_scan(
     base_df: pd.DataFrame,
     base_year: str,
     scan_config: Dict[str, Any],
-    metrics: Mapping[str, Callable[[pd.DataFrame], float]],
+    metrics: Dict[str, Callable[[pd.DataFrame], float]],
 ) -> pd.DataFrame:
     """
     Runs a parameter scan simulation.
@@ -125,7 +125,7 @@ def run_policy_optimisation(
     base_df: pd.DataFrame,
     base_year: str,
     opt_config: Dict[str, Any],
-    metrics: Mapping[str, Callable[[pd.DataFrame], float]],
+    metrics: Dict[str, Callable[[pd.DataFrame], float]],
 ) -> optuna.study.Study:
     """
     Runs a policy optimisation using Optuna.
@@ -180,5 +180,4 @@ def run_policy_optimisation(
 
     study = optuna.create_study(direction=opt_config["objective"]["direction"])
     study.optimize(objective, n_trials=opt_config.get("n_trials", 100))
-
     return study

@@ -33,13 +33,16 @@ clean:
 	find . -type f -name "*.pyc" -delete
 
 run-example:
-	./syspop/venv/bin/python examples/basic_usage.py
+	python examples/basic_usage.py
+
+run-pipeline-example:
+	python examples/run_pipeline_from_config.py
 
 run-microsim-comparison:
-	./syspop/venv/bin/python examples/run_microsim_comparison.py --param_files $(PARAM_FILES) $(if $(POPULATION_SCALE),--population_scale $(POPULATION_SCALE))
+	python examples/run_microsim_comparison.py --param_files $(PARAM_FILES) $(if $(POPULATION_SCALE),--population_scale $(POPULATION_SCALE))
 
 generate-reports:
-	./syspop/venv/bin/python examples/generate_reports.py --param_files $(PARAM_FILES)
+	python examples/generate_reports.py --param_files $(PARAM_FILES)
 
 docs:
 	mkdocs serve

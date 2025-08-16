@@ -46,22 +46,22 @@ def run_simulation(
         results = run_dynamic_simulation(
             df,
             [year],
-            use_behavioural_response=use_behavioural_response,
-            elasticity_params=elasticity_params,
-            behavioural_func=behavioural_func,
+            use_behavioural_response,
+            elasticity_params,
+            behavioural_func,
         )
         return results[year]
 
     elif mode == "dynamic":
         if not isinstance(year, list):
-            raise ValueError("A list of years must be provided for dynamic mode.")
+            raise ValueError("A list of years must be in provided for dynamic mode.")
 
         return run_dynamic_simulation(
             df,
             year,
-            use_behavioural_response=use_behavioural_response,
-            elasticity_params=elasticity_params,
-            behavioural_func=behavioural_func,
+            use_behavioural_response,
+            elasticity_params,
+            behavioural_func,
         )
 
     else:

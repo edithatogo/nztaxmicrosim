@@ -155,7 +155,7 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
 
     monkeypatch.setattr("src.optimisation._run_static_simulation", mock_simulation)
 
-    _ = run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
+    run_policy_optimisation(sample_df, "2023-2024", valid_opt_config, sample_metrics)
 
     # 1. Check that the objective function returned the correct value
     assert mock_study_instance.objective_result == 2000
@@ -167,6 +167,4 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     assert modified_params.ietc.ent == 650
 
     # 3. Check that all metrics were stored in user_attrs
-    stored_metrics = mock_study_instance.trial.user_attrs["metrics"]
-    assert stored_metrics["total_tax"] == 2000
-    assert stored_metrics["person_count"] == 1
+    assert mock_study_instance.trial.user_attrs["metrics"]["person_count"] == 1

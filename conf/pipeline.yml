@@ -1,0 +1,20 @@
+# This file defines the sequence of rules for the simulation pipeline.
+# The `name` of each rule must match a class name registered with @register_rule.
+# The `params` section is optional and can be used to override default
+# constructor arguments for a rule.
+
+rules:
+  - name: JSSRule
+  - name: SPSRule
+  - name: SLPRule
+  - name: AccommodationSupplementRule
+  - name: IncomeTaxRule
+  - name: ACCLevyRule
+  - name: KiwiSaverRule
+  - name: StudentLoanRule
+  - name: IETCRule
+  - name: GrossUpIncomeRule
+  - name: AbatementRule
+  - name: MaxEntitlementsRule
+  - name: CareLogicRule
+  - name: CalibrationRule

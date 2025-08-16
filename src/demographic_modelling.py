@@ -85,7 +85,7 @@ def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
 
     for _, woman in women_of_childbearing_age.iterrows():
         fertility_rate = _get_rate_for_age(woman["age"], rates_for_year)
-        if random.random() < fertility_rate:  # nosec B311
+        if random.random() < fertility_rate:  # nosec
             # A birth occurs!
             new_baby = {
                 # Inherit family-level characteristics
@@ -93,7 +93,7 @@ def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
                 "region": woman.get("region", "Unknown"),
                 # Baby-specific characteristics
                 "age": 0,
-                "sex": random.choice(["Male", "Female"]),  # nosec B311
+                "sex": random.choice(["Male", "Female"]),  # nosec
                 # Assume babies have no income or assets initially
                 "income": 0,
                 "assets": 0,

@@ -68,6 +68,8 @@ class TaxCalculator(BaseModel):
         Returns:
             The amount of IETC the individual is entitled to.
         """
+        if self.params.ietc is None:
+            return 0.0
         return calcietc(
             taxable_income=taxable_income,
             is_wff_recipient=is_wff_recipient,
@@ -95,6 +97,9 @@ class TaxCalculator(BaseModel):
         """
         tax_brackets = self.params.tax_brackets
         rwt_rates = self.params.rwt
+
+        if rwt_rates is None:
+            return 0.0
 
         # Determine the marginal tax rate to find the corresponding RWT rate.
         # The last rate in the list applies to all income above the last threshold.
@@ -130,6 +135,8 @@ class TaxCalculator(BaseModel):
         Returns:
             The calculated FamilyBoost credit amount.
         """
+        if self.params.family_boost is None:
+            return 0.0
         return family_boost_credit(
             family_income=family_income,
             childcare_costs=childcare_costs,

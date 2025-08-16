@@ -31,7 +31,7 @@ def tax_calculators():
     # Make a simple change to the tax brackets for the 'after' scenario
     # We need to create a new Parameters object for the 'after' scenario
     # to avoid modifying the cached parameters.
-    params_after = calc_after.params.copy(deep=True)
+    params_after = calc_after.params.model_copy(deep=True)
     params_after.tax_brackets = TaxBracketParams(rates=[0.10, 0.15, 0.25, 0.30], thresholds=[14000, 48000, 70000])
     calc_after.params = params_after
 

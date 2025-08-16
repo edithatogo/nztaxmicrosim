@@ -10,6 +10,7 @@ This script demonstrates how to:
 """
 
 import os
+from typing import Any, Callable
 
 import pandas as pd
 import yaml
@@ -60,13 +61,16 @@ if __name__ == "__main__":
         exit()
 
     # --- Define Metrics ---
-    metrics_to_run = {"total_tax_revenue": total_tax_revenue, "total_wff_paid": total_wff_paid}
+    metrics_to_run: dict[str, Callable[[Any], float]] = {
+        "total_tax_revenue": total_tax_revenue,
+        "total_wff_paid": total_wff_paid,
+    }
 
     # --- Run the Policy Optimisation ---
     print("Running policy optimisation study...")
     print("Base year: 2024-2025")
     print(f"Objective: {opt_config['objective']['direction']} '{opt_config['objective']['name']}'")
-    print(f"Number of trials: {opt_config.get('n_trials', 100)}\n")
+    print(f"Number of trials: {opt_config.get('n_trials', 100)}")
 
     base_simulation_year = "2024-2025"
 

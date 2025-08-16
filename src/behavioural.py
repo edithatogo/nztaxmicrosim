@@ -51,13 +51,8 @@ def labour_supply_response(
     # Vectorized approaches would be faster but more complex to implement.
 
     emtr_before = df_before.apply(lambda row: emtr_calculator_before.calculate_emtr(row.to_dict()), axis=1)
-    df_before.apply(
-        lambda row: emtr_calculator_before._calculate_net_income(row.to_dict()),
-        axis=1,
-    )
 
     emtr_after = df_after.apply(lambda row: emtr_calculator_after.calculate_emtr(row.to_dict()), axis=1)
-    df_after.apply(lambda row: emtr_calculator_after._calculate_net_income(row.to_dict()), axis=1)
 
     # --- 2. Determine primary/secondary earners (simple heuristic) ---
     # In a family, the person with the higher income is the primary earner.

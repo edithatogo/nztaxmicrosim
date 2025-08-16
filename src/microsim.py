@@ -2,50 +2,65 @@ from __future__ import annotations
 
 import json
 import os
+import sqlite3
 from typing import Any, Mapping
 
 from pydantic import ValidationError
 
-from .historical_data import get_historical_parameters
 from .parameters import (
     Parameters,
     TaxBracketParams,
 )
 
+# Define the path to the database as a module-level constant to allow patching in tests
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "parameters.db")
+
 
 def load_parameters(year: str) -> Parameters:
-    """Load policy parameters for ``year``.
+    """Load policy parameters for ``year`` from the SQLite database.
 
-    Parameters are stored in JSON files named ``parameters_YYYY-YYYY.json``.
-    This function parses the JSON into Pydantic models, validating that all
-    required fields are present and of the expected type.
-
-    If a specific parameter file for the given year is not found, it falls
-    back to the historical data.
+    This function connects to the parameters database, queries for all policy
+    parameters for the given year, reconstructs the parameter dictionary,
+    and validates it using the Pydantic model.
 
     Args:
-        year: The year for which to load the parameters (e.g., ``"2023-2024"``).
+        year: The start year for which to load the parameters (e.g., ``"2023"``).
+              Note: The input should be the start year as an integer or string,
+              not the "YYYY-YYYY" format.
 
     Returns:
         Parameters: A Pydantic model containing all parameter groups for the year.
     """
+    # The database stores years as integers (e.g., 2023 for "2023-2024")
+    try:
+        start_year = int(year.split("-")[0])
+    except (ValueError, IndexError):
+        start_year = int(year)
 
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(script_dir, f"parameters_{year}.json")
+    if not os.path.exists(DB_PATH):
+        raise FileNotFoundError(f"Parameters database not found at {DB_PATH}")
 
-    if not os.path.exists(file_path):
-        try:
-            return get_historical_parameters(year)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Parameter file not found for year {year}, and no historical data available.")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
 
-    with open(file_path, "r", encoding="utf-8") as f:
-        params: dict[str, Any] = json.load(f)
+    cursor.execute("SELECT policy_key, parameters FROM policy_parameters WHERE year = ?", (start_year,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    if not rows:
+        raise ValueError(f"No parameters found for year {start_year} in the database.")
+
+    params_dict = {}
+    for key, params_json in rows:
+        if params_json is not None:
+            params_dict[key] = json.loads(params_json)
+        else:
+            params_dict[key] = None
 
     try:
-        return Parameters.model_validate(params)
+        return Parameters.model_validate(params_dict)
     except ValidationError as e:
-        raise ValueError(f"Parameter validation failed: {e}") from e
+        raise ValueError(f"Parameter validation for year {start_year} failed: {e}") from e
 
 
 def _coerce_tax_brackets(params: Mapping[str, Any] | TaxBracketParams) -> TaxBracketParams:

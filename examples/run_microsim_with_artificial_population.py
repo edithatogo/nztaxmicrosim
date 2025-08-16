@@ -60,6 +60,10 @@ ietc_params = params.ietc
 wagegwt = 0.03
 daysinperiod = 365
 
+if wff_params is None:
+    print("WFF parameters not found for the specified year. Exiting.")
+    sys.exit(1)
+
 # Run the famsim function
 df_results = famsim(
     df,
@@ -70,16 +74,20 @@ df_results = famsim(
 
 # Calculate income tax and IETC for each person
 df_results["income_tax_payable"] = df_results["income"].apply(lambda x: taxit(x, tax_params))
-df_results["ietc_amount"] = df_results.apply(
-    lambda row: calcietc(
-        taxable_income=row["income"],
-        is_wff_recipient=(row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"]) > 0,
-        is_super_recipient=False,  # Placeholder
-        is_benefit_recipient=False,  # Placeholder
-        ietc_params=ietc_params,
-    ),
-    axis=1,
-)
+
+if ietc_params is None:
+    df_results["ietc_amount"] = 0
+else:
+    df_results["ietc_amount"] = df_results.apply(
+        lambda row: calcietc(
+            taxable_income=row["income"],
+            is_wff_recipient=(row["FTCcalc"] + row["IWTCcalc"] + row["BSTCcalc"] + row["MFTCcalc"]) > 0,
+            is_super_recipient=False,  # Placeholder
+            is_benefit_recipient=False,  # Placeholder
+            ietc_params=ietc_params,
+        ),
+        axis=1,
+    )
 # Calculate net income
 df_results["net_income"] = df_results["income"] - df_results["income_tax_payable"] + df_results["ietc_amount"]
 

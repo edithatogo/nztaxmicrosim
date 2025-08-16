@@ -52,6 +52,10 @@ wff_params = params.wff
 wagegwt = 0.03
 daysinperiod = 365
 
+if wff_params is None:
+    print("WFF parameters not found for the specified year. Exiting.")
+    sys.exit(1)
+
 df_results = famsim(
     df.copy(),
     wff_params,

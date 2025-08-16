@@ -1,0 +1,16 @@
+# Example pipeline configuration for the NZ Tax Microsimulation Model
+# This file demonstrates how to define a simulation pipeline with custom parameters for each rule.
+
+rules:
+  - name: ACCLevyRule
+    params:
+      rate: 0.0153
+      max_income: 139384
+
+  - name: KiwiSaverRule
+    params:
+      contribution_rate: 0.03
+
+  - name: IncomeTaxRule
+
+  - name: IETCRule

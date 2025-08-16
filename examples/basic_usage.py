@@ -57,24 +57,27 @@ tax_16_17 = taxit(
 output_lines.append(f"Income Tax for an income of ${income}: ${tax_16_17:.2f}")
 
 # Calculate IETC
-ietc_16_17 = calcietc(
-    taxable_income=income,
-    is_wff_recipient=False,
-    is_super_recipient=False,
-    is_benefit_recipient=False,
-    ietc_params=params_2016_17.ietc,
-)
+ietc_16_17 = 0.0
+if params_2016_17.ietc is not None:
+    ietc_16_17 = calcietc(
+        taxable_income=income,
+        is_wff_recipient=False,
+        is_super_recipient=False,
+        is_benefit_recipient=False,
+        ietc_params=params_2016_17.ietc,
+    )
 output_lines.append(f"IETC: ${ietc_16_17:.2f}")
 
 # Calculate WFF credits
-wff_16_17 = famsim(
-    family_details.copy(),
-    wff_params=params_2016_17.wff,
-    wagegwt=0,
-    daysinperiod=365,
-)
-output_lines.append("Working for Families Entitlements:")
-output_lines.append(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
+if params_2016_17.wff is not None:
+    wff_16_17 = famsim(
+        family_details.copy(),
+        wff_params=params_2016_17.wff,
+        wagegwt=0,
+        daysinperiod=365,
+    )
+    output_lines.append("Working for Families Entitlements:")
+    output_lines.append(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
 
 
 # --- 4. Calculate Tax and Credits for 2024-2025 ---
@@ -88,28 +91,35 @@ tax_24_25 = taxit(
 output_lines.append(f"Income Tax for an income of ${income}: ${tax_24_25:.2f}")
 
 # Calculate IETC
-ietc_24_25 = calcietc(
-    taxable_income=income,
-    is_wff_recipient=False,
-    is_super_recipient=False,
-    is_benefit_recipient=False,
-    ietc_params=params_2024_25.ietc,
-)
+ietc_24_25 = 0.0
+if params_2024_25.ietc is not None:
+    ietc_24_25 = calcietc(
+        taxable_income=income,
+        is_wff_recipient=False,
+        is_super_recipient=False,
+        is_benefit_recipient=False,
+        ietc_params=params_2024_25.ietc,
+    )
 output_lines.append(f"IETC: ${ietc_24_25:.2f}")
 
 # Calculate WFF credits
-wff_24_25 = famsim(
-    family_details.copy(),
-    wff_params=params_2024_25.wff,
-    wagegwt=0,
-    daysinperiod=365,
-)
-output_lines.append("Working for Families Entitlements:")
-output_lines.append(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
+if params_2024_25.wff is not None:
+    wff_24_25 = famsim(
+        family_details.copy(),
+        wff_params=params_2024_25.wff,
+        wagegwt=0,
+        daysinperiod=365,
+    )
+    output_lines.append("Working for Families Entitlements:")
+    output_lines.append(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
 
 # Calculate FamilyBoost credit
 # Note: FamilyBoost is not available in 2016-2017, so we only calculate it for 2024-2025
-if hasattr(params_2024_25, "family_boost") and params_2024_25.family_boost.max_credit > 0:
+if (
+    hasattr(params_2024_25, "family_boost")
+    and params_2024_25.family_boost is not None
+    and params_2024_25.family_boost.max_credit > 0
+):
     family_boost = family_boost_credit(
         family_income=family_income,
         childcare_costs=childcare_costs,
