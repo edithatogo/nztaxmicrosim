@@ -21,6 +21,13 @@ dependencies = [
     "requests",
     "pyyaml",
     "wbdata",
+    "fastapi",
+    "uvicorn",
+    "celery",
+    "redis",
+    "faker",
+    "httpx",
+    "python-multipart",
 ]
 
 [tool.pytest.ini_options]

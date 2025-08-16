@@ -1,7 +1,7 @@
+import sqlite3
 import json
 import os
 import re
-import sqlite3
 
 
 def migrate_parameters_to_db():
@@ -42,7 +42,7 @@ def migrate_parameters_to_db():
 
             print(f"Migrating {filename}...")
 
-            with open(filepath, "r") as f:
+            with open(filepath, 'r') as f:
                 data = json.load(f)
 
             for key, value in data.items():
@@ -54,7 +54,7 @@ def migrate_parameters_to_db():
 
                 cursor.execute(
                     "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
-                    (year, key, params_json),
+                    (year, key, params_json)
                 )
 
     # Commit changes and close the connection

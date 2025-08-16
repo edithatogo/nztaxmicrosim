@@ -1,16 +1,13 @@
-import os
-
-import matplotlib.pyplot as plt
 import pandas as pd
 import pytest
-
+import os
 from src.reporting_framework import (
-    HistoricalBenefitEntitlementsChart,
-    HistoricalEffectiveTaxRateChart,
     HistoricalGiniChart,
     HistoricalPovertyRateChart,
+    HistoricalEffectiveTaxRateChart,
+    HistoricalBenefitEntitlementsChart,
 )
-
+import matplotlib.pyplot as plt
 
 @pytest.fixture
 def sample_historical_data():
@@ -47,8 +44,7 @@ def test_historical_gini_chart(sample_historical_data):
     filepath = "reports/gini_coefficient_over_time.png"
     assert os.path.exists(filepath)
     assert f"![{component.title}]({filepath})" in md
-    os.remove(filepath)  # Clean up
-
+    os.remove(filepath) # Clean up
 
 def test_historical_poverty_rate_chart(sample_historical_data):
     """Test the HistoricalPovertyRateChart component."""
@@ -64,7 +60,6 @@ def test_historical_poverty_rate_chart(sample_historical_data):
     assert f"![{component.title}]({filepath})" in md
     os.remove(filepath)
 
-
 def test_historical_effective_tax_rate_chart(sample_historical_data):
     """Test the HistoricalEffectiveTaxRateChart component."""
     component = HistoricalEffectiveTaxRateChart()
@@ -77,7 +72,6 @@ def test_historical_effective_tax_rate_chart(sample_historical_data):
     assert os.path.exists(filepath)
     assert f"![{component.title}]({filepath})" in md
     os.remove(filepath)
-
 
 def test_historical_benefit_entitlements_chart(sample_historical_data):
     """Test the HistoricalBenefitEntitlementsChart component."""

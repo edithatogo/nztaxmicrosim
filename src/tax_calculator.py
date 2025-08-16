@@ -7,10 +7,14 @@ from pydantic import BaseModel
 from .investment_tax import calculate_pie_tax
 from .microsim import load_parameters, simrwt, taxit
 from .parameters import (
+    DonationCreditParams,
+    FamilyBoostParams,
     Parameters,
+    PIEParams,
+    RWTParams,
     TaxBracketParams,
 )
-from .tax_credits import calcietc, calculate_donation_credit, eitc, family_boost_credit
+from .tax_credits import calculate_donation_credit, calcietc, eitc, family_boost_credit
 
 
 class TaxCalculator(BaseModel):
@@ -68,8 +72,6 @@ class TaxCalculator(BaseModel):
         Returns:
             The amount of IETC the individual is entitled to.
         """
-        if self.params.ietc is None:
-            return 0.0
         return calcietc(
             taxable_income=taxable_income,
             is_wff_recipient=is_wff_recipient,
@@ -97,9 +99,6 @@ class TaxCalculator(BaseModel):
         """
         tax_brackets = self.params.tax_brackets
         rwt_rates = self.params.rwt
-
-        if rwt_rates is None:
-            return 0.0
 
         # Determine the marginal tax rate to find the corresponding RWT rate.
         # The last rate in the list applies to all income above the last threshold.
@@ -135,8 +134,6 @@ class TaxCalculator(BaseModel):
         Returns:
             The calculated FamilyBoost credit amount.
         """
-        if self.params.family_boost is None:
-            return 0.0
         return family_boost_credit(
             family_income=family_income,
             childcare_costs=childcare_costs,
@@ -237,7 +234,7 @@ class TaxCalculator(BaseModel):
 
         # Calculate benefits
         # This is highly simplified. A real calculation would need family context.
-        benefits = 0.0
+        benefits = 0
         if self.params.ietc:
             benefits += self.ietc(
                 taxable_income=income,

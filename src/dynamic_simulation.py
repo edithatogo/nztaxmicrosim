@@ -7,14 +7,13 @@ demographic changes and behavioural responses.
 
 from __future__ import annotations
 
-from typing import Callable, Dict, Optional, Sequence
-
+from typing import Callable, Dict, Sequence, Optional
 import pandas as pd
 
-from .behavioural import labour_supply_response as default_labour_supply_response
 from .microsim import load_parameters
 from .parameters import Parameters
 from .tax_calculator import TaxCalculator
+from .behavioural import labour_supply_response as default_labour_supply_response
 from .wff_microsim import famsim
 
 BehaviouralFunc = Callable[[pd.DataFrame, pd.DataFrame, TaxCalculator, TaxCalculator, dict], pd.DataFrame]
@@ -71,14 +70,12 @@ def run_dynamic_simulation(
     # Load the parameters for the year *before* the simulation starts
     # to have a baseline for the first year's behavioural response.
     try:
-        first_year = int(years[0].split("-")[0])
+        first_year = int(years[0].split('-')[0])
         params_previous = load_parameters(f"{first_year - 1}-{first_year}")
         calc_previous = TaxCalculator(params=params_previous)
     except (ValueError, FileNotFoundError):
-        print(
-            f"Warning: Could not load parameters for year before {years[0]}. "
-            "No behavioural response will be calculated for the first year."
-        )
+        print(f"Warning: Could not load parameters for year before {years[0]}. "
+              "No behavioural response will be calculated for the first year.")
         calc_previous = None
 
     df_previous_year_end = df_current
@@ -98,11 +95,11 @@ def run_dynamic_simulation(
                 raise ValueError("elasticity_params must be provided if use_behavioural_response is True.")
 
             df_with_behavioural_change = behavioural_func(
-                df_previous_year_end,
-                df_after_policy,
-                calc_previous,
-                calc_current,
-                elasticity_params,
+                df_before=df_previous_year_end,
+                df_after=df_after_policy,
+                emtr_calculator_before=calc_previous,
+                emtr_calculator_after=calc_current,
+                elasticity_params=elasticity_params
             )
 
             # Re-run the simulation on the behaviourally adjusted data

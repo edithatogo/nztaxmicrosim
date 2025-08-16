@@ -16,6 +16,13 @@ from src.benefit_rules import (
     WEPRule,
 )
 from src.microsim import load_parameters
+from src.parameters import (
+    BSTCParams,
+    FTCParams,
+    IWTCParams,
+    MFTCParams,
+    WEPParams,
+)
 
 
 @pytest.fixture

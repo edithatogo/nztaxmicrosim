@@ -4,9 +4,13 @@ from __future__ import annotations
 
 import importlib
 from dataclasses import dataclass, field
-from typing import Any, Protocol, Type
+from typing import Any, Callable, Protocol, Type
 
 import yaml
+
+from .parameters import Parameters
+from .tax_calculator import TaxCalculator
+
 
 RULE_REGISTRY: dict[str, Type[Rule]] = {}
 
@@ -48,7 +52,9 @@ class SimulationPipeline:
 
         The configuration file should specify a list of rules to be included
         in the pipeline. This method uses the RULE_REGISTRY to find and
-        instantiate the rules.
+        instantiate the rules. The rules are instantiated without parameters;
+        they are expected to receive them from the `data` dictionary during
+        the `run` phase.
 
         Args:
             config_path: The path to the YAML configuration file.
@@ -61,7 +67,7 @@ class SimulationPipeline:
 
         rules: list[Rule] = []
 
-        # Import all rule modules to ensure they are registered
+        from . import benefit_rules, tax_rules, wff_rules
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")

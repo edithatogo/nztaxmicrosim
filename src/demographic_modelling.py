@@ -3,11 +3,11 @@ This module provides functionality for demographic modelling, such as aging a
 population and simulating births.
 """
 
-import json
-import random
-from pathlib import Path
-
 import pandas as pd
+import json
+from pathlib import Path
+import random
+import numpy as np
 
 # Define the path to the fertility data
 DATA_DIR = Path(__file__).parent / "data"
@@ -39,11 +39,10 @@ def _get_rate_for_age(age: int, rates_for_year: dict) -> float:
     for age_range, rate in rates_for_year.items():
         if age_range == "comment":
             continue
-        low, high = map(int, age_range.split("-"))
+        low, high = map(int, age_range.split('-'))
         if low <= age <= high:
-            return rate / 1000.0  # Convert from per 1000 women to a probability
+            return rate / 1000.0 # Convert from per 1000 women to a probability
     return 0.0
-
 
 def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """
@@ -79,13 +78,15 @@ def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
 
     rates_for_year = fertility_data[year_str]
 
-    women_of_childbearing_age = aged_df[(aged_df["sex"] == "Female") & (aged_df["age"] >= 15) & (aged_df["age"] <= 49)]
+    women_of_childbearing_age = aged_df[
+        (aged_df["sex"] == "Female") & (aged_df["age"] >= 15) & (aged_df["age"] <= 49)
+    ]
 
     new_births = []
 
     for _, woman in women_of_childbearing_age.iterrows():
         fertility_rate = _get_rate_for_age(woman["age"], rates_for_year)
-        if random.random() < fertility_rate:  # nosec
+        if random.random() < fertility_rate:
             # A birth occurs!
             new_baby = {
                 # Inherit family-level characteristics
@@ -93,7 +94,7 @@ def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
                 "region": woman.get("region", "Unknown"),
                 # Baby-specific characteristics
                 "age": 0,
-                "sex": random.choice(["Male", "Female"]),  # nosec
+                "sex": random.choice(["Male", "Female"]),
                 # Assume babies have no income or assets initially
                 "income": 0,
                 "assets": 0,
