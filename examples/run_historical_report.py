@@ -1,18 +1,21 @@
-import yaml
-import pandas as pd
-import numpy as np
 import os
+
+import numpy as np
+import pandas as pd
+import yaml
+
 from src.reporting_framework import (
-    ReportGenerator,
+    HistoricalBenefitEntitlementsChart,
+    HistoricalEffectiveTaxRateChart,
     HistoricalGiniChart,
     HistoricalPovertyRateChart,
-    HistoricalEffectiveTaxRateChart,
-    HistoricalBenefitEntitlementsChart,
+    ReportGenerator,
 )
+
 
 def generate_dummy_data_for_year(year: int) -> pd.DataFrame:
     """Generates a sample DataFrame for a given year with some noise."""
-    np.random.seed(year) # Use year as seed for reproducibility
+    np.random.seed(year)  # Use year as seed for reproducibility
     num_people = 500
 
     # Base values that increase over time
@@ -30,6 +33,7 @@ def generate_dummy_data_for_year(year: int) -> pd.DataFrame:
     df["disposable_income"] = df["familyinc"] - df["tax_liability"] + df["jss_entitlement"]
     return df
 
+
 def main():
     """
     An example script to generate a historical report from a YAML configuration.
@@ -45,9 +49,7 @@ def main():
 
     # 2. Load or generate data for the specified years
     print("Generating dummy data for specified years...")
-    historical_data = {
-        year: generate_dummy_data_for_year(year) for year in config["years_to_include"]
-    }
+    historical_data = {year: generate_dummy_data_for_year(year) for year in config["years_to_include"]}
     print(f"Generated data for years: {list(historical_data.keys())}")
 
     # 3. Map report names from config to component classes

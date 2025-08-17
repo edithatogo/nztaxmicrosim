@@ -1,10 +1,13 @@
+import os
+
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
+
 from src.api.main import app
-import os
-import pandas as pd
 
 client = TestClient(app)
+
 
 @pytest.fixture(scope="module")
 def test_data_dir():
@@ -16,6 +19,7 @@ def test_data_dir():
     for f in os.listdir(test_dir):
         os.remove(os.path.join(test_dir, f))
     os.rmdir(test_dir)
+
 
 @pytest.fixture(scope="module")
 def sample_csv_file(test_data_dir):
@@ -71,10 +75,12 @@ def sample_csv_file(test_data_dir):
     df.to_csv(filepath, index=False)
     return filepath
 
+
 def test_read_root():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Welcome to the NZ Tax Microsimulation Model API"}
+
 
 def test_upload_data(sample_csv_file):
     with open(sample_csv_file, "rb") as f:
@@ -83,6 +89,7 @@ def test_upload_data(sample_csv_file):
     json_response = response.json()
     assert "dataset_id" in json_response
     assert json_response["filename"] == "sample.csv"
+
 
 def test_get_data_metadata(sample_csv_file):
     # First, upload a file to get a dataset_id
@@ -98,16 +105,18 @@ def test_get_data_metadata(sample_csv_file):
     assert "size_bytes" in json_response
     assert "created_at" in json_response
 
+
 def test_get_nonexistent_metadata():
     response = client.get("/data/nonexistent-id")
     assert response.status_code == 404
+
 
 def test_run_static_simulation_default_pop():
     request_body = {
         "year": "2023-2024",
         "parameter_overrides": {
             "tax_brackets.rates.4": 0.45  # Change top tax rate
-        }
+        },
     }
     response = client.post("/simulation/static", json=request_body)
     assert response.status_code == 200
@@ -116,17 +125,14 @@ def test_run_static_simulation_default_pop():
     assert "total_wff_paid" in json_response
     assert json_response["num_records"] > 0
 
+
 def test_run_static_simulation_custom_pop(sample_csv_file):
     # First, upload a file to get a dataset_id
     with open(sample_csv_file, "rb") as f:
         upload_response = client.post("/data/upload", files={"file": ("sample.csv", f, "text/csv")})
     dataset_id = upload_response.json()["dataset_id"]
 
-    request_body = {
-        "year": "2023-2024",
-        "dataset_id": dataset_id,
-        "parameter_overrides": {}
-    }
+    request_body = {"year": "2023-2024", "dataset_id": dataset_id, "parameter_overrides": {}}
     response = client.post("/simulation/static", json=request_body)
     assert response.status_code == 200
     json_response = response.json()
@@ -134,13 +140,12 @@ def test_run_static_simulation_custom_pop(sample_csv_file):
     assert "total_wff_paid" in json_response
     assert json_response["num_records"] == 2
 
+
 def test_run_static_simulation_bad_dataset_id():
-    request_body = {
-        "year": "2023-2024",
-        "dataset_id": "nonexistent-id"
-    }
+    request_body = {"year": "2023-2024", "dataset_id": "nonexistent-id"}
     response = client.post("/simulation/static", json=request_body)
     assert response.status_code == 404
+
 
 # Testing the async optimisation endpoint is more complex and requires
 # mocking Celery. For this exercise, we will assume the manual tests

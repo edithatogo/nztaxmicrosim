@@ -2,15 +2,17 @@
 This module provides functionality for adjusting monetary values for inflation.
 """
 
+import json
+import os
+from pathlib import Path
+
 import pandas as pd
 import wbdata
-import json
-from pathlib import Path
-import os
 
 # Define a cache file for the CPI data
 CACHE_DIR = Path(__file__).parent / ".cache"
 CPI_CACHE_FILE = CACHE_DIR / "cpi_data.json"
+
 
 def get_cpi_data() -> dict[int, float]:
     """
@@ -32,9 +34,7 @@ def get_cpi_data() -> dict[int, float]:
     print("Fetching CPI data from World Bank API...")
     try:
         # Fetch CPI data for New Zealand. The indicator for CPI is 'FP.CPI.TOTL'.
-        cpi_df = wbdata.get_dataframe(
-            {"FP.CPI.TOTL": "cpi"}, country="NZL", data_date=None
-        )
+        cpi_df = wbdata.get_dataframe({"FP.CPI.TOTL": "cpi"}, country="NZL", data_date=None)
         # The DataFrame has a multi-index. We want to map year to CPI.
         cpi_df.reset_index(inplace=True)
         cpi_df["date"] = pd.to_numeric(cpi_df["date"])
@@ -51,6 +51,7 @@ def get_cpi_data() -> dict[int, float]:
     except Exception as e:
         print(f"Error fetching data from World Bank API: {e}")
         return {}
+
 
 def adjust_for_inflation(
     data: pd.DataFrame,

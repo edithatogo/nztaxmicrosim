@@ -1,11 +1,12 @@
 import json
-import os
-from pathlib import Path
 import re
+from pathlib import Path
+
 
 def get_parameter_files(src_dir: Path) -> list[Path]:
     """Finds all parameter files in the src directory."""
     return sorted(src_dir.glob("parameters_*.json"))
+
 
 def get_all_rules(param_files: list[Path]) -> list[str]:
     """Gets a unique, sorted list of all rules from all parameter files."""
@@ -21,6 +22,7 @@ def get_all_rules(param_files: list[Path]) -> list[str]:
         all_rules.remove("description")
     return sorted(list(all_rules))
 
+
 def generate_coverage_matrix(param_data: dict, all_rules: list[str]) -> str:
     """Generates a Markdown table for rule coverage."""
     header = "| Year | " + " | ".join(f"`{rule}`" for rule in all_rules) + " |"
@@ -34,6 +36,7 @@ def generate_coverage_matrix(param_data: dict, all_rules: list[str]) -> str:
         rows.append(row)
 
     return "\n".join([header, separator] + rows)
+
 
 def generate_detailed_tables(param_data: dict) -> str:
     """Generates detailed Markdown tables for each year's parameters."""
@@ -72,7 +75,7 @@ def generate_docs():
     year_pattern = re.compile(r"parameters_(\d{4}-\d{4})\.json")
 
     for file in param_files:
-        print(f"Processing file: {file.name}") # Added for debugging
+        print(f"Processing file: {file.name}")  # Added for debugging
         match = year_pattern.search(file.name)
         if match:
             year = match.group(1)
@@ -86,7 +89,10 @@ def generate_docs():
 
     # Generate the content
     title = "# Parameter Coverage\n\n"
-    intro = "This page automatically documents the coverage of policy rules across different years, based on the available parameter files.\n\n"
+    intro = (
+        "This page automatically documents the coverage of policy rules across "
+        "different years, based on the available parameter files.\n\n"
+    )
 
     matrix_title = "## Rule Coverage Matrix\n\n"
     matrix = generate_coverage_matrix(param_data, all_rules)
@@ -104,6 +110,7 @@ def generate_docs():
         f.write(details)
 
     print(f"Documentation generated successfully at {output_file}")
+
 
 if __name__ == "__main__":
     generate_docs()

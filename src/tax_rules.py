@@ -4,14 +4,14 @@ from dataclasses import dataclass
 from typing import Any
 
 from .acc_levy import calculate_acc_levy
-from .parameters import ACCLevyParams, KiwisaverParams, StudentLoanParams
-from .pipeline import Rule, register_rule
+from .rule_registry import Rule, register_rule
 
 
 @register_rule
 @dataclass
 class ACCLevyRule(Rule):
     """A rule to calculate the ACC (Accident Compensation Corporation) levy."""
+
     name: str = "ACCLevyRule"
     enabled: bool = True
 
@@ -34,6 +34,7 @@ class ACCLevyRule(Rule):
 @dataclass
 class KiwiSaverRule(Rule):
     """A rule to calculate KiwiSaver contributions."""
+
     name: str = "KiwiSaverRule"
     enabled: bool = True
 
@@ -57,6 +58,7 @@ class KiwiSaverRule(Rule):
 @dataclass
 class StudentLoanRule(Rule):
     """A rule to calculate student loan repayments."""
+
     name: str = "StudentLoanRule"
     enabled: bool = True
 
@@ -81,6 +83,7 @@ class StudentLoanRule(Rule):
 @dataclass
 class IncomeTaxRule(Rule):
     """A rule to calculate income tax."""
+
     name: str = "IncomeTaxRule"
     enabled: bool = True
 
@@ -95,6 +98,7 @@ class IncomeTaxRule(Rule):
 @dataclass
 class IETCRule(Rule):
     """A rule to calculate the Independent Earner Tax Credit (IETC)."""
+
     name: str = "IETCRule"
     enabled: bool = True
 
@@ -111,9 +115,9 @@ class IETCRule(Rule):
                 is_wff_recipient=row.get("FTCcalc", 0) > 0,
                 is_super_recipient=row.get("is_nz_super_recipient", False),
                 is_benefit_recipient=(
-                    row.get("is_jss_recipient", False) or
-                    row.get("is_sps_recipient", False) or
-                    row.get("is_slp_recipient", False)
+                    row.get("is_jss_recipient", False)
+                    or row.get("is_sps_recipient", False)
+                    or row.get("is_slp_recipient", False)
                 ),
             ),
             axis=1,

@@ -1,6 +1,5 @@
-import sqlite3
-import json
 import os
+import sqlite3
 
 # Define the known start years for each policy
 POLICY_START_YEARS = {
@@ -12,6 +11,7 @@ POLICY_START_YEARS = {
 }
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "data", "parameters.db")
+
 
 def correct_historical_data():
     """
@@ -36,13 +36,17 @@ def correct_historical_data():
 
         # Get all existing data for this policy, ordered by year
         cursor.execute(
-            "SELECT year, parameters FROM policy_parameters WHERE policy_key = ? AND parameters IS NOT NULL ORDER BY year ASC",
-            (policy_key,)
+            (
+                "SELECT year, parameters FROM policy_parameters "
+                "WHERE policy_key = ? AND parameters IS NOT NULL "
+                "ORDER BY year ASC"
+            ),
+            (policy_key,),
         )
         existing_data = {year: params for year, params in cursor.fetchall()}
 
         if not existing_data:
-            print(f"  Warning: No data found for this policy. Skipping.")
+            print("  Warning: No data found for this policy. Skipping.")
             continue
 
         last_known_params = None
@@ -60,25 +64,29 @@ def correct_historical_data():
                     print(f"  ERROR: Cannot fill {year_to_check} as no previous data has been found.")
                 else:
                     # Check if a row exists but is null, or if it doesn't exist at all
-                    cursor.execute("SELECT rowid FROM policy_parameters WHERE year = ? AND policy_key = ?", (year_to_check, policy_key))
+                    cursor.execute(
+                        "SELECT rowid FROM policy_parameters WHERE year = ? AND policy_key = ?",
+                        (year_to_check, policy_key),
+                    )
                     row = cursor.fetchone()
                     if row:
                         print(f"  - Updating NULL data for {year_to_check}...")
                         cursor.execute(
                             "UPDATE policy_parameters SET parameters = ? WHERE year = ? AND policy_key = ?",
-                            (last_known_params, year_to_check, policy_key)
+                            (last_known_params, year_to_check, policy_key),
                         )
                     else:
                         print(f"  - Inserting MISSING data for {year_to_check}...")
                         cursor.execute(
                             "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
-                            (year_to_check, policy_key, last_known_params)
+                            (year_to_check, policy_key, last_known_params),
                         )
 
     conn.commit()
     conn.close()
 
     print("\nData correction finished.")
+
 
 if __name__ == "__main__":
     correct_historical_data()

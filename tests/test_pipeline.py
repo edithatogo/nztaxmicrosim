@@ -75,10 +75,14 @@ def test_pipeline_from_config(tmp_path):
     params = load_parameters("2024-2025")
     tax_calc = TaxCalculator(params=params)
     data = {
-        "df": pd.DataFrame({
-            "familyinc": [50000], "marital_status": ["Single"], "num_children": [0],
-            "total_individual_income_weekly": [50000 / 52]
-        }),
+        "df": pd.DataFrame(
+            {
+                "familyinc": [50000],
+                "marital_status": ["Single"],
+                "num_children": [0],
+                "total_individual_income_weekly": [50000 / 52],
+            }
+        ),
         "params": params,
         "tax_calc": tax_calc,
     }
