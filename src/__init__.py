@@ -5,6 +5,7 @@ import time. Only a minimal set of symbols are re-exported here.
 """
 
 from .acc_levy import calculate_acc_levy, calculate_payroll_deductions
+from .optimisation import run_parameter_scan, run_policy_optimisation
 from .pipeline import Rule, SimulationPipeline
 from .sensitivity_analysis import (
     run_deterministic_analysis,
@@ -13,7 +14,6 @@ from .sensitivity_analysis import (
 from .tax_calculator import TaxCalculator
 from .tax_rules import IETCRule, IncomeTaxRule
 from .value_of_information import calculate_evpi, calculate_evppi
-from .optimisation import run_parameter_scan, run_policy_optimisation
 
 __all__ = [
     "calculate_evpi",

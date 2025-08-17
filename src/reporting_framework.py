@@ -716,15 +716,22 @@ if __name__ == "__main__":
 
 # --- Historical Reporting Components ---
 
-class HistoricalReportComponent(ReportComponent):
+
+class HistoricalReportComponent:
     """
     A base class for components that generate historical, multi-year reports.
     """
+
+    def __init__(self, title: str, description: str):
+        self.title = title
+        self.description = description
+
     def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> Any:
         """
         Generate content from a dictionary of DataFrames, keyed by year.
         """
         raise NotImplementedError("Generate method must be implemented by subclasses.")
+
 
 class HistoricalGiniChart(HistoricalReportComponent):
     """A report component for visualizing the Gini coefficient over time."""
@@ -732,7 +739,7 @@ class HistoricalGiniChart(HistoricalReportComponent):
     def __init__(self):
         super().__init__(
             title="Gini Coefficient Over Time",
-            description="Chart of the Gini coefficient of disposable income for each year."
+            description="Chart of the Gini coefficient of disposable income for each year.",
         )
 
     def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
@@ -758,13 +765,14 @@ class HistoricalGiniChart(HistoricalReportComponent):
         plt.close(content)
         return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
 
+
 class HistoricalPovertyRateChart(HistoricalReportComponent):
     """A report component for visualizing the poverty rate over time."""
 
     def __init__(self):
         super().__init__(
             title="Poverty Rate Over Time",
-            description="Chart of the poverty rate (relative to 50% of median income) for each year."
+            description="Chart of the poverty rate (relative to 50% of median income) for each year.",
         )
 
     def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
@@ -794,13 +802,14 @@ class HistoricalPovertyRateChart(HistoricalReportComponent):
         plt.close(content)
         return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
 
+
 class HistoricalEffectiveTaxRateChart(HistoricalReportComponent):
     """A report component for visualizing the effective tax rate over time."""
 
     def __init__(self):
         super().__init__(
             title="Effective Tax Rate Over Time",
-            description="Chart of the average effective tax rate (Total Tax / Total Income) for each year."
+            description="Chart of the average effective tax rate (Total Tax / Total Income) for each year.",
         )
 
     def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:
@@ -829,13 +838,14 @@ class HistoricalEffectiveTaxRateChart(HistoricalReportComponent):
         plt.close(content)
         return f"""## {self.title}\n\n{self.description}\n\n![{self.title}]({filepath})\n"""
 
+
 class HistoricalBenefitEntitlementsChart(HistoricalReportComponent):
     """A report component for visualizing average benefit entitlements over time."""
 
     def __init__(self):
         super().__init__(
             title="Average Benefit Entitlement Over Time",
-            description="Chart of the average total benefit entitlement per person for each year."
+            description="Chart of the average total benefit entitlement per person for each year.",
         )
 
     def generate(self, data: Dict[int, pd.DataFrame], params: Dict[str, Any]) -> plt.Figure:

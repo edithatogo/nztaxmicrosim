@@ -1,8 +1,10 @@
-from .celery_app import celery_app
-from ..optimisation import run_policy_optimisation
-from ..microsim import load_parameters
-import pandas as pd
 import os
+
+import pandas as pd
+
+from ..optimisation import run_policy_optimisation
+from .celery_app import celery_app
+
 
 @celery_app.task
 def run_optimisation_task(opt_config: dict, base_year: str, dataset_path: str):
@@ -21,16 +23,9 @@ def run_optimisation_task(opt_config: dict, base_year: str, dataset_path: str):
     def total_tax_revenue(df: pd.DataFrame) -> float:
         return df["tax_liability"].sum()
 
-    metrics = {
-        "total_tax_revenue": total_tax_revenue
-    }
+    metrics = {"total_tax_revenue": total_tax_revenue}
 
-    study = run_policy_optimisation(
-        base_df=df,
-        base_year=base_year,
-        opt_config=opt_config,
-        metrics=metrics
-    )
+    study = run_policy_optimisation(base_df=df, base_year=base_year, opt_config=opt_config, metrics=metrics)
 
     # We need to return JSON-serializable results.
     # The full study object is not serializable.
@@ -46,5 +41,5 @@ def run_optimisation_task(opt_config: dict, base_year: str, dataset_path: str):
                 "user_attrs": t.user_attrs,
             }
             for t in study.trials
-        ]
+        ],
     }

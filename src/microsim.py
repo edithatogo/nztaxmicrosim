@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import sqlite3
 from typing import Any, Mapping
 
 from pydantic import ValidationError
@@ -11,11 +12,9 @@ from .parameters import (
     TaxBracketParams,
 )
 
-
-import sqlite3
-
 # Define the path to the database as a module-level constant to allow patching in tests
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "parameters.db")
+
 
 def load_parameters(year: str) -> Parameters:
     """Load policy parameters for ``year`` from the SQLite database.
@@ -34,7 +33,7 @@ def load_parameters(year: str) -> Parameters:
     """
     # The database stores years as integers (e.g., 2023 for "2023-2024")
     try:
-        start_year = int(year.split('-')[0])
+        start_year = int(year.split("-")[0])
     except (ValueError, IndexError):
         start_year = int(year)
 
@@ -262,5 +261,3 @@ def supstd(
     results["stdnet3"] = net_super_values[3]
 
     return results
-
-

@@ -5,10 +5,8 @@ This module contains tests for the functions defined in `src/microsim.py`,
 ensuring their correctness and adherence to the original SAS model logic.
 """
 
-import inspect
-from pathlib import Path
-import sqlite3
 import json
+import sqlite3
 
 import pytest
 
@@ -20,7 +18,7 @@ from src.microsim import (
     supstd,
     taxit,
 )
-from src.parameters import RWTParams, TaxBracketParams, Parameters
+from src.parameters import Parameters, TaxBracketParams
 
 
 @pytest.fixture
@@ -46,19 +44,32 @@ def test_db(tmp_path, monkeypatch):
     # Insert data for year 2020
     params_2020 = {
         "tax_brackets": {"rates": [0.1, 0.2], "thresholds": [10000]},
-        "ietc": None, # Policy doesn't exist
-        "wff": {"ftc1": 100, "ftc2": 50, "iwtc1": 30, "iwtc2": 10, "bstc": 20, "mftc": 500, "abatethresh1": 10000, "abatethresh2": 20000, "abaterate1": 0.1, "abaterate2": 0.2, "bstcthresh": 5000, "bstcabate": 0.1}
+        "ietc": None,  # Policy doesn't exist
+        "wff": {
+            "ftc1": 100,
+            "ftc2": 50,
+            "iwtc1": 30,
+            "iwtc2": 10,
+            "bstc": 20,
+            "mftc": 500,
+            "abatethresh1": 10000,
+            "abatethresh2": 20000,
+            "abaterate1": 0.1,
+            "abaterate2": 0.2,
+            "bstcthresh": 5000,
+            "bstcabate": 0.1,
+        },
     }
     for key, value in params_2020.items():
         cursor.execute(
             "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
-            (2020, key, json.dumps(value) if value is not None else None)
+            (2020, key, json.dumps(value) if value is not None else None),
         )
 
     # Insert data for year 2021 (with invalid JSON for one key)
     cursor.execute(
         "INSERT INTO policy_parameters (year, policy_key, parameters) VALUES (?, ?, ?)",
-        (2021, "tax_brackets", '{"rates": "not-a-list", "thresholds": []}')
+        (2021, "tax_brackets", '{"rates": "not-a-list", "thresholds": []}'),
     )
 
     conn.commit()
@@ -75,10 +86,12 @@ def test_load_parameters_from_db(test_db):
     assert params.ietc is None
     assert params.wff.ftc1 == 100
 
+
 def test_load_parameters_year_not_found(test_db):
     """Test that a ValueError is raised for a year not in the database."""
     with pytest.raises(ValueError, match="No parameters found for year 1999"):
         load_parameters("1999")
+
 
 def test_load_parameters_invalid_json_in_db(test_db):
     """Test that a validation error is raised for malformed JSON in the db."""
@@ -200,7 +213,7 @@ def test_supstd():
         load_parameters("2022").tax_brackets,
         load_parameters("2023").tax_brackets,
         load_parameters("2024").tax_brackets,
-            load_parameters("2024").tax_brackets,  # Use 2024 again as 2025 is not in db
+        load_parameters("2024").tax_brackets,  # Use 2024 again as 2025 is not in db
     ]
 
     # Expected results

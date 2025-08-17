@@ -25,7 +25,7 @@ from .parameters import (
     SPSParams,
     WEPParams,
 )
-from .pipeline import Rule, register_rule
+from .rule_registry import Rule, register_rule
 
 
 @register_rule
@@ -42,6 +42,7 @@ class JSSRule(Rule):
 
     The calculation is performed by the `calculate_jss` function.
     """
+
     name: str = "JSSRule"
     enabled: bool = True
     jss_params: JSSParams | None = None
@@ -77,6 +78,7 @@ class DisabilityAllowanceRule(Rule):
     The calculation is performed by the `calculate_disability_allowance`
     function.
     """
+
     name: str = "DisabilityAllowanceRule"
     enabled: bool = True
     disability_allowance_params: DisabilityAllowanceParams | None = None
@@ -110,6 +112,7 @@ class MFTCRule(Rule):
 
     The calculation is performed by the `calculate_mftc` function.
     """
+
     name: str = "MFTCRule"
     enabled: bool = True
     mftc_params: MFTCParams | None = None
@@ -143,6 +146,7 @@ class IWTCRule(Rule):
 
     The calculation is performed by the `calculate_iwtc` function.
     """
+
     name: str = "IWTCRule"
     enabled: bool = True
     iwtc_params: IWTCParams | None = None
@@ -177,6 +181,7 @@ class FTCRule(Rule):
 
     The calculation is performed by the `calculate_ftc` function.
     """
+
     name: str = "FTCRule"
     enabled: bool = True
     ftc_params: FTCParams | None = None
@@ -210,6 +215,7 @@ class BSTCRule(Rule):
 
     The calculation is performed by the `calculate_bstc` function.
     """
+
     name: str = "BSTCRule"
     enabled: bool = True
     bstc_params: BSTCParams | None = None
@@ -224,7 +230,9 @@ class BSTCRule(Rule):
         df["bstc_entitlement"] = df.apply(
             lambda row: calculate_bstc(
                 family_income=row["familyinc"],
-                child_age=row["ages_of_children"][0] if row.get("ages_of_children") and len(row["ages_of_children"]) > 0 else 99,
+                child_age=row["ages_of_children"][0]
+                if row.get("ages_of_children") and len(row["ages_of_children"]) > 0
+                else 99,
                 bstc_params=bstc_params,
             ),
             axis=1,
@@ -245,6 +253,7 @@ class WEPRule(Rule):
 
     The calculation is performed by the `calculate_wep` function.
     """
+
     name: str = "WEPRule"
     enabled: bool = True
     wep_params: WEPParams | None = None
@@ -282,6 +291,7 @@ class SPSRule(Rule):
 
     The calculation is performed by the `calculate_sps` function.
     """
+
     name: str = "SPSRule"
     enabled: bool = True
     sps_params: SPSParams | None = None
@@ -314,6 +324,7 @@ class SLPRule(Rule):
 
     The calculation is performed by the `calculate_slp` function.
     """
+
     name: str = "SLPRule"
     enabled: bool = True
     slp_params: SLPParams | None = None
@@ -349,6 +360,7 @@ class AccommodationSupplementRule(Rule):
     The calculation is performed by the `calculate_accommodation_supplement`
     function.
     """
+
     name: str = "AccommodationSupplementRule"
     enabled: bool = True
     as_params: AccommodationSupplementParams | None = None

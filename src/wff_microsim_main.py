@@ -98,11 +98,7 @@ def main() -> None:
     pipeline = SimulationPipeline.from_config("conf/pipeline.yml")
 
     # The pipeline needs access to the dataframe, params, and calculator
-    data_context = {
-        "df": df.copy(),
-        "params": params,
-        "tax_calc": tax_calc
-    }
+    data_context = {"df": df.copy(), "params": params, "tax_calc": tax_calc}
     result_data = pipeline.run(data_context)
     result = result_data["df"]
 

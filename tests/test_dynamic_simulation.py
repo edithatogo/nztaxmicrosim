@@ -5,7 +5,6 @@ import pytest
 
 from src.dynamic_simulation import run_dynamic_simulation
 from src.microsim import load_parameters, taxit
-from src.parameters import Parameters
 
 
 @pytest.fixture
@@ -69,7 +68,7 @@ def test_labour_response_applied(sample_dataframe):
         use_behavioural_response=True,
         # Provide dummy elasticity params as they are required by the function signature
         elasticity_params={"dummy": 0.1},
-        behavioural_func=mock_behavioural_func
+        behavioural_func=mock_behavioural_func,
     )
 
     # In the first year, the income is increased by 10%

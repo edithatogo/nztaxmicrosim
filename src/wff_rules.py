@@ -4,7 +4,8 @@ from dataclasses import dataclass
 from typing import Any
 
 import numpy as np
-from .pipeline import register_rule
+
+from .rule_registry import register_rule
 
 
 @register_rule

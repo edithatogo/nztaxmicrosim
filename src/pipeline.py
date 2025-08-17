@@ -4,36 +4,12 @@ from __future__ import annotations
 
 import importlib
 from dataclasses import dataclass, field
-from typing import Any, Callable, Protocol, Type
+from typing import Any
 
 import yaml
 
-from .parameters import Parameters
-from .tax_calculator import TaxCalculator
-
-
-RULE_REGISTRY: dict[str, Type[Rule]] = {}
-
-
-def register_rule(cls: Type[Rule]) -> Type[Rule]:
-    """A class decorator to register a rule in the RULE_REGISTRY."""
-    RULE_REGISTRY[cls.__name__] = cls
-    return cls
-
-
-class Rule(Protocol):
-    """Protocol for a simulation rule.
-
-    Rules have a ``name`` used for identification, an ``enabled`` flag to
-    control execution and are callable with a single ``data`` argument that is
-    mutated in-place.
-    """
-
-    name: str
-    enabled: bool
-
-    def __call__(self, data: dict[str, Any]) -> None:  # pragma: no cover - Protocol
-        ...
+from . import benefit_rules, tax_rules, wff_rules
+from .rule_registry import RULE_REGISTRY, Rule
 
 
 @dataclass
@@ -67,15 +43,14 @@ class SimulationPipeline:
 
         rules: list[Rule] = []
 
-# Import all rule modules to ensure they are registered
-        from . import benefit_rules, tax_rules, wff_rules
+        # Import all rule modules to ensure they are registered
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")
             if rule_name not in RULE_REGISTRY:
                 # Fallback for old format
-                if '.' in rule_name:
-                    module_path, class_name = rule_name.rsplit('.', 1)
+                if "." in rule_name:
+                    module_path, class_name = rule_name.rsplit(".", 1)
                     try:
                         module = importlib.import_module(module_path)
                         rule_class = getattr(module, class_name)
@@ -86,7 +61,7 @@ class SimulationPipeline:
             else:
                 rule_class = RULE_REGISTRY[rule_name]
 
-# Rules are instantiated without arguments here.
+            # Rules are instantiated without arguments here.
             # They will get their data from the context dict passed to run().
             rules.append(rule_class())
 

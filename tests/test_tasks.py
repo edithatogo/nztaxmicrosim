@@ -1,7 +1,7 @@
-import pytest
-from src.api.tasks import run_optimisation_task
 import pandas as pd
-import os
+import pytest
+
+from src.api.tasks import run_optimisation_task
 
 
 @pytest.fixture(scope="module")

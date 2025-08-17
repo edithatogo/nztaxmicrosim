@@ -7,12 +7,15 @@ results against a set of user-defined metrics. This is the first phase
 of the "Policy Optimisation Module" described in the project roadmap.
 """
 
-from typing import Callable, Dict, List, Any
-import pandas as pd
-from .microsim import load_parameters
-from .dynamic_simulation import _run_static_simulation
 import copy
+from typing import Any, Callable, Dict, Mapping
+
 import optuna
+import pandas as pd
+
+from .dynamic_simulation import _run_static_simulation
+from .microsim import load_parameters
+
 
 def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     """
@@ -22,7 +25,7 @@ def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     Example:
         _set_nested_attr(params, "tax_brackets.rates.4", 0.45)
     """
-    parts = attr_path.split('.')
+    parts = attr_path.split(".")
     for i, part in enumerate(parts[:-1]):
         if part.isdigit():
             obj = obj[int(part)]
@@ -35,11 +38,12 @@ def _set_nested_attr(obj: Any, attr_path: str, value: Any):
     else:
         setattr(obj, last_part, value)
 
+
 def run_parameter_scan(
     base_df: pd.DataFrame,
     base_year: str,
     scan_config: Dict[str, Any],
-    metrics: Dict[str, Callable[[pd.DataFrame], float]]
+    metrics: Mapping[str, Callable[[pd.DataFrame], float]],
 ) -> pd.DataFrame:
     """
     Runs a parameter scan simulation.
@@ -121,7 +125,7 @@ def run_policy_optimisation(
     base_df: pd.DataFrame,
     base_year: str,
     opt_config: Dict[str, Any],
-    metrics: Dict[str, Callable[[pd.DataFrame], float]]
+    metrics: Mapping[str, Callable[[pd.DataFrame], float]],
 ) -> optuna.study.Study:
     """
     Runs a policy optimisation using Optuna.

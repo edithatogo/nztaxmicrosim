@@ -1,7 +1,6 @@
-import sqlite3
-import json
-import sys
 import os
+import sqlite3
+import sys
 
 # Define the known start years for each policy
 # (as determined in the previous data audit)
@@ -15,6 +14,7 @@ POLICY_START_YEARS = {
 }
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "data", "parameters.db")
+
 
 def audit_historical_data():
     """
@@ -43,8 +43,7 @@ def audit_historical_data():
     for year in years:
         for policy_key, start_year in POLICY_START_YEARS.items():
             cursor.execute(
-                "SELECT parameters FROM policy_parameters WHERE year = ? AND policy_key = ?",
-                (year, policy_key)
+                "SELECT parameters FROM policy_parameters WHERE year = ? AND policy_key = ?", (year, policy_key)
             )
             row = cursor.fetchone()
 
@@ -77,6 +76,7 @@ def audit_historical_data():
     else:
         print("Audit finished. No errors found.")
         sys.exit(0)
+
 
 if __name__ == "__main__":
     audit_historical_data()

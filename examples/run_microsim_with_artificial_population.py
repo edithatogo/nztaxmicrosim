@@ -87,7 +87,7 @@ else:
             ietc_params=ietc_params,
         ),
         axis=1,
-    )
+    )  # type: ignore
 # Calculate net income
 df_results["net_income"] = df_results["income"] - df_results["income_tax_payable"] + df_results["ietc_amount"]
 

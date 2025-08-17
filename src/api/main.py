@@ -1,16 +1,17 @@
 import os
 import shutil
 import uuid
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from pydantic import BaseModel, Field
 from pathlib import Path
-import pandas as pd
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
-from ..microsim import load_parameters
+import pandas as pd
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from pydantic import BaseModel, Field
+
 from ..dynamic_simulation import _run_static_simulation
-from .tasks import run_optimisation_task
+from ..microsim import load_parameters
 from .celery_app import celery_app
+from .tasks import run_optimisation_task
 
 # Create a directory for uploads if it doesn't exist
 UPLOAD_DIR = Path("data/api_uploads")
@@ -18,6 +19,7 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 # Load the default population dataset
 DEFAULT_POPULATION_PATH = "src/data/default_population.csv"
+default_pop_df: Optional[pd.DataFrame]
 if os.path.exists(DEFAULT_POPULATION_PATH):
     default_pop_df = pd.read_csv(DEFAULT_POPULATION_PATH)
 else:
@@ -29,19 +31,29 @@ app = FastAPI(
     version="0.1.0",
 )
 
+
 class StaticSimulationRequest(BaseModel):
     year: str = Field(..., description="The simulation year, e.g., '2023-2024'.")
-    dataset_id: Optional[str] = Field(None, description="The ID of a previously uploaded dataset. If omitted, the default population is used.")
-    parameter_overrides: Optional[Dict[str, Any]] = Field({}, description="A dictionary of policy parameters to override.")
+    dataset_id: Optional[str] = Field(
+        None, description="The ID of a previously uploaded dataset. If omitted, the default population is used."
+    )
+    parameter_overrides: Optional[Dict[str, Any]] = Field(
+        {}, description="A dictionary of policy parameters to override."
+    )
+
 
 class OptimisationRunRequest(BaseModel):
     year: str = Field(..., description="The base simulation year, e.g., '2023-2024'.")
-    dataset_id: Optional[str] = Field(None, description="The ID of a previously uploaded dataset. If omitted, the default population is used.")
+    dataset_id: Optional[str] = Field(
+        None, description="The ID of a previously uploaded dataset. If omitted, the default population is used."
+    )
     optimisation_config: Dict[str, Any] = Field(..., description="The Optuna study configuration.")
+
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the NZ Tax Microsimulation Model API"}
+
 
 @app.post("/data/upload")
 async def upload_data(file: UploadFile = File(...)):
@@ -62,6 +74,7 @@ async def upload_data(file: UploadFile = File(...)):
 
     return {"dataset_id": dataset_id, "filename": file.filename}
 
+
 @app.get("/data/{dataset_id}")
 async def get_data_metadata(dataset_id: str):
     """
@@ -77,6 +90,7 @@ async def get_data_metadata(dataset_id: str):
         "size_bytes": stat_info.st_size,
         "created_at": stat_info.st_ctime,
     }
+
 
 @app.post("/simulation/static")
 async def run_static_simulation(request: StaticSimulationRequest):
@@ -105,6 +119,7 @@ async def run_static_simulation(request: StaticSimulationRequest):
         # For now, we'll assume simple overrides.
         # This part will be improved when we add the optimisation endpoint.
         from ..optimisation import _set_nested_attr
+
         for path, value in request.parameter_overrides.items():
             try:
                 _set_nested_attr(params, path, value)
@@ -112,7 +127,13 @@ async def run_static_simulation(request: StaticSimulationRequest):
                 raise HTTPException(status_code=400, detail=f"Invalid parameter path: {path}")
 
     # Calculate taxable_income from income components
-    income_cols = ["employment_income", "self_employment_income", "investment_income", "rental_property_income", "private_pensions_annuities"]
+    income_cols = [
+        "employment_income",
+        "self_employment_income",
+        "investment_income",
+        "rental_property_income",
+        "private_pensions_annuities",
+    ]
     df["taxable_income"] = df[income_cols].sum(axis=1)
 
     # Run the simulation
@@ -120,13 +141,18 @@ async def run_static_simulation(request: StaticSimulationRequest):
 
     # Calculate and return summary results
     total_tax_liability = result_df["tax_liability"].sum()
-    total_wff_paid = result_df[[col for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"] if col in result_df.columns]].sum().sum()
+    total_wff_paid = (
+        result_df[[col for col in ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"] if col in result_df.columns]]
+        .sum()
+        .sum()
+    )
 
     return {
         "total_tax_liability": total_tax_liability,
         "total_wff_paid": total_wff_paid,
         "num_records": len(result_df),
     }
+
 
 @app.post("/optimisation/run", status_code=202)
 async def run_optimisation(request: OptimisationRunRequest):
@@ -143,12 +169,11 @@ async def run_optimisation(request: OptimisationRunRequest):
         dataset_path = DEFAULT_POPULATION_PATH
 
     task = run_optimisation_task.delay(
-        opt_config=request.optimisation_config,
-        base_year=request.year,
-        dataset_path=dataset_path
+        opt_config=request.optimisation_config, base_year=request.year, dataset_path=dataset_path
     )
 
     return {"job_id": task.id}
+
 
 @app.get("/jobs/{job_id}")
 async def get_job_status(job_id: str):
@@ -157,11 +182,7 @@ async def get_job_status(job_id: str):
     """
     task_result = celery_app.AsyncResult(job_id)
 
-    response = {
-        "job_id": job_id,
-        "status": task_result.status,
-        "result": None
-    }
+    response = {"job_id": job_id, "status": task_result.status, "result": None}
 
     if task_result.successful():
         response["result"] = task_result.get()

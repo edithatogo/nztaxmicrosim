@@ -3,15 +3,16 @@ This module provides functionality for demographic modelling, such as aging a
 population and simulating births.
 """
 
-import pandas as pd
 import json
-from pathlib import Path
 import random
-import numpy as np
+from pathlib import Path
+
+import pandas as pd
 
 # Define the path to the fertility data
 DATA_DIR = Path(__file__).parent / "data"
 FERTILITY_DATA_FILE = DATA_DIR / "fertility_rates.json"
+
 
 def get_fertility_data() -> dict:
     """
@@ -32,15 +33,17 @@ def get_fertility_data() -> dict:
     with open(FERTILITY_DATA_FILE, "r") as f:
         return json.load(f)
 
+
 def _get_rate_for_age(age: int, rates_for_year: dict) -> float:
     """Helper function to find the fertility rate for a specific age."""
     for age_range, rate in rates_for_year.items():
         if age_range == "comment":
             continue
-        low, high = map(int, age_range.split('-'))
+        low, high = map(int, age_range.split("-"))
         if low <= age <= high:
-            return rate / 1000.0 # Convert from per 1000 women to a probability
+            return rate / 1000.0  # Convert from per 1000 women to a probability
     return 0.0
+
 
 def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """
@@ -76,9 +79,7 @@ def age_population_forward(df: pd.DataFrame, year: int) -> pd.DataFrame:
 
     rates_for_year = fertility_data[year_str]
 
-    women_of_childbearing_age = aged_df[
-        (aged_df["sex"] == "Female") & (aged_df["age"] >= 15) & (aged_df["age"] <= 49)
-    ]
+    women_of_childbearing_age = aged_df[(aged_df["sex"] == "Female") & (aged_df["age"] >= 15) & (aged_df["age"] <= 49)]
 
     new_births = []
 

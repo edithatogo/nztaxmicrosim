@@ -1,13 +1,15 @@
-import pandas as pd
-import numpy as np
-from faker import Faker
 import os
 
+import numpy as np
+import pandas as pd
+from faker import Faker
+
 # Initialize Faker
-fake = Faker('en_NZ')
+fake = Faker("en_NZ")
 
 # Define the number of people to generate
 NUM_PEOPLE = 500
+
 
 def generate_synthetic_population():
     """Generates a synthetic population dataset and saves it to a CSV file."""
@@ -19,7 +21,9 @@ def generate_synthetic_population():
 
         if employment_status == "Employed":
             employment_income = np.random.lognormal(mean=np.log(60000), sigma=0.5)
-            self_employment_income = np.random.choice([0, np.random.lognormal(mean=np.log(10000), sigma=0.8)], p=[0.8, 0.2])
+            self_employment_income = np.random.choice(
+                [0, np.random.lognormal(mean=np.log(10000), sigma=0.8)], p=[0.8, 0.2]
+            )
             hours_worked = np.random.choice([20, 30, 40, 50])
         else:
             employment_income = 0
@@ -32,7 +36,7 @@ def generate_synthetic_population():
 
         person = {
             "person_id": i,
-            "household_id": i, # Simplifying to one person per household for now
+            "household_id": i,  # Simplifying to one person per household for now
             "age": age,
             "gender": np.random.choice(["Male", "Female"]),
             "marital_status": np.random.choice(["Single", "Married", "Divorced"]),
@@ -55,7 +59,7 @@ def generate_synthetic_population():
             "is_slp_recipient": False,
             "is_nz_super_recipient": age >= 65,
             "housing_costs": np.random.randint(150, 600),
-            "familyinc": 0, # To be calculated
+            "familyinc": 0,  # To be calculated
             "FTCwgt": 1,
             "IWTCwgt": 1,
             "BSTC0wgt": 1,
@@ -74,14 +78,14 @@ def generate_synthetic_population():
             "selfempind": 1 if self_employment_income > 0 else 0,
             "maxkiddays": 365,
             "maxkiddaysbstc": 365,
-            "pplcnt": 1 + num_children
+            "pplcnt": 1 + num_children,
         }
         data.append(person)
 
     df = pd.DataFrame(data)
 
     # Calculate familyinc
-    df['familyinc'] = df['employment_income'] + df['self_employment_income'] + df['investment_income']
+    df["familyinc"] = df["employment_income"] + df["self_employment_income"] + df["investment_income"]
 
     # Define the output path
     output_dir = "src/data"
@@ -92,6 +96,7 @@ def generate_synthetic_population():
     df.to_csv(output_path, index=False)
 
     print(f"Successfully generated synthetic population at {output_path}")
+
 
 if __name__ == "__main__":
     generate_synthetic_population()

@@ -1,9 +1,10 @@
 """Tests for the tax rules."""
 
 import pandas as pd
+
 from src.microsim import load_parameters
 from src.tax_calculator import TaxCalculator
-from src.tax_rules import ACCLevyRule, IETCRule, KiwiSaverRule, StudentLoanRule, IncomeTaxRule
+from src.tax_rules import ACCLevyRule, IETCRule, IncomeTaxRule, KiwiSaverRule, StudentLoanRule
 
 
 def test_acc_levy_rule():
@@ -73,6 +74,7 @@ def test_ietc_rule():
     assert df["ietc"][0] == 0
     assert df["ietc"][1] == 520
     assert df["ietc"][2] == 0
+
 
 def test_income_tax_rule():
     """Test the IncomeTaxRule."""
