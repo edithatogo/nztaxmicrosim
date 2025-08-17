@@ -67,16 +67,15 @@ class SimulationPipeline:
 
         rules: list[Rule] = []
 
+# Import all rule modules to ensure they are registered
         from . import benefit_rules, tax_rules, wff_rules
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")
-            params = rule_config.get("params", {})
-
             if rule_name not in RULE_REGISTRY:
                 # Fallback for old format
-                if "." in rule_name:
-                    module_path, class_name = rule_name.rsplit(".", 1)
+                if '.' in rule_name:
+                    module_path, class_name = rule_name.rsplit('.', 1)
                     try:
                         module = importlib.import_module(module_path)
                         rule_class = getattr(module, class_name)
@@ -87,7 +86,9 @@ class SimulationPipeline:
             else:
                 rule_class = RULE_REGISTRY[rule_name]
 
-            rules.append(rule_class(**params))
+# Rules are instantiated without arguments here.
+            # They will get their data from the context dict passed to run().
+            rules.append(rule_class())
 
         return cls(rules)
 

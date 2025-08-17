@@ -17,18 +17,15 @@ import os
 # --- 1. Define Metric Functions ---
 # These functions take a simulation result DataFrame and return a single number.
 
-
 def total_tax_revenue(df: pd.DataFrame) -> float:
     """Calculates the total income tax paid by the population."""
     return df["tax_liability"].sum()
-
 
 def total_wff_paid(df: pd.DataFrame) -> float:
     """Calculates the total Working for Families credits paid."""
     wff_columns = ["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]
     existing_cols = [col for col in wff_columns if col in df.columns]
     return df[existing_cols].sum().sum()
-
 
 # --- 2. Main Execution ---
 

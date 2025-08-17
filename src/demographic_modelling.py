@@ -13,7 +13,6 @@ import numpy as np
 DATA_DIR = Path(__file__).parent / "data"
 FERTILITY_DATA_FILE = DATA_DIR / "fertility_rates.json"
 
-
 def get_fertility_data() -> dict:
     """
     Loads age-specific fertility rate data from a local JSON file.
@@ -32,7 +31,6 @@ def get_fertility_data() -> dict:
 
     with open(FERTILITY_DATA_FILE, "r") as f:
         return json.load(f)
-
 
 def _get_rate_for_age(age: int, rates_for_year: dict) -> float:
     """Helper function to find the fertility rate for a specific age."""

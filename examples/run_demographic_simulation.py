@@ -1,7 +1,6 @@
 import pandas as pd
 from src.demographic_modelling import age_population_forward
 
-
 def main():
     """
     An example script to demonstrate the use of the demographic modelling module.

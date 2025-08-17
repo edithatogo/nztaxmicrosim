@@ -17,7 +17,6 @@ import os
 # --- 1. Define Metric Functions ---
 # These functions take a simulation result DataFrame and return a single number.
 
-
 def total_tax_revenue(df: pd.DataFrame) -> float:
     """Calculates the total income tax paid by the population."""
     return df["tax_liability"].sum()

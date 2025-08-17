@@ -30,7 +30,6 @@ def generate_dummy_data_for_year(year: int) -> pd.DataFrame:
     df["disposable_income"] = df["familyinc"] - df["tax_liability"] + df["jss_entitlement"]
     return df
 
-
 def main():
     """
     An example script to generate a historical report from a YAML configuration.

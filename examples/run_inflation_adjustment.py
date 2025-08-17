@@ -1,7 +1,6 @@
 import pandas as pd
 from src.inflation import adjust_for_inflation
 
-
 def main():
     """
     An example script to demonstrate the use of the inflation adjustment module.

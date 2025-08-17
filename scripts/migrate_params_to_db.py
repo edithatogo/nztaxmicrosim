@@ -3,7 +3,6 @@ import json
 import os
 import re
 
-
 def migrate_parameters_to_db():
     """
     Reads all parameters_YYYY-YYYY.json files from the src/ directory,
@@ -62,7 +61,6 @@ def migrate_parameters_to_db():
     conn.close()
 
     print("Migration complete. All parameter files have been migrated to the database.")
-
 
 if __name__ == "__main__":
     migrate_parameters_to_db()

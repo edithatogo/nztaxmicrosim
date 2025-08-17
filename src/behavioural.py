@@ -6,7 +6,6 @@ policy changes, such as labour supply responses.
 import pandas as pd
 import numpy as np
 
-
 def labour_supply_response(
     df_before: pd.DataFrame,
     df_after: pd.DataFrame,

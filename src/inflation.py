@@ -12,7 +12,6 @@ import os
 CACHE_DIR = Path(__file__).parent / ".cache"
 CPI_CACHE_FILE = CACHE_DIR / "cpi_data.json"
 
-
 def get_cpi_data() -> dict[int, float]:
     """
     Fetches Consumer Price Index (CPI) data from the World Bank, caching it locally.
@@ -52,7 +51,6 @@ def get_cpi_data() -> dict[int, float]:
     except Exception as e:
         print(f"Error fetching data from World Bank API: {e}")
         return {}
-
 
 def adjust_for_inflation(
     data: pd.DataFrame,

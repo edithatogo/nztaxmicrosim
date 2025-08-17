@@ -12,7 +12,7 @@ from .pipeline import register_rule
 class GrossUpIncomeRule:
     """Rule to gross up income for WFF calculation."""
 
-    name: str = "gross_up_income"
+    name: str = "GrossUpIncomeRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
@@ -24,10 +24,10 @@ class GrossUpIncomeRule:
 
 @register_rule
 @dataclass
-class MaxEntitlementsRule:
+class CalculateMaxEntitlementsRule:
     """Rule to calculate maximum WFF entitlements."""
 
-    name: str = "MaxEntitlementsRule"
+    name: str = "CalculateMaxEntitlementsRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:
@@ -92,7 +92,7 @@ class ApplyCalibrationsRule:
 class CalculateFinalEntitlementsRule:
     """Rule to calculate the final WFF entitlements."""
 
-    name: str = "calculate_final_entitlements"
+    name: str = "CalculateFinalEntitlementsRule"
     enabled: bool = True
 
     def __call__(self, data: dict[str, Any]) -> None:

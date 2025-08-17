@@ -83,9 +83,6 @@ def main() -> None:
     # Set the parameters for a specific year
     year = "2023-2024"
     from .microsim import load_parameters
-    import src.wff_rules  # noqa: F401
-    import src.tax_rules  # noqa: F401
-    import src.benefit_rules  # noqa: F401
 
     params = load_parameters(year)
     tax_calc = TaxCalculator(params=params)

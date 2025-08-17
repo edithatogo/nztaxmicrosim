@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 import re
 
-
 def get_parameter_files(src_dir: Path) -> list[Path]:
     """Finds all parameter files in the src directory."""
     return sorted(src_dir.glob("parameters_*.json"))
@@ -105,7 +104,6 @@ def generate_docs():
         f.write(details)
 
     print(f"Documentation generated successfully at {output_file}")
-
 
 if __name__ == "__main__":
     generate_docs()
