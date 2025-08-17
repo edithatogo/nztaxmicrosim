@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Union
 
 from .benefits import (
     calculate_accommodation_supplement,
@@ -45,7 +45,7 @@ class JSSRule(Rule):
 
     name: str = "JSSRule"
     enabled: bool = True
-    jss_params: JSSParams | None = None
+    jss_params: Union[JSSParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate JSS entitlement and add it to the DataFrame."""
@@ -81,7 +81,7 @@ class DisabilityAllowanceRule(Rule):
 
     name: str = "DisabilityAllowanceRule"
     enabled: bool = True
-    disability_allowance_params: DisabilityAllowanceParams | None = None
+    disability_allowance_params: Union[DisabilityAllowanceParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate Disability Allowance entitlement and add it to the DataFrame."""
@@ -115,7 +115,7 @@ class MFTCRule(Rule):
 
     name: str = "MFTCRule"
     enabled: bool = True
-    mftc_params: MFTCParams | None = None
+    mftc_params: Union[MFTCParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate MFTC entitlement and add it to the DataFrame."""
@@ -149,7 +149,7 @@ class IWTCRule(Rule):
 
     name: str = "IWTCRule"
     enabled: bool = True
-    iwtc_params: IWTCParams | None = None
+    iwtc_params: Union[IWTCParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate IWTC entitlement and add it to the DataFrame."""
@@ -184,7 +184,7 @@ class FTCRule(Rule):
 
     name: str = "FTCRule"
     enabled: bool = True
-    ftc_params: FTCParams | None = None
+    ftc_params: Union[FTCParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate FTC entitlement and add it to the DataFrame."""
@@ -218,7 +218,7 @@ class BSTCRule(Rule):
 
     name: str = "BSTCRule"
     enabled: bool = True
-    bstc_params: BSTCParams | None = None
+    bstc_params: Union[BSTCParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate BSTC entitlement and add it to the DataFrame."""
@@ -256,7 +256,7 @@ class WEPRule(Rule):
 
     name: str = "WEPRule"
     enabled: bool = True
-    wep_params: WEPParams | None = None
+    wep_params: Union[WEPParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate WEP entitlement and add it to the DataFrame."""
@@ -294,7 +294,7 @@ class SPSRule(Rule):
 
     name: str = "SPSRule"
     enabled: bool = True
-    sps_params: SPSParams | None = None
+    sps_params: Union[SPSParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate SPS entitlement and add it to the DataFrame."""
@@ -327,7 +327,7 @@ class SLPRule(Rule):
 
     name: str = "SLPRule"
     enabled: bool = True
-    slp_params: SLPParams | None = None
+    slp_params: Union[SLPParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate SLP entitlement and add it to the DataFrame."""
@@ -363,7 +363,7 @@ class AccommodationSupplementRule(Rule):
 
     name: str = "AccommodationSupplementRule"
     enabled: bool = True
-    as_params: AccommodationSupplementParams | None = None
+    as_params: Union[AccommodationSupplementParams, None] = None
 
     def __call__(self, data: dict[str, Any]) -> None:
         """Calculate Accommodation Supplement entitlement and add it to the DataFrame."""

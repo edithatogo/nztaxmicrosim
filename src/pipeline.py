@@ -8,7 +8,6 @@ from typing import Any
 
 import yaml
 
-from . import benefit_rules, tax_rules, wff_rules
 from .rule_registry import RULE_REGISTRY, Rule
 
 
