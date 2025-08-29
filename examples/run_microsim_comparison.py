@@ -159,9 +159,9 @@ for param_file in args.param_files:
     # Run the famsim function
     df_results = famsim(
         df.copy(),  # Use a copy to avoid modifying the original DataFrame in the loop
-        wff_params,
-        wagegwt,
-        daysinperiod,
+        year=year,
+        wagegwt=wagegwt,
+        daysinperiod=daysinperiod,
     )
 
     # --- 5. Save the Results ---

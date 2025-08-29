@@ -1,10 +1,10 @@
 from datetime import datetime, timezone
 from logging import getLogger
 
-from numpy.random import choice
 from pandas import DataFrame
 
 logger = getLogger()
+
 
 def base_pop_wrapper(
     structure_data: DataFrame,

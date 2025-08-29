@@ -1,3 +1,5 @@
+from typing import Union
+
 import pandas as pd
 from pydantic import BaseModel, Field
 
@@ -11,8 +13,8 @@ class SimulationInputSchema(BaseModel):
     of the correct type and within the expected range.
     """
 
-    person_id: int = Field(default=..., description="Unique identifier for each person.")
-    household_id: int = Field(default=..., description="Unique identifier for each household.")
+    person_id: Union[int, str] = Field(default=..., description="Unique identifier for each person.")
+    household_id: Union[int, str] = Field(default=..., description="Unique identifier for each household.")
     familyinc: float = Field(default=..., ge=0, description="Family income, must be non-negative.")
     num_children: int = Field(default=..., ge=0, description="Number of children in the family, must be non-negative.")
     adults: int = Field(default=..., ge=0, description="Number of adults in the family, must be non-negative.")

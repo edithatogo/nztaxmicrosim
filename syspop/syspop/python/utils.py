@@ -2,20 +2,10 @@ from datetime import datetime, timedelta, timezone
 from functools import reduce as functools_reduce
 from logging import INFO, Formatter, StreamHandler, basicConfig, getLogger
 from os.path import exists, join
-from pickle import load as pickle_load
-from os import makedirs
 
-from numpy import all as numpy_all
-from numpy import array as numpy_array
-from numpy import isnan as numpy_isnan
-from numpy import nan as numpy_nan
-from numpy import nanargmin as numpy_nanargmin
 from pandas import DataFrame
-from pandas import concat as pandas_concat
 from pandas import merge as pandas_merge
 from pandas import read_parquet as pandas_read_parquet
-
-from yaml import safe_load as yaml_load
 
 logger = getLogger()
 
@@ -30,15 +20,13 @@ def setup_logging(
     Returns:
         object: a logging object
     """
-    formatter = Formatter(
-        "%(asctime)s - %(name)s.%(lineno)d - %(levelname)s - %(message)s"
-    )
+    formatter = Formatter("%(asctime)s - %(name)s.%(lineno)d - %(levelname)s - %(message)s")
 
     ch = StreamHandler()
     ch.setLevel(INFO)
     ch.setFormatter(formatter)
     logger_path = join(workdir, f"{log_type}.{start_utc.strftime('%Y%m%d')}")
-    basicConfig(filename=logger_path),
+    (basicConfig(filename=logger_path),)
     logger = getLogger()
     logger.setLevel(INFO)
     logger.addHandler(ch)
@@ -114,9 +102,7 @@ def select_place_with_contstrain(
           is False, returns a random sample without weights
     """
     if constrain_name not in places:
-        raise Exception(
-            f"The constrain name: {constrain_name} is not in the place_data"
-        )
+        raise Exception(f"The constrain name: {constrain_name} is not in the place_data")
 
     if constrain_priority not in constrain_options:
         if check_constrain_priority:
@@ -127,15 +113,11 @@ def select_place_with_contstrain(
         else:
             return places.sample(n=1)
 
-    constrain_weights_others = (1.0 - constrain_priority_weight) / (
-        len(constrain_options) - 1
-    )
+    constrain_weights_others = (1.0 - constrain_priority_weight) / (len(constrain_options) - 1)
 
     constrain_weights = [constrain_weights_others] * len(constrain_options)
 
-    constrain_weights[constrain_options.index(constrain_priority)] = (
-        constrain_priority_weight
-    )
+    constrain_weights[constrain_options.index(constrain_priority)] = constrain_priority_weight
 
     # Create a weight mapping
     constrain_weights_map = dict(zip(constrain_options, constrain_weights))

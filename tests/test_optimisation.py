@@ -32,7 +32,7 @@ def test_run_parameter_scan_happy_path(sample_df, valid_scan_config, sample_metr
     """Test that the parameter scan runs successfully with a valid config."""
 
     # Mock the simulation function to avoid running a full simulation
-    def mock_simulation(df, params):
+    def mock_simulation(df, params, year):
         # The mock just adds a dummy tax_liability column
         result_df = df.copy()
         result_df["tax_liability"] = 1000  # A constant value for simplicity
@@ -56,7 +56,7 @@ def test_parameter_modification(sample_df, valid_scan_config, sample_metrics, mo
     original_params = load_parameters("2023-2024")
     modified_params_storage = []
 
-    def mock_simulation_with_capture(df, params):
+    def mock_simulation_with_capture(df, params, year):
         modified_params_storage.append(params)
         return pd.DataFrame({"tax_liability": [0]})
 
@@ -149,7 +149,7 @@ def test_run_policy_optimisation(sample_df, valid_opt_config, sample_metrics, mo
     # Mock the simulation to check that parameters are applied correctly
     modified_params_storage = []
 
-    def mock_simulation(df, params):
+    def mock_simulation(df, params, year):
         modified_params_storage.append(params)
         return pd.DataFrame({"tax_liability": [2000]})
 

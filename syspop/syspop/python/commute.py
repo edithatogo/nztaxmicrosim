@@ -1,15 +1,13 @@
 from logging import getLogger
+
+import pandas as pd
 from numpy.random import choice as numpy_choice
-from pandas import DataFrame
-from pandas import Series
+from pandas import DataFrame, Series
 
 logger = getLogger()
 
 
-def create_commute_probability(
-        commute_dataset: DataFrame, 
-        areas: list, 
-        commute_type: str = "work") -> DataFrame:
+def create_commute_probability(commute_dataset: DataFrame, areas: list, commute_type: str = "work") -> DataFrame:
     """
     Calculates commute probabilities for specified areas and commute type.
 
@@ -28,8 +26,7 @@ def create_commute_probability(
           by the total number of people commuting from each area home.
     """
     commute_dataset = commute_dataset[commute_dataset["area_home"].isin(areas)]
-    travel_methods = [col for col in commute_dataset.columns if col not in [
-            "area_home", f"area_{commute_type}"]]
+    travel_methods = [col for col in commute_dataset.columns if col not in ["area_home", f"area_{commute_type}"]]
 
     total_people = commute_dataset.groupby("area_home")[travel_methods].sum().sum(axis=1)
     area_sums = commute_dataset.groupby(["area_home", f"area_{commute_type}"])[travel_methods].sum()
@@ -37,22 +34,20 @@ def create_commute_probability(
 
 
 def assign_agent_to_commute(
-        commute_dataset: DataFrame, 
-        agent: Series,
-        commute_type: str = "work",
-        include_filters: dict = {}) -> Series:
+    commute_dataset: DataFrame, agent: Series, commute_type: str = "work", include_filters: dict = {}
+) -> Series:
     """
     Assign a commuting area and travel method to an agent based on commute data.
 
     This function updates an agent's attributes by selecting a commuting area and
-    travel method based on the provided commute dataset. It takes into account any 
+    travel method based on the provided commute dataset. It takes into account any
     exclusion filters that may apply to the agent.
 
     Parameters:
     ----------
     commute_dataset : DataFrame
         A DataFrame containing commuting data, including areas and corresponding travel methods.
-    
+
     agent : Series
         A Series representing an agent, which includes information such as area and any relevant
         attributes for filtering.
@@ -81,16 +76,37 @@ def assign_agent_to_commute(
                 agent[f"area_{commute_type}"] = None
                 agent[f"travel_method_{commute_type}"] = None
                 return agent
-        
+
     proc_commute_dataset = commute_dataset[commute_dataset.area_home == agent.area].copy()
-    proc_commute_dataset["total"] = proc_commute_dataset.drop(
-        columns=["area_home", f"area_{commute_type}"]).sum(axis=1)
-    selected_row = proc_commute_dataset.loc[
-        numpy_choice(proc_commute_dataset.index, p=proc_commute_dataset["total"])]
+    if proc_commute_dataset.empty:
+        agent[f"area_{commute_type}"] = None
+        agent[f"travel_method_{commute_type}"] = None
+        return agent
+    proc_commute_dataset["total"] = proc_commute_dataset.drop(columns=["area_home", f"area_{commute_type}"]).sum(axis=1)
+    
+    # Check if all probabilities are zero or NaN - this can happen when there's no commute data
+    # for certain area combinations. In such cases, we set the commute attributes to None.
+    total_sum = proc_commute_dataset["total"].sum()
+    if total_sum == 0 or pd.isna(total_sum):
+        agent[f"area_{commute_type}"] = None
+        agent[f"travel_method_{commute_type}"] = None
+        return agent
+    
+    # Normalize probabilities to ensure they sum to 1 - this is critical for numpy.random.choice
+    # which requires probabilities to sum exactly to 1.0
+    normalized_probs = proc_commute_dataset["total"] / total_sum
+    selected_row = proc_commute_dataset.loc[numpy_choice(proc_commute_dataset.index, p=normalized_probs)]
     selected_area = int(selected_row[f"area_{commute_type}"])
     selected_row = selected_row.drop(["area_home", f"area_{commute_type}", "total"])
-    travel_method = numpy_choice(
-        selected_row.index, p=selected_row /selected_row.sum())
+    
+    # Check if selected row has valid travel methods
+    travel_method_sum = selected_row.sum()
+    if travel_method_sum == 0 or pd.isna(travel_method_sum):
+        agent[f"area_{commute_type}"] = selected_area
+        agent[f"travel_method_{commute_type}"] = None
+        return agent
+    
+    travel_method = numpy_choice(selected_row.index, p=selected_row / travel_method_sum)
 
     agent[f"area_{commute_type}"] = selected_area
     agent[f"travel_method_{commute_type}"] = travel_method

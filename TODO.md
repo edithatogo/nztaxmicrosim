@@ -16,3 +16,7 @@ Outstanding work:
 * Improve code documentation (Ongoing)
   * Add docstrings to Pydantic models in `src/parameters.py`
   * ✅ Set up a documentation generator (`mkdocs` with `mkdocstrings` is in place)
+
+* ✅ Update `README.md` to reflect current project status:
+  * ✅ Rewrite "Parameters" section to describe SQLite database usage.
+  * ✅ Update "Roadmap" to move completed items (database, API) out of "Future Plans".

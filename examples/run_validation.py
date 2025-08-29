@@ -1,22 +1,42 @@
 import os
+import sqlite3
 import sys
 
 import pandas as pd
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-import glob
 
 from src.microsim import load_parameters
 from src.wff_microsim import famsim
 
 
+def get_available_years():
+    """Get all available years from the SQLite database."""
+    db_path = os.path.join(os.path.dirname(__file__), "..", "src", "data", "parameters.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT year FROM policy_parameters WHERE policy_key = 'wff' ORDER BY year")
+    years = [f"{row[0]}-{row[0] + 1}" for row in cursor.fetchall()]
+    conn.close()
+    return years
+
+
 def run_validation():
     """
-    Runs the WFF microsimulation for all available parameter files and generates a report.
+    Runs the WFF microsimulation for all available years from the SQLite database and generates a report.
+    
+    This function:
+    1. Queries the SQLite parameter database to find all years with WFF parameters
+    2. Runs the WFF microsimulation for each available year
+    3. Generates a comprehensive validation report in Markdown format
+    
+    The report is saved to docs/validation_report.md
     """
-    # Get a list of all parameter files
-    param_files = glob.glob("src/parameters_*.json")
-    param_files.sort()
+    # Get available years from the database
+    available_years = get_available_years()
+    if not available_years:
+        print("No WFF parameters found in the database.")
+        return
 
     # Create a list to store the results
     results = []
@@ -50,25 +70,32 @@ def run_validation():
     wagegwt: float = 0.0
     daysinperiod: int = 365
 
-    # Iterate over the parameter files
-    for param_file in param_files:
-        # Extract the year from the filename
-        year = os.path.basename(param_file).replace("parameters_", "").replace(".json", "")
+    # Iterate over the available years
+    for year in available_years:
+        print(f"Running validation for year: {year}")
+        
+        try:
+            # Load the parameters
+            params = load_parameters(year)
+            wff_params = params.wff
+            
+            if wff_params is None:
+                print(f"WFF parameters not found for year {year}. Skipping.")
+                continue
 
-        # Load the parameters
-        params = load_parameters(year)
-        wff_params = params.wff
+            # Run the simulation
+            result_df = famsim(
+                df.copy(),
+                year=year,
+                wagegwt=wagegwt,
+                daysinperiod=daysinperiod,
+            )
 
-        # Run the simulation
-        result_df = famsim(
-            df.copy(),
-            wff_params,
-            wagegwt,
-            daysinperiod,
-        )
-
-        # Store the results
-        results.append({"year": year, "result": result_df.to_string()})
+            # Store the results
+            results.append({"year": year, "result": result_df.to_string()})
+        except Exception as e:
+            print(f"Error processing year {year}: {e}")
+            results.append({"year": year, "result": f"Error: {e}"})
 
     # Generate the report
     with open("docs/validation_report.md", "w") as f:

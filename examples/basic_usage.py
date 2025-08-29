@@ -72,9 +72,7 @@ output_lines.append(f"IETC: ${ietc_16_17:.2f}")
 if params_2016_17.wff is not None:
     wff_16_17 = famsim(
         family_details.copy(),
-        wff_params=params_2016_17.wff,
-        wagegwt=0,
-        daysinperiod=365,
+        year=2016,
     )
     output_lines.append("Working for Families Entitlements:")
     output_lines.append(wff_16_17[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())
@@ -106,9 +104,7 @@ output_lines.append(f"IETC: ${ietc_24_25:.2f}")
 if params_2024_25.wff is not None:
     wff_24_25 = famsim(
         family_details.copy(),
-        wff_params=params_2024_25.wff,
-        wagegwt=0,
-        daysinperiod=365,
+        year=2024,
     )
     output_lines.append("Working for Families Entitlements:")
     output_lines.append(wff_24_25[["FTCcalc", "IWTCcalc", "BSTCcalc", "MFTCcalc"]].round(2).to_string())

@@ -12,6 +12,7 @@ from ..dynamic_simulation import _run_static_simulation
 from ..microsim import load_parameters
 from .celery_app import celery_app
 from .tasks import run_optimisation_task
+from .dashboard_endpoints import router as dashboard_router
 
 # Create a directory for uploads if it doesn't exist
 UPLOAD_DIR = Path("data/api_uploads")
@@ -30,6 +31,9 @@ app = FastAPI(
     description="An API to run the NZ Tax Microsimulation Model.",
     version="0.1.0",
 )
+
+# Include dashboard router
+app.include_router(dashboard_router)
 
 
 class StaticSimulationRequest(BaseModel):
@@ -137,7 +141,8 @@ async def run_static_simulation(request: StaticSimulationRequest):
     df["taxable_income"] = df[income_cols].sum(axis=1)
 
     # Run the simulation
-    result_df = _run_static_simulation(df, params)
+    year_int = int(request.year.split("-")[0])
+    result_df = _run_static_simulation(df, params, year_int)
 
     # Calculate and return summary results
     total_tax_liability = result_df["tax_liability"].sum()

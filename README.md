@@ -133,10 +133,15 @@ automatically.
 
 ## Parameters
 
-Policy rules are stored in JSON files named `parameters_YYYY-YYYY.json` inside
-the `src` directory. These files are loaded into Pydantic models via
-`load_parameters`, which performs basic type checks and ensures required fields
-are present.
+Policy parameters are stored in a SQLite database (`src/data/parameters.db`).
+The database provides a structured and efficient way to manage historical and
+future policy settings.
+
+Parameters are loaded into Pydantic models via the `load_parameters` function,
+which queries the database for the specified year. This ensures that all data is
+validated and type-checked at runtime.
+
+For details on the database schema and Pydantic models, see `src/parameters.py`.
 
 
 ## Changelog
@@ -170,10 +175,13 @@ The project is in a mature state, with most of the core features completed. The 
 - **Policy Optimisation Module:** Integrating an optimization library (e.g., Optuna) to intelligently search for optimal policy parameters.
 - **Configuration-Driven Pipelines:** Refactoring the simulation to be driven by configuration files (e.g., YAML) to make it more flexible.
 
+### Completed
+
+- **Parameter Database:** Policy parameters have been migrated from JSON files to a SQLite database, providing more robust data management.
+- **Web API:** The simulation engine is now accessible via a web API, making it easier to integrate with other applications.
+
 ### Future Plans
 
-- **Parameter Database:** Migrating policy parameters from JSON files to a structured database (e.g., SQLite).
-- **Web API:** Exposing the simulation engine via a web API to make it more accessible to other tools and languages.
 - **Enhanced CI/CD:** Improving the CI/CD pipeline with dynamic badges, automated data audits, and performance regression testing.
 
 For more details, see the full [Roadmap](docs/ROADMAP.md).

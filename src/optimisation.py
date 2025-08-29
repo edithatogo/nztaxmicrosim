@@ -109,7 +109,8 @@ def run_parameter_scan(
                 raise AttributeError(f"Invalid parameter path in scenario '{scenario_id}': {param_path}")
 
         # Run the static simulation with the modified parameters
-        result_df = _run_static_simulation(base_df, scenario_params)
+        year_int = int(base_year.split("-")[0])
+        result_df = _run_static_simulation(base_df, scenario_params, year_int)
 
         # Calculate the metrics
         scenario_results = {"scenario_id": scenario_id}
@@ -140,6 +141,7 @@ def run_policy_optimisation(
         The completed Optuna study object.
     """
     base_params = load_parameters(base_year)
+    year_int = int(base_year.split("-")[0])
 
     def objective(trial: optuna.trial.Trial) -> float:
         scenario_params = copy.deepcopy(base_params)
@@ -162,7 +164,7 @@ def run_policy_optimisation(
             _set_nested_attr(scenario_params, path, value)
 
         # Run simulation and calculate all metrics
-        result_df = _run_static_simulation(base_df, scenario_params)
+        result_df = _run_static_simulation(base_df, scenario_params, year_int)
 
         all_metric_results = {}
         for metric_name, metric_func in metrics.items():

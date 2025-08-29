@@ -83,8 +83,7 @@ if __name__ == "__main__":
     for param, value in study.best_params.items():
         print(f"  - {param}: {value}")
 
-    print("\nMetrics for the best trial:")
-    # Retrieve all metrics stored in the user attributes of the best trial
-    best_trial_metrics = study.best_trial.user_attrs.get("metrics", {})
-    for metric_name, value in best_trial_metrics.items():
-        print(f"  - {metric_name}: {value:,.2f}")
+    # --- Save results to a CSV file ---
+    results_df = study.trials_dataframe()
+    results_df.to_csv("optimisation_results.csv", index=False)
+    print("\nFull study results saved to optimisation_results.csv")

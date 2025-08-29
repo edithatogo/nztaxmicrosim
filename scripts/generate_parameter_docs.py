@@ -1,25 +1,43 @@
 import json
-import re
+import sqlite3
+from collections import defaultdict
 from pathlib import Path
 
 
-def get_parameter_files(src_dir: Path) -> list[Path]:
-    """Finds all parameter files in the src directory."""
-    return sorted(src_dir.glob("parameters_*.json"))
+def get_params_from_db(db_path: Path) -> dict:
+    """Fetches all parameters from the SQLite database."""
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    conn = sqlite3.connect(str(db_path))
+    cursor = conn.cursor()
+    cursor.execute("SELECT year, policy_key, parameters FROM policy_parameters ORDER BY year")
+    rows = cursor.fetchall()
+    conn.close()
+
+    # Reshape data into a nested dictionary: {year: {policy: params}}
+    param_data = defaultdict(dict)
+    for year, policy_key, params_json in rows:
+        # Create a proper year string
+        year_str = f"{year}-{year + 1}"
+        if params_json:
+            param_data[year_str][policy_key] = json.loads(params_json)
+        else:
+            param_data[year_str][policy_key] = {}  # Handle cases where params are null
+
+    return dict(sorted(param_data.items()))
 
 
-def get_all_rules(param_files: list[Path]) -> list[str]:
-    """Gets a unique, sorted list of all rules from all parameter files."""
+def get_all_rules(param_data: dict) -> list[str]:
+    """Gets a unique, sorted list of all rules from the parameter data."""
     all_rules = set()
-    for file in param_files:
-        with open(file, "r") as f:
-            data = json.load(f)
-            all_rules.update(data.keys())
+    for year_data in param_data.values():
+        all_rules.update(year_data.keys())
+
     # These are not rules, so remove them.
-    if "year" in all_rules:
-        all_rules.remove("year")
-    if "description" in all_rules:
-        all_rules.remove("description")
+    if "_source_references" in all_rules:
+        all_rules.remove("_source_references")
+
     return sorted(list(all_rules))
 
 
@@ -32,7 +50,7 @@ def generate_coverage_matrix(param_data: dict, all_rules: list[str]) -> str:
     for year, data in param_data.items():
         row = f"| {year} |"
         for rule in all_rules:
-            row += " ✅ |" if rule in data else " ❌ |"
+            row += " ✅ |" if rule in data and data[rule] else " ❌ |"
         rows.append(row)
 
     return "\n".join([header, separator] + rows)
@@ -43,16 +61,19 @@ def generate_detailed_tables(param_data: dict) -> str:
     detailed_docs = []
     for year, data in param_data.items():
         detailed_docs.append(f"## {year}\n")
-        for rule, params in data.items():
-            if rule in ["year", "description"]:
-                continue
+        # Sort rules alphabetically for consistent output
+        sorted_rules = sorted(data.keys())
+        for rule in sorted_rules:
+            params = data[rule]
             detailed_docs.append(f"### `{rule}`\n")
-            if isinstance(params, dict):
+            if isinstance(params, dict) and params:
                 header = "| Parameter | Value |\n| --- | --- |"
-                rows = [f"| `{key}` | `{value}` |" for key, value in params.items()]
+                rows = [f"| `{key}` | `{json.dumps(value)}` |" for key, value in sorted(params.items())]
                 detailed_docs.append(header + "\n" + "\n".join(rows))
-            else:
+            elif params:
                 detailed_docs.append(f"`{params}`")
+            else:
+                detailed_docs.append("*No parameters for this rule.*")
             detailed_docs.append("\n")
     return "\n".join(detailed_docs)
 
@@ -61,31 +82,14 @@ def generate_docs():
     """
     Generates documentation for the parameter files.
     """
-    print("Generating parameter documentation...")
+    print("Generating parameter documentation from SQLite database...")
 
-    # Correctly locate the root directory of the project
     root_dir = Path(__file__).parent.parent
-    src_dir = root_dir / "src"
-    docs_dir = root_dir / "docs"
-    output_file = docs_dir / "parameter_coverage.md"
+    db_path = root_dir / "src" / "data" / "parameters.db"
+    output_file = root_dir / "docs" / "parameter_coverage.md"
 
-    param_files = get_parameter_files(src_dir)
-
-    param_data = {}
-    year_pattern = re.compile(r"parameters_(\d{4}-\d{4})\.json")
-
-    for file in param_files:
-        print(f"Processing file: {file.name}")  # Added for debugging
-        match = year_pattern.search(file.name)
-        if match:
-            year = match.group(1)
-            with open(file, "r") as f:
-                param_data[year] = json.load(f)
-
-    # Sort data by year
-    param_data = dict(sorted(param_data.items()))
-
-    all_rules = get_all_rules(param_files)
+    param_data = get_params_from_db(db_path)
+    all_rules = get_all_rules(param_data)
 
     # Generate the content
     title = "# Parameter Coverage\n\n"

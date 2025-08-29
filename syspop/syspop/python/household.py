@@ -1,7 +1,8 @@
 from logging import getLogger
-from pandas import DataFrame, Series
-from random import choices as random_choices
 from uuid import uuid4
+
+from pandas import DataFrame, Series
+
 from syspop.python.utils import select_place_with_contstrain
 
 logger = getLogger()
@@ -69,15 +70,15 @@ def create_households(
 
     if not households:
         columns = {
-            'area': Series(dtype='int'),
-            'adults': Series(dtype='int'),
-            'children': Series(dtype='int'),
-            'latitude': Series(dtype='float'),
-            'longitude': Series(dtype='float'),
-            'household': Series(dtype='str')
+            "area": Series(dtype="int"),
+            "adults": Series(dtype="int"),
+            "children": Series(dtype="int"),
+            "latitude": Series(dtype="float"),
+            "longitude": Series(dtype="float"),
+            "household": Series(dtype="str"),
         }
-        if 'ethnicity' in household_data.columns:
-            columns['ethnicity'] = Series(dtype='str')
+        if "ethnicity" in household_data.columns:
+            columns["ethnicity"] = Series(dtype="str")
         return DataFrame(columns)
     return DataFrame(households)
 
@@ -101,11 +102,8 @@ def place_agent_to_household(households: DataFrame, agent: Series) -> tuple:
     """
     agent_type = "adults" if agent.age >= 18 else "children"
 
-    selected_households = households[
-        (households[agent_type] >= 1) & (households["area"] == agent.area)
-    ]
+    selected_households = households[(households[agent_type] >= 1) & (households["area"] == agent.area)]
     if len(selected_households) > 0:
-
         if "ethnicity" in selected_households:
             selected_household = select_place_with_contstrain(
                 selected_households,

@@ -4,9 +4,32 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nztaxmicrosim"
-version = "0.2.0"
+version = "0.3.0"
 description = "A Python-based microsimulation model for the New Zealand tax and transfer system."
 readme = "README.md"
+authors = [
+    {name = "NZ Tax Microsimulation Team", email = "contact@nztaxmicrosim.org"},
+]
+maintainers = [
+    {name = "NZ Tax Microsimulation Team", email = "contact@nztaxmicrosim.org"},
+]
+license = {text = "MIT"}
+keywords = ["taxation", "microsimulation", "new-zealand", "policy-analysis", "economics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Office/Business :: Financial",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
 dependencies = [
     "pandas",
     "numpy",
@@ -28,6 +51,40 @@ dependencies = [
     "faker",
     "httpx",
     "python-multipart",
+    # Enhanced features dependencies
+    "jinja2>=3.0.0",  # Report templates
+    "openpyxl>=3.0.0",  # Excel export
+    "psutil>=5.8.0",  # Performance monitoring
+    "memory-profiler>=0.60.0",  # Memory optimization
+]
+
+[project.urls]
+Homepage = "https://github.com/Treasury-AnZ/nztaxmicrosim"
+Repository = "https://github.com/Treasury-AnZ/nztaxmicrosim"
+Documentation = "https://github.com/Treasury-AnZ/nztaxmicrosim/blob/main/README.md"
+"Bug Tracker" = "https://github.com/Treasury-AnZ/nztaxmicrosim/issues"
+Changelog = "https://github.com/Treasury-AnZ/nztaxmicrosim/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+# Advanced export formats (for researchers using statistical software)
+research = [
+    "pyreadstat>=1.2.0",  # SPSS export
+    "pyreadr>=0.4.0",     # R data export
+]
+
+# Development and testing
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pre-commit>=3.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "tox>=4.0.0",
+]
+
+# Complete installation with all features
+all = [
+    "nztaxmicrosim[research,dev]",
 ]
 
 [tool.pytest.ini_options]
@@ -66,8 +123,12 @@ disable_error_code = ["var-annotated"]
 source = ["src"]
 omit = ["*/shibokensupport/*", "signature_bootstrap.py"]
 
+[tool.setuptools]
+packages = ["nztaxmicrosim", "nztaxmicrosim.api", "nztaxmicrosim.data"]
+package-dir = {"nztaxmicrosim" = "src"}
+
 [tool.setuptools.package-data]
-nztaxmicrosim = ["docs/*"]
+"*" = ["docs/*", "data/*", "py.typed"]
 
 [tool.bandit]
 exclude = [".tox"]

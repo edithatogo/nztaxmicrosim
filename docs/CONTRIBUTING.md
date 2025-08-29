@@ -28,13 +28,15 @@ cd nztaxmicrosim
 
 ### 2. Set Up Your Development Environment
 
-This project uses `pyproject.toml` for dependency management. We recommend using a virtual environment.
+This project uses `pyproject.toml` and `requirements-dev.txt` for dependency management. We recommend using a virtual environment.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
-pip install -e .
+make install-dev-deps
 ```
+
+This will install the application in editable mode along with all development and testing tools.
 
 ### 3. Install Pre-commit Hooks
 

@@ -19,7 +19,7 @@ def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
         A new DataFrame with an added `familyinc_grossed_up` column.
     """
     df = df.copy()
-    df["familyinc_grossed_up"] = df["familyinc"] * (1 + wagegwt)
+    df["familyinc_grossed_up"] = (df["familyinc"] * (1 + wagegwt)).astype(float)
     return df
 
 

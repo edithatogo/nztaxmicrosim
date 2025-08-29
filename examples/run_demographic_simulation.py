@@ -34,13 +34,10 @@ def main():
         print(population_1991)
         print(f"Total population: {len(population_1991)}")
 
-        # You could now run this new population through another year
-        # population_1992 = age_population_forward(
-        #     df=population_1991,
-        #     year=1991
-        # )
-        # print("\nNew population (1992):")
-        # print(population_1992)
+        # Save the results to a CSV file
+        output_filename = "demographic_simulation_results.csv"
+        population_1991.to_csv(output_filename, index=False)
+        print(f"\nResults saved to {output_filename}")
 
     except Exception as e:
         print(f"\nAn unexpected error occurred: {e}")

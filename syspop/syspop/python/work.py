@@ -1,9 +1,10 @@
-
 from logging import getLogger
-
-from pandas import Series, DataFrame
 from uuid import uuid4
+
+from pandas import DataFrame, Series
+
 logger = getLogger()
+
 
 def create_income(income_dataset: DataFrame) -> DataFrame:
     """Get income data
@@ -45,13 +46,13 @@ def create_employer(employer_dataset: DataFrame, address_data: DataFrame, all_ar
     Expands employer data into individual records and filters by specified areas.
 
     Args:
-        employer_dataset (DataFrame): DataFrame containing employer 
+        employer_dataset (DataFrame): DataFrame containing employer
             information with 'area', 'business_code', and 'employer' columns.
         address_data (DataFrame): Address datasets
         all_areas (list): List of areas to include in the expanded DataFrame.
 
     Returns:
-        DataFrame: Expanded employer data with individual 
+        DataFrame: Expanded employer data with individual
             records for each employer, filtered by specified areas.
 
     Notes:
@@ -67,8 +68,7 @@ def create_employer(employer_dataset: DataFrame, address_data: DataFrame, all_ar
         area = row["area"]
         business_code = row["business_code"]
         count = row["employer"]
-        proc_address_data_area = address_data[
-            address_data["area"] == area]
+        proc_address_data_area = address_data[address_data["area"] == area]
 
         if proc_address_data_area.empty:
             continue
@@ -76,14 +76,16 @@ def create_employer(employer_dataset: DataFrame, address_data: DataFrame, all_ar
         # Create individual records for each household
         for _ in range(count):
             proc_address_data = proc_address_data_area.sample(n=1)
-            employer_datasets.append({
-                "area_work": int(area),
-                "business_code": str(business_code),
-                "latitude": float(proc_address_data.latitude.iloc[0]),
-                "longitude": float(proc_address_data.longitude.iloc[0]),
-                "employer": str(uuid4())[:6]  # Create a 6-digit unique ID
-            })
-    
+            employer_datasets.append(
+                {
+                    "area_work": int(area),
+                    "business_code": str(business_code),
+                    "latitude": float(proc_address_data.latitude.iloc[0]),
+                    "longitude": float(proc_address_data.longitude.iloc[0]),
+                    "employer": str(uuid4())[:6],  # Create a 6-digit unique ID
+                }
+            )
+
     return DataFrame(employer_datasets)
 
 
@@ -100,7 +102,7 @@ def place_agent_to_employee(employee_data: DataFrame, agent: Series) -> Series:
 
     Notes:
         - Agents under 18 are automatically assigned None (not employed).
-        - Agents 18 and older are assigned an employee status based on thrre 
+        - Agents 18 and older are assigned an employee status based on thrre
             employment rate and a randomly selected business code from the egfmployee_data DataFrame.
         - The 'employee_status' value is either a business code (str) or None.
 
@@ -110,16 +112,13 @@ def place_agent_to_employee(employee_data: DataFrame, agent: Series) -> Series:
     if agent.area_work is None:
         selected_code = None
     else:
-        proc_employee_data = employee_data[
-            employee_data["area_work"] == agent.area_work]
+        proc_employee_data = employee_data[employee_data["area_work"] == agent.area_work]
         total_employee = proc_employee_data["employee"].sum()
         if total_employee == 0:
             selected_code = "Unknown"
         else:
             proc_employee_weight = proc_employee_data["employee"] / total_employee
-            selected_code = proc_employee_data.sample(
-                    n=1, 
-                    weights=proc_employee_weight)["business_code"].values[0]
+            selected_code = proc_employee_data.sample(n=1, weights=proc_employee_weight)["business_code"].values[0]
 
     agent["business_code"] = selected_code
 
@@ -138,14 +137,14 @@ def place_agent_to_income(income_data: DataFrame, agent: Series) -> Series:
     ----------
     income_data : DataFrame
         A DataFrame containing income data with columns for gender, business_code, age, ethnicity, and value.
-    
+
     agent : Series
         A Series representing an agent with attributes including area_work, gender, business_code, ethnicity, and age.
 
     Returns:
     -------
     Series
-        The modified agent Series, now including an 'income' attribute with the assigned income value 
+        The modified agent Series, now including an 'income' attribute with the assigned income value
         or "Unknown" if no match is found.
     """
     if agent.area_work is None:
@@ -160,19 +159,23 @@ def place_agent_to_income(income_data: DataFrame, agent: Series) -> Series:
             income_data[item] = income_data[item].astype(int)
 
         proc_income_data = income_data[
-            (income_data["gender"] == agent.gender) & 
-            ((income_data["business_code1"] == agent.business_code) | (income_data["business_code2"] == agent.business_code)) & 
-            (income_data["ethnicity"] == agent.ethnicity) &
-            ((agent.age >= income_data["age1"]) & (agent.age <= income_data["age2"]) )]
+            (income_data["gender"] == agent.gender)
+            & (
+                (income_data["business_code1"] == agent.business_code)
+                | (income_data["business_code2"] == agent.business_code)
+            )
+            & (income_data["ethnicity"] == agent.ethnicity)
+            & ((agent.age >= income_data["age1"]) & (agent.age <= income_data["age2"]))
+        ]
 
         if len(proc_income_data) > 1:
             raise Exception("Income data decoding error ...")
-    
+
         if len(proc_income_data) == 0:
             selected_income = "Unknown"
         else:
             selected_income = proc_income_data["value"].values[0]
 
-        agent["income"] = str(selected_income) # we can't have nan, unknown and a numerical value together in a parquet
-    
+        agent["income"] = str(selected_income)  # we can't have nan, unknown and a numerical value together in a parquet
+
     return agent

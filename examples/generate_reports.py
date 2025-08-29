@@ -11,30 +11,32 @@ from src.reporting import generate_microsim_report
 
 def generate_reports():
     """
-    Loads the microsimulation results and generates a comprehensive set of
-    reports, including tables and plots, with publication-quality formatting
-    and natural language labels.
+    Loads the microsimulation results and generates comprehensive reports.
+    
+    This function generates publication-quality tables and plots with natural language labels
+    for policy analysis. It now uses the SQLite parameter database instead of JSON files.
+    
+    Usage:
+        python examples/generate_reports.py --years 2023-2024 2024-2025
     """
     print("--- Generating Comprehensive Reports ---")
 
     # --- Argument Parsing ---
     parser = argparse.ArgumentParser(description="Generate reports from microsimulation results.")
     parser.add_argument(
-        "--param_files",
+        "--years",
         nargs="+",
         type=str,
-        default=["src/parameters.json"],
-        help="Paths to the JSON files containing the tax parameters for different years.",
+        default=["2024-2025"],
+        help="Tax years to generate reports for (e.g., 2024-2025).",
     )
     args = parser.parse_args()
 
     # --- Load Data and Parameters for each year ---
     all_dfs = {}
-    for param_file in args.param_files:
-        year = os.path.basename(param_file).split("_")[1].split(".")[0]
-
-        results_filename = f"synthetic_population_results_{year}.csv"
-        results_path = os.path.join("examples/synthetic_population", results_filename)
+    for year in args.years:
+        results_filename = f"synthetic_population_results_{year.replace('-', '_')}.csv"
+        results_path = os.path.join("examples", "synthetic_population", results_filename)
 
         if not os.path.exists(results_path):
             print(f"Error: Results file not found at {results_path} for year {year}")
@@ -53,12 +55,11 @@ def generate_reports():
     df = pd.concat(all_dfs.values(), ignore_index=True)
 
     # Define abatement thresholds from the first year's parameters
-    first_year_param_file = args.param_files[0]
-    first_year = os.path.basename(first_year_param_file).split("_")[1].split(".")[0]
+    first_year = args.years[0]
     first_year_params = load_parameters(first_year)
-    abatethresh1 = first_year_params.wff.abatethresh1
-    abatethresh2 = first_year_params.wff.abatethresh2
-    bstcthresh = first_year_params.wff.bstcthresh
+    abatethresh1 = first_year_params.wff.abatethresh1 if first_year_params.wff else 42700
+    abatethresh2 = first_year_params.wff.abatethresh2 if first_year_params.wff else 80000
+    bstcthresh = first_year_params.wff.bstcthresh if first_year_params.wff else 79000
 
     # Prepare data for the new reporting framework
     # The reporting framework expects 'disposable_income' and 'disposable_income_ahc'

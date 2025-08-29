@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+from .microsim import load_parameters
 from .parameters import WFFParams
 from .rules_engine import Rule, RuleEngine
 
@@ -16,7 +17,7 @@ def gross_up_income(df: pd.DataFrame, wagegwt: float) -> pd.DataFrame:
         DataFrame with an added ``familyinc_grossed_up`` column.
     """
     df = df.copy()
-    df["familyinc_grossed_up"] = df["familyinc"] * (1 + wagegwt)
+    df["familyinc_grossed_up"] = (df["familyinc"] * (1 + wagegwt)).astype(float)
     return df
 
 
@@ -204,21 +205,26 @@ def apply_calibrations(df: pd.DataFrame) -> pd.DataFrame:
 
 def famsim(
     df: pd.DataFrame,
-    wff_params: WFFParams,
-    wagegwt: float,
-    daysinperiod: int,
+    year: int,
+    params_path: str = None,
+    wagegwt: float = 0.0,
+    daysinperiod: int = 365,
 ) -> pd.DataFrame:
     """Compose the WFF calculation phases using a rule engine.
-
     Args:
         df: DataFrame containing family information.
-        wff_params: Working for Families parameters.
+        year: The tax year to simulate.
+        params_path: Path to a directory of parameter files.
         wagegwt: Wage growth rate.
         daysinperiod: Number of days in the period.
-
     Returns:
         DataFrame with calculated WFF entitlements.
     """
+    params = load_parameters(year=str(year))
+    wff_params = params.wff
+    if wff_params is None:
+        return df
+
     engine = RuleEngine(
         [
             Rule("gross_up_income", gross_up_income, {"wagegwt": wagegwt}),

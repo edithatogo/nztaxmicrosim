@@ -34,3 +34,6 @@ This section provides a complete API reference for the `nztaxmicrosim` package, 
 
 ### Benefit Calculation Functions
 ::: src.benefits
+
+## Web API Endpoints
+::: src.api.main

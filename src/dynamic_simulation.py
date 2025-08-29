@@ -20,7 +20,7 @@ from .wff_microsim import famsim
 BehaviouralFunc = Callable[..., pd.DataFrame]
 
 
-def _run_static_simulation(df: pd.DataFrame, params: Parameters) -> pd.DataFrame:
+def _run_static_simulation(df: pd.DataFrame, params: Parameters, year: int) -> pd.DataFrame:
     """Runs a single year's static simulation."""
     # This function now includes both tax and WFF calculations.
 
@@ -33,7 +33,7 @@ def _run_static_simulation(df: pd.DataFrame, params: Parameters) -> pd.DataFrame
     # Apply WFF calculations
     # We assume wagegwt=0 and daysinperiod=365 for this context.
     if params.wff:
-        current = famsim(current, params.wff, wagegwt=0, daysinperiod=365)
+        current = famsim(current, year=year)
 
     return current
 
@@ -83,12 +83,13 @@ def run_dynamic_simulation(
 
     df_previous_year_end = df_current
 
-    for year in years:
-        params_current = load_parameters(year)
+    for year_str in years:
+        year_int = int(year_str.split("-")[0])
+        params_current = load_parameters(year_str)
         calc_current = TaxCalculator(params=params_current)
 
         # Run the simulation for the current year's policies on last year's population
-        df_after_policy = _run_static_simulation(df_previous_year_end, params_current)
+        df_after_policy = _run_static_simulation(df_previous_year_end, params_current, year_int)
 
         df_final_for_year = df_after_policy
 
@@ -106,9 +107,9 @@ def run_dynamic_simulation(
             )
 
             # Re-run the simulation on the behaviourally adjusted data
-            df_final_for_year = _run_static_simulation(df_with_behavioural_change, params_current)
+            df_final_for_year = _run_static_simulation(df_with_behavioural_change, params_current, year_int)
 
-        results[year] = df_final_for_year.copy()
+        results[year_str] = df_final_for_year.copy()
 
         # The population at the end of this year becomes the starting point for the next
         df_previous_year_end = df_final_for_year

@@ -116,6 +116,6 @@ def famsim_legacy(
 def test_famsim(sample_df: pd.DataFrame) -> None:
     wff_params = params_2022_23.wff
     assert wff_params is not None
-    result = famsim(sample_df.copy(), wff_params, 0, 365)
+    result = famsim(sample_df.copy(), year=2022)
     expected = famsim_legacy(sample_df.copy(), wff_params, 0, 365)
     pd.testing.assert_frame_equal(result, expected)

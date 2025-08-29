@@ -67,9 +67,9 @@ if wff_params is None:
 # Run the famsim function
 df_results = famsim(
     df,
-    wff_params,
-    wagegwt,
-    daysinperiod,
+    year="2024-2025",
+    wagegwt=wagegwt,
+    daysinperiod=daysinperiod,
 )
 
 # Calculate income tax and IETC for each person

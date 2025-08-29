@@ -1,0 +1,672 @@
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 7.98%
+INFO:root:* Missing bakery: 90.18%
+INFO:root:* Missing cafe: 89.4%
+INFO:root:* Missing department_store: 89.82%
+INFO:root:* Missing fast_food: 89.66%
+INFO:root:* Missing park: 88.58%
+INFO:root:* Missing pub: 90.87%
+INFO:root:* Missing restaurant: 89.76%
+INFO:root:* Missing supermarket: 88.87%
+INFO:root:* Missing wholesale: 93.76%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 2815509: 0%
+INFO:root:Completed: 500 / 2815509: 0%
+INFO:root:Completed: 1000 / 2815509: 0%
+INFO:root:Completed: 1500 / 2815509: 0%
+INFO:root:Completed: 2000 / 2815509: 0%
+INFO:root:Completed: 2500 / 2815509: 0%
+INFO:root:Completed: 3000 / 2815509: 0%
+INFO:root:Completed: 3500 / 2815509: 0%
+INFO:root:Completed: 4000 / 2815509: 0%
+INFO:root:Completed: 4500 / 2815509: 0%
+INFO:root:Completed: 5000 / 2815509: 0%
+INFO:root:Completed: 5500 / 2815509: 0%
+INFO:root:Completed: 6000 / 2815509: 0%
+INFO:root:Completed: 6500 / 2815509: 0%
+INFO:root:Completed: 7000 / 2815509: 0%
+INFO:root:Completed: 7500 / 2815509: 0%
+INFO:root:Completed: 8000 / 2815509: 0%
+INFO:root:Completed: 8500 / 2815509: 0%
+INFO:root:Completed: 9000 / 2815509: 0%
+INFO:root:Completed: 9500 / 2815509: 0%
+INFO:root:Completed: 10000 / 2815509: 0%
+INFO:root:Completed: 10500 / 2815509: 0%
+INFO:root:Completed: 11000 / 2815509: 0%
+INFO:root:Completed: 11500 / 2815509: 0%
+INFO:root:Completed: 12000 / 2815509: 0%
+INFO:root:Completed: 12500 / 2815509: 0%
+INFO:root:Completed: 13000 / 2815509: 0%
+INFO:root:Completed: 13500 / 2815509: 0%
+INFO:root:Completed: 14000 / 2815509: 0%
+INFO:root:Completed: 14500 / 2815509: 0%
+INFO:root:Completed: 15000 / 2815509: 0%
+INFO:root:Completed: 15500 / 2815509: 0%
+INFO:root:Completed: 16000 / 2815509: 0%
+INFO:root:Completed: 16500 / 2815509: 0%
+INFO:root:Completed: 17000 / 2815509: 0%
+INFO:root:Completed: 17500 / 2815509: 0%
+INFO:root:Completed: 18000 / 2815509: 0%
+INFO:root:Completed: 18500 / 2815509: 0%
+INFO:root:Completed: 19000 / 2815509: 0%
+INFO:root:Completed: 19500 / 2815509: 0%
+INFO:root:Completed: 20000 / 2815509: 0%
+INFO:root:Completed: 20500 / 2815509: 0%
+INFO:root:Completed: 21000 / 2815509: 0%
+INFO:root:Completed: 21500 / 2815509: 0%
+INFO:root:Completed: 22000 / 2815509: 0%
+INFO:root:Completed: 22500 / 2815509: 0%
+INFO:root:Completed: 23000 / 2815509: 0%
+INFO:root:Completed: 23500 / 2815509: 0%
+INFO:root:Completed: 24000 / 2815509: 0%
+INFO:root:Completed: 24500 / 2815509: 0%
+INFO:root:Completed: 25000 / 2815509: 0%
+INFO:root:Completed: 25500 / 2815509: 0%
+INFO:root:Completed: 26000 / 2815509: 0%
+INFO:root:Completed: 26500 / 2815509: 0%
+INFO:root:Completed: 27000 / 2815509: 0%
+INFO:root:Completed: 27500 / 2815509: 0%
+INFO:root:Completed: 28000 / 2815509: 0%
+INFO:root:Completed: 28500 / 2815509: 1%
+INFO:root:Completed: 29000 / 2815509: 1%
+INFO:root:Completed: 29500 / 2815509: 1%
+INFO:root:Completed: 30000 / 2815509: 1%
+INFO:root:Completed: 30500 / 2815509: 1%
+INFO:root:Completed: 31000 / 2815509: 1%
+INFO:root:Completed: 31500 / 2815509: 1%
+INFO:root:Completed: 32000 / 2815509: 1%
+INFO:root:Completed: 32500 / 2815509: 1%
+INFO:root:Completed: 33000 / 2815509: 1%
+INFO:root:Completed: 33500 / 2815509: 1%
+INFO:root:Completed: 34000 / 2815509: 1%
+INFO:root:Completed: 34500 / 2815509: 1%
+INFO:root:Completed: 35000 / 2815509: 1%
+INFO:root:Completed: 35500 / 2815509: 1%
+INFO:root:Completed: 36000 / 2815509: 1%
+INFO:root:Completed: 36500 / 2815509: 1%
+INFO:root:Completed: 37000 / 2815509: 1%
+INFO:root:Completed: 37500 / 2815509: 1%
+INFO:root:Completed: 38000 / 2815509: 1%
+INFO:root:Completed: 38500 / 2815509: 1%
+INFO:root:Completed: 39000 / 2815509: 1%
+INFO:root:Completed: 39500 / 2815509: 1%
+INFO:root:Completed: 40000 / 2815509: 1%
+INFO:root:Completed: 40500 / 2815509: 1%
+INFO:root:Completed: 41000 / 2815509: 1%
+INFO:root:Completed: 41500 / 2815509: 1%
+INFO:root:Completed: 42000 / 2815509: 1%
+INFO:root:Completed: 42500 / 2815509: 1%
+INFO:root:Completed: 43000 / 2815509: 1%
+INFO:root:Completed: 43500 / 2815509: 1%
+INFO:root:Completed: 44000 / 2815509: 1%
+INFO:root:Completed: 44500 / 2815509: 1%
+INFO:root:Completed: 45000 / 2815509: 1%
+INFO:root:Completed: 45500 / 2815509: 1%
+INFO:root:Completed: 46000 / 2815509: 1%
+INFO:root:Completed: 46500 / 2815509: 1%
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 7.98%
+INFO:root:* Missing supermarket: 88.87%
+INFO:root:* Missing restaurant: 89.76%
+INFO:root:* Missing cafe: 89.4%
+INFO:root:* Missing department_store: 89.82%
+INFO:root:* Missing wholesale: 93.76%
+INFO:root:* Missing fast_food: 89.66%
+INFO:root:* Missing pub: 90.87%
+INFO:root:* Missing park: 88.58%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 2815509: 0%
+INFO:root:Completed: 500 / 2815509: 0%
+INFO:root:Completed: 1000 / 2815509: 0%
+INFO:root:Completed: 1500 / 2815509: 0%
+INFO:root:Completed: 2000 / 2815509: 0%
+INFO:root:Completed: 2500 / 2815509: 0%
+INFO:root:Completed: 3000 / 2815509: 0%
+INFO:root:Completed: 3500 / 2815509: 0%
+INFO:root:Completed: 4000 / 2815509: 0%
+INFO:root:Completed: 4500 / 2815509: 0%
+INFO:root:Completed: 5000 / 2815509: 0%
+INFO:root:Completed: 5500 / 2815509: 0%
+INFO:root:Completed: 6000 / 2815509: 0%
+INFO:root:Completed: 6500 / 2815509: 0%
+INFO:root:Completed: 7000 / 2815509: 0%
+INFO:root:Completed: 7500 / 2815509: 0%
+INFO:root:Completed: 8000 / 2815509: 0%
+INFO:root:Completed: 8500 / 2815509: 0%
+INFO:root:Completed: 9000 / 2815509: 0%
+INFO:root:Completed: 9500 / 2815509: 0%
+INFO:root:Completed: 10000 / 2815509: 0%
+INFO:root:Completed: 10500 / 2815509: 0%
+INFO:root:Completed: 11000 / 2815509: 0%
+INFO:root:Completed: 11500 / 2815509: 0%
+INFO:root:Completed: 12000 / 2815509: 0%
+INFO:root:Completed: 12500 / 2815509: 0%
+INFO:root:Completed: 13000 / 2815509: 0%
+INFO:root:Completed: 13500 / 2815509: 0%
+INFO:root:Completed: 14000 / 2815509: 0%
+INFO:root:Completed: 14500 / 2815509: 0%
+INFO:root:Completed: 15000 / 2815509: 0%
+INFO:root:Completed: 15500 / 2815509: 0%
+INFO:root:Completed: 16000 / 2815509: 0%
+INFO:root:Completed: 16500 / 2815509: 0%
+INFO:root:Completed: 17000 / 2815509: 0%
+INFO:root:Completed: 17500 / 2815509: 0%
+INFO:root:Completed: 18000 / 2815509: 0%
+INFO:root:Completed: 18500 / 2815509: 0%
+INFO:root:Completed: 19000 / 2815509: 0%
+INFO:root:Completed: 19500 / 2815509: 0%
+INFO:root:Completed: 20000 / 2815509: 0%
+INFO:root:Completed: 20500 / 2815509: 0%
+INFO:root:Completed: 21000 / 2815509: 0%
+INFO:root:Completed: 21500 / 2815509: 0%
+INFO:root:Completed: 22000 / 2815509: 0%
+INFO:root:Completed: 22500 / 2815509: 0%
+INFO:root:Completed: 23000 / 2815509: 0%
+INFO:root:Completed: 23500 / 2815509: 0%
+INFO:root:Completed: 24000 / 2815509: 0%
+INFO:root:Completed: 24500 / 2815509: 0%
+INFO:root:Completed: 25000 / 2815509: 0%
+INFO:root:Completed: 25500 / 2815509: 0%
+INFO:root:Completed: 26000 / 2815509: 0%
+INFO:root:Completed: 26500 / 2815509: 0%
+INFO:root:Completed: 27000 / 2815509: 0%
+INFO:root:Completed: 27500 / 2815509: 0%
+INFO:root:Completed: 28000 / 2815509: 0%
+INFO:root:Completed: 28500 / 2815509: 1%
+INFO:root:Completed: 29000 / 2815509: 1%
+INFO:root:Completed: 29500 / 2815509: 1%
+INFO:root:Completed: 30000 / 2815509: 1%
+INFO:root:Completed: 30500 / 2815509: 1%
+INFO:root:Completed: 31000 / 2815509: 1%
+INFO:root:Completed: 31500 / 2815509: 1%
+INFO:root:Completed: 32000 / 2815509: 1%
+INFO:root:Completed: 32500 / 2815509: 1%
+INFO:root:Completed: 33000 / 2815509: 1%
+INFO:root:Completed: 33500 / 2815509: 1%
+INFO:root:Completed: 34000 / 2815509: 1%
+INFO:root:Completed: 34500 / 2815509: 1%
+INFO:root:Completed: 35000 / 2815509: 1%
+INFO:root:Completed: 35500 / 2815509: 1%
+INFO:root:Completed: 36000 / 2815509: 1%
+INFO:root:Completed: 36500 / 2815509: 1%
+INFO:root:Completed: 37000 / 2815509: 1%
+INFO:root:Completed: 37500 / 2815509: 1%
+INFO:root:Completed: 38000 / 2815509: 1%
+INFO:root:Completed: 38500 / 2815509: 1%
+INFO:root:Completed: 39000 / 2815509: 1%
+INFO:root:Completed: 39500 / 2815509: 1%
+INFO:root:Completed: 40000 / 2815509: 1%
+INFO:root:Completed: 40500 / 2815509: 1%
+INFO:root:Completed: 41000 / 2815509: 1%
+INFO:root:Completed: 41500 / 2815509: 1%
+INFO:root:Completed: 42000 / 2815509: 1%
+INFO:root:Completed: 42500 / 2815509: 1%
+INFO:root:Completed: 43000 / 2815509: 1%
+INFO:root:Completed: 43500 / 2815509: 1%
+INFO:root:Completed: 44000 / 2815509: 1%
+INFO:root:Completed: 44500 / 2815509: 1%
+INFO:root:Completed: 45000 / 2815509: 1%
+INFO:root:Completed: 45500 / 2815509: 1%
+INFO:root:Completed: 46000 / 2815509: 1%
+INFO:root:Completed: 46500 / 2815509: 1%
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 7.53%
+INFO:root:* Missing supermarket: 88.88%
+INFO:root:* Missing restaurant: 89.73%
+INFO:root:* Missing cafe: 89.36%
+INFO:root:* Missing department_store: 89.84%
+INFO:root:* Missing wholesale: 93.81%
+INFO:root:* Missing fast_food: 89.63%
+INFO:root:* Missing pub: 90.83%
+INFO:root:* Missing park: 88.57%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 135740: 0%
+INFO:root:Completed: 500 / 135740: 0%
+INFO:root:Completed: 1000 / 135740: 0%
+INFO:root:Completed: 1500 / 135740: 1%
+INFO:root:Completed: 2000 / 135740: 1%
+INFO:root:Completed: 2500 / 135740: 1%
+INFO:root:Completed: 3000 / 135740: 2%
+INFO:root:Completed: 3500 / 135740: 2%
+INFO:root:Completed: 4000 / 135740: 2%
+INFO:root:Completed: 4500 / 135740: 3%
+INFO:root:Completed: 5000 / 135740: 3%
+INFO:root:Completed: 5500 / 135740: 4%
+INFO:root:Completed: 6000 / 135740: 4%
+INFO:root:Completed: 6500 / 135740: 4%
+INFO:root:Completed: 7000 / 135740: 5%
+INFO:root:Completed: 7500 / 135740: 5%
+INFO:root:Completed: 8000 / 135740: 5%
+INFO:root:Completed: 8500 / 135740: 6%
+INFO:root:Completed: 9000 / 135740: 6%
+INFO:root:Completed: 9500 / 135740: 6%
+INFO:root:Completed: 10000 / 135740: 7%
+INFO:root:Completed: 10500 / 135740: 7%
+INFO:root:Completed: 11000 / 135740: 8%
+INFO:root:Completed: 11500 / 135740: 8%
+INFO:root:Completed: 12000 / 135740: 8%
+INFO:root:Completed: 12500 / 135740: 9%
+INFO:root:Completed: 13000 / 135740: 9%
+INFO:root:Completed: 13500 / 135740: 9%
+INFO:root:Completed: 14000 / 135740: 10%
+INFO:root:Completed: 14500 / 135740: 10%
+INFO:root:Completed: 15000 / 135740: 11%
+INFO:root:Completed: 15500 / 135740: 11%
+INFO:root:Completed: 16000 / 135740: 11%
+INFO:root:Completed: 16500 / 135740: 12%
+INFO:root:Completed: 17000 / 135740: 12%
+INFO:root:Completed: 17500 / 135740: 12%
+INFO:root:Completed: 18000 / 135740: 13%
+INFO:root:Completed: 18500 / 135740: 13%
+INFO:root:Completed: 19000 / 135740: 13%
+INFO:root:Completed: 19500 / 135740: 14%
+INFO:root:Completed: 20000 / 135740: 14%
+INFO:root:Completed: 20500 / 135740: 15%
+INFO:root:Completed: 21000 / 135740: 15%
+INFO:root:Completed: 21500 / 135740: 15%
+INFO:root:Completed: 22000 / 135740: 16%
+INFO:root:Completed: 22500 / 135740: 16%
+INFO:root:Completed: 23000 / 135740: 16%
+INFO:root:Completed: 23500 / 135740: 17%
+INFO:root:Completed: 24000 / 135740: 17%
+INFO:root:Completed: 24500 / 135740: 18%
+INFO:root:Completed: 25000 / 135740: 18%
+INFO:root:Completed: 25500 / 135740: 18%
+INFO:root:Completed: 26000 / 135740: 19%
+INFO:root:Completed: 26500 / 135740: 19%
+INFO:root:Completed: 27000 / 135740: 19%
+INFO:root:Completed: 27500 / 135740: 20%
+INFO:root:Completed: 28000 / 135740: 20%
+INFO:root:Completed: 28500 / 135740: 20%
+INFO:root:Completed: 29000 / 135740: 21%
+INFO:root:Completed: 29500 / 135740: 21%
+INFO:root:Completed: 30000 / 135740: 22%
+INFO:root:Completed: 30500 / 135740: 22%
+INFO:root:Completed: 31000 / 135740: 22%
+INFO:root:Completed: 31500 / 135740: 23%
+INFO:root:Completed: 32000 / 135740: 23%
+INFO:root:Completed: 32500 / 135740: 23%
+INFO:root:Completed: 33000 / 135740: 24%
+INFO:root:Completed: 33500 / 135740: 24%
+INFO:root:Completed: 34000 / 135740: 25%
+INFO:root:Completed: 34500 / 135740: 25%
+INFO:root:Completed: 35000 / 135740: 25%
+INFO:root:Completed: 35500 / 135740: 26%
+INFO:root:Completed: 36000 / 135740: 26%
+INFO:root:Completed: 36500 / 135740: 26%
+INFO:root:Completed: 37000 / 135740: 27%
+INFO:root:Completed: 37500 / 135740: 27%
+INFO:root:Completed: 38000 / 135740: 27%
+INFO:root:Completed: 38500 / 135740: 28%
+INFO:root:Completed: 39000 / 135740: 28%
+INFO:root:Completed: 39500 / 135740: 29%
+INFO:root:Completed: 40000 / 135740: 29%
+INFO:root:Completed: 40500 / 135740: 29%
+INFO:root:Completed: 41000 / 135740: 30%
+INFO:root:Completed: 41500 / 135740: 30%
+INFO:root:Completed: 42000 / 135740: 30%
+INFO:root:Completed: 42500 / 135740: 31%
+INFO:root:Completed: 43000 / 135740: 31%
+INFO:root:Completed: 43500 / 135740: 32%
+INFO:root:Completed: 44000 / 135740: 32%
+INFO:root:Completed: 44500 / 135740: 32%
+INFO:root:Completed: 45000 / 135740: 33%
+INFO:root:Completed: 45500 / 135740: 33%
+INFO:root:Completed: 46000 / 135740: 33%
+INFO:root:Completed: 46500 / 135740: 34%
+INFO:root:Completed: 47000 / 135740: 34%
+INFO:root:Completed: 47500 / 135740: 34%
+INFO:root:Completed: 48000 / 135740: 35%
+INFO:root:Completed: 48500 / 135740: 35%
+INFO:root:Completed: 49000 / 135740: 36%
+INFO:root:Completed: 49500 / 135740: 36%
+INFO:root:Completed: 50000 / 135740: 36%
+INFO:root:Completed: 50500 / 135740: 37%
+INFO:root:Completed: 51000 / 135740: 37%
+INFO:root:Completed: 51500 / 135740: 37%
+INFO:root:Completed: 52000 / 135740: 38%
+INFO:root:Completed: 52500 / 135740: 38%
+INFO:root:Completed: 53000 / 135740: 39%
+INFO:root:Completed: 53500 / 135740: 39%
+INFO:root:Completed: 54000 / 135740: 39%
+INFO:root:Completed: 54500 / 135740: 40%
+INFO:root:Completed: 55000 / 135740: 40%
+INFO:root:Completed: 55500 / 135740: 40%
+INFO:root:Completed: 56000 / 135740: 41%
+INFO:root:Completed: 56500 / 135740: 41%
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:----------------------------
+INFO:root:Creating base population ...
+INFO:root:----------------------------
+INFO:root:Processing time (base population): 0.0 minutes
+INFO:root:----------------------------
+INFO:root:Creating required data ...
+INFO:root:----------------------------
+INFO:root:Creating household data ...
+INFO:root:Creating work related data ...
+INFO:root:Creating school related data ...
+INFO:root:Creating shared space related data ...
+INFO:root:* Missing hospital: 7.53%
+INFO:root:* Missing supermarket: 88.88%
+INFO:root:* Missing restaurant: 89.73%
+INFO:root:* Missing cafe: 89.36%
+INFO:root:* Missing department_store: 89.84%
+INFO:root:* Missing wholesale: 93.81%
+INFO:root:* Missing fast_food: 89.63%
+INFO:root:* Missing pub: 90.83%
+INFO:root:* Missing park: 88.57%
+INFO:root:----------------------------
+INFO:root:Creating agents ...
+INFO:root:----------------------------
+INFO:root:Completed: 0 / 135740: 0%
+INFO:root:Completed: 500 / 135740: 0%
+INFO:root:Completed: 1000 / 135740: 0%
+INFO:root:Completed: 1500 / 135740: 1%
+INFO:root:Completed: 2000 / 135740: 1%
+INFO:root:Completed: 2500 / 135740: 1%
+INFO:root:Completed: 3000 / 135740: 2%
+INFO:root:Completed: 3500 / 135740: 2%
+INFO:root:Completed: 4000 / 135740: 2%
+INFO:root:Completed: 4500 / 135740: 3%
+INFO:root:Completed: 5000 / 135740: 3%
+INFO:root:Completed: 5500 / 135740: 4%
+INFO:root:Completed: 6000 / 135740: 4%
+INFO:root:Completed: 6500 / 135740: 4%
+INFO:root:Completed: 7000 / 135740: 5%
+INFO:root:Completed: 7500 / 135740: 5%
+INFO:root:Completed: 8000 / 135740: 5%
+INFO:root:Completed: 8500 / 135740: 6%
+INFO:root:Completed: 9000 / 135740: 6%
+INFO:root:Completed: 9500 / 135740: 6%
+INFO:root:Completed: 10000 / 135740: 7%
+INFO:root:Completed: 10500 / 135740: 7%
+INFO:root:Completed: 11000 / 135740: 8%
+INFO:root:Completed: 11500 / 135740: 8%
+INFO:root:Completed: 12000 / 135740: 8%
+INFO:root:Completed: 12500 / 135740: 9%
+INFO:root:Completed: 13000 / 135740: 9%
+INFO:root:Completed: 13500 / 135740: 9%
+INFO:root:Completed: 14000 / 135740: 10%
+INFO:root:Completed: 14500 / 135740: 10%
+INFO:root:Completed: 15000 / 135740: 11%
+INFO:root:Completed: 15500 / 135740: 11%
+INFO:root:Completed: 16000 / 135740: 11%
+INFO:root:Completed: 16500 / 135740: 12%
+INFO:root:Completed: 17000 / 135740: 12%
+INFO:root:Completed: 17500 / 135740: 12%
+INFO:root:Completed: 18000 / 135740: 13%
+INFO:root:Completed: 18500 / 135740: 13%
+INFO:root:Completed: 19000 / 135740: 13%
+INFO:root:Completed: 19500 / 135740: 14%
+INFO:root:Completed: 20000 / 135740: 14%
+INFO:root:Completed: 20500 / 135740: 15%
+INFO:root:Completed: 21000 / 135740: 15%
+INFO:root:Completed: 21500 / 135740: 15%
+INFO:root:Completed: 22000 / 135740: 16%
+INFO:root:Completed: 22500 / 135740: 16%
+INFO:root:Completed: 23000 / 135740: 16%
+INFO:root:Completed: 23500 / 135740: 17%
+INFO:root:Completed: 24000 / 135740: 17%
+INFO:root:Completed: 24500 / 135740: 18%
+INFO:root:Completed: 25000 / 135740: 18%
+INFO:root:Completed: 25500 / 135740: 18%
+INFO:root:Completed: 26000 / 135740: 19%
+INFO:root:Completed: 26500 / 135740: 19%
+INFO:root:Completed: 27000 / 135740: 19%
+INFO:root:Completed: 27500 / 135740: 20%
+INFO:root:Completed: 28000 / 135740: 20%
+INFO:root:Completed: 28500 / 135740: 20%
+INFO:root:Completed: 29000 / 135740: 21%
+INFO:root:Completed: 29500 / 135740: 21%
+INFO:root:Completed: 30000 / 135740: 22%
+INFO:root:Completed: 30500 / 135740: 22%
+INFO:root:Completed: 31000 / 135740: 22%
+INFO:root:Completed: 31500 / 135740: 23%
+INFO:root:Completed: 32000 / 135740: 23%
+INFO:root:Completed: 32500 / 135740: 23%
+INFO:root:Completed: 33000 / 135740: 24%
+INFO:root:Completed: 33500 / 135740: 24%
+INFO:root:Completed: 34000 / 135740: 25%
+INFO:root:Completed: 34500 / 135740: 25%
+INFO:root:Completed: 35000 / 135740: 25%
+INFO:root:Completed: 35500 / 135740: 26%
+INFO:root:Completed: 36000 / 135740: 26%
+INFO:root:Completed: 36500 / 135740: 26%
+INFO:root:Completed: 37000 / 135740: 27%
+INFO:root:Completed: 37500 / 135740: 27%
+INFO:root:Completed: 38000 / 135740: 27%
+INFO:root:Completed: 38500 / 135740: 28%
+INFO:root:Completed: 39000 / 135740: 28%
+INFO:root:Completed: 39500 / 135740: 29%
+INFO:root:Completed: 40000 / 135740: 29%
+INFO:root:Completed: 40500 / 135740: 29%
+INFO:root:Completed: 41000 / 135740: 30%
+INFO:root:Completed: 41500 / 135740: 30%
+INFO:root:Completed: 42000 / 135740: 30%
+INFO:root:Completed: 42500 / 135740: 31%
+INFO:root:Completed: 43000 / 135740: 31%
+INFO:root:Completed: 43500 / 135740: 32%
+INFO:root:Completed: 44000 / 135740: 32%
+INFO:root:Completed: 44500 / 135740: 32%
+INFO:root:Completed: 45000 / 135740: 33%
+INFO:root:Completed: 45500 / 135740: 33%
+INFO:root:Completed: 46000 / 135740: 33%
+INFO:root:Completed: 46500 / 135740: 34%
+INFO:root:Completed: 47000 / 135740: 34%
+INFO:root:Completed: 47500 / 135740: 34%
+INFO:root:Completed: 48000 / 135740: 35%
+INFO:root:Completed: 48500 / 135740: 35%
+INFO:root:Completed: 49000 / 135740: 36%
+INFO:root:Completed: 49500 / 135740: 36%
+INFO:root:Completed: 50000 / 135740: 36%
+INFO:root:Completed: 50500 / 135740: 37%
+INFO:root:Completed: 51000 / 135740: 37%
+INFO:root:Completed: 51500 / 135740: 37%
+INFO:root:Completed: 52000 / 135740: 38%
+INFO:root:Completed: 52500 / 135740: 38%
+INFO:root:Completed: 53000 / 135740: 39%
+INFO:root:Completed: 53500 / 135740: 39%
+INFO:root:Completed: 54000 / 135740: 39%
+INFO:root:Completed: 54500 / 135740: 40%
+INFO:root:Completed: 55000 / 135740: 40%
+INFO:root:Completed: 55500 / 135740: 40%
+INFO:root:Completed: 56000 / 135740: 41%
+INFO:root:Completed: 56500 / 135740: 41%
+INFO:root:Completed: 57000 / 135740: 41%
+INFO:root:Completed: 57500 / 135740: 42%
+INFO:root:Completed: 58000 / 135740: 42%
+INFO:root:Completed: 58500 / 135740: 43%
+INFO:root:Completed: 59000 / 135740: 43%
+INFO:root:Completed: 59500 / 135740: 43%
+INFO:root:Completed: 60000 / 135740: 44%
+INFO:root:Completed: 60500 / 135740: 44%
+INFO:root:Completed: 61000 / 135740: 44%
+INFO:root:Completed: 61500 / 135740: 45%
+INFO:root:Completed: 62000 / 135740: 45%
+INFO:root:Completed: 62500 / 135740: 46%
+INFO:root:Completed: 63000 / 135740: 46%
+INFO:root:Completed: 63500 / 135740: 46%
+INFO:root:Completed: 64000 / 135740: 47%
+INFO:root:Completed: 64500 / 135740: 47%
+INFO:root:Completed: 65000 / 135740: 47%
+INFO:root:Completed: 65500 / 135740: 48%
+INFO:root:Completed: 66000 / 135740: 48%
+INFO:root:Completed: 66500 / 135740: 48%
+INFO:root:Completed: 67000 / 135740: 49%
+INFO:root:Completed: 67500 / 135740: 49%
+INFO:root:Completed: 68000 / 135740: 50%
+INFO:root:Completed: 68500 / 135740: 50%
+INFO:root:Completed: 69000 / 135740: 50%
+INFO:root:Completed: 69500 / 135740: 51%
+INFO:root:Completed: 70000 / 135740: 51%
+INFO:root:Completed: 70500 / 135740: 51%
+INFO:root:Completed: 71000 / 135740: 52%
+INFO:root:Completed: 71500 / 135740: 52%
+INFO:root:Completed: 72000 / 135740: 53%
+INFO:root:Completed: 72500 / 135740: 53%
+INFO:root:Completed: 73000 / 135740: 53%
+INFO:root:Completed: 73500 / 135740: 54%
+INFO:root:Completed: 74000 / 135740: 54%
+INFO:root:Completed: 74500 / 135740: 54%
+INFO:root:Completed: 75000 / 135740: 55%
+INFO:root:Completed: 75500 / 135740: 55%
+INFO:root:Completed: 76000 / 135740: 55%
+INFO:root:Completed: 76500 / 135740: 56%
+INFO:root:Completed: 77000 / 135740: 56%
+INFO:root:Completed: 77500 / 135740: 57%
+INFO:root:Completed: 78000 / 135740: 57%
+INFO:root:Completed: 78500 / 135740: 57%
+INFO:root:Completed: 79000 / 135740: 58%
+INFO:root:Completed: 79500 / 135740: 58%
+INFO:root:Completed: 80000 / 135740: 58%
+INFO:root:Completed: 80500 / 135740: 59%
+INFO:root:Completed: 81000 / 135740: 59%
+INFO:root:Completed: 81500 / 135740: 60%
+INFO:root:Completed: 82000 / 135740: 60%
+INFO:root:Completed: 82500 / 135740: 60%
+INFO:root:Completed: 83000 / 135740: 61%
+INFO:root:Completed: 83500 / 135740: 61%
+INFO:root:Completed: 84000 / 135740: 61%
+INFO:root:Completed: 84500 / 135740: 62%
+INFO:root:Completed: 85000 / 135740: 62%
+INFO:root:Completed: 85500 / 135740: 62%
+INFO:root:Completed: 86000 / 135740: 63%
+INFO:root:Completed: 86500 / 135740: 63%
+INFO:root:Completed: 87000 / 135740: 64%
+INFO:root:Completed: 87500 / 135740: 64%
+INFO:root:Completed: 88000 / 135740: 64%
+INFO:root:Completed: 88500 / 135740: 65%
+INFO:root:Completed: 89000 / 135740: 65%
+INFO:root:Completed: 89500 / 135740: 65%
+INFO:root:Completed: 90000 / 135740: 66%
+INFO:root:Completed: 90500 / 135740: 66%
+INFO:root:Completed: 91000 / 135740: 67%
+INFO:root:Completed: 91500 / 135740: 67%
+INFO:root:Completed: 92000 / 135740: 67%
+INFO:root:Completed: 92500 / 135740: 68%
+INFO:root:Completed: 93000 / 135740: 68%
+INFO:root:Completed: 93500 / 135740: 68%
+INFO:root:Completed: 94000 / 135740: 69%
+INFO:root:Completed: 94500 / 135740: 69%
+INFO:root:Completed: 95000 / 135740: 69%
+INFO:root:Completed: 95500 / 135740: 70%
+INFO:root:Completed: 96000 / 135740: 70%
+INFO:root:Completed: 96500 / 135740: 71%
+INFO:root:Completed: 97000 / 135740: 71%
+INFO:root:Completed: 97500 / 135740: 71%
+INFO:root:Completed: 98000 / 135740: 72%
+INFO:root:Completed: 98500 / 135740: 72%
+INFO:root:Completed: 99000 / 135740: 72%
+INFO:root:Completed: 99500 / 135740: 73%
+INFO:root:Completed: 100000 / 135740: 73%
+INFO:root:Completed: 100500 / 135740: 74%
+INFO:root:Completed: 101000 / 135740: 74%
+INFO:root:Completed: 101500 / 135740: 74%
+INFO:root:Completed: 102000 / 135740: 75%
+INFO:root:Completed: 102500 / 135740: 75%
+INFO:root:Completed: 103000 / 135740: 75%
+INFO:root:Completed: 103500 / 135740: 76%
+INFO:root:Completed: 104000 / 135740: 76%
+INFO:root:Completed: 104500 / 135740: 76%
+INFO:root:Completed: 105000 / 135740: 77%
+INFO:root:Completed: 105500 / 135740: 77%
+INFO:root:Completed: 106000 / 135740: 78%
+INFO:root:Completed: 106500 / 135740: 78%
+INFO:root:Completed: 107000 / 135740: 78%
+INFO:root:Completed: 107500 / 135740: 79%
+INFO:root:Completed: 108000 / 135740: 79%
+INFO:root:Completed: 108500 / 135740: 79%
+INFO:root:Completed: 109000 / 135740: 80%
+INFO:root:Completed: 109500 / 135740: 80%
+INFO:root:Completed: 110000 / 135740: 81%
+INFO:root:Completed: 110500 / 135740: 81%
+INFO:root:Completed: 111000 / 135740: 81%
+INFO:root:Completed: 111500 / 135740: 82%
+INFO:root:Completed: 112000 / 135740: 82%
+INFO:root:Completed: 112500 / 135740: 82%
+INFO:root:Completed: 113000 / 135740: 83%
+INFO:root:Completed: 113500 / 135740: 83%
+INFO:root:Completed: 114000 / 135740: 83%
+INFO:root:Completed: 114500 / 135740: 84%

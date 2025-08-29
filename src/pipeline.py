@@ -43,6 +43,7 @@ class SimulationPipeline:
         rules: list[Rule] = []
 
         # Import all rule modules to ensure they are registered
+        from . import benefit_rules, tax_rules, wff_rules  # noqa: F401
 
         for rule_config in config["rules"]:
             rule_name = rule_config.get("name") or rule_config.get("rule")
