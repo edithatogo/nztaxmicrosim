@@ -1,0 +1,11 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "timezone": "Pacific/Auckland",
+  "schedule": ["before 6am on Monday"],
+  "labels": ["dependencies"],
+  "dependencyDashboard": true,
+  "automerge": false,
+  "enabledManagers": ["pep621", "pip_requirements", "github-actions"],
+  "rangeStrategy": "bump"
+}
