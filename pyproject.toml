@@ -42,11 +42,11 @@ testpaths = [
 [tool.ruff]
 line-length = 120
 target-version = "py39"
+extend-exclude = ["syspop/**", "docs/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"] # Error, Flake8, Warnings, Isort
 ignore = []
-exclude = ["syspop/"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -58,6 +58,7 @@ docstring-code-line-length = "dynamic"
 
 [tool.mypy]
 python_version = "3.11"
+exclude = ["^syspop/"]
 ignore_missing_imports = true
 allow_untyped_globals = true
 disable_error_code = ["var-annotated"]
