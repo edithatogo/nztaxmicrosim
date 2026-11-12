@@ -35,7 +35,8 @@ jobs:
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    # setup-python provides the supported Python 3.9 build for Ubuntu 24.04.
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python-version: ['3.9', '3.10', '3.11']
