@@ -1,0 +1,18 @@
+{
+  "track_id": "research_software_registry_readiness_20260721",
+  "version": "1.0.0",
+  "type": "chore",
+  "status": "planned",
+  "created_at": "2026-07-21T00:00:00Z",
+  "updated_at": "2026-07-21T00:00:00Z",
+  "owner_repo": "edithatogo/nztaxmicrosim",
+  "github_parent_issue": "https://github.com/edithatogo/nztaxmicrosim/issues/180",
+  "github_subissues": [
+    "https://github.com/edithatogo/nztaxmicrosim/issues/181",
+    "https://github.com/edithatogo/nztaxmicrosim/issues/182",
+    "https://github.com/edithatogo/nztaxmicrosim/issues/183",
+    "https://github.com/edithatogo/nztaxmicrosim/issues/184"
+  ],
+  "external_evidence_required": true
+}
+
